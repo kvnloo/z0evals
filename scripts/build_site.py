@@ -379,7 +379,6 @@ def page(title: str, body: str, subtitle: str = "", meta: str = "", fm: dict | N
 <main class="page-shell">
   <header class="post-header">
     <h1>{html.escape(title)}</h1>
-    {f'<p class="subtitle">{html.escape(subtitle)}</p>' if subtitle else ''}
     <p class="meta">{author}·{date}</p>
     {f'<ul class="toc">{toc}</ul>' if toc else ''}
   </header>
