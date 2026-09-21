@@ -55,14 +55,14 @@ def page(title: str, body: str, subtitle: str = "", meta: str = "", fm: dict | N
     return f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{html.escape(title)} · z0evals</title><style>{STYLE}</style></head>
-<body><nav><a href="../index.html">z0evals</a><span>research · systems · agents</span></nav>
+<body><nav><a href="../index.html">z0evals</a><span><a href="eval-architecture.html">architecture</a> · research · systems · agents</span></nav>
 <div class="layout">
 <aside class="toc"><b>Contents</b>{toc}</aside>
 <main><div class="kicker">Zer0 evaluation report</div><h1>{html.escape(title)}</h1>
 {f'<div class="subtitle">{html.escape(subtitle)}</div>' if subtitle else ''}
 <div class="meta">{author} · {date}<br>{meta}</div>
 <article>{body}</article></main>
-<aside class="side-note"><strong>BUILD STATUS</strong>UI reference implementation.<br><br>Interactive numbers are clearly marked mock until frozen eval artifacts land.</aside>
+<aside class="side-note">{side_note}</aside>
 </div>
 <footer>z0evals · evidence before promotion · public reproducible evaluation</footer>
 <script src="../research-ui.js"></script>
@@ -100,7 +100,7 @@ def main() -> None:
 
     index = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>z0evals</title><style>{STYLE}</style></head>
-<body><nav><a href="index.html">z0evals</a><span>evidence before promotion</span></nav>
+<body><nav><a href="index.html">z0evals</a><span><a href="posts/eval-architecture.html">architecture</a> · evidence before promotion</span></nav>
 <main class="home"><div class="kicker">Zer0 research</div><h1>Measure what the agents actually do.</h1>
 <p class="subtitle">Frozen evaluations, reproducible artifacts, and public research reports for the Zer0 stack.</p>
 <div class="meta">experiment → measurement → frozen evidence → publication → promotion</div>
