@@ -2,7 +2,7 @@
 
 This repository already has its own `AGENTS.md`. The Verified OSS Loop kit lives under `.verified-oss-loop/` so onboard does not replace project instructions or dump kit skills over existing `source: local` skills.
 
-Workers never merge `main` or `dev`. `github_writes=0` on origin until a human authorizes origin writes. Open PRs on the **fork** only.
+The rollout ladder is `feature → preview → nightly → dev → main`. Preview/nightly are integration channels; `dev` and `main` remain maintainer-gated. This repository's maintainer may explicitly authorize origin writes and promotions.
 
 ## Kit paths
 
