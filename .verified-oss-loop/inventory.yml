@@ -1,0 +1,65 @@
+# Provenance for files copied from kvnloo/verified-oss-loop.
+# source: kit = synced from the standard; local = z0evals-owned.
+schema: verified-oss-loop.inventory.v1
+kit: https://github.com/kvnloo/verified-oss-loop
+kit_revision: 7ba2782090bef0a5fe8a8e039a700d76f23ca274
+synced_at: 2026-09-21T18:15:00Z
+files:
+  - path: .verified-oss-loop/README.md
+    source: kit
+  - path: .verified-oss-loop/kit-inventory.py
+    source: kit
+  - path: .verified-oss-loop/rollout.py
+    source: kit
+  - path: .verified-oss-loop/rollout.yml
+    source: modified
+  - path: .verified-oss-loop/scripts/cluster-similar-issues.py
+    source: kit
+  - path: .verified-oss-loop/skills/autodevelop/SKILL.md
+    source: kit
+  - path: .verified-oss-loop/skills/orient/SKILL.md
+    source: kit
+  - path: .verified-oss-loop/skills/tdd/SKILL.md
+    source: kit
+  - path: .verified-oss-loop/skills/anti-slop/SKILL.md
+    source: kit
+  - path: .verified-oss-loop/skills/pstack/SKILL.md
+    source: kit
+  - path: .verified-oss-loop/skills/dr-eggbot/SKILL.md
+    source: kit
+  - path: .verified-oss-loop/skills/verify/SKILL.md
+    source: kit
+  - path: .github/PULL_REQUEST_TEMPLATE.md
+    source: modified
+  - path: .github/ISSUE_TEMPLATE/config.yml
+    source: kit
+  - path: .github/ISSUE_TEMPLATE/bug.yml
+    source: kit
+  - path: .github/ISSUE_TEMPLATE/feature.yml
+    source: kit
+  - path: .github/ISSUE_TEMPLATE/claim.yml
+    source: kit
+  - path: .github/workflows/receipt.yml
+    source: kit
+  - path: .github/workflows/claim-expiry.yml
+    source: kit
+  - path: .github/workflows/scorecard.yml
+    source: kit
+  - path: .github/workflows/stale.yml
+    source: kit
+  - path: .github/workflows/labeler.yml
+    source: kit
+  - path: .github/labeler.yml
+    source: kit
+  - path: .github/dependabot.yml
+    source: kit
+  - path: .github/CODEOWNERS
+    source: modified
+  - path: .github/scripts/check-receipt.py
+    source: kit
+  - path: .github/scripts/expire-claims.sh
+    source: kit
+  - path: .github/scripts/create-labels.sh
+    source: kit
+  - path: docs/verified-oss-loop.md
+    source: modified

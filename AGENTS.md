@@ -41,3 +41,16 @@ local experiment commit
   -> posts/<study>.md
   -> Pages
 ```
+
+## Verified OSS Loop
+
+This repository is onboarded with the mature-layout Verified OSS Loop kit under `.verified-oss-loop/`.
+
+- rollout scheme: `rolling`
+- worker base: `nightly`
+- feature target: `preview`\n- overnight target: `nightly`
+- contributors and agents never merge `main`
+- exact-head evidence receipts are required on PRs
+- independent review precedes maintainer merge
+
+Run `python3 .verified-oss-loop/rollout.py show` before branching. The z0evals evidence/privacy invariants above remain authoritative if the generic kit is less strict.
