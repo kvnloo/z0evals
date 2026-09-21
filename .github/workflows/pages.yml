@@ -37,3 +37,22 @@ jobs:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Verify live Pages
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          set -euo pipefail
+          base="${PAGE_URL%/}"
+          for i in {1..12}; do
+            if curl -fsSL "$base/posts/slm-router-v0.html" -o /tmp/report.html &&
+               curl -fsSL "$base/posts/eval-architecture.html" -o /tmp/architecture.html &&
+               grep -Fq "MOCK DATA · UI PROTOTYPE" /tmp/report.html &&
+               grep -Fq "How z0evals Fits Into Zer0" /tmp/architecture.html; then
+              echo "live Pages verified at $base"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "Pages deployment completed but live content verification failed" >&2
+          exit 1
