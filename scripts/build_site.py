@@ -60,7 +60,7 @@ a:hover{text-decoration-color:var(--ink)}
 .post-header h1{
   margin:0 0 12px;
   max-width:900px;
-  font-size:clamp(2.65rem,6vw,4.35rem);
+  font-size:clamp(2.55rem,5vw,3.5rem);
   line-height:1.03;
   letter-spacing:-.045em;
   font-weight:760;
