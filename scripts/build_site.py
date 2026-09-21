@@ -182,6 +182,17 @@ hr,.hero-rule{border:0;border-top:1px solid var(--line);margin:34px 0}
 }
 .figure-copy{margin:0 0 15px}
 .figure-foot{margin-top:12px}
+.sb-chart{display:block;width:100%;height:auto;overflow:visible}
+.sb-grid{stroke:#ececec;stroke-width:1}
+.sb-line{fill:none;stroke:var(--green);stroke-width:1.8;vector-effect:non-scaling-stroke}
+.sb-point{fill:#fff;stroke:var(--green);stroke-width:1.8;vector-effect:non-scaling-stroke}
+.sb-point-dark{stroke:#222;fill:#222}
+.sb-axis,.sb-axis-title,.sb-x,.sb-value{font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif}
+.sb-axis{fill:#8a8a8a;font-size:10px}
+.sb-axis-title{fill:#666;font-size:11px}
+.sb-x{fill:#666;font-size:9px}
+.sb-value{fill:#222;font-size:10px;font-weight:650}
+.sb-chart-note{margin-top:-4px;color:var(--muted);font-size:12px;line-height:1.45}
 .mock-chip,.result-chip{
   padding:2px 7px;
   border:1px solid var(--line);
