@@ -4,3 +4,4 @@ __pycache__/
 site/
 imports/*.local.yaml
 .DS_Store
+_channels/
