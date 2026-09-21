@@ -90,7 +90,7 @@ def main() -> None:
         else:
             study_meta = f"status={html.escape(str(status))}"
 
-        body = markdown.markdown(body_md, extensions=["fenced_code", "tables", "sane_lists"])
+        body = markdown.markdown(body_md, extensions=["fenced_code", "tables", "sane_lists", "attr_list"])
         dest = OUT / "posts" / f"{src.stem}.html"
         dest.write_text(page(title, body, subtitle, study_meta, fm), encoding="utf-8")
         cards.append(f"""<div class="card"><div class="kicker">{html.escape(str(status))}</div>
