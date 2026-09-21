@@ -43,16 +43,29 @@ def split_frontmatter(text: str):
     return yaml.safe_load(fm) or {}, body.lstrip()
 
 
-def page(title: str, body: str, subtitle: str = "", meta: str = "") -> str:
+def page(title: str, body: str, subtitle: str = "", meta: str = "", fm: dict | None = None) -> str:
+    fm = fm or {}
+    toc_items = fm.get("toc", []) or []
+    toc = "".join(
+        f'<a href="#{html.escape(str(item.get("id", "")))}">{html.escape(str(item.get("label", "")))}</a>'
+        for item in toc_items
+    )
+    author = html.escape(str(fm.get("author", "Zer0 Research")))
+    date = html.escape(str(fm.get("date", "")))
     return f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{html.escape(title)} · z0evals</title><style>{STYLE}</style></head>
-<body><nav><a href="../index.html">z0evals</a><span>reproducible evaluation</span></nav>
+<body><nav><a href="../index.html">z0evals</a><span>research · systems · agents</span></nav>
+<div class="layout">
+<aside class="toc"><b>Contents</b>{toc}</aside>
 <main><div class="kicker">Zer0 evaluation report</div><h1>{html.escape(title)}</h1>
 {f'<div class="subtitle">{html.escape(subtitle)}</div>' if subtitle else ''}
-{f'<div class="meta">{meta}</div>' if meta else ''}
+<div class="meta">{author} · {date}<br>{meta}</div>
 <article>{body}</article></main>
-<footer>Evidence should resolve to a frozen study artifact. Source-reported results and reproduced measurements are kept separate.</footer>
+<aside class="side-note"><strong>BUILD STATUS</strong>UI reference implementation.<br><br>Interactive numbers are clearly marked mock until frozen eval artifacts land.</aside>
+</div>
+<footer>z0evals · evidence before promotion · public reproducible evaluation</footer>
+<script src="../research-ui.js"></script>
 </body></html>"""
 
 
@@ -79,7 +92,7 @@ def main() -> None:
 
         body = markdown.markdown(body_md, extensions=["fenced_code", "tables", "sane_lists"])
         dest = OUT / "posts" / f"{src.stem}.html"
-        dest.write_text(page(title, body, subtitle, study_meta), encoding="utf-8")
+        dest.write_text(page(title, body, subtitle, study_meta, fm), encoding="utf-8")
         cards.append(f"""<div class="card"><div class="kicker">{html.escape(str(status))}</div>
 <h2><a href="posts/{src.stem}.html">{html.escape(title)}</a></h2>
 <p>{html.escape(subtitle)}</p>
@@ -88,7 +101,7 @@ def main() -> None:
     index = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>z0evals</title><style>{STYLE}</style></head>
 <body><nav><a href="index.html">z0evals</a><span>evidence before promotion</span></nav>
-<main><div class="kicker">Zer0 research</div><h1>Measure what the agents actually do.</h1>
+<main class="home"><div class="kicker">Zer0 research</div><h1>Measure what the agents actually do.</h1>
 <p class="subtitle">Frozen evaluations, reproducible artifacts, and public research reports for the Zer0 stack.</p>
 <div class="meta">experiment → measurement → frozen evidence → publication → promotion</div>
 {''.join(cards) if cards else '<p>No reports yet.</p>'}
