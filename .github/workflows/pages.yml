@@ -16,10 +16,27 @@ name: pages
 #
 # Each channel is built from its own branch tip, so a channel site always shows
 # that channel's content.
+#
+# Trigger note: only `push` (from a non-token actor) fires before this file is on
+# the default branch. `schedule` and `workflow_run` are read from the default
+# branch, so they activate once this reaches `main`.
 
 on:
   push:
     branches: [main, dev, nightly, preview]
+
+  # The promote/automerge workflows merge with secrets.GITHUB_TOKEN, and GitHub
+  # does not trigger workflows from a push made with the default token. Without
+  # these, a promoted channel would never rebuild its site (observed: merging
+  # #34 into preview produced no push-event run at all).
+  workflow_run:
+    workflows: ["Automerge preview", "Automerge nightly", "Promote preview to nightly"]
+    types: [completed]
+
+  # safety net for any path that still bypasses the triggers above
+  schedule:
+    - cron: "17 */6 * * *"
+
   workflow_dispatch:
 
 permissions:
@@ -33,6 +50,8 @@ concurrency:
 
 jobs:
   build:
+    # workflow_run fires for failed runs too; never rebuild from a failed promote.
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     env:
       BASE: /${{ github.event.repository.name }}/
