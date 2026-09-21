@@ -20,6 +20,14 @@ name: pages
 # Trigger note: only `push` (from a non-token actor) fires before this file is on
 # the default branch. `schedule` and `workflow_run` are read from the default
 # branch, so they activate once this reaches `main`.
+#
+# Deploy note: the `github-pages` environment has a custom branch policy that
+# allows ONLY the default branch to deploy. A deploy attempted from `preview`
+# fails before its first step (observed: run 35666392926 — build success, deploy
+# job failure with zero steps). So every channel branch still BUILDS, but only
+# the default branch DEPLOYS. That is sufficient: the artifact always contains
+# every channel, built from each channel's own tip, so a default-branch deploy
+# publishes preview/nightly/dev content too.
 
 on:
   push:
@@ -158,6 +166,10 @@ jobs:
           path: site
 
   deploy:
+    # The github-pages environment only admits the default branch. Deploying
+    # from a channel branch would fail with no steps run, so gate instead of
+    # producing a red run.
+    if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
