@@ -1,0 +1,39 @@
+schema_version: z0eval.study.v1
+id: slm-router-v0
+title: Small-model routing on a local RTX 3080 Ti
+status: draft
+created: "2026-09-21"
+updated: "2026-09-21"
+
+hardware:
+  gpu: NVIDIA RTX 3080 Ti
+  vram_gb: 12
+  cpu: Intel Core i9-10900K
+  ram_gb: 32
+
+sources:
+  - repo: kvnloo/z0intelligence
+    commit: "0000000"
+    role: runtime model adapters, local serving, fixtures, receipts
+  - repo: kvnloo/evolution-lab
+    commit: "0000000"
+    role: composition tournament and grouped evaluation
+  - repo: kvnloo/tokenomics
+    commit: "0000000"
+    role: neutral telemetry semantics
+
+questions:
+  - Which local SLM best handles bounded routing under latency and quality constraints?
+  - How much does compiler-first legal-action filtering contribute independently of model quality?
+  - Which roles require general reasoning versus a specialist or bounded scorer?
+  - What additional benchmark is required to evaluate multi-turn orchestration?
+  - Can verified routing traces train a progressively cheaper Q-Route policy?
+
+artifacts: []
+
+limitations:
+  - Source commits are placeholders until the local DSH work is imported.
+  - Real served-model C/D/E/F composition sweep is not yet frozen.
+  - Authentic multi-turn orchestration benchmark is not yet frozen.
+
+claims: []
