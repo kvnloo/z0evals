@@ -1,0 +1,29 @@
+study: slm-router-v0
+
+# Copy this file to imports/slm-router-v0.local.yaml on the DSH machine.
+# The .local.yaml file is gitignored and may contain absolute local paths.
+sources:
+  - name: z0intelligence
+    repo: kvnloo/z0intelligence
+    root: /ABSOLUTE/PATH/TO/Z0INTELLIGENCE
+    commit: REPLACE_WITH_LOCAL_COMMIT_SHA
+    files:
+      - from: results/local-cognition/REPLACE/run-results.json
+        to: data/run-results.json
+        kind: result
+      - from: benchmarks/fixtures/local-cognition-v1/examples.jsonl
+        to: data/examples.jsonl
+        kind: fixture
+
+  - name: evolution-lab
+    repo: kvnloo/evolution-lab
+    root: /ABSOLUTE/PATH/TO/EVOLUTION-LAB
+    commit: REPLACE_WITH_LOCAL_COMMIT_SHA
+    files:
+      - from: REPLACE_WITH_EXACT_PATH/pareto.json
+        to: data/pareto.json
+        kind: result
+
+# Never import ~/.z0int/shadow wholesale. If a receipt subset is safe to
+# publish, first create a scrubbed/exported artifact in a pinned source commit
+# and import that exact file.
