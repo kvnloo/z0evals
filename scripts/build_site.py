@@ -52,6 +52,8 @@ def page(title: str, body: str, subtitle: str = "", meta: str = "", fm: dict | N
     )
     author = html.escape(str(fm.get("author", "Zer0 Research")))
     date = html.escape(str(fm.get("date", "")))
+    mock_data = bool(fm.get("mock_data", fm.get("status") == "mock-ui"))
+    side_note = ("<strong>BUILD STATUS</strong>UI reference implementation.<br><br>Interactive numbers are clearly marked mock until frozen eval artifacts land." if mock_data else "<strong>ARCHITECTURE STATUS</strong>These ownership boundaries describe the current intended Zer0 contract. Quantitative eval claims live in frozen studies, not on this page.")
     return f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{html.escape(title)} · z0evals</title><style>{STYLE}</style></head>
@@ -90,7 +92,7 @@ def main() -> None:
         else:
             study_meta = f"status={html.escape(str(status))}"
 
-        body = markdown.markdown(body_md, extensions=["fenced_code", "tables", "sane_lists"])
+        body = markdown.markdown(body_md, extensions=["fenced_code", "tables", "sane_lists", "attr_list"])
         dest = OUT / "posts" / f"{src.stem}.html"
         dest.write_text(page(title, body, subtitle, study_meta, fm), encoding="utf-8")
         cards.append(f"""<div class="card"><div class="kicker">{html.escape(str(status))}</div>
