@@ -46,9 +46,9 @@ local experiment commit
 
 This repository is onboarded with the mature-layout Verified OSS Loop kit under `.verified-oss-loop/`.
 
-- rollout scheme: `stable`
-- worker base: `main`
-- feature/overnight target: `main`
+- rollout scheme: `rolling`
+- worker base: `nightly`
+- feature target: `preview`\n- overnight target: `nightly`
 - contributors and agents never merge `main`
 - exact-head evidence receipts are required on PRs
 - independent review precedes maintainer merge
