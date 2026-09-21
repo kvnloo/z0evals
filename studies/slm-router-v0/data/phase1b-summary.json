@@ -2,7 +2,10 @@
   "bounded_choice": [
     {
       "arm": "compiler + hammer2.1_3b",
-      "ci95": [0.81, 0.94],
+      "ci95": [
+        0.81,
+        0.94
+      ],
       "dangerous": 0,
       "n": 84,
       "success": 75,
@@ -11,7 +14,10 @@
     },
     {
       "arm": "compiler + qwen3.5_4b",
-      "ci95": [0.81, 0.94],
+      "ci95": [
+        0.81,
+        0.94
+      ],
       "dangerous": 0,
       "n": 84,
       "success": 75,
@@ -20,7 +26,10 @@
     },
     {
       "arm": "compiler + qwen3.5_9b",
-      "ci95": [0.84, 0.96],
+      "ci95": [
+        0.84,
+        0.96
+      ],
       "dangerous": 0,
       "n": 84,
       "success": 78,
@@ -29,7 +38,10 @@
     },
     {
       "arm": "compiler + hammer2.1_7b",
-      "ci95": [0.77, 0.92],
+      "ci95": [
+        0.77,
+        0.92
+      ],
       "dangerous": 0,
       "n": 84,
       "success": 72,
@@ -38,7 +50,10 @@
     },
     {
       "arm": "compiler + nemotron_8b",
-      "ci95": [0.51, 0.71],
+      "ci95": [
+        0.51,
+        0.71
+      ],
       "dangerous": 0,
       "n": 84,
       "success": 52,
@@ -47,7 +62,10 @@
     },
     {
       "arm": "compiler + functiongemma_270m",
-      "ci95": [0.5, 0.7],
+      "ci95": [
+        0.5,
+        0.7
+      ],
       "dangerous": 0,
       "n": 84,
       "success": 51,
@@ -56,7 +74,10 @@
     },
     {
       "arm": "compiler + JEV",
-      "ci95": [0.43, 0.64],
+      "ci95": [
+        0.43,
+        0.64
+      ],
       "dangerous": 0,
       "n": 84,
       "success": 45,
@@ -65,7 +86,10 @@
     },
     {
       "arm": "unfiltered + hammer2.1_3b",
-      "ci95": [0.72, 0.89],
+      "ci95": [
+        0.72,
+        0.89
+      ],
       "dangerous": 6,
       "n": 84,
       "success": 69,
@@ -104,7 +128,7 @@
     "raw_receipts": 1102
   },
   "evidence_status": "local_frozen_remote_commits_pending",
-  "external_inference_spend_usd": 0.0,
+  "external_inference_spend_usd": 0,
   "features": {
     "authority_breadth_legal_family_count_gain": 0.036,
     "budget_units_ceiling_gain": 0.071,
@@ -168,12 +192,17 @@
     "executed": false,
     "feature_addition": "budget_units",
     "label_source": "gold",
-    "ood_families": ["abstention", "dependencies", "parallelism", "uncertainty"],
+    "ood_families": [
+      "abstention",
+      "dependencies",
+      "parallelism",
+      "uncertainty"
+    ],
     "reps": 3,
     "split": "chronological 70/15/15 by task",
     "states": 28,
     "stop_at": "written split digest-stamped corpus; no training",
-    "teacher_inference_spend_usd": 0.0
+    "teacher_inference_spend_usd": 0
   },
   "residency": {
     "cold_load_p50_ms": 13900,
@@ -191,14 +220,20 @@
       "after": "659b5a8",
       "before": "80ffebe",
       "branch": "experiment/q-route-v0",
-      "commits": ["6f4efcb", "659b5a8"],
+      "commits": [
+        "6f4efcb",
+        "659b5a8"
+      ],
       "visibility": "local-only"
     },
     "z0intelligence": {
       "after": "f721f8c",
       "before": "3430a5a",
       "branch": "feat/local-cognition-portfolio",
-      "commits": ["193c6ab", "f721f8c"],
+      "commits": [
+        "193c6ab",
+        "f721f8c"
+      ],
       "report_path": "docs/phase1b-decision-artifact.md",
       "visibility": "local-only"
     }
@@ -223,5 +258,10 @@
       "failure": "known pre-existing decider.py:177, untouched",
       "passed": 390
     }
+  },
+  "provenance": {
+    "source": "Phase 1B handoff from DSH local run",
+    "canonical_raw_artifacts": "pending import from local-only source commits",
+    "transcription": "summary fields transcribed into z0evals; raw receipts remain authoritative once imported"
   }
 }
