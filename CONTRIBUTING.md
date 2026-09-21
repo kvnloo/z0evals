@@ -2,13 +2,13 @@
 
 z0evals is the frozen evidence and publication layer for the Zer0 ecosystem. Project-specific evidence rules in `AGENTS.md` take precedence over generic contributor conventions.
 
-This repository uses the [Verified OSS Loop](https://github.com/kvnloo/verified-oss-loop) with the **stable** rollout scheme.
+This repository uses the [Verified OSS Loop](https://github.com/kvnloo/verified-oss-loop) with the **rolling** rollout scheme.
 
 ## Contribution loop
 
 1. Search open issues and pull requests.
 2. Work only on a maintainer-triaged `claimable` issue, then take one bounded 24-hour claim.
-3. Run `python3 .verified-oss-loop/rollout.py show`. For this repo it should resolve to `worker_base=main` and `feature_target=main`.
+3. Run `python3 .verified-oss-loop/rollout.py show`. For this repo it should resolve to `worker_base=nightly`, `feature_target=preview`, and `overnight_target=nightly`.
 4. Use an isolated branch/worktree.
 5. Orient before editing. For executable changes, fail then pass. Keep the smallest complete change.
 6. Open a PR with the exact-head evidence receipt from `.github/PULL_REQUEST_TEMPLATE.md`.
