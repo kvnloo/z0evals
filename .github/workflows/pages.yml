@@ -1,8 +1,25 @@
 name: pages
 
+# One Pages site, one artifact, every channel published as a mapped subpath.
+#
+# GitHub Pages (Actions build type) publishes a SINGLE site per repository, and
+# actions/deploy-pages replaces the whole site. So a deploy triggered by one
+# channel must build ALL channels: a per-branch deploy would wipe the others.
+#
+# Git channel names are NOT URL folders. Paths come from
+# .verified-oss-loop/pages-url-map.py:
+#
+#   main    -> /z0evals/           (default)
+#   nightly -> /z0evals/nightly/
+#   preview -> /z0evals/next/      (never /preview/ — that is the AODL collision)
+#   dev     -> /z0evals/dev/
+#
+# Each channel is built from its own branch tip, so a channel site always shows
+# that channel's content.
+
 on:
   push:
-    branches: [main]
+    branches: [main, dev, nightly, preview]
   workflow_dispatch:
 
 permissions:
@@ -11,15 +28,19 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  group: pages
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      BASE: /${{ github.event.repository.name }}/
     steps:
-      - name: Checkout
+      - name: Checkout (all channel branches)
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -29,11 +50,83 @@ jobs:
       - name: Install dependencies
         run: python -m pip install -r requirements.txt
 
-      - name: Validate studies
-        run: python scripts/validate.py
+      - name: Check the publish URL map
+        run: |
+          set -euo pipefail
+          python3 .verified-oss-loop/pages-url-map.py check --root . --base "$BASE"
 
-      - name: Build site
-        run: python scripts/build_site.py
+      - name: Build every channel
+        run: |
+          set -euo pipefail
+          rm -rf site _channels
+          mkdir -p site _channels
+          built=""
+
+          for BRANCH in main nightly preview dev; do
+            if ! git rev-parse --verify -q "origin/$BRANCH" >/dev/null; then
+              echo "::warning::channel $BRANCH has no origin branch — skipped"
+              continue
+            fi
+
+            DEST=$(python3 .verified-oss-loop/pages-url-map.py path \
+                     --branch "$BRANCH" --base "$BASE" --root .)
+            if [ -z "$DEST" ]; then
+              echo "channel $BRANCH is unpublished by config — skipped"
+              continue
+            fi
+
+            SUB="${DEST#"$BASE"}"          # "next/", "dev/", "" for main
+            WT="_channels/$BRANCH"
+            git worktree add --force --detach "$WT" "origin/$BRANCH" >/dev/null
+
+            if ( cd "$WT" && python3 scripts/validate.py && python3 scripts/build_site.py ); then
+              mkdir -p "site/$SUB"
+              cp -R "$WT/site/." "site/$SUB"
+              built="$built $BRANCH"
+              echo "built $BRANCH -> $DEST"
+            else
+              if [ "$BRANCH" = main ]; then
+                echo "::error::main failed to build; refusing to publish a partial site"
+                exit 1
+              fi
+              echo "::warning::$BRANCH failed to build — omitted from this deploy"
+            fi
+            git worktree remove --force "$WT" >/dev/null 2>&1 || true
+          done
+
+          if [ ! -f site/index.html ]; then
+            echo "::error::no main build at site/index.html; refusing to publish"
+            exit 1
+          fi
+
+          # Landing page for the channel sites. The per-channel builds are left
+          # untouched; this only adds an index one level above them.
+          {
+            echo '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">'
+            echo '<meta name="viewport" content="width=device-width, initial-scale=1">'
+            echo '<title>z0evals channels</title>'
+            echo '<style>body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;'
+            echo 'max-width:720px;margin:0 auto;padding:64px 24px;line-height:1.6;color:#111}'
+            echo 'h1{font-size:1.4rem;margin:0 0 8px}p{color:#666;margin:0 0 28px}'
+            echo 'ul{list-style:none;padding:0;margin:0}li{padding:12px 0;border-top:1px solid #eee}'
+            echo 'a{color:#111;text-decoration:none;font-weight:600}a:hover{text-decoration:underline}'
+            echo 'code{color:#666;font-weight:400;font-size:.9em}</style></head><body>'
+            echo '<h1>z0evals</h1><p>Published per git channel. Each is built from its own branch tip.</p><ul>'
+            for BRANCH in main nightly preview dev; do
+              DEST=$(python3 .verified-oss-loop/pages-url-map.py path \
+                       --branch "$BRANCH" --base "$BASE" --root . 2>/dev/null || true)
+              [ -n "$DEST" ] || continue
+              case " $built " in *" $BRANCH "*) ;; *) continue ;; esac
+              REL="${DEST#"$BASE"}"
+              [ -n "$REL" ] || REL="./"          # main publishes at the site root
+              printf '  <li><a href="%s">%s</a> <code>%s</code></li>\n' \
+                "$REL" "$BRANCH" "$DEST"
+            done
+            echo '</ul></body></html>'
+          } > site/channels.html
+
+          echo "channels built:$built"
+          find site -maxdepth 2 -name index.html | sort
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
@@ -56,21 +149,37 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
-      - name: Verify live Pages
+      - name: Verify every published channel
         env:
           PAGE_URL: ${{ steps.deployment.outputs.page_url }}
         run: |
           set -euo pipefail
           base="${PAGE_URL%/}"
-          for i in {1..12}; do
-            if curl -fsSL "$base/posts/slm-router-v0.html" -o /tmp/report.html &&
-               curl -fsSL "$base/posts/eval-architecture.html" -o /tmp/architecture.html &&
-               grep -Fq "MOCK DATA · UI PROTOTYPE" /tmp/report.html &&
-               grep -Fq "How z0evals Fits Into Zer0" /tmp/architecture.html; then
-              echo "live Pages verified at $base"
-              exit 0
+
+          check() {
+            local suffix="$1" needle="$2"
+            local url="$base/$suffix"
+            for i in $(seq 1 12); do
+              if curl -fsSL "$url" -o /tmp/chan.html &&
+                 grep -Fq "z0evals" /tmp/chan.html &&
+                 { [ -z "$needle" ] || grep -Fq "$needle" /tmp/chan.html; }; then
+                echo "ok   $url"
+                return 0
+              fi
+              sleep 5
+            done
+            echo "FAIL $url (expected content marker: ${needle:-<title>z0evals})" >&2
+            return 1
+          }
+
+          fail=0
+          check "" "How z0evals Fits Into Zer0" || fail=1
+          check "channels.html" "z0evals channels" || fail=1
+          for ch in nightly next dev; do
+            if curl -fsS -o /dev/null "$base/$ch/"; then
+              check "$ch/" "" || fail=1
+            else
+              echo "note /$ch/ not published for this run"
             fi
-            sleep 5
           done
-          echo "Pages deployment completed but live content verification failed" >&2
-          exit 1
+          exit "$fail"
