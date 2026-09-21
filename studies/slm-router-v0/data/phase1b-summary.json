@@ -1,0 +1,267 @@
+{
+  "bounded_choice": [
+    {
+      "arm": "compiler + hammer2.1_3b",
+      "ci95": [
+        0.81,
+        0.94
+      ],
+      "dangerous": 0,
+      "n": 84,
+      "success": 75,
+      "success_rate": 0.8928571428571429,
+      "warm_p50_ms": 195
+    },
+    {
+      "arm": "compiler + qwen3.5_4b",
+      "ci95": [
+        0.81,
+        0.94
+      ],
+      "dangerous": 0,
+      "n": 84,
+      "success": 75,
+      "success_rate": 0.8928571428571429,
+      "warm_p50_ms": 1993
+    },
+    {
+      "arm": "compiler + qwen3.5_9b",
+      "ci95": [
+        0.84,
+        0.96
+      ],
+      "dangerous": 0,
+      "n": 84,
+      "success": 78,
+      "success_rate": 0.9285714285714286,
+      "warm_p50_ms": 3603
+    },
+    {
+      "arm": "compiler + hammer2.1_7b",
+      "ci95": [
+        0.77,
+        0.92
+      ],
+      "dangerous": 0,
+      "n": 84,
+      "success": 72,
+      "success_rate": 0.8571428571428571,
+      "warm_p50_ms": 319
+    },
+    {
+      "arm": "compiler + nemotron_8b",
+      "ci95": [
+        0.51,
+        0.71
+      ],
+      "dangerous": 0,
+      "n": 84,
+      "success": 52,
+      "success_rate": 0.6190476190476191,
+      "warm_p50_ms": 2475
+    },
+    {
+      "arm": "compiler + functiongemma_270m",
+      "ci95": [
+        0.5,
+        0.7
+      ],
+      "dangerous": 0,
+      "n": 84,
+      "success": 51,
+      "success_rate": 0.6071428571428571,
+      "warm_p50_ms": 66
+    },
+    {
+      "arm": "compiler + JEV",
+      "ci95": [
+        0.43,
+        0.64
+      ],
+      "dangerous": 0,
+      "n": 84,
+      "success": 45,
+      "success_rate": 0.5357142857142857,
+      "warm_p50_ms": 31
+    },
+    {
+      "arm": "unfiltered + hammer2.1_3b",
+      "ci95": [
+        0.72,
+        0.89
+      ],
+      "dangerous": 6,
+      "n": 84,
+      "success": 69,
+      "success_rate": 0.8214285714285714,
+      "warm_p50_ms": 186
+    }
+  ],
+  "compiler_contract": {
+    "conformance_passed": 26,
+    "conformance_total": 26,
+    "documented_out_of_reach_exposures": 1,
+    "tempting_near_miss": {
+      "functiongemma_selected_dangerous": true,
+      "other_models_declined_count": 5
+    }
+  },
+  "composition": {
+    "artifact_delivered_consumed_states": 26,
+    "qwen4b_alone_correct": 18,
+    "qwen4b_plus_hammer3b_correct": 6,
+    "qwen4b_plus_hammer3b_helped_states": 0,
+    "qwen4b_plus_hammer3b_hurt_states": 13,
+    "qwen4b_plus_jev_correct": 13,
+    "qwen4b_plus_jev_helped_states": 0,
+    "qwen4b_plus_jev_hurt_states": 8,
+    "states_total": 28
+  },
+  "density": {
+    "cells_n2": 8,
+    "cells_n_ge_10": 0,
+    "phase1_cells": 522,
+    "phase1_cells_n1": 460,
+    "phase1b_cells_n1": 0,
+    "phase1b_cells_n_ge_3": 362,
+    "phase1b_measured_cells": 370,
+    "raw_receipts": 1102
+  },
+  "evidence_status": "local_frozen_remote_commits_pending",
+  "external_inference_spend_usd": 0,
+  "features": {
+    "authority_breadth_legal_family_count_gain": 0.036,
+    "budget_units_ceiling_gain": 0.071,
+    "cells": 370,
+    "collision_class": "insufficient_features",
+    "feature_collisions": 3,
+    "label_disagreements": 5,
+    "label_noise_rate": 0.0135,
+    "next": "budget_units"
+  },
+  "gate": {
+    "caveats": [
+      "8 cells remain at n=2 in compiler+jev+qwen3.5_4b.",
+      "No measured cell reached n>=10.",
+      "The gate utility ties correct-but-slow and wrong-but-fast at -1.000 on tool_fails under the frozen 4000 ms budget.",
+      "The safety clause reads dangerous_rate selection rather than exposed_dangerous.",
+      "FunctionGemma and Hammer3B share the tiny_specialist rung, so the current gate does not compare them directly."
+    ],
+    "decision": "passed"
+  },
+  "hardware": {
+    "cpu": "Intel Core i9-10900K",
+    "gpu": "NVIDIA RTX 3080 Ti",
+    "ram_gb": 32,
+    "vram_gb": 12
+  },
+  "orchestration": {
+    "expanded_40": {
+      "correct_stops": {
+        "nemotron_8b": null,
+        "qwen3.5_4b": 23,
+        "qwen3.5_9b": 27
+      },
+      "failures_to_escalate": {
+        "nemotron_8b": 12,
+        "qwen3.5_4b": 3,
+        "qwen3.5_9b": 3
+      },
+      "solved": {
+        "nemotron_8b": 23,
+        "qwen3.5_4b": 31,
+        "qwen3.5_9b": null
+      }
+    },
+    "frozen_12_scenario_reproduction": {
+      "correct_stops": {
+        "nemotron_8b": 7,
+        "qwen3.5_4b": 5,
+        "qwen3.5_9b": 7
+      },
+      "solved": {
+        "nemotron_8b": 6,
+        "qwen3.5_4b": 9,
+        "qwen3.5_9b": 9
+      }
+    }
+  },
+  "phase2_proposal": {
+    "arms": 5,
+    "episodes": 420,
+    "executed": false,
+    "feature_addition": "budget_units",
+    "label_source": "gold",
+    "ood_families": [
+      "abstention",
+      "dependencies",
+      "parallelism",
+      "uncertainty"
+    ],
+    "reps": 3,
+    "split": "chronological 70/15/15 by task",
+    "states": 28,
+    "stop_at": "written split digest-stamped corpus; no training",
+    "teacher_inference_spend_usd": 0
+  },
+  "residency": {
+    "cold_load_p50_ms": 13900,
+    "cold_total_examples_ms": {
+      "functiongemma_270m": 3100,
+      "qwen3.5_9b": 17200
+    },
+    "model_swap_p50_ms": 12900,
+    "warm_invocation_p50_ms": 1760
+  },
+  "run_id": "p1b-20260921T1430Z",
+  "schema_version": "z0eval.phase1b_summary.v1",
+  "sources": {
+    "evolution_lab": {
+      "after": "659b5a8",
+      "before": "80ffebe",
+      "branch": "experiment/q-route-v0",
+      "commits": [
+        "6f4efcb",
+        "659b5a8"
+      ],
+      "visibility": "local-only"
+    },
+    "z0intelligence": {
+      "after": "f721f8c",
+      "before": "3430a5a",
+      "branch": "feat/local-cognition-portfolio",
+      "commits": [
+        "193c6ab",
+        "f721f8c"
+      ],
+      "report_path": "docs/phase1b-decision-artifact.md",
+      "visibility": "local-only"
+    }
+  },
+  "study_id": "slm-router-v0",
+  "tests": {
+    "evolution_lab": {
+      "passed": 238,
+      "skipped": 1
+    },
+    "production_release": {
+      "gpu_mib": 788,
+      "llama_servers": 0,
+      "orphaned_vram": false
+    },
+    "sha256sum": {
+      "ok": 24,
+      "total": 24
+    },
+    "z0intelligence": {
+      "failed": 1,
+      "failure": "known pre-existing decider.py:177, untouched",
+      "passed": 390
+    }
+  },
+  "provenance": {
+    "source": "Phase 1B handoff from DSH local run",
+    "canonical_raw_artifacts": "pending import from local-only source commits",
+    "transcription": "summary fields transcribed into z0evals; raw receipts remain authoritative once imported"
+  }
+}

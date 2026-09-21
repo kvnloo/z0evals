@@ -1,64 +1,69 @@
 (function(){
-  const names=["deterministic","tiny specialist","bounded scorer","orchestrator"];
-  const slider=document.getElementById("complexity");
-  const out=document.getElementById("complexityOut");
-  const bars=document.getElementById("routeBars");
-  function renderBars(){
-    if(!slider||!bars)return;
-    const x=+slider.value; if(out) out.textContent=x;
-    const vals=[
-      Math.max(15,92-x*.65),
-      Math.max(24,82-Math.abs(x-38)*.45),
-      Math.max(20,76-Math.abs(x-58)*.32),
-      Math.min(94,28+x*.62)
-    ];
-    bars.innerHTML=names.map((n,i)=>
-      '<div class="route-row"><span>'+n+'</span><div class="bar-track"><div class="bar-fill" style="width:'+vals[i].toFixed(0)+'%"></div></div><b>'+vals[i].toFixed(0)+'</b></div>'
-    ).join("");
-  }
-  if(slider){slider.addEventListener("input",renderBars);renderBars();}
+  const chart=document.getElementById("phase1bChart");
+  if(!chart)return;
 
-  const pointSets={
-    quality:[[14,80,"tiny",1],[38,88,"bounded",0],[66,91,"orchestrator",0],[86,96,"general",0]],
-    latency:[[12,92,"tiny",1],[31,76,"bounded",0],[68,38,"orchestrator",0],[88,20,"general",0]],
-    cost:[[10,91,"tiny",1],[30,79,"bounded",0],[65,48,"orchestrator",0],[90,28,"general",0]]
-  };
-  const scatter=document.getElementById("scatter");
-  function plot(metric){
-    if(!scatter)return;
-    scatter.innerHTML=pointSets[metric].map(p=>
-      '<span class="point '+(p[3]?'best':'')+'" data-label="'+p[2]+'" style="left:'+p[0]+'%;bottom:'+p[1]+'%"></span>'
-    ).join("");
+  const source=chart.dataset.source;
+  const buttons=[...document.querySelectorAll("[data-phase-metric]")];
+
+  function labelFor(arm){
+    return arm
+      .replace("compiler + ","")
+      .replace("unfiltered + ","unfiltered ")
+      .replace("hammer2.1_","Hammer ")
+      .replace("qwen3.5_","Qwen ")
+      .replace("functiongemma_270m","FunctionGemma")
+      .replace("nemotron_8b","Nemotron 8B")
+      .replace("JEV","JEV")
+      .replace("3b","3B")
+      .replace("4b","4B")
+      .replace("7b","7B")
+      .replace("9b","9B");
   }
-  document.querySelectorAll(".tab").forEach(btn=>{
-    btn.addEventListener("click",()=>{
-      document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
-      btn.classList.add("active"); plot(btn.dataset.metric);
+
+  function render(rows,metric){
+    let max=1;
+    if(metric==="latency") max=Math.max(...rows.map(r=>r.warm_p50_ms));
+    if(metric==="danger") max=Math.max(1,...rows.map(r=>r.dangerous));
+
+    chart.innerHTML=rows.map(row=>{
+      let value,width,display;
+      if(metric==="success"){
+        value=row.success_rate*100;
+        width=value;
+        display=value.toFixed(1)+"%";
+      } else if(metric==="latency"){
+        value=row.warm_p50_ms;
+        width=(value/max)*100;
+        display=value.toLocaleString()+" ms";
+      } else {
+        value=row.dangerous;
+        width=(value/max)*100;
+        display=String(value);
+      }
+      const cls=row.arm==="compiler + hammer2.1_3b"?" phase-primary":
+        row.arm.startsWith("unfiltered")?" phase-warning":"";
+      return '<div class="route-row'+cls+'"><span>'+labelFor(row.arm)+'</span>'+
+        '<div class="bar-track"><div class="bar-fill" style="width:'+width.toFixed(1)+'%"></div></div>'+
+        '<b>'+display+'</b></div>';
+    }).join("");
+  }
+
+  fetch(source,{cache:"no-store"})
+    .then(r=>{if(!r.ok)throw new Error("HTTP "+r.status);return r.json();})
+    .then(data=>{
+      const rows=data.bounded_choice||[];
+      let metric="success";
+      render(rows,metric);
+      buttons.forEach(btn=>{
+        btn.addEventListener("click",()=>{
+          buttons.forEach(x=>x.classList.remove("active"));
+          btn.classList.add("active");
+          metric=btn.dataset.phaseMetric||"success";
+          render(rows,metric);
+        });
+      });
+    })
+    .catch(err=>{
+      chart.innerHTML='<p class="figure-copy">Could not load published Phase 1B data: '+String(err)+'</p>';
     });
-  });
-  plot("quality");
-
-  const lp=document.getElementById("latencyPlot");
-  if(lp){
-    const sets=[
-      ["#446b48",[12,18,24,33,42],45],
-      ["#e4572e",[34,49,66,81,92],110],
-      ["#315f82",[25,42,63,78,88],175]
-    ];
-    lp.innerHTML=sets.map(s=>
-      '<div class="latency-line" style="bottom:'+s[2]+'px;background:'+s[0]+'">'+
-      s[1].map((x,i)=>'<span style="left:'+x+'%;background:'+s[0]+'" title="mock percentile '+(i+1)+'"></span>').join("")+
-      '</div>'
-    ).join("");
-  }
-
-  const replay=document.getElementById("replayTrace");
-  if(replay){
-    replay.addEventListener("click",()=>{
-      const trace=replay.closest(".trace"), steps=[...trace.querySelectorAll(".trace-step")];
-      trace.classList.add("replaying"); steps.forEach(s=>s.classList.remove("on"));
-      steps.forEach((step,i)=>setTimeout(()=>step.classList.add("on"),250+i*420));
-      setTimeout(()=>trace.classList.remove("replaying"),250+steps.length*420+700);
-    });
-  }
 })();

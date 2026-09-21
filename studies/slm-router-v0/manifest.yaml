@@ -5,6 +5,10 @@ status: draft
 created: "2026-09-21"
 updated: "2026-09-21"
 
+run_id: p1b-20260921T1430Z
+evidence_status: local-frozen-remote-commits-pending
+external_inference_spend_usd: 0.0
+
 hardware:
   gpu: NVIDIA RTX 3080 Ti
   vram_gb: 12
@@ -13,27 +17,68 @@ hardware:
 
 sources:
   - repo: kvnloo/z0intelligence
-    commit: "0000000"
-    role: runtime model adapters, local serving, fixtures, receipts
+    commit: f721f8c
+    branch: feat/local-cognition-portfolio
+    role: Phase 1B serving, densification, composition, compiler-contract evaluation, receipts, decision artifact
+    visibility: local-only
+    report_path: docs/phase1b-decision-artifact.md
   - repo: kvnloo/evolution-lab
-    commit: "0000000"
-    role: composition tournament and grouped evaluation
-  - repo: kvnloo/tokenomics
-    commit: "0000000"
-    role: neutral telemetry semantics
+    commit: 659b5a8
+    branch: experiment/q-route-v0
+    role: Q-Route validation analysis and Phase 2 episode preparation
+    visibility: local-only
+
+telemetry_projection:
+  contract: Tokenomics semantics
+  receipts: 1102
+  missing_required_keys: 0
+  source_revision: pending
 
 questions:
   - Which local SLM best handles bounded routing under latency and quality constraints?
   - How much does compiler-first legal-action filtering contribute independently of model quality?
   - Which roles require general reasoning versus a specialist or bounded scorer?
-  - What additional benchmark is required to evaluate multi-turn orchestration?
-  - Can verified routing traces train a progressively cheaper Q-Route policy?
+  - Does composing JEV or a small specialist ahead of a larger model improve the downstream decision?
+  - What feature should Q-Route add before the first corpus-generation slice?
 
-artifacts: []
+artifacts:
+  - path: data/phase1b-summary.json
+    kind: result
+    provenance: transcribed summary from the immutable local Phase 1B run; raw artifacts pending import
 
 limitations:
-  - Source commits are placeholders until the local DSH work is imported.
-  - Real served-model C/D/E/F composition sweep is not yet frozen.
-  - Authentic multi-turn orchestration benchmark is not yet frozen.
+  - The z0intelligence and evolution-lab source commits are currently local-only, so this draft is not yet remotely reproducible.
+  - The machine-readable summary is a transcription of the Phase 1B handoff; canonical raw receipts and generated reports remain authoritative and still need import.
+  - Eight measured cells remain at n=2 in compiler+jev+qwen3.5_4b.
+  - No measured cell reached n>=10.
+  - The frozen gate utility ties correct-but-slow and wrong-but-fast at -1.000 on tool_fails under the 4000 ms budget.
+  - The safety gate reads dangerous_rate selection rather than exposed_dangerous.
+  - FunctionGemma and Hammer3B share the tiny_specialist rung, so the current gate does not compare them directly.
+  - The first composition pass at max_tokens=512 produced empty Qwen content because thinking consumed the output budget; that failure is preserved but excluded from the corrected result.
+  - The legacy D/E/F cascade sweep was intentionally stopped after the token-budget correction became higher priority.
 
-claims: []
+claims:
+  - id: bounded-default-hammer3b
+    text: compiler -> Hammer2.1-3B is the measured default bounded-choice path in Phase 1B.
+    evidence:
+      - data/phase1b-summary.json
+  - id: compiler-restores-safety
+    text: compiler-first arms recorded zero dangerous selections while unfiltered Hammer2.1-3B recorded 6/84.
+    evidence:
+      - data/phase1b-summary.json
+  - id: qwen4-orchestration-role
+    text: Qwen3.5-4B did not improve bounded-choice success over Hammer2.1-3B but solved 31/40 orchestration scenarios.
+    evidence:
+      - data/phase1b-summary.json
+  - id: composition-harmful
+    text: the measured JEV and Hammer3B pre-composition variants reduced Qwen4B downstream correctness in the corrected composition evaluation.
+    evidence:
+      - data/phase1b-summary.json
+  - id: residency-dominates
+    text: cold-load and model-swap latency are order-of-magnitude system costs relative to the fastest warm bounded-choice routes.
+    evidence:
+      - data/phase1b-summary.json
+  - id: next-feature-budget-units
+    text: budget_units is the highest-value measured next runtime-observable feature for Q-Route.
+    evidence:
+      - data/phase1b-summary.json
