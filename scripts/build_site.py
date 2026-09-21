@@ -107,6 +107,7 @@ def main() -> None:
 {''.join(cards) if cards else '<p>No reports yet.</p>'}
 </main><footer>kvnloo/z0evals · public reproducible evaluation layer</footer></body></html>"""
     (OUT / "index.html").write_text(index, encoding="utf-8")
+    shutil.copy2(ROOT / "research-ui.js", OUT / "research-ui.js")
     print(f"built {len(cards)} post(s) into {OUT}")
 
 
