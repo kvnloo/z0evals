@@ -249,7 +249,7 @@ jobs:
           # ships, not the legacy landing page title — the stale marker failed
           # the verify step on run 35675256911 *after* every channel had
           # deployed successfully.
-          check "" "Small Models Calling the Shots" || fail=1
+          check "" "how much of the llm do we actually need?" || fail=1
           check "channels.html" "z0evals channels" || fail=1
           for ch in nightly next dev; do
             if curl -fsS -o /dev/null "$base/$ch/"; then

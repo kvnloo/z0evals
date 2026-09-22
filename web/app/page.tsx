@@ -22,6 +22,7 @@ import ModelBoard from "@/components/figures/ModelBoard";
 import ProgressRows from "@/components/figures/ProgressRows";
 import ForecastPair from "@/components/figures/ForecastPair";
 import UtilityTie from "@/components/figures/UtilityTie";
+import ReferenceMap from "@/components/ReferenceMap";
 
 const S = study.study;
 const matrix = study.matrix as unknown as Matrix;
@@ -49,27 +50,29 @@ const utility = C.utility as never;
 const coverage = C.coverage as never;
 
 const TOC: TocItem[] = [
-  { id: "are-we-there-yet", label: "Are we there yet?", depth: 0 },
-  { id: "option-1-just-ask", label: "Option 1: Just ask", depth: 1 },
-  { id: "option-2-break-into-phases", label: "Option 2: Break into phases", depth: 1 },
-  { id: "scaling-up", label: "Scaling up", depth: 1 },
-  { id: "inside-the-receipts", label: "Inside the receipts", depth: 0 },
-  { id: "jev-versus-text-models", label: "Calibrated scorers versus text models", depth: 1 },
-  { id: "safety", label: "The compiler is the safety property", depth: 0 },
-  { id: "explore", label: "Explore the matrix", depth: 0 },
-  { id: "residency", label: "Residency dominates everything", depth: 0 },
-  { id: "do-the-arms-agree", label: "Do the arms agree?", depth: 0 },
-  { id: "does-confidence-mean-anything", label: "Does confidence mean anything?", depth: 0 },
-  { id: "actions", label: "What the compiler removed", depth: 0 },
-  { id: "families", label: "Where the difficulty lives", depth: 0 },
-  { id: "authors-note", label: "Author's note", depth: 0 },
-  { id: "appendix", label: "Appendix: what the numbers mean", depth: 0 },
-  { id: "the-run", label: "The Phase 1B run", depth: 1 },
-  { id: "why", label: "Why the fast arm is also the accurate one", depth: 1 },
-  { id: "labels", label: "Family and rung labels", depth: 1 },
-  { id: "gate", label: "Gate defects recorded", depth: 1 },
-  { id: "check-or-reuse", label: "Check or reuse the evidence", depth: 1 },
-];
+  { id: "why-is-an-llm-doing-this", label: "why is an llm doing this?", depth: 0 },
+  { id: "first-shortcut", label: "the first shortcut", depth: 0 },
+  { id: "hammer-ruined-the-hierarchy", label: "hammer3b ruined the hierarchy", depth: 0 },
+  { id: "phase-1-was-vibes", label: "phase 1 was basically vibes", depth: 0 },
+  { id: "wrong-job", label: "we were giving bigger models the wrong job", depth: 0 },
+  { id: "residency", label: "residency wrecked the leaderboard", depth: 0 },
+  { id: "composition", label: "our clever cascade made qwen worse", depth: 0 },
+  { id: "jev-role", label: "jev failed at the job i gave it", depth: 0 },
+  { id: "compiler", label: "the compiler was doing intelligence", depth: 0 },
+  { id: "gate", label: "the eval gate failed its own eval", depth: 0 },
+  { id: "remaining-errors", label: "the remaining errors were not noise", depth: 0 },
+  { id: "survived", label: "the architecture that survived", depth: 0 },
+  { id: "next", label: "now i want the bottom to get weird", depth: 0 },
+  { id: "actual-result", label: "the actual result", depth: 0 },
+  { id: "references", label: "references & things that shaped this", depth: 0 },
+  { id: "authors-note", label: "author's note", depth: 0 },
+  { id: "appendix", label: "appendix: what the numbers mean", depth: 0 },
+  { id: "the-run", label: "the phase 1b run", depth: 1 },
+  { id: "why", label: "why the fast arm is also accurate", depth: 1 },
+  { id: "labels", label: "family and rung labels", depth: 1 },
+  { id: "gate-record", label: "gate defects recorded", depth: 1 },
+  { id: "check-or-reuse", label: "check or reuse the evidence", depth: 1 },
+]
 
 export default function Page() {
   return (
@@ -80,8 +83,8 @@ export default function Page() {
           <nav className="site-nav">
             <a className="brand" href="./">z0evals</a>
             <div className="links">
-              <a href="#are-we-there-yet">Results</a>
-              <a href="#appendix">Method</a>
+              <a href="#why-is-an-llm-doing-this">results</a>
+              <a href="#appendix">method</a>
               <a href="https://github.com/kvnloo/z0evals">GitHub</a>
             </div>
           </nav>
@@ -94,7 +97,7 @@ export default function Page() {
       <main className="article article-shell">
         <div className="article-header">
           <div>
-          <h1 className="article-title">{S.title}</h1>
+          <h1 className="article-title">how much of the llm do we actually need?</h1>
           <div className="title-accent-line" aria-hidden="true" />
           <div className="article-meta">
             {S.author}<span className="sep">·</span>{S.date}
@@ -107,29 +110,40 @@ export default function Page() {
         <div className="article-body prose">
 
         <p className="lede">
-          We keep being told a small local model can route an agent&rsquo;s next move. We measured
-          eight of them, {arms[0].n} decisions each, behind the same deterministic compiler, on one
-          {` ${S.hardware.gpu}`}. Here is what actually happened.
+          i started this with a pretty simple question: <strong>why are we paying an autoregressive
+          language model to make decisions that barely require language?</strong>
         </p>
 
-        <Callout kind="info" title="REAL PHASE 1B DATA">
+        <p>
+          a lot of agent work looks intelligent from the outside because the whole loop is intelligent.
+          but when you zoom in, a huge fraction of the individual decisions are boring: can i call this
+          tool? which of these actions is legal? should i retry or escalate? is this context relevant?
+          do i need a bigger model yet? has enough changed that i should keep reasoning?
+        </p>
+
+        <p>
+          those are not all “write me a thoughtful paragraph” problems. some of them are barely even
+          language problems.
+        </p>
+
+        <Callout kind="info" title="real phase 1b data">
           <p>
-            <code>{S.runId}</code> is immutable. All {study.density.raw_receipts.toLocaleString()} raw
-            receipts came from the local <code>z0int cognition serve</code> supervisor. External
-            inference spend was <strong>${S.externalSpendUsd.toFixed(2)}</strong>. Nothing on this page
-            is modelled, extrapolated, or copied from a vendor claim.
-            {" "}<strong>Draft:</strong> {study.provenance.canonical_raw_artifacts}.
+            <code>{S.runId}</code> is immutable. all {study.density.raw_receipts.toLocaleString()} raw
+            receipts came from the local <code>z0int cognition serve</code> supervisor. external
+            inference spend was <strong>{"$"}{S.externalSpendUsd.toFixed(2)}</strong>. the measurements on
+            this page come from the recorded run, not a vendor benchmark or a generated illustration.
+            {" "}<strong>publication status:</strong> {study.provenance.canonical_raw_artifacts}.
           </p>
         </Callout>
 
         <HeadlineFigure
           value={study.density.raw_receipts.toLocaleString()}
-          unit="raw receipts · one per model call"
+          unit="raw receipts · one per measured call"
           caption={
             <>
-              {study.density.phase1b_measured_cells} measured cells, {study.density.phase1b_cells_n_ge_3} of them
-              at n≥3. Best bounded-choice success {pct(qwen9.successRate)} ({qwen9.label}, {ms(qwen9.warmP50Ms)}).
-              The unfiltered control selected a dangerous action {unf.dangerous} times; every compiler-first arm, zero.
+              {study.density.phase1b_measured_cells} measured cells, {study.density.phase1b_cells_n_ge_3} at n≥3,
+              zero at n=1. best bounded-choice success: {pct(qwen9.successRate)} ({qwen9.label}, {ms(qwen9.warmP50Ms)}).
+              compiler-first dangerous selections: zero. unfiltered control: {unf.dangerous}.
             </>
           }>
           <DensityBars d={study.density} />
@@ -137,152 +151,126 @@ export default function Page() {
 
         <div className="hero-rule" />
 
-        <HeadingFrog id="are-we-there-yet" level={2}>Are we there yet?</HeadingFrog>
+        <HeadingFrog id="why-is-an-llm-doing-this" level={2}>why is an llm doing this at all?</HeadingFrog>
         <p>
-          An agent turn is mostly not reasoning. It is choosing one action from the ones that are
-          legal, with arguments. The first run we did told us which small models <em>looked</em>
-          promising: 522 <code>(state, arm)</code> cells, 460 of them holding a single observation.
-          That is not evidence, it is a first impression.
+          this started before phase 1b. i was trying to run more and more of zer0 locally, and the free
+          remote models were useful but slow enough that you could feel every pointless call. meanwhile,
+          just wiring a jev skill into hermes made the whole system feel faster immediately.
+        </p>
+        <p>
+          so naturally i got greedy. what if the expensive model stopped being the default brain?
+          what if we could progressively replace its responsibilities with cheaper and cheaper machinery
+          until the llm only saw the part of the problem that actually needed it?
         </p>
 
-        <HeadingFrog id="option-1-just-ask" level={3}>Option 1: Just ask</HeadingFrog>
+        <figure>
+          <div className="fig-body"><LadderFlow /></div>
+          <figcaption>
+            <span className="fig-n">fig 1</span>
+            the original idea was an escalation ladder: deterministic structure first, then increasingly
+            expensive learned cognition only when uncertainty survives. phase 1b ended up changing almost
+            every assumption about which rung deserved which job.
+          </figcaption>
+        </figure>
+
+        <HeadingFrog id="first-shortcut" level={2}>the first shortcut looked better than it was</HeadingFrog>
         <p>
-          Give the whole job to one capable model and let it read everything. It works, and it is what
-          everyone does. On this hardware it costs {ms(qwen4.warmP50Ms)} per decision for {qwen4.label}
-          and {ms(qwen9.warmP50Ms)} for {qwen9.label}, and it never tells you how sure it is.
+          jev was the obvious place to start because it does not need to generate an answer token by token.
+          give it a typed question and a bounded set of possibilities, and it gives you a distribution.
+          that sounds almost perfect for routing.
+        </p>
+        <p>
+          the early nanojev shadow work was fast enough to care about, but agreement with the teacher was
+          nowhere near good enough to hand it authority. worse, the first cli path reloaded the model on
+          every call, which made a “tiny” decision engine look cheap in forward-pass time while paying a
+          giant cold-start bill around it.
+        </p>
+        <p>
+          that was the first architecture correction: <strong>small model and cheap decision are not the same
+          thing.</strong> residency, process lifetime, serving path and escalation policy are part of the model.
         </p>
 
-        <HeadingFrog id="option-2-break-into-phases" level={3}>Option 2: Break into phases</HeadingFrog>
+        <HeadingFrog id="hammer-ruined-the-hierarchy" level={2}>then the boring 3b model ruined the beautiful hierarchy</HeadingFrog>
         <p>
-          Compile the legal action set first, deterministically, then ask a model only to pick from
-          what is left. That is the architecture under test here: every bounded arm in this study sits
-          behind the same compiler, except one deliberately unfiltered control.
+          the original plan was way more sophisticated than what started winning. we had jev, nanojev,
+          nemotron as an orchestrator, qwen as a stronger fallback, specialists, cascades. it looked like it
+          should become a nice multi-stage cognition stack.
         </p>
         <p>
-          The compiler is not a cost optimisation. It is the safety mechanism —
-          <a href="#safety"> see Fig 4</a>.
-        </p>
-
-        <HeadingFrog id="scaling-up" level={3}>Scaling up</HeadingFrog>
-        <p>
-          Phase 1B re-ran the cells with repeats and kept one raw receipt per call, so the distribution
-          can be recomputed later without re-running anything.
-        </p>
-        <p>
-          The honest residue: {study.density.cells_n2} cells remain at n=2 and{" "}
-          <strong>no cell reached n≥10</strong>, so no arm here is estimated better than its interval.
+          then we put the models on the same bounded decisions and <strong>{hammer3.label}</strong> just kept
+          refusing to lose.
         </p>
 
-        <HeadingFrog id="inside-the-receipts" level={2}>Inside {study.density.raw_receipts.toLocaleString()} receipts</HeadingFrog>
-        <p>
-          Eight arms, {hammer3.n} decisions each, {matrix.states.length} bounded-choice states. Two
-          results matter more than the rest.
-        </p>
         <figure>
           <div className="fig-body"><ArmScatter arms={arms} /></div>
           <figcaption>
-            <span className="fig-n">Fig 2</span>
-            Success against warm median latency, log scale, Wilson 95% intervals. {qwen9.label} is
-            best at {qwen9.success} of {qwen9.n} ({pct(qwen9.successRate)}) for{" "}
-            {ms(qwen9.warmP50Ms)}.{" "}
-            <strong>{hammer3.label} ties {qwen4.label} at {pct(hammer3.successRate)} for{" "}
-            {(qwen4.warmP50Ms! / hammer3.warmP50Ms!).toFixed(1)}× less latency</strong> — the cheapest
-            arm that is not dominated.
+            <span className="fig-n">fig 2</span>
+            success against warm median latency, Wilson 95% intervals. {qwen9.label} reaches{" "}
+            {qwen9.success}/{qwen9.n} ({pct(qwen9.successRate)}) at {ms(qwen9.warmP50Ms)}.{" "}
+            {hammer3.label} reaches {hammer3.success}/{hammer3.n} ({pct(hammer3.successRate)}) at{" "}
+            {ms(hammer3.warmP50Ms)}. {qwen4.label} lands on the exact same success count as hammer3b
+            for {(qwen4.warmP50Ms! / hammer3.warmP50Ms!).toFixed(1)}× the warm latency.
           </figcaption>
         </figure>
+
+        <div className="diagram-wrapper">
+          <ProgressRows d={progress} />
+        </div>
+
+        <p>
+          qwen9b technically wins the aggregate accuracy number: {qwen9.success}/{qwen9.n} versus{" "}
+          {hammer3.success}/{hammer3.n}. but it takes {ms(qwen9.warmP50Ms)} warm instead of{" "}
+          {ms(hammer3.warmP50Ms)}. qwen4b is even easier to interpret: same {hammer3.success}/{hammer3.n}
+          result as hammer3b, around ten times the latency.
+        </p>
+        <p>
+          on bounded action choice, that is not escalation. that is just waiting.
+        </p>
+
+        <HeadingFrog id="phase-1-was-vibes" level={2}>phase 1 was interesting. the evidence was also kind of trash.</HeadingFrog>
+        <p>
+          there was one problem with getting excited about any of this. phase 1 had{" "}
+          {study.density.phase1_cells} measured cells and {study.density.phase1_cells_n1} of them had
+          exactly one observation. enough to find weird things, nowhere near enough to build the architecture
+          around them.
+        </p>
 
         <div className="diagram-wrapper">
           <CorpusGrowth d={corpus} />
         </div>
 
-        <HeadingFrog id="jev-versus-text-models" level={3}>Calibrated scorers versus text models</HeadingFrog>
         <p>
-          {jev.label} answers a typed question in {ms(jev.warmP50Ms)} — three orders of magnitude
-          under the text models — and it is the only arm on this page that returns a calibrated
-          probability rather than a choice. It is also, on this fixture set, {pct(jev.successRate)}.
-          Cheap and confident is not the same as correct.
-        </p>
-        <p>
-          {fng.label} is the other cheap rung: {ms(fng.warmP50Ms)} and {pct(fng.successRate)}. Both sit
-          far below the text models on quality while sitting far below them on cost, which is exactly
-          the trade the escalation ladder exists to arbitrate.
-        </p>
-
-        <HeadingFrog id="safety" level={2}>The compiler is the safety property</HeadingFrog>
-        <p>
-          {unf.label} selected a dangerous action <strong>{unf.dangerous} times in {unf.n}</strong>.
-          Every compiler-first arm selected zero — including {fng.label}, which succeeds only{" "}
-          {pct(fng.successRate)}. A weak model behind a correct compiler fails safe; a strong model
-          without one does not.
+          so phase 1b was deliberately boring. freeze the run structure. stop moving the hypotheses every
+          five minutes. run everything through the same local supervisor. repeat the state/arm cells until
+          the comparison stops being anecdotes.
         </p>
 
         <div className="diagram-wrapper">
-          <UtilityTie d={utility} />
+          <ForecastPair d={forecast} />
         </div>
 
-        <HeadingFrog id="explore" level={2}>Explore the matrix</HeadingFrog>
         <p>
-          Everything below is driven by the recorded receipts. Pick arms, replay the sweep, scrub to a
-          state, switch family, and switch the matrix metric.
+          the final shape was {study.density.raw_receipts.toLocaleString()} receipts,{" "}
+          {study.density.phase1b_measured_cells} measured cells,{" "}
+          {study.density.phase1b_cells_n_ge_3} at n≥3, and zero at n=1. eight cells still sit at n=2,
+          and no cell reached n≥10. those caveats stay attached to the claim.
         </p>
-        <ResultsExplorer matrix={matrix} />
 
-        <HeadingFrog id="residency" level={2}>Residency dominates everything</HeadingFrog>
+        <HeadingFrog id="wrong-job" level={2}>bigger models were not useless. we were giving them the wrong job.</HeadingFrog>
         <p>
-          A router that ignores load cost will bounce between two models on a{" "}
-          {S.hardware.vram_gb} GB card and pay a full load every turn.
+          qwen4b looked pointless on the bounded-choice table. then we evaluated orchestration.
+          now it made sense.
         </p>
-        <figure>
-          <div className="fig-body"><ResidencyBars rows={study.residency.classes} /></div>
-          <figcaption>
-            <span className="fig-n">Fig 9</span>
-            Cold load {ms(study.residency.classes[0].p50Ms)}, model swap{" "}
-            {ms(study.residency.classes[1].p50Ms)}, warm {ms(study.residency.classes[2].p50Ms)}. The
-            choice of model matters far less than whether it is already resident — a placement
-            problem, not a model-quality problem.
-          </figcaption>
-        </figure>
 
-        <HeadingFrog id="do-the-arms-agree" level={2}>Do the arms agree?</HeadingFrog>
-        <p>
-          Composing routers is the obvious next idea: put a cheap scorer in front of a strong model and
-          grade its output. On these fixtures it made things worse.
-        </p>
-        <figure>
-          <div className="fig-body">
-            <CompositionSplit base={study.composition.base} baseCorrect={study.composition.baseCorrect}
-                              total={study.composition.statesTotal} variants={study.composition.variants} />
-          </div>
-          <figcaption>
-            <span className="fig-n">Fig 10</span>
-            Adding Hammer 3B or NanoJev in front of Qwen 4B{" "}
-            <strong>helped zero states and hurt{" "}
-            {study.composition.variants[0].hurt + study.composition.variants[1].hurt}</strong>. The
-            artifact is delivered and consumed on {study.composition.artifactConsumedStates} of{" "}
-            {study.composition.statesTotal} states, so this is not a plumbing failure.
-          </figcaption>
-        </figure>
-        <p>
-          On orchestration, {qwen4.label} and {qwen9.label} are the only arms that both solve and stop.
-          {nem.label} fails to know when to stop, which is why it cannot hold the top of a ladder.
-        </p>
         <figure>
           <div className="fig-body">
             <OrchestrationBars data={study.orchestration.expanded} total={study.orchestration.expanded.total} />
           </div>
           <figcaption>
-            <span className="fig-n">Fig 11</span>
-            Solved, correct stops and failures-to-escalate on the {study.orchestration.expanded.total}
-            -scenario cohort.
-          </figcaption>
-        </figure>
-
-        <figure>
-          <div className="fig-body"><LadderFlow /></div>
-          <figcaption>
-            <span className="fig-n">Fig 12</span>
-            The escalation ladder. A case descends only until a rung accepts it; latencies are warm p50
-            from this run.
+            <span className="fig-n">fig 3</span>
+            on the 40-scenario orchestration cohort, qwen4b solves 31/40. qwen9b records 27/40 correct
+            stops versus 23/40 for qwen4b. both qwen tiers fail to escalate only 3/40 times, while
+            nemotron records 12/40 failures to escalate.
           </figcaption>
         </figure>
 
@@ -290,86 +278,268 @@ export default function Page() {
           <ModelBoard d={board} coverage={coverage} />
         </div>
 
-        <div className="diagram-wrapper">
-          <ProgressRows d={progress} />
-        </div>
-
-        <HeadingFrog id="does-confidence-mean-anything" level={2}>Does the confidence mean anything?</HeadingFrog>
         <p>
-          {jev.label} is the only arm on this page that returns a probability rather than a choice,
-          which makes it the only one whose number can be checked. If a 0.8 does not mean roughly
-          eight times in ten, the escalation policy has nothing to threshold on.
+          the result was not “tiny models good, big models bad.” it was much more specific:
+          <strong> different state families are genuinely different computational jobs.</strong>
         </p>
+        <p>
+          bounded choice after deterministic filtering is one job. deciding whether a multi-step process
+          should continue, stop, branch or escalate is another. we had been ranking models by some global
+          idea of smartness. the evidence kept pushing us toward typed cognition instead.
+        </p>
+
+        <HeadingFrog id="residency" level={2}>then residency absolutely wrecked the leaderboard framing</HeadingFrog>
+        <p>
+          this might be my favorite result because it barely has anything to do with model intelligence.
+        </p>
+        <figure>
+          <div className="fig-body"><ResidencyBars rows={study.residency.classes} /></div>
+          <figcaption>
+            <span className="fig-n">fig 4</span>
+            cold load {ms(study.residency.classes[0].p50Ms)}, model swap{" "}
+            {ms(study.residency.classes[1].p50Ms)}, warm invocation {ms(study.residency.classes[2].p50Ms)}.
+            once load/swap cost is this large, model selection is also a placement problem.
+          </figcaption>
+        </figure>
+        <p>
+          qwen9b can spend longer becoming resident than hammer3b needs to run an entire warm sweep.
+          at that point “pick the model with the highest expected accuracy” is obviously incomplete.
+          the state has to include what is already resident, swap cost, vram pressure, expected reuse and
+          whether the quality delta is worth breaking residency.
+        </p>
+        <p>
+          this is where the line between <code>z0intelligence</code> and <code>kerdoios</code> finally
+          became obvious to me: one decides what kind of cognition is warranted; the other decides where
+          an allowed computation should run right now.
+        </p>
+
+        <HeadingFrog id="composition" level={2}>our clever composition idea made qwen worse</HeadingFrog>
+        <p>
+          this one hurt a little. the obvious idea was: maybe the cheap scorer does not have to own the
+          answer. maybe it can cheaply summarize the state and hand qwen a better representation.
+        </p>
+        <figure>
+          <div className="fig-body">
+            <CompositionSplit base={study.composition.base} baseCorrect={study.composition.baseCorrect}
+                              total={study.composition.statesTotal} variants={study.composition.variants} />
+          </div>
+          <figcaption>
+            <span className="fig-n">fig 5</span>
+            qwen4b alone gets {study.composition.baseCorrect}/{study.composition.statesTotal}. the JEV-scorer
+            artifact variant gets {study.composition.variants[1].correct}/{study.composition.statesTotal}
+            and hurts {study.composition.variants[1].hurt} states while helping zero. the hammer3b artifact
+            variant gets {study.composition.variants[0].correct}/{study.composition.statesTotal}, hurts{" "}
+            {study.composition.variants[0].hurt}, helps zero.
+          </figcaption>
+        </figure>
+        <p>
+          the artifact really was delivered and consumed on {study.composition.artifactConsumedStates}/
+          {study.composition.statesTotal} states, so this is not an integration failure disguised as a
+          model result. the extra opinion got there. qwen got worse.
+        </p>
+        <p>
+          that changed the cascade in my head. the cheap tier should usually either <strong>answer</strong>
+          or <strong>abstain / escalate</strong>. generating intermediate pseudo-reasoning and stuffing it
+          into a stronger model is a separate hypothesis, not the default architecture.
+        </p>
+
+        <HeadingFrog id="jev-role" level={2}>jev failed at the thing i originally wanted it to do. that does not make jev useless.</HeadingFrog>
+        <p>
+          the JEV-family scorer path lands at {jev.success}/{jev.n} ({pct(jev.successRate)}) around{" "}
+          {ms(jev.warmP50Ms)} on this bounded-choice family. that is extremely fast and nowhere near
+          good enough to own the decision.
+        </p>
+        <p>
+          but it is also one of the few places in the stack where we get a real probability distribution:
+          confidence, margin, entropy, disagreement. those are still useful even when the argmax should
+          not own the action.
+        </p>
+
         <figure>
           <div className="fig-body"><Calibration rows={calibration} threshold={0.5} /></div>
           <figcaption>
-            <span className="fig-n">Fig 13</span>
-            Top: observed accuracy in each confidence decade against perfect calibration (dashed).
-            Bottom: every recorded decision at its stated confidence; the red line is the abstain
-            threshold the policy would set. The curve is above the diagonal at the low end and
-            <strong> below it in the 0.8&ndash;0.9 decade</strong>&hairsp;&mdash;&hairsp;the arms are
-            overconfident exactly where a router would be tempted to trust them.<a className="fn" href="#fn-1" id="fnref-1">1</a>
+            <span className="fig-n">fig 6</span>
+            reliability of the recorded confidence-bearing decisions. confidence is informative, but
+            overconfidence in the 0.8–0.9 region is exactly why a cheap scorer needs calibration and an
+            abstention policy instead of unconditional authority.<a className="fn" href="#fn-1" id="fnref-1">1</a>
           </figcaption>
         </figure>
+
         <p>
-          That is the same shape the reference reports for its own observer: confidence is
-          informative, but not yet a number a policy can take at face value. It is a gate to be
-          <em>calibrated</em>, not an answer to be trusted.
+          so the more interesting role may be less “make this decision for me” and more “tell me whether
+          this decision looks weird enough to spend more intelligence on.” that is much closer to where
+          nanojev, mushroom-body policies, fly recovery policies and q-route are heading now.
         </p>
 
-        <div className="diagram-wrapper">
-          <ForecastPair d={forecast} />
-        </div>
-
-        <HeadingFrog id="actions" level={2}>What the compiler removed</HeadingFrog>
+        <HeadingFrog id="compiler" level={2}>the compiler was doing more intelligence than i was giving it credit for</HeadingFrog>
         <p>
-          Every bounded arm was handed the same compiled legal set. Comparing what was offered
-          against what was chosen shows the compiler doing its job: <code>fs.read</code> was
-          available on {actionCensus[0] ? String(Math.max(...actionCensus.map((a: { offered: number }) => a.offered))).toLocaleString() : "hundreds of"} runs and chosen far less often, while the
-          abstain and escalation paths absorb the cases the arms could not settle.
+          the cleanest safety result in the run is almost embarrassingly simple. behind the compiler:
+          zero dangerous selections. without it: {unf.dangerous}/{unf.n}.
         </p>
+
+        <figure>
+          <div className="fig-body">
+            <DangerousBars rows={arms.map((a) => ({ label: a.label, unfiltered: a.unfiltered, count: a.dangerous, n: a.n }))} />
+          </div>
+          <figcaption>
+            <span className="fig-n">fig 7</span>
+            dangerous action selections by measured arm. every compiler-first arm is zero; the unfiltered
+            hammer3b control is the only row with selections.
+          </figcaption>
+        </figure>
+
         <figure>
           <div className="fig-body"><ActionTable actions={actionCensus} /></div>
           <figcaption>
-            <span className="fig-n">Fig 14</span>
-            Offered (grey) against chosen (green) per action. The dangerous selections are all in
-            the unfiltered control, which never had a compiled set to begin with.
+            <span className="fig-n">fig 8</span>
+            actions offered by the compiler versus actions actually chosen. the deterministic system has
+            already made a large number of decisions before a model sees the legal set.
           </figcaption>
         </figure>
 
-        <HeadingFrog id="families" level={2}>Where the difficulty lives</HeadingFrog>
+        <p>
+          if an action is illegal, i do not want a smarter model to become better at refusing it.
+          i want the action to <strong>not exist in the choice set.</strong> that is a dramatically cheaper
+          kind of intelligence.
+        </p>
+
+        <HeadingFrog id="gate" level={2}>and then the eval gate managed to fail its own eval</HeadingFrog>
+        <p>
+          densifying the evidence exposed a problem that the sparse run could not: the gate itself could
+          disagree with the result it was supposed to summarize.
+        </p>
+
+        <div className="diagram-wrapper">
+          <UtilityTie d={utility} />
+        </div>
+
+        <p>
+          on <code>tool_fails</code>, all 39 measured draws collapse to the same frozen utility:
+          <strong> -1.000</strong>. the only correct arms sit beyond the 4,000 ms budget; the wrong faster
+          arms sit inside it. correct-but-slow and wrong-but-fast become literally indistinguishable to the
+          gate.
+        </p>
+        <p>
+          that is not a model failure. that is a utility-function failure.
+        </p>
+        <p>
+          we found another one in safety: the gate reads selected <code>dangerous_rate</code>, not exposed
+          dangerous actions. and functiongemma and hammer3b were sharing the same{" "}
+          <code>tiny_specialist</code> rung, which prevented a direct comparison between a roughly 0.61 arm
+          and a roughly 0.89 arm.
+        </p>
+        <p>
+          this was one of my favorite outcomes of phase 1b. the eval system was not just judging the models
+          anymore. <strong>the models were finally giving us enough evidence to judge the eval system.</strong>
+        </p>
+
+        <HeadingFrog id="remaining-errors" level={2}>the remaining errors were not mostly noise</HeadingFrog>
+        <p>
+          once we had {study.features.cells} cells instead of a pile of one-offs, label disagreement was only{" "}
+          {(study.features.label_noise_rate * 100).toFixed(2)}% ({study.features.label_disagreements}/
+          {study.features.cells}). the remaining q-route collisions localized to{" "}
+          {study.features.feature_collisions} cases classified as <code>{study.features.collision_class}</code>.
+        </p>
+        <p>
+          the best measured next runtime-observable feature was <code>{study.features.next}</code>, with a
+          +{study.features.budget_units_ceiling_gain.toFixed(3)} ceiling improvement.{" "}
+          <code>authority_breadth / legal_family_count</code> followed at +
+          {study.features.authority_breadth_legal_family_count_gain.toFixed(3)}.
+        </p>
+
         <figure>
           <div className="fig-body"><FamilySparklines families={familiesFull} /></div>
           <figcaption>
-            <span className="fig-n">Fig 15</span>
-            One row per state family, with a sparkline of per-state mean success across all arms.
-            <strong> recovery</strong> is the weak family: two of its four states sit near 20%
-            success, and no family except routing has every state solved by every arm.
+            <span className="fig-n">fig 10</span>
+            difficulty by typed state family. this is the more useful framing than one global “model score”:
+            different families produce different failure shapes and eventually deserve different cheap policies.
           </figcaption>
         </figure>
 
-        <HeadingFrog id="authors-note" level={2}>Author&rsquo;s note</HeadingFrog>
+        <HeadingFrog id="survived" level={2}>so what architecture survived?</HeadingFrog>
         <p>
-          The result I did not expect is that the fastest arm and the second-most-accurate arm are the
-          same arm. {hammer3.label} ties {qwen4.label} on success at{" "}
-          {(qwen4.warmP50Ms! / hammer3.warmP50Ms!).toFixed(0)}× the speed, which means the honest
-          recommendation on this hardware is not &ldquo;use the biggest model that fits&rdquo; but
-          &ldquo;use the smallest model whose failures the compiler already caught&rdquo;.
-        </p>
-        <p>
-          The result I did expect and still dislike: composition did not pay. Two routers in series
-          lost to the stronger one alone on every state that changed. That is worth remembering before
-          building a third stage.
-        </p>
-        <p>
-          And the caveat that matters most: {jev.label} is the only calibrated signal in the system and
-          it is not accurate enough to decide alone. Its value is as a gate — a number a policy can
-          threshold — not as an answer.
+          not the one i drew at the beginning. the surviving version is a lot more boring, which i think is
+          a good sign.
         </p>
 
-        <HeadingFrog id="appendix" level={2}>Appendix: what the numbers mean</HeadingFrog>
+        <figure>
+          <div className="fig-body"><LadderFlow /></div>
+          <figcaption>
+            <span className="fig-n">fig 11</span>
+            deterministic structure first. cheap typed policies answer only the states they can actually
+            cover. hammer3b owns bounded semantic choice. qwen earns orchestration. stronger local/remote
+            models stay for the unresolved tail.
+          </figcaption>
+        </figure>
 
-        <HeadingFrog id="the-run" level={3}>The Phase 1B run</HeadingFrog>
+        <p>
+          orthogonal to that, <code>z0intelligence</code> decides what cognition is warranted,
+          <code>kerdoios</code> decides where it should run, dsh/hermes execute it, tokenomics records what it
+          actually cost and whether it worked, evolution lab searches for cheaper policies, and z0evals is
+          where we decide when we are allowed to believe one.
+        </p>
+
+        <HeadingFrog id="next" level={2}>now i want to make the bottom of the ladder much weirder</HeadingFrog>
+        <p>
+          phase 1b trained nothing. no router changed, no threshold moved, nothing was promoted. the first
+          phase 2 slice is intentionally just a corpus: 5 compiler-first arms × 28 states × 3 reps ={" "}
+          <strong>420 gold-labelled episodes</strong>, add <code>budget_units</code>, seal the task splits,
+          hash it, stop before training.
+        </p>
+        <p>
+          because the next question is not “which other 4b model should we benchmark?” it is “how much lower
+          can we push this?”
+        </p>
+        <p>
+          the thing i actually want is a stack where familiar states disappear into deterministic rules,
+          mushroom-body or tiny learned policies; temporal recovery patterns disappear into fly-derived
+          policies; calibrated scorers steal a safe region; hammer3b handles bounded semantics; qwen handles
+          orchestration; and expensive remote models only see the genuinely hard tail.
+        </p>
+        <p>
+          as each cheap layer gets better, the expensive model loses another responsibility. that is the
+          metric i care about.
+        </p>
+
+        <HeadingFrog id="actual-result" level={2}>the actual result</HeadingFrog>
+        <p>if i had to compress the whole experiment into one sentence:</p>
+        <p className="pullquote">
+          <strong>the biggest token and latency savings did not come from finding one smarter small model.
+          they came from making the problem more typed before asking a model to solve it.</strong>
+        </p>
+        <p>
+          the compiler beat dangerous choices by removing them. hammer3b beat larger models by getting the
+          bounded job it was actually good at. qwen became useful again when we gave it orchestration.
+          jev became less interesting as an answerer and more interesting as an uncertainty signal.
+          composition failed because extra model output is not free information. residency mattered enough
+          that “which model?” became a resource-allocation problem. and the eval itself became another
+          component we had to test rather than trust.
+        </p>
+
+        <HeadingFrog id="references" level={2}>references & things that shaped this</HeadingFrog>
+        <ReferenceMap />
+
+        <HeadingFrog id="authors-note" level={2}>author&apos;s note</HeadingFrog>
+        <p>
+          i did not start this trying to prove hammer3b was good. if anything, i expected the more elaborate
+          stack to win. i wanted the beautiful version: deterministic rules at the bottom, jev making cheap
+          calibrated decisions, nemotron orchestrating, qwen handling the hard tail, and eventually the
+          mushroom/fly stuff eating away at all of it.
+        </p>
+        <p>
+          some version of that may still happen. but phase 1b made one thing pretty clear:
+          <strong> we should not promote architectural ideas because the decomposition sounds elegant.</strong>
+        </p>
+        <p>
+          make the smallest thing that could plausibly work. put it on the same state. measure it. let it
+          fail. and if something boring is ten times faster and gives you the same answer, use the boring
+          thing.
+        </p>
+        <p>then move down one layer and try to replace that too.</p>
+
+        <HeadingFrog id="appendix" level={2}>appendix: what the numbers mean</HeadingFrog>
+
+        <HeadingFrog id="the-run" level={3}>the phase 1b run</HeadingFrog>
         <table className="data-table">
           <thead><tr><th>field</th><th>value</th></tr></thead>
           <tbody>
@@ -390,7 +560,7 @@ export default function Page() {
           </tbody>
         </table>
 
-        <HeadingFrog id="why" level={3}>Why the fast arm is also the accurate one</HeadingFrog>
+        <HeadingFrog id="why" level={3}>why the fast arm is also the accurate one</HeadingFrog>
         <p>
           Both {hammer3.label} and {qwen4.label} score {pct(hammer3.successRate)} — they agree on{" "}
           {hammer3.success} of {hammer3.n} decisions. Where they differ is latency and failure shape:
@@ -399,7 +569,7 @@ export default function Page() {
           failure; guessing is not.
         </p>
 
-        <HeadingFrog id="labels" level={3}>Family and rung labels</HeadingFrog>
+        <HeadingFrog id="labels" level={3}>family and rung labels</HeadingFrog>
         <ul>
           {matrix.families.map((f) => (
             <li key={f.name}>
@@ -409,14 +579,14 @@ export default function Page() {
           ))}
         </ul>
 
-        <HeadingFrog id="gate" level={3}>Gate defects recorded</HeadingFrog>
+        <HeadingFrog id="gate-record" level={3}>gate defects recorded</HeadingFrog>
         <Callout kind="warning" title={`Gate decision: ${study.gate.decision}`}>
           <ul>
             {study.gate.caveats.map((c: string) => <li key={c}>{c}</li>)}
           </ul>
         </Callout>
 
-        <HeadingFrog id="check-or-reuse" level={3}>Check or reuse the evidence</HeadingFrog>
+        <HeadingFrog id="check-or-reuse" level={3}>check or reuse the evidence</HeadingFrog>
         <p>
           Raw receipts remain authoritative once imported; until then the matrix on this page is a
           transcription of them. Tests at this commit: z0intelligence{" "}
