@@ -45,33 +45,40 @@ const forecast = C.forecast as never;
 const utility = C.utility as never;
 const coverage = C.coverage as unknown as Coverage;
 const familyBoard = C.familyBoard as never;
+// Recovered J1 routing-shadow pilot. Separate evidence artifact from Phase 1B.
+const pilot = study.pilot as unknown as {
+  highRiskCount: number;
+  agreementRate: number;
+  decisions: number;
+  highConfidenceAgreement: string;
+};
 
 const pct = (v: number, d = 1) => `${(v * 100).toFixed(d)}%`;
 const ms = (v: number | null) =>
   v == null ? "—" : v >= 1000 ? `${(v / 1000).toFixed(2)} s` : `${Math.round(v)} ms`;
 
 const TOC: TocItem[] = [
-  { id: "how-much", label: "How much of the LLM do we need?", depth: 0 },
-  { id: "first-shortcut", label: "The first shortcut", depth: 0 },
-  { id: "boring-3b", label: "The boring 3B ruined the ladder", depth: 0 },
-  { id: "phase1", label: "Phase 1 was kind of trash", depth: 0 },
-  { id: "held-up", label: "Hammer3B actually held up", depth: 0 },
-  { id: "wrong-job", label: "We gave big models the wrong job", depth: 0 },
-  { id: "residency", label: "Residency wrecked the framing", depth: 0 },
-  { id: "composition", label: "Composition made it worse", depth: 0 },
-  { id: "jev", label: "Jev failed. Jev isn't useless.", depth: 0 },
-  { id: "compiler", label: "The compiler was the intelligence", depth: 0 },
-  { id: "gate", label: "The gate failed its own eval", depth: 0 },
-  { id: "errors", label: "The errors were not noise", depth: 0 },
-  { id: "architecture", label: "What architecture survived", depth: 0 },
-  { id: "weirder", label: "Make the bottom weirder", depth: 0 },
-  { id: "result", label: "The actual result", depth: 0 },
-  { id: "author", label: "Author's note", depth: 0 },
-  { id: "appendix", label: "Appendix", depth: 0 },
-  { id: "explore", label: "Explore the matrix", depth: 1 },
-  { id: "gate-caveats", label: "Gate defects recorded", depth: 1 },
-  { id: "provenance", label: "Check or reuse the evidence", depth: 1 },
-  { id: "references", label: "References", depth: 1 },
+  { id: "how-much", label: "how much of the llm do we need?", depth: 0 },
+  { id: "first-shortcut", label: "the first shortcut", depth: 0 },
+  { id: "boring-3b", label: "the boring 3b ruined the ladder", depth: 0 },
+  { id: "phase1", label: "phase 1 was kind of trash", depth: 0 },
+  { id: "held-up", label: "hammer3b actually held up", depth: 0 },
+  { id: "wrong-job", label: "we gave big models the wrong job", depth: 0 },
+  { id: "residency", label: "residency wrecked the framing", depth: 0 },
+  { id: "composition", label: "composition made it worse", depth: 0 },
+  { id: "jev", label: "jev failed. jev isn't useless.", depth: 0 },
+  { id: "compiler", label: "the compiler was the intelligence", depth: 0 },
+  { id: "gate", label: "the gate failed its own eval", depth: 0 },
+  { id: "errors", label: "the errors were not noise", depth: 0 },
+  { id: "architecture", label: "what architecture survived", depth: 0 },
+  { id: "weirder", label: "make the bottom weirder", depth: 0 },
+  { id: "result", label: "the actual result", depth: 0 },
+  { id: "author", label: "author's note", depth: 0 },
+  { id: "appendix", label: "appendix", depth: 0 },
+  { id: "explore", label: "explore the matrix", depth: 1 },
+  { id: "gate-caveats", label: "gate defects recorded", depth: 1 },
+  { id: "provenance", label: "check or reuse the evidence", depth: 1 },
+  { id: "references", label: "references", depth: 1 },
 ];
 
 export default function Page() {
@@ -83,9 +90,9 @@ export default function Page() {
           <nav className="site-nav">
             <a className="brand" href="./">z0evals</a>
             <div className="links">
-              <a href="#held-up">Results</a>
-              <a href="#appendix">Method</a>
-              <a href="https://github.com/kvnloo/z0evals">GitHub</a>
+              <a href="#held-up">results</a>
+              <a href="#appendix">method</a>
+              <a href="https://github.com/kvnloo/z0evals">github</a>
             </div>
           </nav>
         </div>
@@ -97,7 +104,7 @@ export default function Page() {
         <main className="article article-shell">
           <div className="article-header">
             <div>
-              <h1 className="article-title">How much of the LLM do we actually need?</h1>
+              <h1 className="article-title">how much of the llm do we actually need?</h1>
               <div className="title-accent-line" aria-hidden="true" />
               <div className="article-meta">
                 {S.author}<span className="sep">·</span>{S.date}
@@ -113,47 +120,47 @@ export default function Page() {
             </HeadingFrog>
 
             <p>
-              I started this with a pretty simple question: <strong>why are we paying an
+              i started this with a pretty simple question: <strong>why are we paying an
               autoregressive language model to make decisions that barely require
               language?</strong>
             </p>
 
             <p>
-              A lot of agent work looks intelligent from the outside because the whole loop is
-              intelligent. But when you zoom in, a huge fraction of the individual decisions are
+              a lot of agent work looks intelligent from the outside because the whole loop is
+              intelligent. but when you zoom in, a huge fraction of the individual decisions are
               boring:
             </p>
 
             <ul>
-              <li>can I call this tool?</li>
+              <li>can i call this tool?</li>
               <li>which of these four actions is legal?</li>
-              <li>should I retry or escalate?</li>
+              <li>should i retry or escalate?</li>
               <li>is this context relevant?</li>
-              <li>do I need a bigger model yet?</li>
-              <li>has enough changed that I should keep reasoning?</li>
+              <li>do i need a bigger model yet?</li>
+              <li>has enough changed that i should keep reasoning?</li>
             </ul>
 
             <p>
-              Those are not all &ldquo;write me a thoughtful paragraph&rdquo; problems. Some of
+              those are not all &ldquo;write me a thoughtful paragraph&rdquo; problems. some of
               them are barely even language problems.
             </p>
 
             <p>
-              And this mattered because I was trying to run more and more of Zer0 locally. The
+              and this mattered because i was trying to run more and more of zer0 locally. the
               free remote models were useful, but they were also slow enough that you could feel
-              every unnecessary call. Meanwhile, wiring the Jev skill into Hermes was one of
+              every unnecessary call. meanwhile, wiring the jev skill into hermes was one of
               those stupidly simple changes where the whole thing just felt faster immediately.
             </p>
 
-            <p>So naturally I got greedy.</p>
+            <p>so naturally i got greedy.</p>
 
             <p>
-              What if the expensive model stopped being the default brain? What if we could
+              what if the expensive model stopped being the default brain? what if we could
               progressively replace its responsibilities with cheaper and cheaper machinery until
-              the LLM only saw the part of the problem that actually needed it?
+              the llm only saw the part of the problem that actually needed it?
             </p>
 
-            <p>That became the rough hierarchy I had in my head:</p>
+            <p>that became the rough hierarchy i had in my head:</p>
 
             <pre>{`deterministic compiler / cached rule
               ↓
@@ -170,11 +177,11 @@ general local model
 remote frontier model`}</pre>
 
             <p>
-              The basic hypothesis was that intelligence should get{" "}
+              the basic hypothesis was that intelligence should get{" "}
               <strong>more expensive only as the uncertainty survives</strong>.
             </p>
 
-            <p>Nice idea. The models had other plans.</p>
+            <p>nice idea. the models had other plans.</p>
 
             <hr />
 
@@ -183,47 +190,51 @@ remote frontier model`}</pre>
             </HeadingFrog>
 
             <p>
-              Jev was the obvious place to start because it does not need to generate an answer
-              token by token. Give it a typed question and a bounded set of possibilities, and it
-              gives you a distribution. That sounded perfect for routing.
+              jev was the obvious place to start because it does not need to generate an answer
+              token by token. give it a typed question and a bounded set of possibilities, and it
+              gives you a distribution. that sounded perfect for routing.
             </p>
 
             <p>
-              Then we got NanoJev running locally: roughly a 0.6B model, around 300 MiB resident,
-              no autoregressive decode loop, and a clean <code>DecisionBackend</code> interface.
+              then we got nanojev running locally: roughly a 0.6b model, around 300 mib resident,
+              no autoregressive decode loop, and a clean <code>decisionbackend</code> interface.
             </p>
 
             <p>
-              On the first paired shadow run, we had 27 decisions. NanoJev looked fast enough to
-              care about. But it agreed with the Jev teacher only <strong>48.1%</strong> of the
-              time, including <strong>11 high-risk disagreements</strong>.
+              on the first paired shadow run, we had 27 decisions. nanojev looked fast enough to
+              care about. but it agreed with the jev teacher only <strong>48.1%</strong> of the
+              time, including <strong>{pilot.highRiskCount} high-risk disagreements</strong>.
             </p>
 
-            <MarginNote n={1} label="unverified receipt">
-              The paired-shadow figures (27 decisions, 48.1% agreement, 11 high-risk
-              disagreements, ~236 ms warm, ~15.5 s cold load) are the author&rsquo;s working
-              numbers from the earlier NanoJev shadow pilot. That pilot&rsquo;s receipt is not in
-              the current repos, so treat them as provisional until re-imported. Everything in the
-              Phase 1B tables below is receipted from <code>{S.runId}</code>.
+            <MarginNote n={1} label="it was the menu, not the model">
+              those two routers were choosing from <em>different</em> candidate sets. when the
+              menu is held equal the agreement is <strong>100%</strong>, not 48.1% &mdash; the
+              later J1_1 rerun reports <code>candidate_set_equal: true</code> on all 40 rows, and
+              the pre-fix corpus reports <code>0</code> matched of 40. so 48.1% measures a
+              mismatched menu, not nanojev&rsquo;s quality. note also that jev was confident
+              (&ge;0.7) on 21 of the 27 and nanojev agreed on only{" "}
+              <strong>{pilot.highConfidenceAgreement}</strong> of them. artifact:{" "}
+              <code>nanojev-j1-shadow-pilot.json</code>,{" "}
+              <code>evidence_class = exploratory_beta</code>.
             </MarginNote>
 
             <p>
-              And there was an implementation trap hiding inside the latency number too: the CLI
-              path was reloading the model on every invocation. What looked like a ~236 ms
+              and there was an implementation trap hiding inside the latency number too: the cli
+              path was reloading the model on every invocation. what looked like a ~236 ms
               decision engine was sitting behind a ~15.5 second cold load when invoked the dumb
               way.
             </p>
 
-            <p>That was the first useful correction to the architecture:</p>
+            <p>that was the first useful correction to the architecture:</p>
 
-            <Callout kind="warning" title="A SMALL MODEL IS NOT A CHEAP DECISION">
+            <Callout kind="warning" title="a small model is not a cheap decision">
               <p>
-                Residency, process lifetime, serving path, and escalation policy are part of the
-                model. A checkpoint&rsquo;s forward-pass time is not its cost.
+                residency, process lifetime, serving path, and escalation policy are part of the
+                model. a checkpoint&rsquo;s forward-pass time is not its cost.
               </p>
             </Callout>
 
-            <p>We moved NanoJev off the critical path and kept collecting evidence.</p>
+            <p>we moved nanojev off the critical path and kept collecting evidence.</p>
 
             <hr />
 
@@ -232,14 +243,14 @@ remote frontier model`}</pre>
             </HeadingFrog>
 
             <p>
-              The original plan was much more sophisticated than what ended up winning. We had
-              Jev, NanoJev, Nemotron as an orchestrator, Qwen as a stronger fallback,
-              specialists, cascades. The whole thing looked like it should become a nice
+              the original plan was much more sophisticated than what ended up winning. we had
+              jev, nanojev, nemotron as an orchestrator, qwen as a stronger fallback,
+              specialists, cascades. the whole thing looked like it should become a nice
               multi-stage cognition stack.
             </p>
 
             <p>
-              Then we actually put the models on the same bounded decisions. The first phase was
+              then we actually put the models on the same bounded decisions. the first phase was
               small and noisy, but the result was hard to ignore.
             </p>
 
@@ -248,30 +259,30 @@ remote frontier model`}</pre>
             </p>
 
             <p>
-              Not because it was the smartest model in some abstract sense. Qwen3.5-9B could
-              still solve a few things Hammer missed. But for the actual job in front of us
+              not because it was the smartest model in some abstract sense. qwen3.5-9b could
+              still solve a few things hammer missed. but for the actual job in front of us
               — <strong>choose among actions after the compiler has already removed the illegal
               ones</strong> — Hammer was absurdly competitive for how cheap it was.
             </p>
 
-            <p>Our early measurement looked roughly like this:</p>
+            <p>our early measurement looked roughly like this:</p>
 
             <pre>{`compiler + hammer2.1-3b    25/28    ~177 ms p50
 compiler + qwen3.5-9b      26/28    much slower
 nemotron-8b                17/28    ~2.7 s p50`}</pre>
 
             <p>
-              And an even more important result had started showing up beside it: when we removed
-              the compiler and let the model see dangerous actions, it sometimes chose them. When
+              and an even more important result had started showing up beside it: when we removed
+              the compiler and let the model see dangerous actions, it sometimes chose them. when
               the compiler removed those actions first, the dangerous selections disappeared.
             </p>
 
-            <p>That started changing the question. We had been asking:</p>
+            <p>that started changing the question. we had been asking:</p>
 
             <blockquote>which model should be the router?</blockquote>
 
             <p>
-              The better question was becoming:{" "}
+              the better question was becoming:{" "}
               <strong>how much routing should be a model problem at all?</strong>
             </p>
 
@@ -281,20 +292,20 @@ nemotron-8b                17/28    ~2.7 s p50`}</pre>
               phase 1 was interesting. the evidence was also kind of trash.
             </HeadingFrog>
 
-            <p>There was one problem with getting excited about any of this.</p>
+            <p>there was one problem with getting excited about any of this.</p>
 
             <p>
-              Phase 1 contained <strong>{D.phase1_cells} measured cells</strong>.{" "}
+              phase 1 contained <strong>{D.phase1_cells} measured cells</strong>.{" "}
               <strong>{D.phase1_cells_n1} of them had n=1.</strong>
             </p>
 
             <p>
-              That is enough to find weird things. It is not enough to build the architecture
+              that is enough to find weird things. it is not enough to build the architecture
               around them.
             </p>
 
             <p>
-              So Phase 1B was deliberately boring. We froze the run structure, stopped changing
+              so phase 1b was deliberately boring. we froze the run structure, stopped changing
               the hypotheses every five minutes, ran everything through the same local{" "}
               <code>z0int cognition serve</code> supervisor, and repeated the state/arm
               combinations until the comparison stopped being mostly anecdotes.
@@ -311,7 +322,7 @@ nemotron-8b                17/28    ~2.7 s p50`}</pre>
             />
 
             <p>
-              All of the inference in this experiment ran locally. And once the evidence got
+              all of the inference in this experiment ran locally. and once the evidence got
               denser, the architecture got simpler again.
             </p>
 
@@ -345,7 +356,7 @@ nemotron-8b                17/28    ~2.7 s p50`}</pre>
             </HeadingFrog>
 
             <p>
-              Here is the part I expected to move around once we repeated it. It mostly
+              here is the part i expected to move around once we repeated it. it mostly
               didn&rsquo;t.
             </p>
 
@@ -354,19 +365,19 @@ nemotron-8b                17/28    ~2.7 s p50`}</pre>
             </div>
 
             <p>
-              The funny thing is that Qwen3.5-9B technically wins the aggregate accuracy number.{" "}
+              the funny thing is that qwen3.5-9b technically wins the aggregate accuracy number.{" "}
               <strong>
                 {qwen9.success}/{qwen9.n} versus {hammer3.success}/{hammer3.n}.
               </strong>
             </p>
 
             <p>
-              But it takes <strong>{ms(qwen9.warmP50Ms)}</strong> warm instead of{" "}
+              but it takes <strong>{ms(qwen9.warmP50Ms)}</strong> warm instead of{" "}
               <strong>{ms(hammer3.warmP50Ms)}</strong>.
             </p>
 
             <p>
-              Qwen3.5-4B is even easier to interpret: it goes exactly{" "}
+              qwen3.5-4b is even easier to interpret: it goes exactly{" "}
               <strong>
                 {qwen4.success}/{qwen4.n}
               </strong>
@@ -375,21 +386,21 @@ nemotron-8b                17/28    ~2.7 s p50`}</pre>
               at the same answer.
             </p>
 
-            <p>That is not escalation. That is just waiting.</p>
+            <p>that is not escalation. that is just waiting.</p>
 
             <p>
-              Hammer3B ended up with the best measured success on{" "}
+              hammer3b ended up with the best measured success on{" "}
               <strong>26 of the 28 states</strong> while staying inside a latency regime where
               putting it on the hot path is actually plausible.
             </p>
 
             <p>
-              Qwen9B still matters. It is the unique best arm on one state:{" "}
+              qwen9b still matters. it is the unique best arm on one state:{" "}
               <code>tool_fails</code>.
             </p>
 
             <p>
-              <strong>That one state is going to become important again later.</strong>
+              <strong>that one state is going to become important again later.</strong>
             </p>
 
             <div className="diagram-wrapper">
@@ -406,36 +417,36 @@ nemotron-8b                17/28    ~2.7 s p50`}</pre>
               bigger models were not useless. we were giving them the wrong job.
             </HeadingFrog>
 
-            <p>This was probably the most useful conceptual correction.</p>
+            <p>this was probably the most useful conceptual correction.</p>
 
             <p>
-              Qwen 4B looked pointless on the bounded-choice table. Then we evaluated
-              orchestration. Now it made sense.
+              qwen 4b looked pointless on the bounded-choice table. then we evaluated
+              orchestration. now it made sense.
             </p>
 
-            <p>On the expanded 40-scenario orchestration run:</p>
+            <p>on the expanded 40-scenario orchestration run:</p>
 
             <div className="diagram-wrapper">
               <OrchestrationBars data={study.orchestration.expanded as never} total={40} />
             </div>
 
-            <p>So the result was not:</p>
+            <p>so the result was not:</p>
 
             <blockquote>tiny models good, big models bad.</blockquote>
 
             <p>
-              It was:{" "}
+              it was:{" "}
               <strong>different state families are genuinely different computational jobs.</strong>
             </p>
 
             <p>
-              Bounded choice after deterministic filtering is one job. Figuring out whether a
+              bounded choice after deterministic filtering is one job. figuring out whether a
               multi-step process should continue, stop, branch, or escalate is another.
             </p>
 
             <p>
-              We had been trying to organize models by some global idea of
-              &ldquo;smartness.&rdquo; The evidence was pushing us toward{" "}
+              we had been trying to organize models by some global idea of
+              &ldquo;smartness.&rdquo; the evidence was pushing us toward{" "}
               <strong>typed cognition</strong> instead.
             </p>
 
@@ -451,7 +462,7 @@ orchestration
 hard semantic tail
     → stronger local / remote model`}</pre>
 
-            <p>That distinction sounds obvious now. It was not obvious before we measured it.</p>
+            <p>that distinction sounds obvious now. it was not obvious before we measured it.</p>
 
             <hr />
 
@@ -460,7 +471,7 @@ hard semantic tail
             </HeadingFrog>
 
             <p>
-              This might have been my favorite result because it had almost nothing to do with
+              this might have been my favorite result because it had almost nothing to do with
               model intelligence.
             </p>
 
@@ -469,26 +480,26 @@ hard semantic tail
             </div>
 
             <p>
-              Qwen3.5-9B had a measured cold total around <strong>17.2 seconds</strong>.
+              qwen3.5-9b had a measured cold total around <strong>17.2 seconds</strong>.
               FunctionGemma was around <strong>3.1 seconds</strong>. Put that next to
               Hammer3B&rsquo;s <strong>{ms(hammer3.warmP50Ms)}</strong> warm bounded decision.
             </p>
 
             <p>
-              You can spend longer loading Qwen9B than Hammer3B needs to run an entire 28-state
+              you can spend longer loading qwen9b than hammer3b needs to run an entire 28-state
               warm sweep.
             </p>
 
             <p>
-              At that point, &ldquo;pick the model with the highest expected accuracy&rdquo; is
-              obviously not enough. The runtime state has to include things like: which models are
-              resident? what is the swap cost? how much VRAM is already committed? how long will
+              at that point, &ldquo;pick the model with the highest expected accuracy&rdquo; is
+              obviously not enough. the runtime state has to include things like: which models are
+              resident? what is the swap cost? how much vram is already committed? how long will
               this model probably stay useful? is the expected quality gain worth breaking
               residency?
             </p>
 
             <p>
-              This is where <code>z0intelligence</code> and <code>kerdoios</code> stopped looking
+              this is where <code>z0intelligence</code> and <code>kerdoios</code> stopped looking
               like overlapping routers to me.
             </p>
 
@@ -498,7 +509,7 @@ hard semantic tail
 kerdoios
     decides where an allowed computation should run`}</pre>
 
-            <p>The model is only one part of the decision.</p>
+            <p>the model is only one part of the decision.</p>
 
             <hr />
 
@@ -506,11 +517,11 @@ kerdoios
               our clever composition idea made the answer worse
             </HeadingFrog>
 
-            <p>This one hurt a little.</p>
+            <p>this one hurt a little.</p>
 
             <p>
-              One of the obvious ideas was: okay, maybe Jev does not need to answer the decision.
-              Maybe it can cheaply score the state and hand Qwen a better representation. That
+              one of the obvious ideas was: okay, maybe jev does not need to answer the decision.
+              maybe it can cheaply score the state and hand qwen a better representation. that
               gives you a nice-looking cascade:
             </p>
 
@@ -521,13 +532,13 @@ jev
 qwen4b`}</pre>
 
             <p>
-              We tested the actual composition. Not &ldquo;run both models independently and
-              compare them.&rdquo; Jev&rsquo;s artifact was genuinely produced, passed downstream,
+              we tested the actual composition. not &ldquo;run both models independently and
+              compare them.&rdquo; jev&rsquo;s artifact was genuinely produced, passed downstream,
               and <em>consumed</em> by Qwen.
             </p>
 
             <p>
-              On <strong>{study.composition.artifactConsumedStates}/28 states</strong>, the
+              on <strong>{study.composition.artifactConsumedStates}/28 states</strong>, the
               integration path worked. And the result was worse.
             </p>
 
@@ -541,29 +552,29 @@ qwen4b`}</pre>
             </div>
 
             <p>
-              <strong>Helped zero.</strong>
+              <strong>helped zero.</strong>
             </p>
 
             <p>
-              That matters because it killed another tempting architecture. A cheap model does not
-              automatically become useful because you place it earlier in the prompt. Sometimes
+              that matters because it killed another tempting architecture. a cheap model does not
+              automatically become useful because you place it earlier in the prompt. sometimes
               you are just injecting another model&rsquo;s lossy opinion into the model that was
               already capable of solving the problem.
             </p>
 
             <p>
-              This changed how I think the cascade should work. The cheap tier should usually do
+              this changed how i think the cascade should work. the cheap tier should usually do
               one of two things: <strong>answer</strong>, or{" "}
               <strong>abstain / escalate</strong>.
             </p>
 
             <p>
-              Not: generate some intermediate pseudo-reasoning → stuff it into the next
+              not: generate some intermediate pseudo-reasoning → stuff it into the next
               model&rsquo;s context → hope the next model becomes smarter.
             </p>
 
             <p>
-              If we test that kind of composition again, it should be treated as its own
+              if we test that kind of composition again, it should be treated as its own
               hypothesis, not assumed to be the natural architecture.
             </p>
 
@@ -574,33 +585,33 @@ qwen4b`}</pre>
             </HeadingFrog>
 
             <p>
-              Jev by itself went{" "}
+              jev by itself went{" "}
               <strong>
                 {jev.success}/{jev.n}
               </strong>{" "}
               on this bounded-choice family at around <strong>{ms(jev.warmP50Ms)}</strong>.
             </p>
 
-            <p>That is very fast. It is also nowhere near good enough to own the decision.</p>
+            <p>that is very fast. it is also nowhere near good enough to own the decision.</p>
 
             <p>
-              And in the true-composition test, its artifact hurt Qwen rather than helping it. So
-              for this particular task, Jev did <strong>not</strong> earn a runtime rung.
+              and in the true-composition test, its artifact hurt qwen rather than helping it. so
+              for this particular task, jev did <strong>not</strong> earn a runtime rung.
             </p>
 
             <p>
-              That was a useful result because I had spent a lot of time thinking of Jev as
+              that was a useful result because i had spent a lot of time thinking of jev as
               exactly that rung.
             </p>
 
             <p>
-              But there is another detail I do not want to throw away: Jev is giving us one of the
+              but there is another detail i do not want to throw away: jev is giving us one of the
               few proper <strong>distributions</strong> in this system. Confidence, margin,
               entropy, disagreement — those are useful signals even when the argmax itself should
               not own the action.
             </p>
 
-            <p>So I think the right place for Jev may be less:</p>
+            <p>so i think the right place for jev may be less:</p>
 
             <blockquote>make this decision for me</blockquote>
 
@@ -611,14 +622,14 @@ qwen4b`}</pre>
             </blockquote>
 
             <p>
-              That is a different job. And it is much closer to where we are now taking NanoJev,
+              that is a different job. and it is much closer to where we are now taking nanojev,
               mushroom-body policies, the fly work, and q-route.
             </p>
 
             <MarginNote n={2} label="confidence coverage">
-              Only {calibration.length} of {arms[0].n * arms.length} recorded decisions emit a
-              confidence at all, unevenly across arms — {jev.label} and Hammer 7B supply most of
-              them. The reliability curve below describes the arms that emit confidence, not every
+              only {calibration.length} of {arms[0].n * arms.length} recorded decisions emit a
+              confidence at all, unevenly across arms — {jev.label} and hammer 7b supply most of
+              them. the reliability curve below describes the arms that emit confidence, not every
               arm.
             </MarginNote>
 
@@ -632,22 +643,22 @@ qwen4b`}</pre>
               the compiler was doing more intelligence than i was giving it credit for
             </HeadingFrog>
 
-            <p>The cleanest safety result in the whole run is almost embarrassingly simple.</p>
+            <p>the cleanest safety result in the whole run is almost embarrassingly simple.</p>
 
-            <p>Behind the compiler: <strong>dangerous selections: 0</strong>. Without it:</p>
+            <p>behind the compiler: <strong>dangerous selections: 0</strong>. Without it:</p>
 
             <pre>{`unfiltered hammer3b:
 6 dangerous selections / 84`}</pre>
 
             <p>
-              The compiler-contract slice itself went <strong>26/26</strong>. And on the
+              the compiler-contract slice itself went <strong>26/26</strong>. And on the
               intentionally tempting near-miss, FunctionGemma selected the dangerous action while
               the other five tested models declined it.
             </p>
 
             <p>
-              This is why I increasingly dislike talking about &ldquo;the model&rdquo; as if it is
-              the whole agent. The deterministic system has already made a huge number of
+              this is why i increasingly dislike talking about &ldquo;the model&rdquo; as if it is
+              the whole agent. the deterministic system has already made a huge number of
               decisions before the model sees anything:
             </p>
 
@@ -661,11 +672,11 @@ qwen4b`}</pre>
 → model choice among remaining legal actions`}</pre>
 
             <p>
-              If an action is illegal, I do not want a smarter model to become better at refusing
-              it. I want the action to <strong>not exist in the choice set</strong>.
+              if an action is illegal, i do not want a smarter model to become better at refusing
+              it. i want the action to <strong>not exist in the choice set</strong>.
             </p>
 
-            <p>That is a dramatically cheaper kind of intelligence.</p>
+            <p>that is a dramatically cheaper kind of intelligence.</p>
 
             <div className="diagram-wrapper">
               <ActionTable actions={actionCensus} />
@@ -677,22 +688,22 @@ qwen4b`}</pre>
               and then the eval gate managed to fail its own eval
             </HeadingFrog>
 
-            <p>Densifying the data exposed another fun problem.</p>
+            <p>densifying the data exposed another fun problem.</p>
 
             <p>
-              Our gate had enough bugs that the measured results could disagree with the owner it
-              selected. The best example is <code>tool_fails</code>.
+              our gate had enough bugs that the measured results could disagree with the owner it
+              selected. the best example is <code>tool_fails</code>.
             </p>
 
             <p>
-              Qwen9B is the only correct measured arm there. But it exceeds the frozen{" "}
+              qwen9b is the only correct measured arm there. but it exceeds the frozen{" "}
               <strong>4,000 ms</strong> latency budget. Our utility maps both{" "}
               <em>correct but slow</em> and <em>wrong but fast</em> to exactly{" "}
               <strong>−1.000</strong>.
             </p>
 
             <p>
-              <strong>So the gate keeps the cheap wrong arm.</strong>
+              <strong>so the gate keeps the cheap wrong arm.</strong>
             </p>
 
             <div className="diagram-wrapper">
@@ -700,38 +711,38 @@ qwen4b`}</pre>
             </div>
 
             <p>
-              That is not a model failure. <strong>That is a utility-function failure.</strong>
+              that is not a model failure. <strong>that is a utility-function failure.</strong>
             </p>
 
-            <p>We found another one in the safety clause.</p>
+            <p>we found another one in the safety clause.</p>
 
             <p>
-              The gate was reading <code>dangerous_rate</code> based on selected outcomes rather
+              the gate was reading <code>dangerous_rate</code> based on selected outcomes rather
               than <code>exposed_dangerous</code>, so the known unfiltered Hammer3B arm — the one
               with <strong>{unf.dangerous}/84 dangerous selections</strong> — could still own
               four regions.
             </p>
 
             <p>
-              And FunctionGemma and Hammer3B were both sitting inside the same{" "}
+              and functiongemma and hammer3b were both sitting inside the same{" "}
               <code>tiny_specialist</code> rung, which meant the gate could fail to compare a
               roughly <strong>{pct(fng.successRate, 2)}</strong> arm directly against a roughly{" "}
               <strong>{pct(hammer3.successRate, 2)}</strong> arm.
             </p>
 
-            <p>This was honestly one of the most useful parts of Phase 1B.</p>
+            <p>this was honestly one of the most useful parts of phase 1b.</p>
 
             <p>
-              The eval system was not just judging the models anymore.{" "}
+              the eval system was not just judging the models anymore.{" "}
               <strong>
-                The models were giving us enough evidence to start judging the eval system.
+                the models were giving us enough evidence to start judging the eval system.
               </strong>
             </p>
 
-            <Callout kind="danger" title="RECORDED, NOT FIXED">
+            <Callout kind="danger" title="recorded, not fixed">
               <p>
-                Five gate defects are carried forward deliberately — the brief forbids moving the
-                measurements and the gate in the same pass. Full list in the appendix.
+                five gate defects are carried forward deliberately — the brief forbids moving the
+                measurements and the gate in the same pass. full list in the appendix.
               </p>
             </Callout>
 
@@ -742,12 +753,12 @@ qwen4b`}</pre>
             </HeadingFrog>
 
             <p>
-              Once we had 370 cells instead of a pile of one-offs, we could finally ask why the
+              once we had 370 cells instead of a pile of one-offs, we could finally ask why the
               router still could not perfectly separate the states.
             </p>
 
             <p>
-              Label disagreement was only{" "}
+              label disagreement was only{" "}
               <strong>
                 {study.features.label_disagreements} / {study.features.cells}
               </strong>{" "}
@@ -756,7 +767,7 @@ qwen4b`}</pre>
             </p>
 
             <p>
-              We found three actual collisions, and all three landed in{" "}
+              we found three actual collisions, and all three landed in{" "}
               <code>{study.features.collision_class}</code>. Then we tested candidate features.
             </p>
 
@@ -786,13 +797,13 @@ qwen4b`}</pre>
             />
 
             <p>
-              Family one-hots performed well too, but that would basically be cheating: the
-              fixture knows its family because we wrote the benchmark. The runtime does not get to
+              family one-hots performed well too, but that would basically be cheating: the
+              fixture knows its family because we wrote the benchmark. the runtime does not get to
               magically know the answer key.
             </p>
 
             <p>
-              So <code>budget_units</code> becomes the next feature not because it sounds clever,
+              so <code>budget_units</code> becomes the next feature not because it sounds clever,
               but because it is both <strong>measured to matter</strong> and{" "}
               <strong>available at runtime</strong>. That is exactly the kind of constraint I want
               q-route to inherit.
@@ -809,15 +820,15 @@ qwen4b`}</pre>
             </HeadingFrog>
 
             <p>
-              Not the one I drew at the beginning. The current picture is much more boring, which
-              I think is a good sign.
+              not the one i drew at the beginning. the current picture is much more boring, which
+              i think is a good sign.
             </p>
 
             <div className="diagram-wrapper">
               <LadderFlow />
             </div>
 
-            <p>And orthogonal to that:</p>
+            <p>and orthogonal to that:</p>
 
             <pre>{`z0intelligence
     decides what cognition is warranted
@@ -838,7 +849,7 @@ z0evals
     decides when we're allowed to believe one`}</pre>
 
             <p>
-              That separation did not come from drawing a cleaner architecture diagram. It came
+              that separation did not come from drawing a cleaner architecture diagram. it came
               from watching the pretty versions fail.
             </p>
 
@@ -849,10 +860,10 @@ z0evals
             </HeadingFrog>
 
             <p>
-              Phase 1B did <strong>not</strong> train anything. That was intentional.
+              phase 1b did <strong>not</strong> train anything. That was intentional.
             </p>
 
-            <p>The proposed first Phase 2 slice is only:</p>
+            <p>the proposed first phase 2 slice is only:</p>
 
             <pre>{`5 compiler-first arms
 × 28 states
@@ -865,21 +876,21 @@ new feature: budget_units
 split: chronological 70 / 15 / 15 by task
 ood: abstention / dependencies / parallelism / uncertainty`}</pre>
 
-            <p>And then stop. Write the corpus. Seal the task splits. Hash it. Do not train.</p>
+            <p>and then stop. write the corpus. seal the task splits. hash it. do not train.</p>
 
             <p>
-              Because the next thing I want to test is not just another 4B model. The original
-              Zer0 hypothesis was always closer to:{" "}
+              because the next thing i want to test is not just another 4b model. the original
+              zer0 hypothesis was always closer to:{" "}
               <strong>how much of this can become tiny?</strong>
             </p>
 
             <p>
-              We already have the beginnings of that: mushroom-body specialist, fly-derived
-              temporal/recovery policy, NanoJev, Jev, Hammer3B.
+              we already have the beginnings of that: mushroom-body specialist, fly-derived
+              temporal/recovery policy, nanojev, jev, hammer3b.
             </p>
 
             <p>
-              The job of these systems is <strong>not</strong> to become miniature chatbots. The
+              the job of these systems is <strong>not</strong> to become miniature chatbots. The
               ideal outcome is much more aggressive:
             </p>
 
@@ -905,11 +916,11 @@ this is genuinely hard
 → spend the expensive model`}</pre>
 
             <p>
-              And as each cheaper layer gets better, the expensive model loses another
-              responsibility. That is the part I care about. Not winning a tiny-model
+              and as each cheaper layer gets better, the expensive model loses another
+              responsibility. that is the part i care about. not winning a tiny-model
               leaderboard.{" "}
               <strong>
-                Making the leaderboard matter less because fewer things need to be language-model
+                making the leaderboard matter less because fewer things need to be language-model
                 calls at all.
               </strong>
             </p>
@@ -920,39 +931,39 @@ this is genuinely hard
               the actual result
             </HeadingFrog>
 
-            <p>If I had to compress this whole experiment into one sentence:</p>
+            <p>if i had to compress this whole experiment into one sentence:</p>
 
-            <Callout kind="info" title="THE RESULT">
+            <Callout kind="info" title="the result">
               <p>
                 <strong>
-                  The biggest token and latency savings did not come from finding one smarter
-                  small model. They came from making the problem more typed before asking a model
+                  the biggest token and latency savings did not come from finding one smarter
+                  small model. they came from making the problem more typed before asking a model
                   to solve it.
                 </strong>
               </p>
             </Callout>
 
-            <p>The compiler beat dangerous choices by removing them.</p>
+            <p>the compiler beat dangerous choices by removing them.</p>
             <p>
-              Hammer3B beat larger models by being given the bounded job it was actually good at.
+              hammer3b beat larger models by being given the bounded job it was actually good at.
             </p>
             <p>
-              Qwen became useful again when we gave it orchestration instead of pretending every
+              qwen became useful again when we gave it orchestration instead of pretending every
               decision was orchestration.
             </p>
             <p>
-              Jev became less interesting as a decision-maker and more interesting as a cheap
+              jev became less interesting as a decision-maker and more interesting as a cheap
               uncertainty signal.
             </p>
-            <p>Composition failed because extra model output is not free information.</p>
+            <p>composition failed because extra model output is not free information.</p>
             <p>
-              Residency mattered enough that &ldquo;which model?&rdquo; became a resource-allocation
+              residency mattered enough that &ldquo;which model?&rdquo; became a resource-allocation
               question too.
             </p>
-            <p>And the eval itself became another component we had to test rather than trust.</p>
+            <p>and the eval itself became another component we had to test rather than trust.</p>
 
             <p>
-              That is a much different architecture from where we started. Which is kind of the
+              that is a much different architecture from where we started. which is kind of the
               point.
             </p>
 
@@ -962,19 +973,19 @@ this is genuinely hard
               author&rsquo;s note
             </HeadingFrog>
 
-            <p>I did not start this trying to prove Hammer3B was good.</p>
+            <p>i did not start this trying to prove hammer3b was good.</p>
 
             <p>
-              If anything, I expected the more elaborate stack to win. I wanted the beautiful
-              version: deterministic rules at the bottom, Jev making cheap calibrated decisions,
-              Nemotron orchestrating, Qwen handling the hard tail, and eventually the mushroom/fly
+              if anything, i expected the more elaborate stack to win. i wanted the beautiful
+              version: deterministic rules at the bottom, jev making cheap calibrated decisions,
+              nemotron orchestrating, qwen handling the hard tail, and eventually the mushroom/fly
               stuff eating away at all of it.
             </p>
 
-            <p>Some version of that may still happen.</p>
+            <p>some version of that may still happen.</p>
 
             <p>
-              But Phase 1B made one thing pretty clear:{" "}
+              but phase 1b made one thing pretty clear:{" "}
               <strong>
                 we should not promote architectural ideas because the decomposition sounds
                 elegant.
@@ -982,29 +993,29 @@ this is genuinely hard
             </p>
 
             <p>
-              Make the smallest thing that could plausibly work. Put it on the same state. Measure
-              it. Let it fail. And if something boring is ten times faster and gives you the same
+              make the smallest thing that could plausibly work. put it on the same state. measure
+              it. let it fail. and if something boring is ten times faster and gives you the same
               answer, use the boring thing.
             </p>
 
-            <p>Then move down one layer and try to replace that too.</p>
+            <p>then move down one layer and try to replace that too.</p>
 
             <hr />
 
             <HeadingFrog id="appendix" level={2}>
-              Appendix: what the numbers mean
+              appendix: what the numbers mean
             </HeadingFrog>
 
             <HeadingFrog id="explore" level={3}>
-              Explore the matrix
+              explore the matrix
             </HeadingFrog>
             <p>
-              Every cell below is a measured <code>(state, arm)</code> pair out of the frozen run.
+              every cell below is a measured <code>(state, arm)</code> pair out of the frozen run.
             </p>
             <ResultsExplorer matrix={matrix} />
 
             <HeadingFrog id="gate-caveats" level={3}>
-              Gate defects recorded
+              gate defects recorded
             </HeadingFrog>
             <ul>
               {study.gate.caveats.map((c) => (
@@ -1013,10 +1024,10 @@ this is genuinely hard
             </ul>
 
             <HeadingFrog id="provenance" level={3}>
-              Check or reuse the evidence
+              check or reuse the evidence
             </HeadingFrog>
             <p>
-              Run <code>{S.runId}</code>. Raw receipts are authoritative:{" "}
+              run <code>{S.runId}</code>. Raw receipts are authoritative:{" "}
               {study.provenance.canonical_raw_artifacts}. Source commits are currently local-only,
               so this page does <strong>not</strong> claim the numbers reproduce from a fresh
               clone.
@@ -1028,33 +1039,40 @@ this is genuinely hard
               comparison. They measure load latency, not bounded-choice accuracy.
             </MarginNote>
             <MarginNote n={4} label="thin cells">
-              Eight cells in <code>compiler+jev+qwen3.5_4b</code> ran at n=2 rather than n=3, and
+              eight cells in <code>compiler+jev+qwen3.5_4b</code> ran at n=2 rather than n=3, and
               no measured cell reached n≥10. The arm-level intervals are wide enough to matter.
             </MarginNote>
 
             <HeadingFrog id="references" level={3}>
-              References
+              references
             </HeadingFrog>
             <ReferenceMap />
 
             <HeadingFrog id="notes" level={3}>
-              Notes
+              notes
             </HeadingFrog>
             <Footnotes
               items={[
-                {
+                                {
                   n: 1,
                   text: (
                     <>
-                      The paired-shadow NanoJev figures (27 decisions, 48.1% teacher agreement, 11
-                      high-risk disagreements, ~236 ms warm, ~15.5 s cold load) are the
-                      author&rsquo;s working numbers from the earlier shadow pilot. That
-                      pilot&rsquo;s receipt is not in the current repos. Everything in the Phase 1B
-                      tables is receipted from <code>{S.runId}</code>.
+                      j1 routing-shadow pilot, recovered. 27 decisions, 13 agreements,{" "}
+                      {pilot.highRiskCount} high-risk disagreements, jev p50/p95 304/349 ms,
+                      nanojev p50/p95 236/264 ms, cold load ~15.5 s on the reload-per-invocation
+                      path. provenance and per-decision rows:{" "}
+                      <code>studies/slm-router-v0/data/nanojev-j1-shadow-pilot.json</code>{" "}
+                      (<code>evidence_class = exploratory_beta</code>). this is a routing-shadow
+                      pilot and is <strong>separate from</strong> <code>{S.runId}</code>; its
+                      numbers must not be merged with the phase 1b tables, nor with the later
+                      z0intelligence backend run at{" "}
+                      <code>results/decision-backends/20260919T015610Z/</code> (commit{" "}
+                      <code>338f904</code>), which is a different run. the pilot&rsquo;s own temp
+                      artifacts were deleted; this was recovered from a captured process log, and
+                      the 27 per-decision lines and the summary agree exactly.
                     </>
                   ),
-                },
-                {
+                },                {
                   n: 2,
                   text: (
                     <>

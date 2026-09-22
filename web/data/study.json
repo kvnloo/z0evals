@@ -29760,5 +29760,25 @@
       },
       "note": "cold_probe arms measure cold-start latency on a single state and are excluded from every comparison on this page"
     }
+  },
+  "pilot": {
+    "runId": "nanojev-j1-shadow-27",
+    "evidenceClass": "exploratory_beta",
+    "promotionEligible": false,
+    "decisions": 27,
+    "agreements": 13,
+    "disagreements": 14,
+    "agreementRate": 0.48148148148148145,
+    "highRiskCount": 10,
+    "highConfidenceAgreement": "8/21",
+    "jevP50Ms": 304,
+    "jevP95Ms": 349.0,
+    "nanojevP50Ms": 236.4,
+    "nanojevP95Ms": 263.5,
+    "vramMb": 300,
+    "distinctFrom": [
+      "p1b-20260921T1430Z"
+    ],
+    "recoveredFrom": "/workspace/hermes-home/profiles/clean/logs/process-results/proc_23b0b9df7dc3.json"
   }
 }

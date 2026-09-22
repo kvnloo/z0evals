@@ -141,7 +141,7 @@ export default function CorpusGrowth({ d }: { d: CorpusData }) {
       </div>
 
       <figcaption>
-        Every one of the 1,102 receipts, at its own recorded <code>decision_ms</code>. The
+        every one of the 1,102 receipts, at its own recorded <code>decision_ms</code>. The
         distribution is genuinely bimodal: in-process decisions land in single-digit
         milliseconds, model calls between roughly 100 ms and 4 s, with nothing in between —
         the empty bins are measured emptiness, not a smoothing artefact. The {h.flags.length}{" "}

@@ -31,9 +31,9 @@ export default function ObservationScrubber({ matrix }: { matrix: Matrix }) {
       </div>
 
       <div className="scrubRow">
-        <span className="scrubLabel">Inspect</span>
+        <span className="scrubLabel">inspect</span>
         <input
-          aria-label="Inspect one recorded event"
+          aria-label="inspect one recorded event"
           aria-valuetext={`Event ${i + 1} of ${states.length}, ${s.family}, ${summary}`}
           type="range" min={0} max={states.length - 1} step={1} value={i}
           onChange={(e) => setI(Number(e.target.value))}

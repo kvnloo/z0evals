@@ -39,7 +39,7 @@ export default function ResultsExplorer({ matrix }: { matrix: Matrix }) {
 
   return (
     <>
-      <div className="chart-tabs" role="group" aria-label="Arms shown">
+      <div className="chart-tabs" role="group" aria-label="arms shown">
         {matrix.arms.map((a) => (
           <button key={a.id} type="button" aria-pressed={arms.includes(a.id)}
                   onClick={() => toggle(a.id)}
@@ -52,19 +52,19 @@ export default function ResultsExplorer({ matrix }: { matrix: Matrix }) {
       <figure>
         <div className="fig-body"><ReplayChart matrix={scoped} selected={arms} /></div>
         <figcaption>
-          <span className="fig-n">Fig 2</span>
+          <span className="fig-n">fig 2</span>
           Replayable per-state curves. Each point is one bounded-choice state in sweep
           order; the y value is that state&rsquo;s measured decision latency divided by the
           arm&rsquo;s own p50, so a flat line means the arm behaved like its median.
-          Press <strong>Replay</strong> or drag the playhead.
-          {family ? <> Filtered to <strong>{family}</strong>.</> : null}
+          Press <strong>replay</strong> or drag the playhead.
+          {family ? <> filtered to <strong>{family}</strong>.</> : null}
         </figcaption>
       </figure>
 
       <figure>
         <div className="fig-body"><ObservationScrubber matrix={scoped} /></div>
         <figcaption>
-          <span className="fig-n">Fig 3</span>
+          <span className="fig-n">fig 3</span>
           Scrub to any state and read the underlying evidence: what each arm chose, its
           measured median, its calibrated confidence, and the gold action where the
           fixture has one. Repetition splits are shown rather than averaged away.
@@ -74,7 +74,7 @@ export default function ResultsExplorer({ matrix }: { matrix: Matrix }) {
       <figure>
         <div className="fig-body"><FamilyStack families={matrix.families} selected={family} onSelect={setFamily} /></div>
         <figcaption>
-          <span className="fig-n">Fig 7</span>
+          <span className="fig-n">fig 7</span>
           Where the work and the failures actually sit, by state family. The only
           dangerous selections on the whole page are in <strong>security</strong>.
         </figcaption>
@@ -83,7 +83,7 @@ export default function ResultsExplorer({ matrix }: { matrix: Matrix }) {
       <figure>
         <div className="fig-body"><Heatmap matrix={matrix} /></div>
         <figcaption>
-          <span className="fig-n">Fig 8</span>
+          <span className="fig-n">fig 8</span>
           Outcome matrix: {matrix.states.length} states × {matrix.arms.length} arms.
           Switch between success rate, dangerous selections, and repetition splits.
           Every cell is a measured cell, not an interpolation.

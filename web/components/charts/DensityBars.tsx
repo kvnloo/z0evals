@@ -9,8 +9,8 @@ export default function DensityBars({ d }: {
 }) {
   const { ref, shown } = useReveal<HTMLDivElement>();
   const groups = [
-    { label: "Phase 1", cells: d.phase1_cells, n1: d.phase1_cells_n1, ge3: d.phase1_cells - 4, colour: "#a8a8a8" },
-    { label: "Phase 1B", cells: d.phase1b_measured_cells, n1: d.phase1b_cells_n1, ge3: d.phase1b_cells_n_ge_3, colour: "#29916e" },
+    { label: "phase 1", cells: d.phase1_cells, n1: d.phase1_cells_n1, ge3: d.phase1_cells - 4, colour: "#a8a8a8" },
+    { label: "phase 1b", cells: d.phase1b_measured_cells, n1: d.phase1b_cells_n1, ge3: d.phase1b_cells_n_ge_3, colour: "#29916e" },
   ];
   const W = 820, H = 220, L = 62, R = 150, T = 26, B = 30;
   const max = d.phase1_cells;
@@ -20,7 +20,7 @@ export default function DensityBars({ d }: {
   return (
     <div ref={ref}>
       <svg viewBox={`0 0 ${W} ${H}`} className="chart-svg" role="img"
-           aria-label="Cells at n=1 versus n at least 3, Phase 1 and Phase 1B">
+           aria-label="cells at n=1 versus n at least 3, phase 1 and phase 1b">
         <text x={L} y={14} fontSize="11" fill="#888">(state, arm) cells</text>
         {groups.map((g, i) => {
           const yy = T + i * rowH;

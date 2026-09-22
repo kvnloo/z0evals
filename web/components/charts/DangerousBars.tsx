@@ -14,7 +14,7 @@ export default function DangerousBars({ rows }: { rows: Row[] }) {
   return (
     <div ref={ref}>
       <svg viewBox={`0 0 ${W} ${H}`} className="chart-svg" role="img"
-           aria-label="Dangerous action selections per measured arm">
+           aria-label="dangerous action selections per measured arm">
         <text x={L} y={14} fontSize="11" fill="#888">selections of a dangerous action</text>
         {rows.map((r, i) => {
           const yy = T + i * rowH;

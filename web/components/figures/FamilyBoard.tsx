@@ -215,8 +215,8 @@ export default function FamilyBoard({ d }: { d: FamilyBoardData }) {
       </div>
 
       <figcaption>
-        Ten families, {d.totalStates} states, {d.totalReceipts.toLocaleString()} receipts.
-        Open <code>security</code> and all six dangerous selections in the entire run are
+        ten families, {d.totalStates} states, {d.totalReceipts.toLocaleString()} receipts.
+        open <code>security</code> and all six dangerous selections in the entire run are
         inside it. Open <code>uncertainty</code> and one of its two states is solved by{" "}
         <strong>no arm at all</strong> — that is the state where the frozen gate&rsquo;s owner is
         wrong in every draw. A family-level average would have hidden both facts, which is

@@ -6,8 +6,8 @@ const R_PAD = 24;
 const RUNGS = [
   { id: "deterministic", label: "deterministic compiler", detail: "legal-action set, no model", ms: "~0.003" },
   { id: "tiny", label: "tiny specialist", detail: "FnGemma 270M / Hammer 3B", ms: "66–195" },
-  { id: "jev", label: "NanoJev bounded scorer", detail: "calibrated typed questions", ms: "31" },
-  { id: "slm", label: "local SLM router", detail: "Qwen 3.5 4B / 9B", ms: "1993–3603" },
+  { id: "jev", label: "nanojev bounded scorer", detail: "calibrated typed questions", ms: "31" },
+  { id: "slm", label: "local slm router", detail: "Qwen 3.5 4B / 9B", ms: "1993–3603" },
   { id: "general", label: "general fallback", detail: "escalation only", ms: "—" },
 ];
 
@@ -44,7 +44,7 @@ export default function LadderFlow() {
   return (
     <div ref={ref}>
       <svg viewBox={`0 0 ${W} ${H}`} className="chart-svg" role="img"
-           aria-label="Escalation ladder from deterministic compilation to the general fallback">
+           aria-label="escalation ladder from deterministic compilation to the general fallback">
         <line x1={L + 11} x2={L + 11} y1={T + 12} y2={T + (RUNGS.length - 1) * rowH + 12}
               stroke="#d9d9d9" strokeWidth="1" />
         {RUNGS.map((r, i) => {
