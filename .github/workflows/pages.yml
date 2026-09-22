@@ -112,8 +112,16 @@ jobs:
             WT="_channels/$BRANCH"
             git worktree add --force --detach "$WT" "origin/$BRANCH" >/dev/null
 
-            # Next's basePath has no trailing slash; SUB is "next/", "dev/" or "".
-            CHANNEL_BASE="/${GITHUB_REPOSITORY#*/}/${SUB%/}"
+            # Next's basePath must not end in a slash. SUB is "next/", "dev/" or
+            # "" for main — and when SUB is empty the old
+            # "/${REPO}/${SUB%/}" form left the literal slash behind, producing
+            # "/z0evals/" and failing the root channel with:
+            #   Error: Specified basePath should not end with /, found "/z0evals/"
+            # (observed on run 35675126162). Build it conditionally instead.
+            CHANNEL_BASE="/${GITHUB_REPOSITORY#*/}"
+            if [ -n "$SUB" ]; then
+              CHANNEL_BASE="$CHANNEL_BASE/${SUB%/}"
+            fi
             ok=no
             if [ -f "$WT/web/package.json" ]; then
               # Migrated channel: build the ported template.
