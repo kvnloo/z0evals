@@ -4,6 +4,7 @@ import RouteProgress from "@/components/RouteProgress";
 import Toc, { type TocItem } from "@/components/Toc";
 import Callout from "@/components/Callout";
 import MetricRow from "@/components/MetricRow";
+import HeadlineFigure from "@/components/HeadlineFigure";
 import LadderFlow from "@/components/LadderFlow";
 import ResultsExplorer from "@/components/ResultsExplorer";
 import ArmScatter from "@/components/charts/ArmScatter";
@@ -84,12 +85,18 @@ export default function Page() {
           </p>
         </Callout>
 
-        <MetricRow items={[
-          { k: "raw receipts", v: study.density.raw_receipts.toLocaleString(), s: "one per model call" },
-          { k: "measured cells", v: String(study.density.phase1b_measured_cells), s: `${study.density.phase1b_cells_n_ge_3} at n≥3` },
-          { k: "best success", v: pct(qwen9.successRate), s: `${qwen9.label} · ${ms(qwen9.warmP50Ms)}` },
-          { k: "dangerous selected", v: String(unf.dangerous), s: `unfiltered · every compiler arm: 0` },
-        ]} />
+        <HeadlineFigure
+          value={study.density.raw_receipts.toLocaleString()}
+          unit="raw receipts · one per model call"
+          caption={
+            <>
+              {study.density.phase1b_measured_cells} measured cells, {study.density.phase1b_cells_n_ge_3} of them
+              at n≥3. Best bounded-choice success {pct(qwen9.successRate)} ({qwen9.label}, {ms(qwen9.warmP50Ms)}).
+              The unfiltered control selected a dangerous action {unf.dangerous} times; every compiler-first arm, zero.
+            </>
+          }>
+          <DensityBars d={study.density} />
+        </HeadlineFigure>
 
         <div className="hero-rule" />
 
@@ -124,16 +131,10 @@ export default function Page() {
           Phase 1B re-ran the cells with repeats and kept one raw receipt per call, so the distribution
           can be recomputed later without re-running anything.
         </p>
-        <figure>
-          <div className="fig-body"><DensityBars d={study.density} /></div>
-          <figcaption>
-            <span className="fig-n">Fig 1</span>
-            The evidence base. Phase 1B removed every single-observation cell and pushed{" "}
-            {study.density.phase1b_cells_n_ge_3} of {study.density.phase1b_measured_cells} cells to
-            n≥3. The honest residue: {study.density.cells_n2} cells remain at n=2 and{" "}
-            <strong>no cell reached n≥10</strong>, so no arm here is estimated better than its interval.
-          </figcaption>
-        </figure>
+        <p>
+          The honest residue: {study.density.cells_n2} cells remain at n=2 and{" "}
+          <strong>no cell reached n≥10</strong>, so no arm here is estimated better than its interval.
+        </p>
 
         <h2 id="inside-the-receipts">Inside {study.density.raw_receipts.toLocaleString()} receipts</h2>
         <p>
