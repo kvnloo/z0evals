@@ -218,6 +218,8 @@ def build_components(raw: Path) -> dict:
                 "alias": alias,
                 "n": n,
                 "correct": correct,
+                "wrong": n - correct,
+                "trials": n,
                 "successRate": correct / n if n else 0.0,
                 "medianMs": int(round(stats.median(warm))) if warm else None,
                 "medianBasis": basis,
@@ -248,11 +250,14 @@ def build_components(raw: Path) -> dict:
     dang_vals = [float(r["dangerous"]) for r in board_rows]
     for r in board_rows:
         r["cells"] = [
-            {"value": f"{r['successRate'] * 100:.0f}%",
+            {"value": f"{r['successRate'] * 100:.1f}%",
+             "sub": f"{r['correct']}/{r['trials']} correct · {r['wrong']} wrong",
              "frac": round(_frac(r["successRate"], success_vals), 6), "hot": False},
-            {"value": f"{r['medianMs']:,.0f} ms",
-             "frac": round(_frac(r["medianMs"], ms_vals, invert=True), 6), "hot": False},
+            {"value": ("—" if r["medianMs"] is None else f"{r['medianMs']:,.0f} ms"),
+             "sub": f"{r['warmCalls']} warm readings",
+             "frac": round(_frac(r["medianMs"] or 0, ms_vals, invert=True), 6), "hot": False},
             {"value": str(r["dangerous"]),
+             "sub": "selected" if r["dangerous"] else "none selected",
              "frac": round(_frac(float(r["dangerous"]), dang_vals, invert=True), 6),
              "hot": r["dangerous"] > 0},
         ]
@@ -342,6 +347,65 @@ def build_components(raw: Path) -> dict:
         "errors": err_rows,
     }
 
+    # ----------------------------------------------------------- family board
+    # One dense row per real typed state family, expandable to its constituent
+    # states. This is the reference's task-row shape
+    # ("Brief writing · 27.5 min · 166 runs · ▁▂▃ · 8/8") mapped onto the ten
+    # families this run actually measured — not a generic progress view.
+    fam_rows = []
+    for fam in families:
+        fr = [r for r in rows if r["state_family"] == fam]
+        if not fr:
+            continue
+        fam_states = sorted({r["state_id"] for r in fr})
+        warm = [r["decision_ms"] for r in fr
+                if r.get("cold_or_warm") == "warm_invocation" and r["decision_ms"] > 0]
+        correct = sum(1 for r in fr if r["correct"] is True)
+        state_rows = []
+        for st in fam_states:
+            sr = [r for r in fr if r["state_id"] == st]
+            sw = [r["decision_ms"] for r in sr
+                  if r.get("cold_or_warm") == "warm_invocation" and r["decision_ms"] > 0]
+            # per-state success uses a majority of the arm's repetitions, the
+            # same reading the progress figure uses
+            by_arm: dict[str, list[bool]] = defaultdict(list)
+            for r in sr:
+                by_arm[r["arm"]].append(r["correct"] is True)
+            solved_arms = sum(
+                1 for votes in by_arm.values() if votes and sum(votes) * 2 > len(votes)
+            )
+            state_rows.append({
+                "state": st,
+                "n": len(sr),
+                "arms": len(by_arm),
+                "solvedArms": solved_arms,
+                "successRate": round(solved_arms / len(by_arm), 4) if by_arm else 0.0,
+                "latencyP50Ms": int(round(stats.median(sw))) if sw else None,
+                "dangerous": sum(1 for r in sr if r.get("dangerous_selected") is True),
+                "deterministic": any(r.get("deterministic_solution") for r in sr),
+            })
+        state_rows.sort(key=lambda x: (x["successRate"], x["state"]))
+        fam_rows.append({
+            "family": fam,
+            "states": len(fam_states),
+            "receipts": len(fr),
+            "successRate": round(correct / len(fr), 4) if fr else 0.0,
+            "latencyP50Ms": int(round(stats.median(warm))) if warm else None,
+            "dangerous": sum(1 for r in fr if r.get("dangerous_selected") is True),
+            "sparkline": [
+                round(s["successRate"], 4) for s in sorted(state_rows, key=lambda x: x["state"])
+            ],
+            "stateRows": state_rows,
+        })
+    fam_rows.sort(key=lambda x: (x["successRate"], x["family"]))
+    family_board = {
+        "title": "Every state family, with the states inside it",
+        "columns": ["family", "receipts", "success", "p50"],
+        "rows": fam_rows,
+        "totalStates": len(states),
+        "totalReceipts": len(rows),
+    }
+
     # --------------------------------------------------------------- utility
     # The `tool_fails` state: the frozen 4000 ms utility returns exactly
     # -1.000 for the correct-but-slow arm and for the wrong-but-fast arms
@@ -387,6 +451,7 @@ def build_components(raw: Path) -> dict:
         "progress": progress,
         "forecast": forecast,
         "utility": utility,
+        "familyBoard": family_board,
         "coverage": {
             "comparisonArms": len(arms),
             "comparisonRows": len(rows),

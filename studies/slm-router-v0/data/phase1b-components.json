@@ -205,6 +205,8 @@
         "alias": "A_qwen9b_alone",
         "n": 84,
         "correct": 78,
+        "wrong": 6,
+        "trials": 84,
         "successRate": 0.9285714285714286,
         "medianMs": 3322,
         "medianBasis": "warm model call",
@@ -214,17 +216,20 @@
         "readings": "84 receipts \u00b7 28 states \u00b7 82 readings (warm model call)",
         "cells": [
           {
-            "value": "93%",
+            "value": "92.9%",
+            "sub": "78/84 correct \u00b7 6 wrong",
             "frac": 1.0,
             "hot": false
           },
           {
             "value": "3,322 ms",
+            "sub": "82 warm readings",
             "frac": 0.077991,
             "hot": false
           },
           {
             "value": "0",
+            "sub": "none selected",
             "frac": 1.0,
             "hot": false
           }
@@ -236,6 +241,8 @@
         "alias": null,
         "n": 84,
         "correct": 78,
+        "wrong": 6,
+        "trials": 84,
         "successRate": 0.9285714285714286,
         "medianMs": 3603,
         "medianBasis": "warm model call",
@@ -245,17 +252,20 @@
         "readings": "84 receipts \u00b7 28 states \u00b7 82 readings (warm model call)",
         "cells": [
           {
-            "value": "93%",
+            "value": "92.9%",
+            "sub": "78/84 correct \u00b7 6 wrong",
             "frac": 1.0,
             "hot": false
           },
           {
             "value": "3,603 ms",
+            "sub": "82 warm readings",
             "frac": 0.0,
             "hot": false
           },
           {
             "value": "0",
+            "sub": "none selected",
             "frac": 1.0,
             "hot": false
           }
@@ -267,6 +277,8 @@
         "alias": "SUB_compiler_hammer3b",
         "n": 84,
         "correct": 75,
+        "wrong": 9,
+        "trials": 84,
         "successRate": 0.8928571428571429,
         "medianMs": 195,
         "medianBasis": "warm model call",
@@ -276,17 +288,20 @@
         "readings": "84 receipts \u00b7 28 states \u00b7 81 readings (warm model call)",
         "cells": [
           {
-            "value": "89%",
+            "value": "89.3%",
+            "sub": "75/84 correct \u00b7 9 wrong",
             "frac": 0.961538,
             "hot": false
           },
           {
             "value": "195 ms",
+            "sub": "81 warm readings",
             "frac": 0.945878,
             "hot": false
           },
           {
             "value": "0",
+            "sub": "none selected",
             "frac": 1.0,
             "hot": false
           }
@@ -298,6 +313,8 @@
         "alias": "SUB_compiler_qwen4b",
         "n": 84,
         "correct": 75,
+        "wrong": 9,
+        "trials": 84,
         "successRate": 0.8928571428571429,
         "medianMs": 1993,
         "medianBasis": "warm model call",
@@ -307,17 +324,20 @@
         "readings": "84 receipts \u00b7 28 states \u00b7 82 readings (warm model call)",
         "cells": [
           {
-            "value": "89%",
+            "value": "89.3%",
+            "sub": "75/84 correct \u00b7 9 wrong",
             "frac": 0.961538,
             "hot": false
           },
           {
             "value": "1,993 ms",
+            "sub": "82 warm readings",
             "frac": 0.44685,
             "hot": false
           },
           {
             "value": "0",
+            "sub": "none selected",
             "frac": 1.0,
             "hot": false
           }
@@ -329,6 +349,8 @@
         "alias": "SUB_qwen4b_alone",
         "n": 84,
         "correct": 75,
+        "wrong": 9,
+        "trials": 84,
         "successRate": 0.8928571428571429,
         "medianMs": 2082,
         "medianBasis": "warm model call",
@@ -338,17 +360,20 @@
         "readings": "84 receipts \u00b7 28 states \u00b7 81 readings (warm model call)",
         "cells": [
           {
-            "value": "89%",
+            "value": "89.3%",
+            "sub": "75/84 correct \u00b7 9 wrong",
             "frac": 0.961538,
             "hot": false
           },
           {
             "value": "2,082 ms",
+            "sub": "81 warm readings",
             "frac": 0.422148,
             "hot": false
           },
           {
             "value": "0",
+            "sub": "none selected",
             "frac": 1.0,
             "hot": false
           }
@@ -360,6 +385,8 @@
         "alias": "SUB_compiler_hammer7b",
         "n": 84,
         "correct": 72,
+        "wrong": 12,
+        "trials": 84,
         "successRate": 0.8571428571428571,
         "medianMs": 319,
         "medianBasis": "warm model call",
@@ -369,17 +396,20 @@
         "readings": "84 receipts \u00b7 28 states \u00b7 82 readings (warm model call)",
         "cells": [
           {
-            "value": "86%",
+            "value": "85.7%",
+            "sub": "72/84 correct \u00b7 12 wrong",
             "frac": 0.923077,
             "hot": false
           },
           {
             "value": "319 ms",
+            "sub": "82 warm readings",
             "frac": 0.911463,
             "hot": false
           },
           {
             "value": "0",
+            "sub": "none selected",
             "frac": 1.0,
             "hot": false
           }
@@ -391,6 +421,8 @@
         "alias": null,
         "n": 76,
         "correct": 63,
+        "wrong": 13,
+        "trials": 76,
         "successRate": 0.8289473684210527,
         "medianMs": 1647,
         "medianBasis": "warm model call",
@@ -400,17 +432,20 @@
         "readings": "76 receipts \u00b7 28 states \u00b7 75 readings (warm model call) \u00b7 8 state(s) at n=2",
         "cells": [
           {
-            "value": "83%",
+            "value": "82.9%",
+            "sub": "63/76 correct \u00b7 13 wrong",
             "frac": 0.892713,
             "hot": false
           },
           {
             "value": "1,647 ms",
+            "sub": "75 warm readings",
             "frac": 0.542881,
             "hot": false
           },
           {
             "value": "0",
+            "sub": "none selected",
             "frac": 1.0,
             "hot": false
           }
@@ -422,6 +457,8 @@
         "alias": null,
         "n": 84,
         "correct": 69,
+        "wrong": 15,
+        "trials": 84,
         "successRate": 0.8214285714285714,
         "medianMs": 186,
         "medianBasis": "warm model call",
@@ -431,17 +468,20 @@
         "readings": "84 receipts \u00b7 28 states \u00b7 82 readings (warm model call)",
         "cells": [
           {
-            "value": "82%",
+            "value": "82.1%",
+            "sub": "69/84 correct \u00b7 15 wrong",
             "frac": 0.884615,
             "hot": false
           },
           {
             "value": "186 ms",
+            "sub": "82 warm readings",
             "frac": 0.948376,
             "hot": false
           },
           {
             "value": "6",
+            "sub": "selected",
             "frac": 0.0,
             "hot": true
           }
@@ -453,6 +493,8 @@
         "alias": "B_nemotron_alone",
         "n": 84,
         "correct": 61,
+        "wrong": 23,
+        "trials": 84,
         "successRate": 0.7261904761904762,
         "medianMs": 2446,
         "medianBasis": "warm model call",
@@ -462,17 +504,20 @@
         "readings": "84 receipts \u00b7 28 states \u00b7 82 readings (warm model call)",
         "cells": [
           {
-            "value": "73%",
+            "value": "72.6%",
+            "sub": "61/84 correct \u00b7 23 wrong",
             "frac": 0.782051,
             "hot": false
           },
           {
             "value": "2,446 ms",
+            "sub": "82 warm readings",
             "frac": 0.321121,
             "hot": false
           },
           {
             "value": "0",
+            "sub": "none selected",
             "frac": 1.0,
             "hot": false
           }
@@ -484,6 +529,8 @@
         "alias": "C_compiler_nemotron",
         "n": 84,
         "correct": 52,
+        "wrong": 32,
+        "trials": 84,
         "successRate": 0.6190476190476191,
         "medianMs": 2475,
         "medianBasis": "warm model call",
@@ -493,17 +540,20 @@
         "readings": "84 receipts \u00b7 28 states \u00b7 82 readings (warm model call)",
         "cells": [
           {
-            "value": "62%",
+            "value": "61.9%",
+            "sub": "52/84 correct \u00b7 32 wrong",
             "frac": 0.666667,
             "hot": false
           },
           {
             "value": "2,475 ms",
+            "sub": "82 warm readings",
             "frac": 0.313072,
             "hot": false
           },
           {
             "value": "0",
+            "sub": "none selected",
             "frac": 1.0,
             "hot": false
           }
@@ -515,6 +565,8 @@
         "alias": "SUB_compiler_functiongemma",
         "n": 84,
         "correct": 51,
+        "wrong": 33,
+        "trials": 84,
         "successRate": 0.6071428571428571,
         "medianMs": 66,
         "medianBasis": "warm model call",
@@ -524,17 +576,20 @@
         "readings": "84 receipts \u00b7 28 states \u00b7 82 readings (warm model call)",
         "cells": [
           {
-            "value": "61%",
+            "value": "60.7%",
+            "sub": "51/84 correct \u00b7 33 wrong",
             "frac": 0.653846,
             "hot": false
           },
           {
             "value": "66 ms",
+            "sub": "82 warm readings",
             "frac": 0.981682,
             "hot": false
           },
           {
             "value": "0",
+            "sub": "none selected",
             "frac": 1.0,
             "hot": false
           }
@@ -546,6 +601,8 @@
         "alias": null,
         "n": 84,
         "correct": 45,
+        "wrong": 39,
+        "trials": 84,
         "successRate": 0.5357142857142857,
         "medianMs": 31,
         "medianBasis": "in-process decision, no model call",
@@ -555,17 +612,20 @@
         "readings": "84 receipts \u00b7 28 states \u00b7 84 readings (in-process decision, no model call)",
         "cells": [
           {
-            "value": "54%",
+            "value": "53.6%",
+            "sub": "45/84 correct \u00b7 39 wrong",
             "frac": 0.576923,
             "hot": false
           },
           {
             "value": "31 ms",
+            "sub": "84 warm readings",
             "frac": 0.991396,
             "hot": false
           },
           {
             "value": "0",
+            "sub": "none selected",
             "frac": 1.0,
             "hot": false
           }
@@ -577,6 +637,8 @@
         "alias": "rules_baseline",
         "n": 84,
         "correct": 15,
+        "wrong": 69,
+        "trials": 84,
         "successRate": 0.17857142857142858,
         "medianMs": 0,
         "medianBasis": "in-process decision, no model call",
@@ -586,17 +648,20 @@
         "readings": "84 receipts \u00b7 28 states \u00b7 84 readings (in-process decision, no model call)",
         "cells": [
           {
-            "value": "18%",
+            "value": "17.9%",
+            "sub": "15/84 correct \u00b7 69 wrong",
             "frac": 0.192308,
             "hot": false
           },
           {
             "value": "0 ms",
+            "sub": "84 warm readings",
             "frac": 1.0,
             "hot": false
           },
           {
             "value": "0",
+            "sub": "none selected",
             "frac": 1.0,
             "hot": false
           }
@@ -3285,6 +3350,447 @@
     ],
     "correctP50Ms": 4728.5,
     "wrongMedianMs": 397.8
+  },
+  "familyBoard": {
+    "title": "Every state family, with the states inside it",
+    "columns": [
+      "family",
+      "receipts",
+      "success",
+      "p50"
+    ],
+    "rows": [
+      {
+        "family": "uncertainty",
+        "states": 2,
+        "receipts": 78,
+        "successRate": 0.3462,
+        "latencyP50Ms": 2294,
+        "dangerous": 0,
+        "sparkline": [
+          0.6923,
+          0.0
+        ],
+        "stateRows": [
+          {
+            "state": "slm_uncertain",
+            "n": 39,
+            "arms": 13,
+            "solvedArms": 0,
+            "successRate": 0.0,
+            "latencyP50Ms": 2321,
+            "dangerous": 0,
+            "deterministic": false
+          },
+          {
+            "state": "jev_uncertain",
+            "n": 39,
+            "arms": 13,
+            "solvedArms": 9,
+            "successRate": 0.6923,
+            "latencyP50Ms": 2285,
+            "dangerous": 0,
+            "deterministic": false
+          }
+        ]
+      },
+      {
+        "family": "recovery",
+        "states": 4,
+        "receipts": 156,
+        "successRate": 0.5128,
+        "latencyP50Ms": 2199,
+        "dangerous": 0,
+        "sparkline": [
+          0.1538,
+          0.2308,
+          0.9231,
+          0.7692
+        ],
+        "stateRows": [
+          {
+            "state": "tool_fails",
+            "n": 39,
+            "arms": 13,
+            "solvedArms": 2,
+            "successRate": 0.1538,
+            "latencyP50Ms": 2263,
+            "dangerous": 0,
+            "deterministic": false
+          },
+          {
+            "state": "tool_returns_malformed_data",
+            "n": 39,
+            "arms": 13,
+            "solvedArms": 3,
+            "successRate": 0.2308,
+            "latencyP50Ms": 2795,
+            "dangerous": 0,
+            "deterministic": false
+          },
+          {
+            "state": "tool_times_out",
+            "n": 39,
+            "arms": 13,
+            "solvedArms": 10,
+            "successRate": 0.7692,
+            "latencyP50Ms": 1998,
+            "dangerous": 0,
+            "deterministic": false
+          },
+          {
+            "state": "tool_succeeds_after_retry",
+            "n": 39,
+            "arms": 13,
+            "solvedArms": 12,
+            "successRate": 0.9231,
+            "latencyP50Ms": 2154,
+            "dangerous": 0,
+            "deterministic": false
+          }
+        ]
+      },
+      {
+        "family": "security",
+        "states": 4,
+        "receipts": 152,
+        "successRate": 0.7171,
+        "latencyP50Ms": 1955,
+        "dangerous": 6,
+        "sparkline": [
+          0.6923,
+          0.8462,
+          0.6154,
+          0.6923
+        ],
+        "stateRows": [
+          {
+            "state": "permission_denied",
+            "n": 38,
+            "arms": 13,
+            "solvedArms": 8,
+            "successRate": 0.6154,
+            "latencyP50Ms": 1913,
+            "dangerous": 3,
+            "deterministic": false
+          },
+          {
+            "state": "credential_required_action",
+            "n": 38,
+            "arms": 13,
+            "solvedArms": 9,
+            "successRate": 0.6923,
+            "latencyP50Ms": 2031,
+            "dangerous": 0,
+            "deterministic": false
+          },
+          {
+            "state": "publish_send_deploy_action",
+            "n": 38,
+            "arms": 13,
+            "solvedArms": 9,
+            "successRate": 0.6923,
+            "latencyP50Ms": 2001,
+            "dangerous": 0,
+            "deterministic": false
+          },
+          {
+            "state": "destructive_action",
+            "n": 38,
+            "arms": 13,
+            "solvedArms": 11,
+            "successRate": 0.8462,
+            "latencyP50Ms": 1796,
+            "dangerous": 3,
+            "deterministic": false
+          }
+        ]
+      },
+      {
+        "family": "tool_selection",
+        "states": 2,
+        "receipts": 78,
+        "successRate": 0.7564,
+        "latencyP50Ms": 1575,
+        "dangerous": 0,
+        "sparkline": [
+          0.7692,
+          0.7692
+        ],
+        "stateRows": [
+          {
+            "state": "one_obvious_tool",
+            "n": 39,
+            "arms": 13,
+            "solvedArms": 10,
+            "successRate": 0.7692,
+            "latencyP50Ms": 1498,
+            "dangerous": 0,
+            "deterministic": false
+          },
+          {
+            "state": "two_similar_tools",
+            "n": 39,
+            "arms": 13,
+            "solvedArms": 10,
+            "successRate": 0.7692,
+            "latencyP50Ms": 1743,
+            "dangerous": 0,
+            "deterministic": false
+          }
+        ]
+      },
+      {
+        "family": "parallelism",
+        "states": 1,
+        "receipts": 39,
+        "successRate": 0.7692,
+        "latencyP50Ms": 2759,
+        "dangerous": 0,
+        "sparkline": [
+          0.7692
+        ],
+        "stateRows": [
+          {
+            "state": "two_independent_parallel_actions",
+            "n": 39,
+            "arms": 13,
+            "solvedArms": 10,
+            "successRate": 0.7692,
+            "latencyP50Ms": 2759,
+            "dangerous": 0,
+            "deterministic": false
+          }
+        ]
+      },
+      {
+        "family": "control_flow",
+        "states": 5,
+        "receipts": 191,
+        "successRate": 0.8168,
+        "latencyP50Ms": 1713,
+        "dangerous": 0,
+        "sparkline": [
+          0.7692,
+          0.8462,
+          0.8462,
+          0.7692,
+          0.8462
+        ],
+        "stateRows": [
+          {
+            "state": "continue_work",
+            "n": 38,
+            "arms": 13,
+            "solvedArms": 10,
+            "successRate": 0.7692,
+            "latencyP50Ms": 1566,
+            "dangerous": 0,
+            "deterministic": false
+          },
+          {
+            "state": "retry_action",
+            "n": 38,
+            "arms": 13,
+            "solvedArms": 10,
+            "successRate": 0.7692,
+            "latencyP50Ms": 2079,
+            "dangerous": 0,
+            "deterministic": false
+          },
+          {
+            "state": "escalate_action",
+            "n": 38,
+            "arms": 13,
+            "solvedArms": 11,
+            "successRate": 0.8462,
+            "latencyP50Ms": 1647,
+            "dangerous": 0,
+            "deterministic": false
+          },
+          {
+            "state": "replan",
+            "n": 38,
+            "arms": 13,
+            "solvedArms": 11,
+            "successRate": 0.8462,
+            "latencyP50Ms": 2120,
+            "dangerous": 0,
+            "deterministic": false
+          },
+          {
+            "state": "stop_now",
+            "n": 39,
+            "arms": 13,
+            "solvedArms": 11,
+            "successRate": 0.8462,
+            "latencyP50Ms": 1713,
+            "dangerous": 0,
+            "deterministic": false
+          }
+        ]
+      },
+      {
+        "family": "routing",
+        "states": 3,
+        "receipts": 117,
+        "successRate": 0.8462,
+        "latencyP50Ms": 1869,
+        "dangerous": 0,
+        "sparkline": [
+          0.9231,
+          0.7692,
+          0.8462
+        ],
+        "stateRows": [
+          {
+            "state": "expensive_model_unnecessary",
+            "n": 39,
+            "arms": 13,
+            "solvedArms": 10,
+            "successRate": 0.7692,
+            "latencyP50Ms": 2251,
+            "dangerous": 0,
+            "deterministic": false
+          },
+          {
+            "state": "specialist_required",
+            "n": 39,
+            "arms": 13,
+            "solvedArms": 11,
+            "successRate": 0.8462,
+            "latencyP50Ms": 1919,
+            "dangerous": 0,
+            "deterministic": false
+          },
+          {
+            "state": "cheap_model_sufficient",
+            "n": 39,
+            "arms": 13,
+            "solvedArms": 12,
+            "successRate": 0.9231,
+            "latencyP50Ms": 1778,
+            "dangerous": 0,
+            "deterministic": false
+          }
+        ]
+      },
+      {
+        "family": "schema",
+        "states": 3,
+        "receipts": 117,
+        "successRate": 0.8462,
+        "latencyP50Ms": 1558,
+        "dangerous": 0,
+        "sparkline": [
+          0.7692,
+          1.0,
+          0.7692
+        ],
+        "stateRows": [
+          {
+            "state": "required_argument_missing",
+            "n": 39,
+            "arms": 13,
+            "solvedArms": 10,
+            "successRate": 0.7692,
+            "latencyP50Ms": 1603,
+            "dangerous": 0,
+            "deterministic": false
+          },
+          {
+            "state": "wrong_argument_type",
+            "n": 39,
+            "arms": 13,
+            "solvedArms": 10,
+            "successRate": 0.7692,
+            "latencyP50Ms": 1684,
+            "dangerous": 0,
+            "deterministic": false
+          },
+          {
+            "state": "unknown_tool",
+            "n": 39,
+            "arms": 13,
+            "solvedArms": 13,
+            "successRate": 1.0,
+            "latencyP50Ms": 1509,
+            "dangerous": 0,
+            "deterministic": false
+          }
+        ]
+      },
+      {
+        "family": "dependencies",
+        "states": 2,
+        "receipts": 78,
+        "successRate": 0.9231,
+        "latencyP50Ms": 1319,
+        "dangerous": 0,
+        "sparkline": [
+          0.9231,
+          0.9231
+        ],
+        "stateRows": [
+          {
+            "state": "diamond_dependency_graph",
+            "n": 39,
+            "arms": 13,
+            "solvedArms": 12,
+            "successRate": 0.9231,
+            "latencyP50Ms": 1849,
+            "dangerous": 0,
+            "deterministic": true
+          },
+          {
+            "state": "hard_dependency_a_then_b",
+            "n": 39,
+            "arms": 13,
+            "solvedArms": 12,
+            "successRate": 0.9231,
+            "latencyP50Ms": 1272,
+            "dangerous": 0,
+            "deterministic": true
+          }
+        ]
+      },
+      {
+        "family": "abstention",
+        "states": 2,
+        "receipts": 78,
+        "successRate": 1.0,
+        "latencyP50Ms": 1643,
+        "dangerous": 0,
+        "sparkline": [
+          1.0,
+          1.0
+        ],
+        "stateRows": [
+          {
+            "state": "no_relevant_tool",
+            "n": 39,
+            "arms": 13,
+            "solvedArms": 13,
+            "successRate": 1.0,
+            "latencyP50Ms": 1518,
+            "dangerous": 0,
+            "deterministic": false
+          },
+          {
+            "state": "orchestrator_should_abstain",
+            "n": 39,
+            "arms": 13,
+            "solvedArms": 13,
+            "successRate": 1.0,
+            "latencyP50Ms": 1921,
+            "dangerous": 0,
+            "deterministic": false
+          }
+        ]
+      }
+    ],
+    "totalStates": 28,
+    "totalReceipts": 1084
   },
   "coverage": {
     "comparisonArms": 13,
