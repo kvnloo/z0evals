@@ -87,6 +87,7 @@ def build_matrix(raw: Path) -> dict:
             "entropy": r.get("entropy"),
             "margin": r.get("margin"),
             "selected": r.get("selected_action"),
+            "legal": list(r.get("legal_actions") or []),
             "goldAction": (r.get("verification") or {}).get("gold_action"),
             "expectAbstain": (r.get("verification") or {}).get("expect_abstain"),
             "repetition": r.get("repetition"),
@@ -144,6 +145,53 @@ def build_matrix(raw: Path) -> dict:
                                / max(1, sum(1 for x in runs if x["confidence"] is not None))),
         })
 
+    # --- calibration: every decision that reported a confidence ------------
+    calibration = []
+    for s in state_list:
+        for arm, a in s["arms"].items():
+            for run in a["runs"]:
+                if run["confidence"] is None:
+                    continue
+                calibration.append({
+                    "arm": arm,
+                    "family": s["family"],
+                    "stateId": s["id"],
+                    "confidence": round(float(run["confidence"]), 6),
+                    "correct": bool(run["correct"]),
+                    "dangerous": bool(run["dangerous"]),
+                })
+
+    # --- action census: offered vs selected, the reference's tool table -----
+    offered: dict[str, int] = defaultdict(int)
+    selected: dict[str, int] = defaultdict(int)
+    dangerous: dict[str, int] = defaultdict(int)
+    # Offered and selected are both counted per RUN, so the rate is comparable:
+    # counting offered per state while selected per run produced rates above 1.
+    for s in state_list:
+        for a in s["arms"].values():
+            for run in a["runs"]:
+                for act in (run.get("legal") or []):
+                    offered[act] += 1
+                sel = run["selected"]
+                if sel:
+                    selected[sel] += 1
+                    if run["dangerous"]:
+                        dangerous[sel] += 1
+    actions = [
+        {"id": act, "offered": offered.get(act, 0), "selected": n,
+         "selectionRate": (n / offered[act]) if offered.get(act) else None,
+         "dangerous": dangerous.get(act, 0)}
+        for act, n in selected.items()
+    ]
+    actions.sort(key=lambda x: -x["selected"])
+
+    # --- per-state aggregate across arms, for the sparkline rows -----------
+    for s in state_list:
+        rates = [a["successRate"] for a in s["arms"].values() if a["successRate"] is not None]
+        s["meanSuccess"] = sum(rates) / len(rates) if rates else None
+        s["fullySolved"] = sum(1 for a in s["arms"].values() if a["successRate"] == 1.0)
+        s["armCount"] = len(s["arms"])
+
     families = []
     for fam in sorted({s["family"] for s in state_list}):
         fam_states = [s for s in state_list if s["family"] == fam]
@@ -156,6 +204,10 @@ def build_matrix(raw: Path) -> dict:
             "abstained": sum(1 for x in runs if x["abstained"]),
             "invalid": sum(1 for x in runs if x["invalid"]),
             "dangerous": sum(1 for x in runs if x["dangerous"]),
+            "sparkline": [round(s["meanSuccess"], 4) for s in fam_states
+                          if s.get("meanSuccess") is not None],
+            "stateIds": [s["id"] for s in fam_states],
+            "fullySolvedStates": sum(1 for s in fam_states if s.get("fullySolved", 0) == s.get("armCount", 0)),
         })
     families.sort(key=lambda f: -f["runs"])
 
@@ -165,6 +217,8 @@ def build_matrix(raw: Path) -> dict:
         "states": state_list,
         "families": families,
         "armOrder": [a["id"] for a in arms],
+        "calibration": calibration,
+        "actions": actions,
     }
 
 
