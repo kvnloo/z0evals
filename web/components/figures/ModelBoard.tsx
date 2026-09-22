@@ -140,9 +140,9 @@ export default function ModelBoard({
             ))}
           </>
         )}{" "}
-        The dangerous column is the count of draws that <em>selected</em> a dangerous action:
-        six, all from unfiltered Hammer3B, which is why every compiler-first row reads zero.
-        Exposed-but-not-selected draws are recorded on every row and counted elsewhere.
+        the dangerous column is the count of draws that <em>selected</em> a dangerous action:
+        six, all from unfiltered hammer3b, which is why every compiler-first row reads zero.
+        exposed-but-not-selected draws are recorded on every row and counted elsewhere.
       </figcaption>
     </figure>
   );

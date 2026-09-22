@@ -52,7 +52,7 @@ export default function ProgressRows({ d }: { d: ProgressData }) {
 
       {d.rows.map((r) => {
         const path = r.points
-          .map(([x, y], i) => `${i === 0 ? "M" : "L"}${((x / 100) * W).toFixed(2)} ${(H - (y / r.total) * H).toFixed(2)}`)
+          .map(([x, y], i) => `${i === 0 ? "m" : "l"}${((x / 100) * W).toFixed(2)} ${(H - (y / r.total) * H).toFixed(2)}`)
           .join(" ");
         return (
           <div className="progressRow" key={r.arm}>
@@ -90,13 +90,13 @@ export default function ProgressRows({ d }: { d: ProgressData }) {
       })}
 
       <figcaption>
-        Cumulative states solved as the suite is walked in a fixed order, counting a state only
-        when the arm got it right on a majority of its three repetitions. The two Qwen3.5-9B arms
+        cumulative states solved as the suite is walked in a fixed order, counting a state only
+        when the arm got it right on a majority of its three repetitions. the two qwen3.5-9b arms
         finish at {d.rows[0]?.solved ?? 0}/{d.total} and are indistinguishable here; what separates
         them is not how many states they solve but whether the compiler is standing in front of
         them, which the dangerous-selection column above settles.{" "}
-        <strong>PreserveAspectRatio is none</strong> on these plots, as in the reference: the
-        viewBox is a coordinate system, not an aspect contract, so the stroke is pinned with
+        <strong>preserveaspectratio is none</strong> on these plots, as in the reference: the
+        viewbox is a coordinate system, not an aspect contract, so the stroke is pinned with
         <code> non-scaling-stroke</code> to stay 1.5px however wide the column gets.
       </figcaption>
     </figure>

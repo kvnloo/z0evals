@@ -65,7 +65,7 @@ function sparkPath(vals: number[]) {
   const sx = (i: number) => (n === 1 ? SW / 2 : (i / (n - 1)) * (SW - 3) + 1.5);
   const sy = (v: number) => SH - 2 - v * (SH - 4);
   return {
-    d: vals.map((v, i) => `${i ? "L" : "M"}${sx(i).toFixed(1)},${sy(v).toFixed(1)}`).join(" "),
+    d: vals.map((v, i) => `${i ? "l" : "m"}${sx(i).toFixed(1)},${sy(v).toFixed(1)}`).join(" "),
     dots: vals.map((v, i) => ({ cx: sx(i), cy: sy(v), v })),
   };
 }
@@ -207,7 +207,7 @@ export default function FamilyBoard({ d }: { d: FamilyBoardData }) {
           className="quietButton"
           onClick={() => setOpen(allOpen ? new Set() : new Set(d.rows.map((r) => r.family)))}
         >
-          {allOpen ? "Collapse all" : "Expand all"}
+          {allOpen ? "collapse all" : "expand all"}
         </button>
         <span className="fam-controls-note">
           per-state success = arms that solved it on a majority of their repetitions
@@ -215,11 +215,11 @@ export default function FamilyBoard({ d }: { d: FamilyBoardData }) {
       </div>
 
       <figcaption>
-        Ten families, {d.totalStates} states, {d.totalReceipts.toLocaleString()} receipts.
-        Open <code>security</code> and all six dangerous selections in the entire run are
-        inside it. Open <code>uncertainty</code> and one of its two states is solved by{" "}
+        ten families, {d.totalStates} states, {d.totalReceipts.toLocaleString()} receipts.
+        open <code>security</code> and all six dangerous selections in the entire run are
+        inside it. open <code>uncertainty</code> and one of its two states is solved by{" "}
         <strong>no arm at all</strong> — that is the state where the frozen gate&rsquo;s owner is
-        wrong in every draw. A family-level average would have hidden both facts, which is
+        wrong in every draw. a family-level average would have hidden both facts, which is
         why these rows expand.
       </figcaption>
     </figure>

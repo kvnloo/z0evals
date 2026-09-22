@@ -135,7 +135,7 @@ export default function ForecastPair({ d }: { d: ForecastData }) {
             viewBox={`0 0 ${EW} ${EH}`}
             preserveAspectRatio="none"
             role="img"
-            aria-label="Wilson 95% intervals for every arm, narrowest to widest."
+            aria-label="wilson 95% intervals for every arm, narrowest to widest."
           >
             <line
               x1={EW * d.referenceRate}
@@ -161,7 +161,7 @@ export default function ForecastPair({ d }: { d: ForecastData }) {
                     vectorEffect="non-scaling-stroke"
                   >
                     <title>
-                      {e.label}: {pct(e.rate)} (95% CI {pct(e.lo)}–{pct(e.hi)}), n={e.n},
+                      {e.label}: {pct(e.rate)} (95% ci {pct(e.lo)}–{pct(e.hi)}), n={e.n},
                       width {pct(w)}
                     </title>
                   </line>
@@ -202,13 +202,13 @@ export default function ForecastPair({ d }: { d: ForecastData }) {
       </div>
 
       <figcaption>
-        Intervals are Wilson 95% score intervals over the measured counts in this run. The
+        intervals are wilson 95% score intervals over the measured counts in this run. the
         left panel walks {d.referenceArm} receipt by receipt; the shaded band is the interval
         the data licenses at each point, and it only commits to ±{((best?.hi ?? 0) - (best?.lo ?? 0)) * 50 < 0 ? 0 : Math.round(((best?.hi ?? 0) - (best?.lo ?? 0)) * 50)} points once the
-        receipts accumulate. The right panel is the same estimator on every arm at once: the
+        receipts accumulate. the right panel is the same estimator on every arm at once: the
         widest honest interval on this page is {worst ? pct(worst.hi - worst.lo) : "—"} wide, on
         an arm with only {worst?.n ?? 0} draws.{" "}
-        <strong>One reading is not a forecast.</strong> A single state at three repetitions
+        <strong>one reading is not a forecast.</strong> a single state at three repetitions
         licenses {pct(d.errors[0]?.singleLo ?? 0)}–{pct(d.errors[0]?.singleHi ?? 0)}, which is
         consistent with almost any true rate; that is why no arm is ranked on fewer than 76
         receipts and why the six cold-start probes are excluded from every comparison.

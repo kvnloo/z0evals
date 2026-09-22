@@ -9,7 +9,7 @@ export default function ArmTable({ arms, highlight }: { arms: Arm[]; highlight?:
       <thead>
         <tr>
           <th>arm</th><th className="num">runs</th><th className="num">success</th>
-          <th className="num">Wilson 95%</th><th className="num">warm p50</th>
+          <th className="num">wilson 95%</th><th className="num">warm p50</th>
           <th className="num">dangerous</th><th className="num">abstained</th><th className="num">rep. split</th>
         </tr>
       </thead>

@@ -141,12 +141,12 @@ export default function CorpusGrowth({ d }: { d: CorpusData }) {
       </div>
 
       <figcaption>
-        Every one of the 1,102 receipts, at its own recorded <code>decision_ms</code>. The
+        every one of the 1,102 receipts, at its own recorded <code>decision_ms</code>. the
         distribution is genuinely bimodal: in-process decisions land in single-digit
         milliseconds, model calls between roughly 100 ms and 4 s, with nothing in between —
-        the empty bins are measured emptiness, not a smoothing artefact. The {h.flags.length}{" "}
+        the empty bins are measured emptiness, not a smoothing artefact. the {h.flags.length}{" "}
         marked draws are the whole of the dangerous-selection count, and every one of them
-        sits under 250 ms, faster than the median reasoned call. The deterministic
+        sits under 250 ms, faster than the median reasoned call. the deterministic
         compiler&rsquo;s rules-only baseline (0.006 ms, 84 receipts) is left out of the
         histogram so it does not pull the axis three decades left.
       </figcaption>

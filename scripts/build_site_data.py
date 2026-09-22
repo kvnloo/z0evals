@@ -26,17 +26,17 @@ SITE_OUT = ROOT / "web" / "data" / "study.json"
 RUN = "p1b-20260921T1430Z"
 
 ARM_LABEL = {
-    "compiler+functiongemma_270m": "FnGemma 270M",
-    "compiler+hammer2.1_3b": "Hammer 3B",
-    "compiler+hammer2.1_7b": "Hammer 7B",
-    "compiler+jev": "JEV scorer",
-    "compiler+nemotron_orchestrator_8b": "Nemotron 8B",
-    "compiler+qwen3.5_4b": "Qwen 4B",
-    "compiler+qwen3.5_9b": "Qwen 9B",
-    "unfiltered+hammer2.1_3b": "Unfiltered · Hammer 3B",
-    "unfiltered+nemotron_orchestrator_8b": "Unfiltered · Nemotron",
-    "unfiltered+qwen3.5_4b": "Unfiltered · Qwen 4B",
-    "unfiltered+qwen3.5_9b": "Unfiltered · Qwen 9B",
+    "compiler+functiongemma_270m": "fngemma 270m",
+    "compiler+hammer2.1_3b": "hammer 3b",
+    "compiler+hammer2.1_7b": "hammer 7b",
+    "compiler+jev": "jev scorer",
+    "compiler+nemotron_orchestrator_8b": "nemotron 8b",
+    "compiler+qwen3.5_4b": "qwen 4b",
+    "compiler+qwen3.5_9b": "qwen 9b",
+    "unfiltered+hammer2.1_3b": "unfiltered · hammer 3b",
+    "unfiltered+nemotron_orchestrator_8b": "unfiltered · nemotron",
+    "unfiltered+qwen3.5_4b": "unfiltered · qwen 4b",
+    "unfiltered+qwen3.5_9b": "unfiltered · qwen 9b",
 }
 ARM_ORDER = [
     "compiler+hammer2.1_3b", "compiler+qwen3.5_4b", "compiler+qwen3.5_9b",
@@ -261,6 +261,35 @@ def load_components(raw: Path | None) -> dict | None:
     return None
 
 
+PILOT_PATH = ROOT / "studies" / "slm-router-v0" / "data" / "nanojev-j1-shadow-pilot.json"
+
+
+def load_pilot() -> dict | None:
+    """The recovered NanoJev/Jev J1 shadow pilot, kept separate from Phase 1B."""
+    if not PILOT_PATH.is_file():
+        return None
+    a = json.loads(PILOT_PATH.read_text(encoding="utf-8"))
+    agg = a.get("aggregate") or {}
+    return {
+        "runId": a.get("run_id"),
+        "evidenceClass": a.get("evidence_class"),
+        "promotionEligible": a.get("promotion_eligible"),
+        "decisions": agg.get("total_decisions"),
+        "agreements": agg.get("agreements"),
+        "disagreements": agg.get("disagreements"),
+        "agreementRate": agg.get("agreement_rate"),
+        "highRiskCount": agg.get("high_risk_disagreement_count"),
+        "highConfidenceAgreement": agg.get("high_confidence_agreement"),
+        "jevP50Ms": agg.get("jev_p50_ms"),
+        "jevP95Ms": agg.get("jev_p95_ms"),
+        "nanojevP50Ms": agg.get("nanojev_p50_ms"),
+        "nanojevP95Ms": agg.get("nanojev_p95_ms"),
+        "vramMb": (a.get("backend") or {}).get("nanojev", {}).get("vram_mb"),
+        "distinctFrom": a.get("distinct_from"),
+        "recoveredFrom": (a.get("recovered_from") or {}).get("path"),
+    }
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--raw", help="path to observations.jsonl")
@@ -284,9 +313,9 @@ def main() -> int:
         "schema": "z0evals.site.study.v1",
         "study": {
             "id": summary["study_id"], "runId": summary["run_id"],
-            "title": "Small Models Calling the Shots",
+            "title": "small models calling the shots",
             "subtitle": "Phase 1B: what actually routes best on a local RTX 3080 Ti?",
-            "author": "Kevin Rajan", "date": "September 21, 2026",
+            "author": "kevin rajan", "date": "september 21, 2026",
             "evidenceStatus": summary["evidence_status"],
             "hardware": summary["hardware"],
             "externalSpendUsd": summary["external_inference_spend_usd"],
@@ -308,11 +337,11 @@ def main() -> int:
             "base": "qwen4b",
             "baseCorrect": summary["composition"]["qwen4b_alone_correct"],
             "variants": [
-                {"id": "qwen4b+hammer3b", "label": "Qwen 4B + Hammer 3B",
+                {"id": "qwen4b+hammer3b", "label": "qwen 4b + hammer 3b",
                  "correct": summary["composition"]["qwen4b_plus_hammer3b_correct"],
                  "helped": summary["composition"]["qwen4b_plus_hammer3b_helped_states"],
                  "hurt": summary["composition"]["qwen4b_plus_hammer3b_hurt_states"]},
-                {"id": "qwen4b+jev", "label": "Qwen 4B + JEV scorer",
+                {"id": "qwen4b+jev", "label": "qwen 4b + jev scorer",
                  "correct": summary["composition"]["qwen4b_plus_jev_correct"],
                  "helped": summary["composition"]["qwen4b_plus_jev_helped_states"],
                  "hurt": summary["composition"]["qwen4b_plus_jev_hurt_states"]},
@@ -327,6 +356,10 @@ def main() -> int:
         "matrix": matrix,
         "matrixOrigin": origin,
         "components": load_components(raw),
+        # Recovered J1 routing-shadow pilot. Deliberately a separate top-level
+        # block, not folded into matrix/components: it is a different study with a
+        # different evidence_class and must not be read as Phase 1B evidence.
+        "pilot": load_pilot(),
     }
     SITE_OUT.parent.mkdir(parents=True, exist_ok=True)
     SITE_OUT.write_text(json.dumps(doc, indent=2) + "\n", encoding="utf-8")

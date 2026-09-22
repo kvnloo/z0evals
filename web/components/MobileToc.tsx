@@ -56,7 +56,7 @@ export default function MobileToc({ items }: { items: TocItem[] }) {
         <button
           type="button"
           className="mobile-toc-fab"
-          aria-label={open ? "Close contents" : "Open contents"}
+          aria-label={open ? "close contents" : "open contents"}
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
         >
@@ -75,17 +75,17 @@ export default function MobileToc({ items }: { items: TocItem[] }) {
         className={`mobile-toc-drawer${open ? " mobile-toc-drawer-open" : ""}`}
         role="dialog"
         aria-modal="true"
-        aria-label="Contents"
+        aria-label="contents"
       >
         <div className="mobile-toc-drawer-head">
-          <span>Contents</span>
+          <span>contents</span>
           <button
             type="button"
             className="mobile-toc-close"
             onClick={() => setOpen(false)}
-            aria-label="Close contents"
+            aria-label="close contents"
           >
-            Close
+            close
           </button>
         </div>
         <nav className="mobile-toc-nav">
