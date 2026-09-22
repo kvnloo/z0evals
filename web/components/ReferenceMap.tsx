@@ -13,24 +13,24 @@ export default function ReferenceMap() {
           <li><a href="https://www.southbridge.ai/blog/jev-watching-the-agents">southbridge — “jev: watching the agents”</a> — the closest conceptual and visual reference for the article.</li>
           <li><a href="https://github.com/southbridgeai/jev">jev</a> — bounded probabilistic decisions without generating prose token by token.</li>
           <li><a href="https://github.com/kvnloo/z0intelligence">openjev / z0intelligence</a> — our local path for direct logit readout, nanojev, q-route and a common decision backend.</li>
-          <li><a href="https://github.com/NousResearch/hermes-agent/pull/113020">Hermes PR #113020 — probabilistic decision providers</a> — provider-neutral typed decisions, abstention and replay metrics. authored by <code>fangliquanflq</code>, not tek.</li>
+          <li><a href="https://github.com/NousResearch/hermes-agent/pull/113020">hermes pr #113020 — probabilistic decision providers</a> — provider-neutral typed decisions, abstention and replay metrics. authored by <code>fangliquanflq</code>, not tek.</li>
         </ul>
       </details>
 
       <details>
         <summary><strong>tek&apos;s eval work in hermes</strong></summary>
         <ul>
-          <li><a href="https://github.com/NousResearch/hermes-agent/pull/88663">teknium1 — PR #88663: Browser Use A/B eval</a> — 204-run benchmark turned into a permanent rerunnable eval.</li>
-          <li><a href="https://github.com/NousResearch/hermes-agent/pull/79162">teknium1 — PR #79162: core-toolset A/B harness</a> — one variable at a time, production-derived trap tasks, trace scoring, programmatic success.</li>
-          <li><a href="https://github.com/NousResearch/hermes-agent/pull/87326">teknium1 — PR #87326: lean-tail compaction recall eval</a> — quality and retained tokens measured together.</li>
-          <li><a href="https://github.com/NousResearch/hermes-agent/pull/109903">teknium1 — PR #109903: move living benchmarks into evals/</a> — evals as durable repo artifacts instead of one-off scripts.</li>
+          <li><a href="https://github.com/NousResearch/hermes-agent/pull/88663">teknium1 — pr #88663: browser use a/b eval</a> — 204-run benchmark turned into a permanent rerunnable eval.</li>
+          <li><a href="https://github.com/NousResearch/hermes-agent/pull/79162">teknium1 — pr #79162: core-toolset a/b harness</a> — one variable at a time, production-derived trap tasks, trace scoring, programmatic success.</li>
+          <li><a href="https://github.com/NousResearch/hermes-agent/pull/87326">teknium1 — pr #87326: lean-tail compaction recall eval</a> — quality and retained tokens measured together.</li>
+          <li><a href="https://github.com/NousResearch/hermes-agent/pull/109903">teknium1 — pr #109903: move living benchmarks into evals/</a> — evals as durable repo artifacts instead of one-off scripts.</li>
         </ul>
       </details>
 
       <details>
         <summary><strong>agent harnesses & execution systems</strong></summary>
         <ul>
-          <li><a href="https://github.com/NousResearch/hermes-agent">NousResearch/hermes-agent</a></li>
+          <li><a href="https://github.com/NousResearch/hermes-agent">nousresearch/hermes-agent</a></li>
           <li><a href="https://github.com/deepseek-ai/deepseek-harness">deepseek-ai/deepseek-harness</a></li>
           <li><a href="https://github.com/can1357/oh-my-pi">can1357/oh-my-pi</a></li>
           <li><a href="https://modelcontextprotocol.io/">model context protocol</a></li>
@@ -44,7 +44,7 @@ export default function ReferenceMap() {
         <summary><strong>zer0 architecture</strong></summary>
         <ul>
           <li><a href="https://github.com/kvnloo/aodl">aodl</a> — typed intent, constraints and legal-action structure.</li>
-          <li><a href="https://github.com/kvnloo/z0intelligence">z0intelligence</a> — cognition selection, escalation, DecisionBackend, nanojev and q-route.</li>
+          <li><a href="https://github.com/kvnloo/z0intelligence">z0intelligence</a> — cognition selection, escalation, decisionbackend, nanojev and q-route.</li>
           <li><a href="https://github.com/kvnloo/kerdoios">kerdoios</a> — residency, provider quota and resource placement.</li>
           <li><a href="https://github.com/kvnloo/evolution-lab">evolution-lab</a> — q-route, mushroom/fly experiments and training.</li>
           <li><a href="https://github.com/kvnloo/tokenomics">tokenomics</a> — neutral token/context/latency/cost/outcome accounting.</li>
@@ -77,7 +77,7 @@ export default function ReferenceMap() {
           <li><a href="https://flywire.ai/">flywire</a> — whole-brain drosophila connectomics.</li>
           <li><a href="https://www.science.org/doi/10.1126/science.add9330">the connectome of an insect brain</a></li>
           <li><a href="https://www.nature.com/articles/nature23455">mushroom-body learning literature</a></li>
-          <li><a href="https://github.com/kvnloo/frontier-kb">flyforge research trail</a> — MaleCNS, TMNF-C and the sensorimotor-specialist framing.</li>
+          <li><a href="https://github.com/kvnloo/frontier-kb">flyforge research trail</a> — malecns, tmnf-c and the sensorimotor-specialist framing.</li>
           <li><a href="https://github.com/kvnloo/z0intelligence/tree/main/omp-extensions">flyforge integration</a> — current shadow/recovery integrations.</li>
         </ul>
       </details>
@@ -85,7 +85,7 @@ export default function ReferenceMap() {
       <details>
         <summary><strong>“make the model do less” & evaluation methodology</strong></summary>
         <ul>
-          <li>AgentRun — “a harness for repetitive knowledge work” by Miguel Ríos Berríos / Grep — compile repeated agent behavior into a workflow and skip work that cannot change the answer.</li>
+          <li>agentrun — “a harness for repetitive knowledge work” by miguel ríos berríos / grep — compile repeated agent behavior into a workflow and skip work that cannot change the answer.</li>
           <li><a href="https://arxiv.org/abs/2512.24601">recursive language-model work</a> — context virtualization / evidence addressing.</li>
           <li><a href="https://github.com/stanfordnlp/dspy">dspy</a> — prompts/programs as optimizable components.</li>
           <li><a href="https://en.wikipedia.org/wiki/Brier_score">brier score</a>, <a href="https://en.wikipedia.org/wiki/Cross-entropy">log loss</a>, and <a href="https://scikit-learn.org/stable/modules/calibration.html">calibration</a> — probability quality rather than only top-1 accuracy.</li>

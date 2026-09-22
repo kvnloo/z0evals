@@ -26,7 +26,7 @@ export default function ArmScatter({ arms }: { arms: Arm[] }) {
   return (
     <div ref={ref} style={{ position: "relative" }}>
       <svg viewBox={`0 0 ${W} ${H}`} className="chart-svg" role="img"
-           aria-label="Success rate against warm median latency, with Wilson 95% intervals">
+           aria-label="success rate against warm median latency, with wilson 95% intervals">
         {logTicks(Math.min(...lats), Math.max(...lats)).map((t) => (
           <g key={t}>
             <line className="grid" x1={x(t)} x2={x(t)} y1={T} y2={H - B} />
@@ -80,7 +80,7 @@ export default function ArmScatter({ arms }: { arms: Arm[] }) {
       <div className="legend">
         <span><i className="swatch" style={{ background: "#29916e" }} />compiler-first</span>
         <span><i className="swatch" style={{ background: "#b91c1c" }} />unfiltered control</span>
-        <span><i className="swatch" style={{ background: "#1a3029" }} />Pareto frontier</span>
+        <span><i className="swatch" style={{ background: "#1a3029" }} />pareto frontier</span>
       </div>
     </div>
   );

@@ -44,7 +44,7 @@ export default function Heatmap({ matrix }: { matrix: Matrix }) {
         ))}
       </div>
       <svg viewBox={`0 0 ${W} ${H}`} className="chart-svg" role="img"
-           aria-label="Outcome matrix of states against arms">
+           aria-label="outcome matrix of states against arms">
         {states.map((s, si) => (
           <text key={s.id} x={L + si * cellW + cellW / 2} y={T - 10}
                 fontSize="9" fill="#888" textAnchor="end"

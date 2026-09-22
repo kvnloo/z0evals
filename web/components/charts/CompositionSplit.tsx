@@ -8,7 +8,7 @@ export default function CompositionSplit({
   base, baseCorrect, total, variants,
 }: { base: string; baseCorrect: number; total: number; variants: Variant[] }) {
   const { ref, shown } = useReveal<HTMLDivElement>();
-  const rows = [{ id: base, label: "Qwen 4B alone", correct: baseCorrect, helped: 0, hurt: 0 }, ...variants];
+  const rows = [{ id: base, label: "qwen 4b alone", correct: baseCorrect, helped: 0, hurt: 0 }, ...variants];
   const W = 820, rowH = 62, L = 158, R = 96, T = 30, B = 26;
   const H = T + rows.length * rowH + B;
   const mid = L + (W - L - R) / 2;
@@ -18,7 +18,7 @@ export default function CompositionSplit({
   return (
     <div ref={ref}>
       <svg viewBox={`0 0 ${W} ${H}`} className="chart-svg" role="img"
-           aria-label="Correct states, and states helped or hurt, per composition">
+           aria-label="correct states, and states helped or hurt, per composition">
         <text x={mid - 10} y={16} textAnchor="end" fontSize="10.5" fill="#888">helped</text>
         <text x={mid + 10} y={16} textAnchor="start" fontSize="10.5" fill="#888">hurt</text>
         <line className="axis" x1={mid} x2={mid} y1={T - 14} y2={H - B} />

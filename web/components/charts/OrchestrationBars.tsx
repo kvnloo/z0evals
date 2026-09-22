@@ -21,7 +21,7 @@ export default function OrchestrationBars({ data, total }: { data: Sets; total: 
   return (
     <div ref={ref}>
       <svg viewBox={`0 0 ${W} ${H}`} className="chart-svg" role="img"
-           aria-label="Orchestration outcomes per model on the expanded cohort">
+           aria-label="orchestration outcomes per model on the expanded cohort">
         {[0, 0.25, 0.5, 0.75, 1].map((f) => (
           <g key={f}>
             <line className="grid" x1={L} x2={W - R} y1={H - B - f * (H - T - B)} y2={H - B - f * (H - T - B)} />
