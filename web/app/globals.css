@@ -677,7 +677,28 @@ figcaption .fig-n { font-family: var(--font-mono); color: var(--color-sb-seconda
   display: block;
   transition: width .55s cubic-bezier(.2, .7, .2, 1);
 }
-.modelCell strong { text-align: right; color: var(--color-sb-text-muted); font-weight: 500; }
+.modelCell strong {
+  text-align: right;
+  color: var(--color-sb-text-muted);
+  font-weight: 500;
+  display: grid;
+  gap: 1px;
+}
+.modelCellSub {
+  font-size: 10px;
+  color: var(--color-sb-text-light);
+  font-family: var(--font-sans);
+  font-weight: 400;
+}
+/* The model board gets a little more room than the prose column when wide:
+   it is an accounting table, and the reference breaks figures out for exactly
+   this reason. */
+@media (min-width: 1100px) {
+  .figure .modelBoard,
+  .figure .fam-head,
+  .figure .fam-row,
+  .figure .fam-state-row { /* keep inside the 680 column */ }
+}
 .modelCell strong[data-hot] { color: var(--color-sb-error); }
 .modelRow[data-model^="jev"] .modelName,
 .modelRow[data-model^="jev"] strong { color: var(--color-sb-text); }
@@ -860,27 +881,104 @@ figcaption .fig-n { font-family: var(--font-mono); color: var(--color-sb-seconda
   animation: tooltipFade 1.5s ease-out forwards;
 }
 
-/* ------------------------------------------------- family sparkline rows */
-.fam-rows { border-top: 1px solid var(--color-sb-border); }
+/* -------------------------------------------------- family board (dense) */
+/* Six columns: family · receipts · success · p50 · sparkline · solved.
+   Rows expand to their constituent states. */
+.fam-head,
 .fam-row {
   display: grid;
-  grid-template-columns: minmax(120px, 1.4fr) 74px 96px 96px;
+  grid-template-columns:
+    minmax(140px, 1.5fr) 64px 62px 64px 96px 62px;
   gap: var(--space-3);
   align-items: center;
+}
+.fam-head {
+  color: var(--color-sb-text-light);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  font-size: 10px;
+  padding: 0 2px var(--space-2);
+  border-bottom: 1px solid var(--color-sb-border);
+}
+.fam-rows { border-top: 0; }
+.fam-block { border-bottom: 1px solid var(--color-sb-bg-muted); }
+.fam-row {
   padding: var(--space-2) 2px;
-  border-bottom: 1px solid var(--color-sb-bg-muted);
   cursor: pointer;
   transition: background .15s;
 }
 .fam-row:hover { background: var(--color-sb-bg-subtle); }
 .fam-row[data-active="true"] { background: var(--color-sb-highlight-soft); }
 .fam-name { font-size: var(--text-sm); }
-.fam-sub { display: block; font-size: 11px; color: var(--color-sb-text-light); }
-.fam-runs { font-size: var(--text-xs); color: var(--color-sb-text-muted); font-family: var(--font-mono); }
-.fam-spark { display: flex; align-items: center; }
-.fam-score { text-align: right; font-size: var(--text-xs); font-family: var(--font-mono); }
-.fam-score strong { color: var(--color-sb-secondary); }
-.fam-flag { display: block; font-size: 10px; color: #b45309; }
+.fam-caret {
+  display: inline-block;
+  width: 1em;
+  margin-right: .25em;
+  color: var(--color-sb-text-light);
+  font-size: 10px;
+}
+.fam-sub { display: block; font-size: 11px; color: var(--color-sb-text-light); margin-left: 1.25em; }
+.fam-danger { color: var(--color-sb-error); }
+.fam-runs,
+.fam-score,
+.fam-p50,
+.fam-solved {
+  font-size: var(--text-xs);
+  font-family: var(--font-mono);
+  color: var(--color-sb-text-muted);
+  text-align: right;
+}
+.fam-score { color: var(--color-sb-text); }
+.fam-spark { display: flex; align-items: center; justify-content: center; }
+.fam-empty { color: var(--color-sb-text-light); }
+.fam-solved strong { color: var(--color-sb-secondary); font-weight: 500; }
+
+/* expanded constituent states */
+.fam-states {
+  padding: 0 0 var(--space-2) 1.25em;
+  display: grid;
+  gap: 1px;
+}
+.fam-state-row {
+  display: grid;
+  grid-template-columns: minmax(140px, 1.5fr) 64px 62px 64px 96px 62px;
+  gap: var(--space-3);
+  align-items: center;
+  font-size: var(--text-xs);
+  color: var(--color-sb-text-muted);
+  padding: var(--space-1) 2px;
+  border-left: 2px solid var(--color-sb-border);
+  padding-left: var(--space-3);
+}
+.fam-state-name { color: var(--color-sb-text); }
+.fam-state-tag { color: var(--color-sb-text-light); font-style: normal; font-size: 10px; }
+.fam-state-n,
+.fam-state-succ,
+.fam-state-p50 { font-family: var(--font-mono); text-align: right; }
+.fam-state-succ[data-weak="true"] { color: var(--color-sb-error); font-weight: 500; }
+.fam-state-dang { color: var(--color-sb-error); font-size: 10px; }
+.fam-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-top: var(--space-3);
+}
+.fam-controls-note { font-size: 10px; color: var(--color-sb-text-light); }
+.quietButton {
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--color-sb-border);
+  background: #fff;
+  color: var(--color-sb-text-muted);
+  font: inherit;
+  font-size: var(--text-xs);
+  cursor: pointer;
+  display: inline-flex;
+  transition: color .15s, border-color .15s;
+}
+.quietButton:hover { color: var(--color-sb-secondary); border-color: var(--color-sb-secondary); }
 
 /* ----------------------------------------------------- inline bar table */
 .action-table td { padding: var(--space-2) var(--space-3); }
@@ -923,15 +1021,62 @@ figcaption .fig-n { font-family: var(--font-mono); color: var(--color-sb-seconda
 }
 .footnotes li { margin: var(--space-2) 0; }
 .footnotes li:target { background: var(--color-sb-highlight-soft); }
+/* ------------------------------------------------- footnote / margin notes */
+/* Method caveats live beside the claim they qualify, not in the narration.
+   Wide viewports pull them into the right gutter (Tufte-style float); narrow
+   viewports reflow them inline so nothing is hidden at any width. */
 .margin-note {
   font-size: var(--text-xs);
   color: var(--color-sb-text-muted);
   line-height: var(--leading-normal);
-  border-left: 2px solid var(--color-sb-border);
+  font-family: var(--font-sans);
+  border-left: 2px solid var(--color-sb-highlight);
   padding-left: var(--space-3);
   margin: var(--space-4) 0;
-  font-family: var(--font-sans);
 }
+.margin-note .margin-note-label {
+  display: block;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--color-sb-text-light);
+  margin-bottom: var(--space-1);
+}
+@media (min-width: 1200px) {
+  .margin-note {
+    float: right;
+    clear: right;
+    width: 190px;
+    margin-right: -230px;
+    margin-top: var(--space-2);
+    margin-bottom: var(--space-4);
+    border-left: 2px solid var(--color-sb-highlight);
+  }
+}
+.fn {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  vertical-align: super;
+  line-height: 0;
+  color: var(--color-sb-secondary);
+  text-decoration: none;
+  padding: 0 1px;
+  cursor: pointer;
+  background: none;
+  border: 0;
+}
+.fn:hover { color: var(--color-sb-primary); text-decoration: underline; }
+.footnotes {
+  margin-top: var(--space-8);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-sb-border);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--color-sb-text-muted);
+}
+.footnotes ol { padding-left: 1.5em; margin: 0; }
+.footnotes li { margin: var(--space-2) 0; }
+.footnotes li:target { background: var(--color-sb-highlight-soft); }
 
 /* ----------------------------------------------------- headline figure */
 .headline {
