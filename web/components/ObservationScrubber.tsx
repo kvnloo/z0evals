@@ -30,13 +30,16 @@ export default function ObservationScrubber({ matrix }: { matrix: Matrix }) {
         </span>
       </div>
 
-      <input
-        aria-label="Inspect one recorded state"
-        aria-valuetext={`State ${i + 1} of ${states.length}, ${s.family}, ${summary}`}
-        type="range" min={0} max={states.length - 1} step={1} value={i}
-        onChange={(e) => setI(Number(e.target.value))}
-        style={{ width: "100%", margin: "4px 0 14px" }}
-      />
+      <div className="scrubRow">
+        <span className="scrubLabel">Inspect</span>
+        <input
+          aria-label="Inspect one recorded event"
+          aria-valuetext={`Event ${i + 1} of ${states.length}, ${s.family}, ${summary}`}
+          type="range" min={0} max={states.length - 1} step={1} value={i}
+          onChange={(e) => setI(Number(e.target.value))}
+        />
+        <span className="progressValue">{i + 1}/{states.length}</span>
+      </div>
 
       <table className="data-table">
         <thead>

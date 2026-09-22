@@ -1,9 +1,29 @@
 "use client";
 import { useEffect, useState } from "react";
+import { FrogGlyph } from "./Frog";
 
-export type TocItem = { id: string; label: string };
+export type TocItem = { id: string; label: string; depth?: number };
 
-/** Contents list with scroll-spy and the frog indicator, as in the reference. */
+/**
+ * The reference's desktop contents rail.
+ *
+ * Markup is the reference's, element for element:
+ *   nav.toc-sidebar.toc-scrollable-container
+ *     div.toc-scrollable-inner
+ *       ul.space-y-1
+ *         li[style="padding-left:0.75rem"]
+ *           a.toc-link-frog
+ *             span.toc-frog-container > svg.toc-frog[viewBox="0 0 200 135"]
+ *             span  (the label)
+ *
+ * The frog is the reference's own seven-path glyph, not a redrawing: see
+ * `Frog.tsx`. It is `opacity:0` until its row is the active one, exactly as in
+ * the reference.
+ *
+ * Scroll spy uses the reference's own rootMargin, `-100px 0px -66% 0px`, and
+ * no threshold — the reference configures the reveal by rootMargin rather than
+ * by a percentage crossing.
+ */
 export default function Toc({ items }: { items: TocItem[] }) {
   const [active, setActive] = useState<string>("");
 
@@ -15,31 +35,39 @@ export default function Toc({ items }: { items: TocItem[] }) {
 
     const io = new IntersectionObserver(
       (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-        if (visible[0]) setActive(visible[0].target.id);
+        entries.forEach((e) => {
+          if (e.isIntersecting) setActive(e.target.id);
+        });
       },
-      { rootMargin: "-72px 0px -70% 0px", threshold: [0, 1] }
+      { rootMargin: "-100px 0px -66% 0px" },
     );
     headings.forEach((h) => io.observe(h));
     return () => io.disconnect();
   }, [items]);
 
   return (
-    <nav className="toc" aria-label="Contents">
-      <ol>
-        {items.map((it) => (
-          <li key={it.id}>
-            <a href={`#${it.id}`} data-active={active === it.id}>
-              <span>{it.label}</span>
-              <svg className="toc-frog" viewBox="0 0 200 135" fill="currentColor" aria-hidden="true">
-                <path d="M100 20c-30 0-55 20-62 45-3 11 2 20 12 20h100c10 0 15-9 12-20-7-25-32-45-62-45zm-28 34a11 11 0 110 22 11 11 0 010-22zm56 0a11 11 0 110 22 11 11 0 010-22z" />
-              </svg>
-            </a>
-          </li>
-        ))}
-      </ol>
+    <nav className="toc toc-sidebar toc-scrollable-container" aria-label="Contents">
+      <div className="toc-scrollable-inner">
+        <ul>
+          {items.map((it) => (
+            <li
+              key={it.id}
+              style={(it.depth ?? 0) > 0 ? { paddingLeft: `${0.75 * (it.depth ?? 0)}rem` } : undefined}
+            >
+              <a
+                href={`#${it.id}`}
+                className="toc-link-frog"
+                data-active={active === it.id}
+              >
+                <span className="toc-frog-container">
+                  <FrogGlyph width={14} height={10} className="toc-frog" />
+                </span>
+                <span>{it.label}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
     </nav>
   );
 }
