@@ -1,6 +1,6 @@
 {
   "corpus": {
-    "title": "Where the 1,102 receipts actually sit",
+    "title": "where the 1,102 receipts actually sit",
     "headline": [
       "1,102 receipts",
       "10 state families",
@@ -192,16 +192,16 @@
     }
   },
   "modelBoard": {
-    "title": "Every arm, measured on the same 28 states",
+    "title": "every arm, measured on the same 28 states",
     "columns": [
-      "Bounded-choice success \u2191",
-      "Median response \u2193",
-      "Dangerous selections \u2193"
+      "bounded-choice success \u2191",
+      "median response \u2193",
+      "dangerous selections \u2193"
     ],
     "rows": [
       {
         "arm": "unfiltered+qwen3.5_9b",
-        "label": "Qwen3.5 9b \u00b7 unfiltered",
+        "label": "qwen3.5 9b \u00b7 unfiltered",
         "alias": "A_qwen9b_alone",
         "n": 84,
         "correct": 78,
@@ -237,7 +237,7 @@
       },
       {
         "arm": "compiler+qwen3.5_9b",
-        "label": "Qwen3.5 9b \u00b7 compiler-first",
+        "label": "qwen3.5 9b \u00b7 compiler-first",
         "alias": null,
         "n": 84,
         "correct": 78,
@@ -273,7 +273,7 @@
       },
       {
         "arm": "compiler+hammer2.1_3b",
-        "label": "Hammer2.1 3b \u00b7 compiler-first",
+        "label": "hammer2.1 3b \u00b7 compiler-first",
         "alias": "SUB_compiler_hammer3b",
         "n": 84,
         "correct": 75,
@@ -309,7 +309,7 @@
       },
       {
         "arm": "compiler+qwen3.5_4b",
-        "label": "Qwen3.5 4b \u00b7 compiler-first",
+        "label": "qwen3.5 4b \u00b7 compiler-first",
         "alias": "SUB_compiler_qwen4b",
         "n": 84,
         "correct": 75,
@@ -345,7 +345,7 @@
       },
       {
         "arm": "unfiltered+qwen3.5_4b",
-        "label": "Qwen3.5 4b \u00b7 unfiltered",
+        "label": "qwen3.5 4b \u00b7 unfiltered",
         "alias": "SUB_qwen4b_alone",
         "n": 84,
         "correct": 75,
@@ -381,7 +381,7 @@
       },
       {
         "arm": "compiler+hammer2.1_7b",
-        "label": "Hammer2.1 7b \u00b7 compiler-first",
+        "label": "hammer2.1 7b \u00b7 compiler-first",
         "alias": "SUB_compiler_hammer7b",
         "n": 84,
         "correct": 72,
@@ -417,7 +417,7 @@
       },
       {
         "arm": "compiler+jev+qwen3.5_4b",
-        "label": "jev+Qwen3.5 4b \u00b7 compiler-first",
+        "label": "jev+qwen3.5 4b \u00b7 compiler-first",
         "alias": null,
         "n": 76,
         "correct": 63,
@@ -453,7 +453,7 @@
       },
       {
         "arm": "unfiltered+hammer2.1_3b",
-        "label": "Hammer2.1 3b \u00b7 unfiltered",
+        "label": "hammer2.1 3b \u00b7 unfiltered",
         "alias": null,
         "n": 84,
         "correct": 69,
@@ -489,7 +489,7 @@
       },
       {
         "arm": "unfiltered+nemotron_orchestrator_8b",
-        "label": "Nemotron Orchestrator 8b \u00b7 unfiltered",
+        "label": "nemotron orchestrator 8b \u00b7 unfiltered",
         "alias": "B_nemotron_alone",
         "n": 84,
         "correct": 61,
@@ -525,7 +525,7 @@
       },
       {
         "arm": "compiler+nemotron_orchestrator_8b",
-        "label": "Nemotron Orchestrator 8b \u00b7 compiler-first",
+        "label": "nemotron orchestrator 8b \u00b7 compiler-first",
         "alias": "C_compiler_nemotron",
         "n": 84,
         "correct": 52,
@@ -561,7 +561,7 @@
       },
       {
         "arm": "compiler+functiongemma_270m",
-        "label": "FunctionGemma 270m \u00b7 compiler-first",
+        "label": "functiongemma 270m \u00b7 compiler-first",
         "alias": "SUB_compiler_functiongemma",
         "n": 84,
         "correct": 51,
@@ -633,7 +633,7 @@
       },
       {
         "arm": "deterministic.compiler_only",
-        "label": "Deterministic compiler only",
+        "label": "deterministic compiler only",
         "alias": "rules_baseline",
         "n": 84,
         "correct": 15,
@@ -670,13 +670,13 @@
     ]
   },
   "progress": {
-    "title": "How far each arm gets through the suite",
+    "title": "how far each arm gets through the suite",
     "axisLabel": "states solved, cumulative",
     "total": 28,
     "rows": [
       {
         "arm": "compiler+qwen3.5_9b",
-        "label": "Qwen3.5 9b \u00b7 compiler-first",
+        "label": "qwen3.5 9b \u00b7 compiler-first",
         "alias": null,
         "solved": 26,
         "total": 28,
@@ -798,7 +798,7 @@
       },
       {
         "arm": "unfiltered+qwen3.5_9b",
-        "label": "Qwen3.5 9b \u00b7 unfiltered",
+        "label": "qwen3.5 9b \u00b7 unfiltered",
         "alias": "A_qwen9b_alone",
         "solved": 26,
         "total": 28,
@@ -920,7 +920,7 @@
       },
       {
         "arm": "compiler+hammer2.1_3b",
-        "label": "Hammer2.1 3b \u00b7 compiler-first",
+        "label": "hammer2.1 3b \u00b7 compiler-first",
         "alias": "SUB_compiler_hammer3b",
         "solved": 25,
         "total": 28,
@@ -1042,7 +1042,7 @@
       },
       {
         "arm": "compiler+qwen3.5_4b",
-        "label": "Qwen3.5 4b \u00b7 compiler-first",
+        "label": "qwen3.5 4b \u00b7 compiler-first",
         "alias": "SUB_compiler_qwen4b",
         "solved": 25,
         "total": 28,
@@ -1164,7 +1164,7 @@
       },
       {
         "arm": "unfiltered+qwen3.5_4b",
-        "label": "Qwen3.5 4b \u00b7 unfiltered",
+        "label": "qwen3.5 4b \u00b7 unfiltered",
         "alias": "SUB_qwen4b_alone",
         "solved": 25,
         "total": 28,
@@ -1286,7 +1286,7 @@
       },
       {
         "arm": "compiler+hammer2.1_7b",
-        "label": "Hammer2.1 7b \u00b7 compiler-first",
+        "label": "hammer2.1 7b \u00b7 compiler-first",
         "alias": "SUB_compiler_hammer7b",
         "solved": 24,
         "total": 28,
@@ -1408,7 +1408,7 @@
       },
       {
         "arm": "compiler+jev+qwen3.5_4b",
-        "label": "jev+Qwen3.5 4b \u00b7 compiler-first",
+        "label": "jev+qwen3.5 4b \u00b7 compiler-first",
         "alias": null,
         "solved": 23,
         "total": 28,
@@ -1530,7 +1530,7 @@
       },
       {
         "arm": "unfiltered+hammer2.1_3b",
-        "label": "Hammer2.1 3b \u00b7 unfiltered",
+        "label": "hammer2.1 3b \u00b7 unfiltered",
         "alias": null,
         "solved": 23,
         "total": 28,
@@ -1652,7 +1652,7 @@
       },
       {
         "arm": "unfiltered+nemotron_orchestrator_8b",
-        "label": "Nemotron Orchestrator 8b \u00b7 unfiltered",
+        "label": "nemotron orchestrator 8b \u00b7 unfiltered",
         "alias": "B_nemotron_alone",
         "solved": 21,
         "total": 28,
@@ -1774,7 +1774,7 @@
       },
       {
         "arm": "compiler+functiongemma_270m",
-        "label": "FunctionGemma 270m \u00b7 compiler-first",
+        "label": "functiongemma 270m \u00b7 compiler-first",
         "alias": "SUB_compiler_functiongemma",
         "solved": 17,
         "total": 28,
@@ -1896,7 +1896,7 @@
       },
       {
         "arm": "compiler+nemotron_orchestrator_8b",
-        "label": "Nemotron Orchestrator 8b \u00b7 compiler-first",
+        "label": "nemotron orchestrator 8b \u00b7 compiler-first",
         "alias": "C_compiler_nemotron",
         "solved": 17,
         "total": 28,
@@ -2140,7 +2140,7 @@
       },
       {
         "arm": "deterministic.compiler_only",
-        "label": "Deterministic compiler only",
+        "label": "deterministic compiler only",
         "alias": "rules_baseline",
         "solved": 5,
         "total": 28,
@@ -2263,7 +2263,7 @@
     ]
   },
   "forecast": {
-    "title": "What one reading licenses, and what 84 readings license",
+    "title": "what one reading licenses, and what 84 readings license",
     "referenceRate": 0.928571,
     "referenceArm": "compiler+qwen3.5_9b",
     "curve": [
@@ -2775,7 +2775,7 @@
     "errors": [
       {
         "arm": "deterministic.compiler_only",
-        "label": "Deterministic compiler only",
+        "label": "deterministic compiler only",
         "alias": "rules_baseline",
         "n": 84,
         "correct": 15,
@@ -2799,7 +2799,7 @@
       },
       {
         "arm": "compiler+functiongemma_270m",
-        "label": "FunctionGemma 270m \u00b7 compiler-first",
+        "label": "functiongemma 270m \u00b7 compiler-first",
         "alias": "SUB_compiler_functiongemma",
         "n": 84,
         "correct": 51,
@@ -2811,7 +2811,7 @@
       },
       {
         "arm": "compiler+nemotron_orchestrator_8b",
-        "label": "Nemotron Orchestrator 8b \u00b7 compiler-first",
+        "label": "nemotron orchestrator 8b \u00b7 compiler-first",
         "alias": "C_compiler_nemotron",
         "n": 84,
         "correct": 52,
@@ -2823,7 +2823,7 @@
       },
       {
         "arm": "unfiltered+nemotron_orchestrator_8b",
-        "label": "Nemotron Orchestrator 8b \u00b7 unfiltered",
+        "label": "nemotron orchestrator 8b \u00b7 unfiltered",
         "alias": "B_nemotron_alone",
         "n": 84,
         "correct": 61,
@@ -2835,7 +2835,7 @@
       },
       {
         "arm": "unfiltered+hammer2.1_3b",
-        "label": "Hammer2.1 3b \u00b7 unfiltered",
+        "label": "hammer2.1 3b \u00b7 unfiltered",
         "alias": null,
         "n": 84,
         "correct": 69,
@@ -2847,7 +2847,7 @@
       },
       {
         "arm": "compiler+jev+qwen3.5_4b",
-        "label": "jev+Qwen3.5 4b \u00b7 compiler-first",
+        "label": "jev+qwen3.5 4b \u00b7 compiler-first",
         "alias": null,
         "n": 76,
         "correct": 63,
@@ -2859,7 +2859,7 @@
       },
       {
         "arm": "compiler+hammer2.1_7b",
-        "label": "Hammer2.1 7b \u00b7 compiler-first",
+        "label": "hammer2.1 7b \u00b7 compiler-first",
         "alias": "SUB_compiler_hammer7b",
         "n": 84,
         "correct": 72,
@@ -2871,7 +2871,7 @@
       },
       {
         "arm": "compiler+hammer2.1_3b",
-        "label": "Hammer2.1 3b \u00b7 compiler-first",
+        "label": "hammer2.1 3b \u00b7 compiler-first",
         "alias": "SUB_compiler_hammer3b",
         "n": 84,
         "correct": 75,
@@ -2883,7 +2883,7 @@
       },
       {
         "arm": "compiler+qwen3.5_4b",
-        "label": "Qwen3.5 4b \u00b7 compiler-first",
+        "label": "qwen3.5 4b \u00b7 compiler-first",
         "alias": "SUB_compiler_qwen4b",
         "n": 84,
         "correct": 75,
@@ -2895,7 +2895,7 @@
       },
       {
         "arm": "unfiltered+qwen3.5_4b",
-        "label": "Qwen3.5 4b \u00b7 unfiltered",
+        "label": "qwen3.5 4b \u00b7 unfiltered",
         "alias": "SUB_qwen4b_alone",
         "n": 84,
         "correct": 75,
@@ -2907,7 +2907,7 @@
       },
       {
         "arm": "compiler+qwen3.5_9b",
-        "label": "Qwen3.5 9b \u00b7 compiler-first",
+        "label": "qwen3.5 9b \u00b7 compiler-first",
         "alias": null,
         "n": 84,
         "correct": 78,
@@ -2919,7 +2919,7 @@
       },
       {
         "arm": "unfiltered+qwen3.5_9b",
-        "label": "Qwen3.5 9b \u00b7 unfiltered",
+        "label": "qwen3.5 9b \u00b7 unfiltered",
         "alias": "A_qwen9b_alone",
         "n": 84,
         "correct": 78,
@@ -2938,7 +2938,7 @@
     "distinctUtilities": [
       -1.0
     ],
-    "title": "One state where the gate cannot tell right from wrong",
+    "title": "one state where the gate cannot tell right from wrong",
     "points": [
       {
         "arm": "deterministic.compiler_only",
@@ -3352,7 +3352,7 @@
     "wrongMedianMs": 397.8
   },
   "familyBoard": {
-    "title": "Every state family, with the states inside it",
+    "title": "every state family, with the states inside it",
     "columns": [
       "family",
       "receipts",

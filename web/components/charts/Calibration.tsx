@@ -61,7 +61,7 @@ export default function Calibration({ rows, threshold = 0.5 }: {
   return (
     <div ref={ref} style={{ position: "relative" }}>
       <svg viewBox={`0 0 ${W} ${H}`} className="chart-svg" role="img"
-           aria-label="Reliability of reported confidence against observed accuracy">
+           aria-label="reliability of reported confidence against observed accuracy">
         {/* reliability panel */}
         {[0, 0.25, 0.5, 0.75, 1].map((t) => (
           <g key={t}>

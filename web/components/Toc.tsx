@@ -46,7 +46,7 @@ export default function Toc({ items }: { items: TocItem[] }) {
   }, [items]);
 
   return (
-    <nav className="toc toc-sidebar toc-scrollable-container" aria-label="Contents">
+    <nav className="toc toc-sidebar toc-scrollable-container" aria-label="contents">
       <div className="toc-scrollable-inner">
         <ul>
           {items.map((it) => (

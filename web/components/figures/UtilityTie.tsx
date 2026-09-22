@@ -161,19 +161,19 @@ export default function UtilityTie({ d }: { d: UtilityData }) {
       </div>
 
       <figcaption>
-        One state, {d.points.length} draws, and a single frozen utility value:{" "}
+        one state, {d.points.length} draws, and a single frozen utility value:{" "}
         <strong>
           {d.distinctUtilities.map((u) => u.toFixed(3)).join(" / ")}
         </strong>
-        . The only arms that answer <code>{d.state}</code> correctly are the two Qwen3.5-9B arms,
+        . the only arms that answer <code>{d.state}</code> correctly are the two qwen3.5-9b arms,
         at a median {d.correctP50Ms?.toLocaleString()} ms — past the frozen{" "}
         {d.budgetMs.toLocaleString()} ms budget, so the utility clamps and returns{" "}
-        {d.frozenUtility.toFixed(3)}. The arms that answer it <em>incorrectly</em> inside the
-        budget score exactly the same {d.frozenUtility.toFixed(3)}. <strong>Correct-but-slow and
+        {d.frozenUtility.toFixed(3)}. the arms that answer it <em>incorrectly</em> inside the
+        budget score exactly the same {d.frozenUtility.toFixed(3)}. <strong>correct-but-slow and
         wrong-but-fast are indistinguishable to the gate on this state</strong>, so the gate keeps
-        the cheap incorrect arm. On 26 of 28 states the gate&rsquo;s owner is correct in all three
+        the cheap incorrect arm. on 26 of 28 states the gate&rsquo;s owner is correct in all three
         draws; <code>{d.state}</code> is one of the two where it is not, and it is the one state
-        where the owner is worse in success than the best measured arm. This is reported, not
+        where the owner is worse in success than the best measured arm. this is reported, not
         fixed: the brief forbids moving the measurements and the gate in the same pass.
       </figcaption>
     </figure>

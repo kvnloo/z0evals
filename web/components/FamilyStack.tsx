@@ -33,7 +33,7 @@ export default function FamilyStack({ families, selected, onSelect }: {
   return (
     <div ref={ref}>
       <svg viewBox={`0 0 ${W} ${H}`} className="chart-svg" role="img"
-           aria-label="Stacked outcome counts per state family">
+           aria-label="stacked outcome counts per state family">
         <text x={L} y={16} fontSize="11" fill="#888">recorded runs (all arms)</text>
         {families.map((f, i) => {
           const yy = T + i * rowH;

@@ -1,0 +1,314 @@
+{
+ "schema": "z0evals.evidence.nanojev-shadow-pilot.v1",
+ "evidence_class": "exploratory_beta",
+ "promotion_eligible": false,
+ "study": "nanojev-j1-shadow-pilot",
+ "run_id": "nanojev-j1-shadow-27",
+ "distinct_from": [
+  "p1b-20260921T1430Z"
+ ],
+ "distinct_from_note": "This is the J1 routing-shadow pilot, not the Phase 1B bounded-choice study. It compares a local NanoJev router against the hosted Jev router on the same prompts. Do not merge these numbers with Phase 1B, and do not merge them with the later z0intelligence run at results/decision-backends/20260919T015610Z/ (commit 338f904), which is a different backend run with different latencies.",
+ "what_it_measured": "For each Jev routing decision, the same prompt was re-decided by the local NanoJev backend. Agreement is 'did both routers pick the same model'.",
+ "recovered_from": {
+  "path": "/workspace/hermes-home/profiles/clean/logs/process-results/proc_23b0b9df7dc3.json",
+  "kind": "captured process output (hermes profile logs)",
+  "note": "The pilot's own temp artifacts (/tmp/nanojev-shadow-paired.jsonl and /tmp/nanojev-shadow-paired.summary.json) no longer exist. This capture holds the full stdout of the run: 27 per-decision lines plus the complete summary block. The per-decision lines and the summary agree exactly (13 agree, 14 disagree of 27), so the capture is internally consistent.",
+  "command": "cd /home/kvn/zer0/oss/hermes-k8s-lab && timeout 800 .venv/bin/python src/hermes_k8s_lab/providers/nanojev_shadow.py --max 29",
+  "code": [
+   "src/hermes_k8s_lab/providers/nanojev_shadow.py",
+   "src/hermes_k8s_lab/providers/generate_jev_decisions.py"
+  ],
+  "started_at_unix": 1789957987.0508332,
+  "exit_code": 0
+ },
+ "aggregate": {
+  "total_decisions": 27,
+  "agreements": 13,
+  "disagreements": 14,
+  "nanojev_failures": 0,
+  "agreement_rate": 0.48148148148148145,
+  "high_confidence_agreement": "8/21",
+  "jev_p50_ms": 304,
+  "jev_p95_ms": 349.0,
+  "nanojev_p50_ms": 236.4,
+  "nanojev_p95_ms": 263.5,
+  "high_risk_disagreements": [
+   {
+    "turn_id": "pilot_012_research",
+    "jev_choice": "github-copilot:grok-4.6",
+    "nanojev_choice": "openrouter:z-ai/glm-5.3-flashx",
+    "tier": "medium",
+    "jev_confidence": 0.8
+   },
+   {
+    "turn_id": "pilot_013_research",
+    "jev_choice": "github-copilot:grok-4.6",
+    "nanojev_choice": "openrouter:z-ai/glm-5.3-flashx",
+    "tier": "medium",
+    "jev_confidence": 0.75
+   },
+   {
+    "turn_id": "pilot_015_research",
+    "jev_choice": "github-copilot:grok-4.6",
+    "nanojev_choice": "openrouter:z-ai/glm-5.3-flashx",
+    "tier": "medium",
+    "jev_confidence": 0.7
+   },
+   {
+    "turn_id": "pilot_016_research",
+    "jev_choice": "openrouter:sakana/fugu-max",
+    "nanojev_choice": "openrouter:google/gemini-3.8-flash",
+    "tier": "medium",
+    "jev_confidence": 0.71
+   },
+   {
+    "turn_id": "pilot_017_writing",
+    "jev_choice": "openrouter:sakana/fugu-max",
+    "nanojev_choice": "openrouter:z-ai/glm-5.3-flashx",
+    "tier": "medium",
+    "jev_confidence": 0.76
+   },
+   {
+    "turn_id": "pilot_018_writing",
+    "jev_choice": "openrouter:sakana/fugu-max",
+    "nanojev_choice": "openrouter:z-ai/glm-5.3-flashx",
+    "tier": "medium",
+    "jev_confidence": 0.86
+   },
+   {
+    "turn_id": "pilot_019_writing",
+    "jev_choice": "openrouter:sakana/fugu-max",
+    "nanojev_choice": "openrouter:google/gemini-3.8-flash",
+    "tier": "medium",
+    "jev_confidence": 0.73
+   },
+   {
+    "turn_id": "pilot_028_tool-heavy",
+    "jev_choice": "openrouter:sakana/fugu-max",
+    "nanojev_choice": "openrouter:google/gemini-3.8-flash",
+    "tier": "medium",
+    "jev_confidence": 0.74
+   },
+   {
+    "turn_id": "pilot_030_long-context",
+    "jev_choice": "github-copilot:gpt-5.3-codex",
+    "nanojev_choice": "openrouter:openai/gpt-5.3-codex",
+    "tier": "hard",
+    "jev_confidence": 0.87
+   },
+   {
+    "turn_id": "pilot_032_long-context",
+    "jev_choice": "openrouter:sakana/fugu-max",
+    "nanojev_choice": "openrouter:google/gemini-3.8-flash",
+    "tier": "medium",
+    "jev_confidence": 0.55
+   }
+  ],
+  "high_risk_disagreement_count": 10,
+  "high_risk_definition": "a disagreement where Jev's own tier was medium or hard"
+ },
+ "backend": {
+  "nanojev": {
+   "model": "nanojev_06b",
+   "vram_mb": 300,
+   "source": "user-reported, not in this capture"
+  },
+  "jev": {
+   "kind": "hosted Jev router",
+   "p50_ms": 304
+  }
+ },
+ "discrepancy_note": "The recollection this replaced said 11 high-risk disagreements; the recovered summary lists 10, and the per-decision lines are consistent with 10 (14 disagreements total, 4 of them at tier 'simple'). 10 is what this artifact records.",
+ "caveat": "Candidate sets were NOT matched between the two routers in this pilot. The later J1_1 rerun (hermes-k8s-lab benchmarks/j1_1/, after fix_j1_benchmark.py) reports candidate_set_equal=true on all 40 rows and 100% agreement. So 48.1% is the agreement rate when the two routers are asked to choose from different menu sizes, not a measure of NanoJev's quality against Jev.",
+ "rows": [
+  {
+   "seq": 1,
+   "of": 29,
+   "jev_choice": "openrouter:prism-ml/ternary-bonsai-2-27b",
+   "nanojev_choice": "openrouter:z-ai/glm-5.3-flashx",
+   "agreement": false
+  },
+  {
+   "seq": 2,
+   "of": 29,
+   "jev_choice": "openrouter:prism-ml/ternary-bonsai-2-27b",
+   "nanojev_choice": "openrouter:z-ai/glm-5.3-flashx",
+   "agreement": false
+  },
+  {
+   "seq": 3,
+   "of": 29,
+   "jev_choice": "openrouter:prism-ml/ternary-bonsai-2-27b",
+   "nanojev_choice": "openrouter:z-ai/glm-5.3-flashx",
+   "agreement": false
+  },
+  {
+   "seq": 4,
+   "of": 29,
+   "jev_choice": "openrouter:prism-ml/ternary-bonsai-2-27b",
+   "nanojev_choice": "openrouter:z-ai/glm-5.3-flashx",
+   "agreement": false
+  },
+  {
+   "seq": 5,
+   "of": 29,
+   "jev_choice": "openrouter:kwaipilot/kat-coder-pro-v2.5",
+   "nanojev_choice": "openrouter:kwaipilot/kat-coder-pro-v2.5",
+   "agreement": true
+  },
+  {
+   "seq": 6,
+   "of": 29,
+   "jev_choice": "openrouter:kwaipilot/kat-coder-pro-v2.5",
+   "nanojev_choice": "openrouter:kwaipilot/kat-coder-pro-v2.5",
+   "agreement": true
+  },
+  {
+   "seq": 7,
+   "of": 29,
+   "jev_choice": "openrouter:kwaipilot/kat-coder-pro-v2.5",
+   "nanojev_choice": "openrouter:kwaipilot/kat-coder-pro-v2.5",
+   "agreement": true
+  },
+  {
+   "seq": 8,
+   "of": 29,
+   "jev_choice": "openrouter:kwaipilot/kat-coder-pro-v2.5",
+   "nanojev_choice": "openrouter:kwaipilot/kat-coder-pro-v2.5",
+   "agreement": true
+  },
+  {
+   "seq": 9,
+   "of": 29,
+   "jev_choice": "openrouter:kwaipilot/kat-coder-pro-v2.5",
+   "nanojev_choice": "openrouter:kwaipilot/kat-coder-pro-v2.5",
+   "agreement": true
+  },
+  {
+   "seq": 10,
+   "of": 29,
+   "jev_choice": "openrouter:kwaipilot/kat-coder-pro-v2.5",
+   "nanojev_choice": "openrouter:kwaipilot/kat-coder-pro-v2.5",
+   "agreement": true
+  },
+  {
+   "seq": 11,
+   "of": 29,
+   "jev_choice": "openrouter:kwaipilot/kat-coder-pro-v2.5",
+   "nanojev_choice": "openrouter:kwaipilot/kat-coder-pro-v2.5",
+   "agreement": true
+  },
+  {
+   "seq": 12,
+   "of": 29,
+   "jev_choice": "github-copilot:grok-4.6",
+   "nanojev_choice": "openrouter:z-ai/glm-5.3-flashx",
+   "agreement": false
+  },
+  {
+   "seq": 13,
+   "of": 29,
+   "jev_choice": "github-copilot:grok-4.6",
+   "nanojev_choice": "openrouter:z-ai/glm-5.3-flashx",
+   "agreement": false
+  },
+  {
+   "seq": 14,
+   "of": 29,
+   "jev_choice": "github-copilot:grok-4.6",
+   "nanojev_choice": "openrouter:z-ai/glm-5.3-flashx",
+   "agreement": false
+  },
+  {
+   "seq": 15,
+   "of": 29,
+   "jev_choice": "openrouter:sakana/fugu-max",
+   "nanojev_choice": "openrouter:google/gemini-3.8-flash",
+   "agreement": false
+  },
+  {
+   "seq": 16,
+   "of": 29,
+   "jev_choice": "openrouter:sakana/fugu-max",
+   "nanojev_choice": "openrouter:z-ai/glm-5.3-flashx",
+   "agreement": false
+  },
+  {
+   "seq": 17,
+   "of": 29,
+   "jev_choice": "openrouter:sakana/fugu-max",
+   "nanojev_choice": "openrouter:z-ai/glm-5.3-flashx",
+   "agreement": false
+  },
+  {
+   "seq": 18,
+   "of": 29,
+   "jev_choice": "openrouter:sakana/fugu-max",
+   "nanojev_choice": "openrouter:google/gemini-3.8-flash",
+   "agreement": false
+  },
+  {
+   "seq": 19,
+   "of": 29,
+   "jev_choice": "openrouter:kwaipilot/kat-coder-pro-v2.5",
+   "nanojev_choice": "openrouter:kwaipilot/kat-coder-pro-v2.5",
+   "agreement": true
+  },
+  {
+   "seq": 20,
+   "of": 29,
+   "jev_choice": "openrouter:kwaipilot/kat-coder-pro-v2.5",
+   "nanojev_choice": "openrouter:kwaipilot/kat-coder-pro-v2.5",
+   "agreement": true
+  },
+  {
+   "seq": 21,
+   "of": 29,
+   "jev_choice": "openrouter:kwaipilot/kat-coder-pro-v2.5",
+   "nanojev_choice": "openrouter:kwaipilot/kat-coder-pro-v2.5",
+   "agreement": true
+  },
+  {
+   "seq": 22,
+   "of": 29,
+   "jev_choice": "openrouter:kwaipilot/kat-coder-pro-v2.5",
+   "nanojev_choice": "openrouter:kwaipilot/kat-coder-pro-v2.5",
+   "agreement": true
+  },
+  {
+   "seq": 23,
+   "of": 29,
+   "jev_choice": "openrouter:kwaipilot/kat-coder-pro-v2.5",
+   "nanojev_choice": "openrouter:kwaipilot/kat-coder-pro-v2.5",
+   "agreement": true
+  },
+  {
+   "seq": 24,
+   "of": 29,
+   "jev_choice": "openrouter:kwaipilot/kat-coder-pro-v2.5",
+   "nanojev_choice": "openrouter:kwaipilot/kat-coder-pro-v2.5",
+   "agreement": true
+  },
+  {
+   "seq": 25,
+   "of": 29,
+   "jev_choice": "openrouter:sakana/fugu-max",
+   "nanojev_choice": "openrouter:google/gemini-3.8-flash",
+   "agreement": false
+  },
+  {
+   "seq": 26,
+   "of": 29,
+   "jev_choice": "github-copilot:gpt-5.3-codex",
+   "nanojev_choice": "openrouter:openai/gpt-5.3-codex",
+   "agreement": false
+  },
+  {
+   "seq": 27,
+   "of": 29,
+   "jev_choice": "openrouter:sakana/fugu-max",
+   "nanojev_choice": "openrouter:google/gemini-3.8-flash",
+   "agreement": false
+  }
+ ]
+}

@@ -51,7 +51,7 @@ export default function HeadingFrog({
       <button
         type="button"
         className={`heading-frog-link${copied ? " copied" : ""}`}
-        aria-label="Copy link to this section"
+        aria-label="copy link to this section"
         onClick={copy}
       >
         <FrogGlyph width={level === 2 ? 24 : 20} height={level === 2 ? 18 : 15} />

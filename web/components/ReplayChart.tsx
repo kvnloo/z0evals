@@ -77,10 +77,10 @@ export default function ReplayChart({ matrix, selected }: { matrix: Matrix; sele
     <div ref={ref}>
       <div className="chart-tabs" style={{ alignItems: "center", gap: 10 }}>
         <button type="button" onClick={() => { setPlayhead(0); setPlaying(true); }}
-                aria-label="Replay the sweep">
-          ▶ Replay
+                aria-label="replay the sweep">
+          ▶ replay
         </button>
-        <button type="button" onClick={() => setPlayhead(1000)}>⤒ End</button>
+        <button type="button" onClick={() => setPlayhead(1000)}>⤒ end</button>
         <span style={{ fontSize: 12.5, color: "var(--color-sb-text-muted)", fontFamily: "var(--font-mono)" }}>
           state {Math.min(n, Math.round(cut) + 1)} / {n}
           {cursor ? ` · ${cursor.family}` : ""}
@@ -88,7 +88,7 @@ export default function ReplayChart({ matrix, selected }: { matrix: Matrix; sele
       </div>
 
       <svg viewBox={`0 0 ${W} ${H}`} className="chart-svg" role="img"
-           aria-label="Replayable per-state latency curves for the selected arms">
+           aria-label="replayable per-state latency curves for the selected arms">
         {[0, 0.25, 0.5, 0.75, 1].map((f) => (
           <g key={f}>
             <line className="grid" x1={L} x2={W - R} y1={H - B - f * (H - T - B)} y2={H - B - f * (H - T - B)} />
@@ -136,9 +136,9 @@ export default function ReplayChart({ matrix, selected }: { matrix: Matrix; sele
       </svg>
 
       <div className="scrubRow">
-        <span className="scrubLabel">Replay</span>
+        <span className="scrubLabel">replay</span>
         <input
-          aria-label="Replay position"
+          aria-label="replay position"
           type="range" min={0} max={1000} step={1} value={Math.round(playhead)}
           onChange={(e) => { setPlaying(false); setPlayhead(Number(e.target.value)); }}
         />
@@ -146,7 +146,7 @@ export default function ReplayChart({ matrix, selected }: { matrix: Matrix; sele
       </div>
       <div className="legend">
         <span>solid = compiler-first · dashed red = unfiltered</span>
-        <span>curves are drawn to the playhead; drag it, or press Replay</span>
+        <span>curves are drawn to the playhead; drag it, or press replay</span>
       </div>
     </div>
   );

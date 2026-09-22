@@ -16,7 +16,7 @@ export default function ResidencyBars({ rows }: { rows: Row[] }) {
   return (
     <div ref={ref}>
       <svg viewBox={`0 0 ${W} ${H}`} className="chart-svg" role="img"
-           aria-label="Median milliseconds for each residency class">
+           aria-label="median milliseconds for each residency class">
         {[0, 0.5, 1].map((f) => (
           <g key={f}>
             <line className="grid" x1={L} x2={W - R} y1={H - B - f * (H - T - B)} y2={H - B - f * (H - T - B)} />

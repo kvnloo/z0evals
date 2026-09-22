@@ -27,9 +27,9 @@ const display = Parastoo({
 });
 
 export const metadata: Metadata = {
-  title: "How much of the LLM do we actually need? — z0evals",
+  title: "how much of the llm do we actually need? — z0evals",
   description:
-    "Phase 1B: why we stopped paying an autoregressive model to make decisions that "
+    "phase 1b: why we stopped paying an autoregressive model to make decisions that "
     + "barely require language. Measured on a local RTX 3080 Ti, not modelled.",
 };
 
