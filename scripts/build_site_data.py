@@ -261,6 +261,35 @@ def load_components(raw: Path | None) -> dict | None:
     return None
 
 
+PILOT_PATH = ROOT / "studies" / "slm-router-v0" / "data" / "nanojev-j1-shadow-pilot.json"
+
+
+def load_pilot() -> dict | None:
+    """The recovered NanoJev/Jev J1 shadow pilot, kept separate from Phase 1B."""
+    if not PILOT_PATH.is_file():
+        return None
+    a = json.loads(PILOT_PATH.read_text(encoding="utf-8"))
+    agg = a.get("aggregate") or {}
+    return {
+        "runId": a.get("run_id"),
+        "evidenceClass": a.get("evidence_class"),
+        "promotionEligible": a.get("promotion_eligible"),
+        "decisions": agg.get("total_decisions"),
+        "agreements": agg.get("agreements"),
+        "disagreements": agg.get("disagreements"),
+        "agreementRate": agg.get("agreement_rate"),
+        "highRiskCount": agg.get("high_risk_disagreement_count"),
+        "highConfidenceAgreement": agg.get("high_confidence_agreement"),
+        "jevP50Ms": agg.get("jev_p50_ms"),
+        "jevP95Ms": agg.get("jev_p95_ms"),
+        "nanojevP50Ms": agg.get("nanojev_p50_ms"),
+        "nanojevP95Ms": agg.get("nanojev_p95_ms"),
+        "vramMb": (a.get("backend") or {}).get("nanojev", {}).get("vram_mb"),
+        "distinctFrom": a.get("distinct_from"),
+        "recoveredFrom": (a.get("recovered_from") or {}).get("path"),
+    }
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--raw", help="path to observations.jsonl")
@@ -327,6 +356,10 @@ def main() -> int:
         "matrix": matrix,
         "matrixOrigin": origin,
         "components": load_components(raw),
+        # Recovered J1 routing-shadow pilot. Deliberately a separate top-level
+        # block, not folded into matrix/components: it is a different study with a
+        # different evidence_class and must not be read as Phase 1B evidence.
+        "pilot": load_pilot(),
     }
     SITE_OUT.parent.mkdir(parents=True, exist_ok=True)
     SITE_OUT.write_text(json.dumps(doc, indent=2) + "\n", encoding="utf-8")
