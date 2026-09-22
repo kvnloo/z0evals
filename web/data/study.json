@@ -89,7 +89,7 @@
       },
       {
         "id": "qwen4b+jev",
-        "label": "Qwen 4B + NanoJev",
+        "label": "Qwen 4B + JEV scorer",
         "correct": 13,
         "helped": 0,
         "hurt": 8
@@ -303,7 +303,7 @@
       },
       {
         "id": "compiler+jev",
-        "label": "NanoJev 0.6B",
+        "label": "JEV scorer",
         "unfiltered": false,
         "n": 84,
         "states": 28,
