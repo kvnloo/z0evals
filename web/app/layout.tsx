@@ -27,9 +27,10 @@ const display = Parastoo({
 });
 
 export const metadata: Metadata = {
-  title: "Small Models Calling the Shots — z0evals",
+  title: "How much of the LLM do we actually need? — z0evals",
   description:
-    "Phase 1B: what actually routes best on a local RTX 3080 Ti? Measured, not modelled.",
+    "Phase 1B: why we stopped paying an autoregressive model to make decisions that "
+    + "barely require language. Measured on a local RTX 3080 Ti, not modelled.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
