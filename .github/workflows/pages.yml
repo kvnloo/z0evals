@@ -73,7 +73,14 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install dependencies
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install Python dependencies
         run: python -m pip install -r requirements.txt
 
       - name: Check the publish URL map
@@ -105,11 +112,18 @@ jobs:
             WT="_channels/$BRANCH"
             git worktree add --force --detach "$WT" "origin/$BRANCH" >/dev/null
 
-            if ( cd "$WT" && python3 scripts/validate.py && python3 scripts/build_site.py ); then
+            # Next's basePath has no trailing slash; SUB is "next/", "dev/" or "".
+            CHANNEL_BASE="/${GITHUB_REPOSITORY#*/}/${SUB%/}"
+            if ( cd "$WT" \
+                 && python3 scripts/validate.py \
+                 && python3 scripts/build_site_data.py \
+                 && cd web \
+                 && npm ci --no-audit --no-fund \
+                 && Z0_BASE_PATH="$CHANNEL_BASE" npx next build ); then
               mkdir -p "site/$SUB"
-              cp -R "$WT/site/." "site/$SUB"
+              cp -R "$WT/web/out/." "site/$SUB"
               built="$built $BRANCH"
-              echo "built $BRANCH -> $DEST"
+              echo "built $BRANCH -> $DEST  (basePath=$CHANNEL_BASE)"
             else
               if [ "$BRANCH" = main ]; then
                 echo "::error::main failed to build; refusing to publish a partial site"
@@ -124,6 +138,8 @@ jobs:
             echo "::error::no main build at site/index.html; refusing to publish"
             exit 1
           fi
+          echo "--- published tree ---"
+          find site -maxdepth 2 -name index.html | sort
 
           # Landing page for the channel sites. The per-channel builds are left
           # untouched; this only adds an index one level above them.
