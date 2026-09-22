@@ -25,19 +25,20 @@ COMPONENTS_OUT = ROOT / "studies" / "slm-router-v0" / "data" / "phase1b-componen
 SITE_OUT = ROOT / "web" / "data" / "study.json"
 RUN = "p1b-20260921T1430Z"
 
-ARM_LABEL = {
-    "compiler+functiongemma_270m": "fngemma 270m",
-    "compiler+hammer2.1_3b": "hammer 3b",
-    "compiler+hammer2.1_7b": "hammer 7b",
-    "compiler+jev": "jev scorer",
-    "compiler+nemotron_orchestrator_8b": "nemotron 8b",
-    "compiler+qwen3.5_4b": "qwen 4b",
-    "compiler+qwen3.5_9b": "qwen 9b",
-    "unfiltered+hammer2.1_3b": "unfiltered · hammer 3b",
-    "unfiltered+nemotron_orchestrator_8b": "unfiltered · nemotron",
-    "unfiltered+qwen3.5_4b": "unfiltered · qwen 4b",
-    "unfiltered+qwen3.5_9b": "unfiltered · qwen 9b",
-}
+def _arm_label(arm: str) -> str:
+    """Long display label via the single canonical resolver.
+
+    Was a hand-maintained dict keyed on raw arm ids, which is how the Phase 1B
+    `compiler+jev` arm came to be published as "jev scorer".
+    """
+    try:
+        from arm_identity import long as _long
+
+        return _long(arm)
+    except Exception:  # noqa: BLE001 - never fail a build over a display label
+        return arm
+
+
 ARM_ORDER = [
     "compiler+hammer2.1_3b", "compiler+qwen3.5_4b", "compiler+qwen3.5_9b",
     "compiler+hammer2.1_7b", "compiler+nemotron_orchestrator_8b",
@@ -149,7 +150,7 @@ def build_matrix(raw: Path) -> dict:
             )
         arms.append({
             "id": arm,
-            "label": ARM_LABEL.get(arm, arm),
+            "label": _arm_label(arm),
             "unfiltered": arm.startswith("unfiltered"),
             "n": n,
             "states": g["states"],
@@ -341,7 +342,7 @@ def main() -> int:
                  "correct": summary["composition"]["qwen4b_plus_hammer3b_correct"],
                  "helped": summary["composition"]["qwen4b_plus_hammer3b_helped_states"],
                  "hurt": summary["composition"]["qwen4b_plus_hammer3b_hurt_states"]},
-                {"id": "qwen4b+jev", "label": "qwen 4b + jev scorer",
+                {"id": "qwen4b+jev", "label": "qwen 4b + nanojev 0.6b",
                  "correct": summary["composition"]["qwen4b_plus_jev_correct"],
                  "helped": summary["composition"]["qwen4b_plus_jev_helped_states"],
                  "hurt": summary["composition"]["qwen4b_plus_jev_hurt_states"]},

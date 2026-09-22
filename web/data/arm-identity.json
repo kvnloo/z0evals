@@ -1,0 +1,182 @@
+{
+ "arms": {
+  "compiler+functiongemma_270m": {
+   "backend": "functiongemma_270m",
+   "long": "functiongemma 270m \u00b7 compiler-first",
+   "models": [
+    "functiongemma_270m"
+   ],
+   "prefix": "compiler",
+   "raw_id": "compiler+functiongemma_270m",
+   "short": "functiongemma 270m"
+  },
+  "compiler+hammer2.1_3b": {
+   "backend": "hammer2.1_3b",
+   "long": "hammer2.1 3b \u00b7 compiler-first",
+   "models": [
+    "hammer2.1_3b"
+   ],
+   "prefix": "compiler",
+   "raw_id": "compiler+hammer2.1_3b",
+   "short": "hammer2.1 3b"
+  },
+  "compiler+hammer2.1_7b": {
+   "backend": "hammer2.1_7b",
+   "long": "hammer2.1 7b \u00b7 compiler-first",
+   "models": [
+    "hammer2.1_7b"
+   ],
+   "prefix": "compiler",
+   "raw_id": "compiler+hammer2.1_7b",
+   "short": "hammer2.1 7b"
+  },
+  "compiler+hammer3b+jev+nemotron+qwen3.5_9b": {
+   "backend": "nanojev_06b",
+   "long": "hammer3b + nanojev 0.6b + nemotron + qwen3.5 9b \u00b7 compiler-first",
+   "models": [
+    "hammer3b",
+    "jev",
+    "nemotron",
+    "qwen3.5_9b"
+   ],
+   "prefix": "compiler",
+   "raw_id": "compiler+hammer3b+jev+nemotron+qwen3.5_9b",
+   "short": "hammer3b+nanojev+nemotron+qwen3.5 9b"
+  },
+  "compiler+jev": {
+   "backend": "nanojev_06b",
+   "long": "nanojev 0.6b \u00b7 compiler-first",
+   "models": [
+    "jev"
+   ],
+   "prefix": "compiler",
+   "raw_id": "compiler+jev",
+   "short": "nanojev 0.6b"
+  },
+  "compiler+jev+nemotron+qwen3.5_9b": {
+   "backend": "nanojev_06b",
+   "long": "nanojev 0.6b + nemotron + qwen3.5 9b \u00b7 compiler-first",
+   "models": [
+    "jev",
+    "nemotron",
+    "qwen3.5_9b"
+   ],
+   "prefix": "compiler",
+   "raw_id": "compiler+jev+nemotron+qwen3.5_9b",
+   "short": "nanojev+nemotron+qwen3.5 9b"
+  },
+  "compiler+jev+nemotron_orchestrator_8b": {
+   "backend": "nanojev_06b",
+   "long": "nanojev 0.6b + nemotron orchestrator 8b \u00b7 compiler-first",
+   "models": [
+    "jev",
+    "nemotron_orchestrator_8b"
+   ],
+   "prefix": "compiler",
+   "raw_id": "compiler+jev+nemotron_orchestrator_8b",
+   "short": "nanojev+nemotron orchestrator 8b"
+  },
+  "compiler+jev+qwen3.5_4b": {
+   "backend": "nanojev_06b",
+   "long": "nanojev 0.6b + qwen3.5 4b \u00b7 compiler-first",
+   "models": [
+    "jev",
+    "qwen3.5_4b"
+   ],
+   "prefix": "compiler",
+   "raw_id": "compiler+jev+qwen3.5_4b",
+   "short": "nanojev+qwen4b"
+  },
+  "compiler+nemotron_orchestrator_8b": {
+   "backend": "nemotron_orchestrator_8b",
+   "long": "nemotron orchestrator 8b \u00b7 compiler-first",
+   "models": [
+    "nemotron_orchestrator_8b"
+   ],
+   "prefix": "compiler",
+   "raw_id": "compiler+nemotron_orchestrator_8b",
+   "short": "nemotron orchestrator 8b"
+  },
+  "compiler+qwen3.5_4b": {
+   "backend": "qwen3.5_4b",
+   "long": "qwen3.5 4b \u00b7 compiler-first",
+   "models": [
+    "qwen3.5_4b"
+   ],
+   "prefix": "compiler",
+   "raw_id": "compiler+qwen3.5_4b",
+   "short": "qwen3.5 4b"
+  },
+  "compiler+qwen3.5_9b": {
+   "backend": "qwen3.5_9b",
+   "long": "qwen3.5 9b \u00b7 compiler-first",
+   "models": [
+    "qwen3.5_9b"
+   ],
+   "prefix": "compiler",
+   "raw_id": "compiler+qwen3.5_9b",
+   "short": "qwen3.5 9b"
+  },
+  "deterministic.compiler_only": {
+   "backend": "deterministic",
+   "long": "deterministic compiler only",
+   "models": [],
+   "prefix": "deterministic",
+   "raw_id": "deterministic.compiler_only",
+   "short": "deterministic compiler only"
+  },
+  "unfiltered+hammer2.1_3b": {
+   "backend": "hammer2.1_3b",
+   "long": "hammer2.1 3b \u00b7 unfiltered",
+   "models": [
+    "hammer2.1_3b"
+   ],
+   "prefix": "unfiltered",
+   "raw_id": "unfiltered+hammer2.1_3b",
+   "short": "hammer2.1 3b"
+  },
+  "unfiltered+nemotron_orchestrator_8b": {
+   "backend": "nemotron_orchestrator_8b",
+   "long": "nemotron orchestrator 8b \u00b7 unfiltered",
+   "models": [
+    "nemotron_orchestrator_8b"
+   ],
+   "prefix": "unfiltered",
+   "raw_id": "unfiltered+nemotron_orchestrator_8b",
+   "short": "nemotron orchestrator 8b"
+  },
+  "unfiltered+qwen3.5_4b": {
+   "backend": "qwen3.5_4b",
+   "long": "qwen3.5 4b \u00b7 unfiltered",
+   "models": [
+    "qwen3.5_4b"
+   ],
+   "prefix": "unfiltered",
+   "raw_id": "unfiltered+qwen3.5_4b",
+   "short": "qwen3.5 4b"
+  },
+  "unfiltered+qwen3.5_9b": {
+   "backend": "qwen3.5_9b",
+   "long": "qwen3.5 9b \u00b7 unfiltered",
+   "models": [
+    "qwen3.5_9b"
+   ],
+   "prefix": "unfiltered",
+   "raw_id": "unfiltered+qwen3.5_9b",
+   "short": "qwen3.5 9b"
+  }
+ },
+ "componentDisplay": {
+  "jev": {
+   "backend": "nanojev_06b",
+   "composite": "nanojev",
+   "long": "nanojev 0.6b",
+   "solo": "nanojev 0.6b"
+  }
+ },
+ "forbiddenIdentityTokens": [
+  "jev"
+ ],
+ "note": "Canonical arm identity. Components must not derive labels; they read this. Raw/frozen arm ids are never renamed \u2014 only their presentation is centralised. `compiler+jev` is the local NanoJev 0.6B, not the hosted TypeSafe Jev teacher.",
+ "schema": "z0evals.arm_identity.v1"
+}

@@ -41,26 +41,15 @@ def _wilson(k: int, n: int, z: float = 1.96) -> tuple[float, float]:
 
 
 def _label(arm: str) -> str:
-    """Human label for an arm id, derived mechanically — never hand-written."""
-    prefix, _, model = arm.partition("+")
-    pretty = {
-        "compiler": "compiler-first",
-        "unfiltered": "unfiltered",
-        "deterministic.compiler_only": "deterministic only",
-        "coldprobe": "cold probe",
-    }.get(prefix, prefix)
-    name = (
-        model.replace("qwen3.5", "qwen3.5")
-        .replace("hammer2.1", "hammer2.1")
-        .replace("nemotron_orchestrator", "nemotron orchestrator")
-        .replace("functiongemma", "functiongemma")
-        .replace("_", " ")
-    )
-    if arm == "deterministic.compiler_only":
-        return "deterministic compiler only"
-    if not model:
-        return pretty
-    return f"{name} · {pretty}"
+    """Long display label for an arm id.
+
+    Delegates to the single canonical resolver. This function used to derive the
+    label itself, which is how `compiler+jev` came to render as bare `jev` in a
+    published figure while the corpus said `nanojev_06b`.
+    """
+    from arm_identity import long as _long
+
+    return _long(arm)
 
 
 def build_components(raw: Path) -> dict:
@@ -203,7 +192,8 @@ def build_components(raw: Path) -> dict:
         if warm:
             basis = "warm model call"
         else:
-            # `compiler+jev` is a non-generative JEV-family scorer path; preserve scorer identity separately from model-call accounting —
+            # `compiler+jev` is the local nanojev 0.6b scorer (a non-generative path, historically
+            # mislabelled "JEV"); preserve scorer identity separately from model-call accounting —
             # so its recorded response is the in-process decision time. Stated,
             # not silently substituted.
             warm = [r["decision_ms"] for r in rs

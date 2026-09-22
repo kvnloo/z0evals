@@ -1,3 +1,4 @@
+import { dataArm } from "@/lib/armIdentity";
 /**
  * Figure — every arm on the same 28 states.
  *
@@ -90,7 +91,12 @@ export default function ModelBoard({
         </div>
 
         {d.rows.map((r) => (
-          <div className="modelRow" data-model={r.compilerFirst ? "jev" : undefined} key={r.arm}>
+          <div
+            className="modelRow"
+            data-model={r.compilerFirst ? "compiler-first" : undefined}
+            {...dataArm(r.arm)}
+            key={r.arm}
+          >
             <span className="modelName">{r.label}</span>
             {r.cells.map((c, i) => (
               <span className="modelCell" key={d.columns[i]}>

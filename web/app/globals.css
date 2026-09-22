@@ -700,8 +700,8 @@ figcaption .fig-n { font-family: var(--font-mono); color: var(--color-sb-seconda
   .figure .fam-state-row { /* keep inside the 680 column */ }
 }
 .modelCell strong[data-hot] { color: var(--color-sb-error); }
-.modelRow[data-model^="jev"] .modelName,
-.modelRow[data-model^="jev"] strong { color: var(--color-sb-text); }
+.modelRow[data-model^="compiler-first"] .modelName,
+.modelRow[data-model^="compiler-first"] strong { color: var(--color-sb-text); }
 .modelReadings {
   gap: var(--space-2) var(--space-4);
   padding: var(--space-1) 0;

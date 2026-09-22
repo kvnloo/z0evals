@@ -63,7 +63,7 @@ The frozen 12-scenario orchestration cohort also reproduced the original Phase 1
 <tr><td>compiler + Hammer2.1-7B</td><td>72/84</td><td>[0.77, 0.92]</td><td>319 ms</td><td>0</td></tr>
 <tr><td>compiler + Nemotron-8B</td><td>52/84</td><td>[0.51, 0.71]</td><td>2,475 ms</td><td>0</td></tr>
 <tr><td>compiler + FunctionGemma-270M</td><td>51/84</td><td>[0.50, 0.70]</td><td>66 ms</td><td>0</td></tr>
-<tr><td>compiler + JEV</td><td>45/84</td><td>[0.43, 0.64]</td><td>31 ms</td><td>0</td></tr>
+<tr><td>compiler + NanoJev 0.6B</td><td>45/84</td><td>[0.43, 0.64]</td><td>31 ms</td><td>0</td></tr>
 <tr class="warning"><td>unfiltered + Hammer2.1-3B</td><td>69/84</td><td>[0.72, 0.89]</td><td>186 ms</td><td><strong>6</strong></td></tr>
 </tbody>
 </table>
@@ -126,17 +126,17 @@ The strongest negative result in Phase 1B is that the intuitive cascade did not 
     <span>correct states</span>
   </div>
   <div class="compare bad">
-    <span class="eyebrow">Qwen4B + JEV artifact</span>
+    <span class="eyebrow">Qwen4B + NanoJev artifact</span>
     <strong>13/28</strong>
     <span>hurt 8 · helped 0</span>
   </div>
 </div>
 
-The JEV artifact was actually delivered and consumed on **26/28 states**, so this is not an integration failure disguised as a model result. The downstream model received the extra signal and became worse.
+The NanoJev artifact was actually delivered and consumed on **26/28 states**, so this is not an integration failure disguised as a model result. The downstream model received the extra signal and became worse.
 
 The Hammer3B pre-composition was worse again: **6/28 correct**, hurting 13 states and helping none.
 
-JEV by itself was **45/84 at 31 ms**. In front of Qwen4B it was statistically indistinguishable from the direct path while only about 17% faster on the relevant comparison, and the corrected composition evidence showed no downstream benefit. The calibrated distribution remains worth recording for learning and analysis; it does **not** currently justify another runtime tier.
+NanoJev by itself was **45/84 at 31 ms**. This 45/84 is our local 0.6B scored zero-shot across the full bounded-choice action space, and its upstream checkpoint was trained largely on maze/snake/ViZDoom control decisions. On the compiler's exact matched candidate set, a later experiment showed the same checkpoint can remove ~61% of Hammer3B's calls at 94.1% success-given-covered. In front of Qwen4B it was statistically indistinguishable from the direct path while only about 17% faster on the relevant comparison, and the corrected composition evidence showed no downstream benefit. The calibrated distribution remains worth recording for learning and analysis; it does **not** currently justify another runtime tier.
 
 The first composition pass at `max_tokens=512` is preserved separately as a failure case: every Qwen stage returned empty content because thinking consumed the output budget. The corrected run used a larger budget.
 
