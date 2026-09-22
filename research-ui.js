@@ -13,7 +13,7 @@
     "compiler + hammer2.1_7b":"Hammer 7B",
     "compiler + nemotron_8b":"Nemotron",
     "compiler + functiongemma_270m":"FnGemma",
-    "compiler + JEV":"JEV",
+    "compiler + NanoJev 0.6B":"NanoJev 0.6B",
     "unfiltered + hammer2.1_3b":"Unfiltered"
   };
 

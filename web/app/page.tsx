@@ -32,7 +32,10 @@ const arms = matrix.arms as Arm[];
 const hammer3 = arms.find((a) => a.id === "compiler+hammer2.1_3b")!;
 const qwen4 = arms.find((a) => a.id === "compiler+qwen3.5_4b")!;
 const qwen9 = arms.find((a) => a.id === "compiler+qwen3.5_9b")!;
-const jev = arms.find((a) => a.id === "compiler+jev")!;
+// `compiler+jev` is the local nanojev 0.6b scorer, not the hosted jev teacher.
+// the arm id is a frozen join key and is deliberately not renamed; the variable
+// and every user-facing string below name the scorer that actually ran.
+const nanojevArm = arms.find((a) => a.id === "compiler+jev")!;
 const unf = arms.find((a) => a.id === "unfiltered+hammer2.1_3b")!;
 const fng = arms.find((a) => a.id === "compiler+functiongemma_270m")!;
 const calibration = (matrix as unknown as { calibration: never[] }).calibration;
@@ -66,7 +69,7 @@ const TOC: TocItem[] = [
   { id: "wrong-job", label: "we gave big models the wrong job", depth: 0 },
   { id: "residency", label: "residency wrecked the framing", depth: 0 },
   { id: "composition", label: "composition made it worse", depth: 0 },
-  { id: "jev", label: "jev failed. jev isn't useless.", depth: 0 },
+  { id: "nanojev", label: "nanojev failed. nanojev isn't useless.", depth: 0 },
   { id: "compiler", label: "the compiler was the intelligence", depth: 0 },
   { id: "gate", label: "the gate failed its own eval", depth: 0 },
   { id: "errors", label: "the errors were not noise", depth: 0 },
@@ -520,20 +523,20 @@ kerdoios
             <p>this one hurt a little.</p>
 
             <p>
-              one of the obvious ideas was: okay, maybe jev does not need to answer the decision.
+              one of the obvious ideas was: okay, maybe nanojev does not need to answer the decision.
               maybe it can cheaply score the state and hand qwen a better representation. that
               gives you a nice-looking cascade:
             </p>
 
             <pre>{`compiler
    ↓
-jev
+nanojev
    ↓
 qwen4b`}</pre>
 
             <p>
               we tested the actual composition. not &ldquo;run both models independently and
-              compare them.&rdquo; jev&rsquo;s artifact was genuinely produced, passed downstream,
+              compare them.&rdquo; nanojev&rsquo;s artifact was genuinely produced, passed downstream,
               and <em>consumed</em> by qwen.
             </p>
 
@@ -580,38 +583,57 @@ qwen4b`}</pre>
 
             <hr />
 
-            <HeadingFrog id="jev" level={2}>
-              jev failed at the thing i originally wanted it to do. that does not make jev useless.
+            <HeadingFrog id="nanojev" level={2}>
+              nanojev failed at the thing i originally wanted it to do. that does not make nanojev
+              useless.
             </HeadingFrog>
 
             <p>
-              jev by itself went{" "}
+              a naming correction first, because it changes how this result should be read: the arm
+              is called <code>compiler+jev</code>, but the scorer that actually ran was our local{" "}
+              <strong>nanojev 0.6b</strong>. the corpus records it explicitly —{" "}
+              <code>model_id = nanojev_06b</code>. the hosted jev teacher is a different experiment,
+              the j1 pilot above, and the two must not be merged.
+            </p>
+
+            <p>
+              nanojev by itself went{" "}
               <strong>
-                {jev.success}/{jev.n}
+                {nanojevArm.success}/{nanojevArm.n}
               </strong>{" "}
-              on this bounded-choice family at around <strong>{ms(jev.warmP50Ms)}</strong>.
+              on this bounded-choice family at around <strong>{ms(nanojevArm.warmP50Ms)}</strong>.
             </p>
 
             <p>that is very fast. it is also nowhere near good enough to own the decision.</p>
 
             <p>
               and in the true-composition test, its artifact hurt qwen rather than helping it. so
-              for this particular task, jev did <strong>not</strong> earn a runtime rung.
+              for this particular task, nanojev did <strong>not</strong> earn a runtime rung.
             </p>
 
             <p>
-              that was a useful result because i had spent a lot of time thinking of jev as
+              that was a useful result because i had spent a lot of time thinking of nanojev as
               exactly that rung.
             </p>
 
             <p>
-              but there is another detail i do not want to throw away: jev is giving us one of the
-              few proper <strong>distributions</strong> in this system. confidence, margin,
+              but the honest reading is narrower than &ldquo;the model is bad&rdquo;: this is a
+              checkpoint trained largely on maze, snake and vizdoom control decisions, being asked
+              zero-shot to choose across an entire bounded action space. when we later gave it the
+              compiler&rsquo;s <em>exact</em> candidate set, the same checkpoint removed about{" "}
+              <strong>61%</strong> of hammer3b&rsquo;s calls at <strong>94.1%</strong> success on
+              what it answered, and the cascade came out slightly <em>better</em> than hammer3b
+              alone. the menu was the problem, not only the model.
+            </p>
+
+            <p>
+              and there is another detail i do not want to throw away: nanojev is giving us one of
+              the few proper <strong>distributions</strong> in this system. confidence, margin,
               entropy, disagreement — those are useful signals even when the argmax itself should
               not own the action.
             </p>
 
-            <p>so i think the right place for jev may be less:</p>
+            <p>so i think the right place for nanojev may be less:</p>
 
             <blockquote>make this decision for me</blockquote>
 
@@ -628,7 +650,7 @@ qwen4b`}</pre>
 
             <MarginNote n={2} label="confidence coverage">
               only {calibration.length} of {arms[0].n * arms.length} recorded decisions emit a
-              confidence at all, unevenly across arms — {jev.label} and hammer 7b supply most of
+              confidence at all, unevenly across arms — {nanojevArm.label} and hammer 7b supply most of
               them. the reliability curve below describes the arms that emit confidence, not every
               arm.
             </MarginNote>
@@ -952,7 +974,7 @@ this is genuinely hard
               decision was orchestration.
             </p>
             <p>
-              jev became less interesting as a decision-maker and more interesting as a cheap
+              nanojev became less interesting as a decision-maker and more interesting as a cheap
               uncertainty signal.
             </p>
             <p>composition failed because extra model output is not free information.</p>
@@ -977,7 +999,7 @@ this is genuinely hard
 
             <p>
               if anything, i expected the more elaborate stack to win. i wanted the beautiful
-              version: deterministic rules at the bottom, jev making cheap calibrated decisions,
+              version: deterministic rules at the bottom, nanojev making cheap calibrated decisions,
               nemotron orchestrating, qwen handling the hard tail, and eventually the mushroom/fly
               stuff eating away at all of it.
             </p>
@@ -1078,7 +1100,7 @@ this is genuinely hard
                     <>
                       confidence is emitted on only {calibration.length} of{" "}
                       {arms[0].n * arms.length} recorded decisions, unevenly across arms —{" "}
-                      {jev.label} and hammer 7b supply most of them. the reliability curve
+                      {nanojevArm.label} and hammer 7b supply most of them. the reliability curve
                       describes the arms that emit confidence, not every arm.
                     </>
                   ),

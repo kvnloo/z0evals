@@ -417,7 +417,7 @@
       },
       {
         "arm": "compiler+jev+qwen3.5_4b",
-        "label": "jev+qwen3.5 4b \u00b7 compiler-first",
+        "label": "nanojev 0.6b + qwen3.5 4b \u00b7 compiler-first",
         "alias": null,
         "n": 76,
         "correct": 63,
@@ -597,7 +597,7 @@
       },
       {
         "arm": "compiler+jev",
-        "label": "jev \u00b7 compiler-first",
+        "label": "nanojev 0.6b \u00b7 compiler-first",
         "alias": null,
         "n": 84,
         "correct": 45,
@@ -1408,7 +1408,7 @@
       },
       {
         "arm": "compiler+jev+qwen3.5_4b",
-        "label": "jev+qwen3.5 4b \u00b7 compiler-first",
+        "label": "nanojev 0.6b + qwen3.5 4b \u00b7 compiler-first",
         "alias": null,
         "solved": 23,
         "total": 28,
@@ -2018,7 +2018,7 @@
       },
       {
         "arm": "compiler+jev",
-        "label": "jev \u00b7 compiler-first",
+        "label": "nanojev 0.6b \u00b7 compiler-first",
         "alias": null,
         "solved": 15,
         "total": 28,
@@ -2787,7 +2787,7 @@
       },
       {
         "arm": "compiler+jev",
-        "label": "jev \u00b7 compiler-first",
+        "label": "nanojev 0.6b \u00b7 compiler-first",
         "alias": null,
         "n": 84,
         "correct": 45,
@@ -2847,7 +2847,7 @@
       },
       {
         "arm": "compiler+jev+qwen3.5_4b",
-        "label": "jev+qwen3.5 4b \u00b7 compiler-first",
+        "label": "nanojev 0.6b + qwen3.5 4b \u00b7 compiler-first",
         "alias": null,
         "n": 76,
         "correct": 63,

@@ -73,7 +73,7 @@
       "warm_p50_ms": 66
     },
     {
-      "arm": "compiler + JEV",
+      "arm": "compiler + NanoJev 0.6B",
       "ci95": [
         0.43,
         0.64
