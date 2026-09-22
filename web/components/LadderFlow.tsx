@@ -1,12 +1,15 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import { shortLabel } from "@/lib/armIdentity";
 
 const R_PAD = 24;
 
 const RUNGS = [
   { id: "deterministic", label: "deterministic compiler", detail: "legal-action set, no model", ms: "~0.003" },
   { id: "tiny", label: "tiny specialist", detail: "fngemma 270m / hammer 3b", ms: "66–195" },
-  { id: "jev", label: "nanojev bounded scorer", detail: "calibrated typed questions", ms: "31" },
+  // the rung is the local nanojev 0.6b scorer; the id is internal only.
+  // label comes from the canonical resolver, not a literal.
+  { id: "nanojev", label: shortLabel("compiler+jev"), detail: "calibrated typed questions", ms: "31" },
   { id: "slm", label: "local slm router", detail: "qwen 3.5 4b / 9b", ms: "1993–3603" },
   { id: "general", label: "general fallback", detail: "escalation only", ms: "—" },
 ];
