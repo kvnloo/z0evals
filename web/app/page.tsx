@@ -11,6 +11,9 @@ import ResidencyBars from "@/components/charts/ResidencyBars";
 import CompositionSplit from "@/components/charts/CompositionSplit";
 import OrchestrationBars from "@/components/charts/OrchestrationBars";
 import DensityBars from "@/components/charts/DensityBars";
+import Calibration from "@/components/charts/Calibration";
+import FamilySparklines from "@/components/FamilySparklines";
+import ActionTable from "@/components/ActionTable";
 
 const S = study.study;
 const matrix = study.matrix as unknown as Matrix;
@@ -22,6 +25,9 @@ const jev = arms.find((a) => a.id === "compiler+jev")!;
 const unf = arms.find((a) => a.id === "unfiltered+hammer2.1_3b")!;
 const fng = arms.find((a) => a.id === "compiler+functiongemma_270m")!;
 const nem = arms.find((a) => a.id === "compiler+nemotron_orchestrator_8b")!;
+const calibration = (matrix as unknown as { calibration: never[] }).calibration;
+const actionCensus = (matrix as unknown as { actions: never[] }).actions;
+const familiesFull = (matrix as unknown as { families: never[] }).families;
 
 const pct = (v: number, d = 1) => `${(v * 100).toFixed(d)}%`;
 const ms = (v: number | null) => (v == null ? "—" : v >= 1000 ? `${(v / 1000).toFixed(2)} s` : `${Math.round(v)} ms`);
@@ -30,6 +36,9 @@ const TOC: TocItem[] = [
   { id: "are-we-there-yet", label: "Are we there yet?" },
   { id: "inside-the-receipts", label: `Inside ${study.density.raw_receipts.toLocaleString()} receipts` },
   { id: "do-the-arms-agree", label: "Do the arms agree?" },
+  { id: "does-confidence-mean-anything", label: "Does confidence mean anything?" },
+  { id: "actions", label: "What the compiler removed" },
+  { id: "families", label: "Where the difficulty lives" },
   { id: "authors-note", label: "Author's note" },
   { id: "appendix", label: "Appendix: what the numbers mean" },
 ];
@@ -230,6 +239,56 @@ export default function Page() {
           </figcaption>
         </figure>
 
+        <h2 id="does-confidence-mean-anything">Does the confidence mean anything?</h2>
+        <p>
+          {jev.label} is the only arm on this page that returns a probability rather than a choice,
+          which makes it the only one whose number can be checked. If a 0.8 does not mean roughly
+          eight times in ten, the escalation policy has nothing to threshold on.
+        </p>
+        <figure>
+          <div className="fig-body"><Calibration rows={calibration} threshold={0.5} /></div>
+          <figcaption>
+            <span className="fig-n">Fig 13</span>
+            Top: observed accuracy in each confidence decade against perfect calibration (dashed).
+            Bottom: every recorded decision at its stated confidence; the red line is the abstain
+            threshold the policy would set. The curve is above the diagonal at the low end and
+            <strong> below it in the 0.8&ndash;0.9 decade</strong>&hairsp;&mdash;&hairsp;the arms are
+            overconfident exactly where a router would be tempted to trust them.<a className="fn" href="#fn-1" id="fnref-1">1</a>
+          </figcaption>
+        </figure>
+        <p>
+          That is the same shape the reference reports for its own observer: confidence is
+          informative, but not yet a number a policy can take at face value. It is a gate to be
+          <em>calibrated</em>, not an answer to be trusted.
+        </p>
+
+        <h2 id="actions">What the compiler removed</h2>
+        <p>
+          Every bounded arm was handed the same compiled legal set. Comparing what was offered
+          against what was chosen shows the compiler doing its job: <code>fs.read</code> was
+          available on {actionCensus[0] ? String(Math.max(...actionCensus.map((a: { offered: number }) => a.offered))).toLocaleString() : "hundreds of"} runs and chosen far less often, while the
+          abstain and escalation paths absorb the cases the arms could not settle.
+        </p>
+        <figure>
+          <div className="fig-body"><ActionTable actions={actionCensus} /></div>
+          <figcaption>
+            <span className="fig-n">Fig 14</span>
+            Offered (grey) against chosen (green) per action. The dangerous selections are all in
+            the unfiltered control, which never had a compiled set to begin with.
+          </figcaption>
+        </figure>
+
+        <h2 id="families">Where the difficulty lives</h2>
+        <figure>
+          <div className="fig-body"><FamilySparklines families={familiesFull} /></div>
+          <figcaption>
+            <span className="fig-n">Fig 15</span>
+            One row per state family, with a sparkline of per-state mean success across all arms.
+            <strong> recovery</strong> is the weak family: two of its four states sit near 20%
+            success, and no family except routing has every state solved by every arm.
+          </figcaption>
+        </figure>
+
         <h2 id="authors-note">Author&rsquo;s note</h2>
         <p>
           The result I did not expect is that the fastest arm and the second-most-accurate arm are the
@@ -306,6 +365,17 @@ export default function Page() {
           pre-existing failure, Evolution Lab {study.tests.evolution_lab.passed} passed,{" "}
           {study.tests.sha256sum.ok}/{study.tests.sha256sum.total} artifacts hashed.
         </p>
+        <h3 id="notes">Notes</h3>
+        <ol className="footnotes">
+          <li id="fn-1">
+            Only {calibration.length} of the {arms[0].n * arms.length} recorded decisions report a
+            confidence at all, and they are unevenly distributed across arms &mdash; {jev.label} and
+            Hammer 7B supply most of them. The reliability curve is therefore an observation about
+            the arms that emit confidence, not about every arm.
+            <a className="fn" href="#fnref-1">&nbsp;&#8617;</a>
+          </li>
+        </ol>
+
         <p style={{ marginTop: 30, fontSize: 14, color: "var(--color-sb-text-muted)" }}>
           z0evals · frozen studies and publication ·{" "}
           <a href="https://github.com/kvnloo/z0evals">source</a>

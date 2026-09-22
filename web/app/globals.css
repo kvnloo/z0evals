@@ -212,3 +212,46 @@ figcaption .fig-n { font-family: var(--font-mono); color: var(--color-sb-seconda
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
 }
+
+/* --------------------------------------------------- family sparkline rows */
+.fam-rows { border-top: 1px solid var(--color-sb-border); }
+.fam-row {
+  display: grid; grid-template-columns: minmax(120px, 1.4fr) 74px 96px 96px;
+  gap: 12px; align-items: center; padding: 9px 2px;
+  border-bottom: 1px solid #f2f2f2; cursor: pointer;
+  transition: background .15s ease;
+}
+.fam-row:hover { background: var(--color-sb-bg-subtle); }
+.fam-row[data-active="true"] { background: var(--color-sb-highlight-soft); }
+.fam-name { font-size: 13.5px; color: var(--color-sb-text); }
+.fam-sub { display: block; font-size: 11px; color: var(--color-sb-text-light); }
+.fam-runs { font-size: 11.5px; color: var(--color-sb-text-muted); font-family: var(--font-mono); }
+.fam-spark { display: flex; align-items: center; }
+.fam-score { text-align: right; font-size: 12.5px; font-family: var(--font-mono); }
+.fam-score strong { color: var(--color-sb-secondary); }
+.fam-flag { display: block; font-size: 10.5px; color: #b45309; }
+
+/* ------------------------------------------------------ inline bar table */
+.action-table td { padding: 7px 10px; }
+.bar-cell { position: relative; height: 16px; display: flex; align-items: center; }
+.bar-ghost, .bar-fill {
+  position: absolute; left: 0; height: 8px; border-radius: 2px;
+  transition: width .55s cubic-bezier(.2,.7,.2,1);
+}
+.bar-ghost { background: #e7e7e7; }
+.bar-fill { background: var(--color-sb-secondary); }
+.bar-fill[data-hot="true"] { background: #b91c1c; }
+.bar-label {
+  position: relative; margin-left: auto; font-size: 11px;
+  font-family: var(--font-mono); color: var(--color-sb-text-muted);
+}
+
+/* ------------------------------------------------------------- footnotes */
+.fn { font-size: 10.5px; vertical-align: super; color: var(--color-sb-secondary);
+      text-decoration: none; font-family: var(--font-mono); padding: 0 1px; }
+.footnotes { margin-top: 34px; padding-top: 16px; border-top: 1px solid var(--color-sb-border);
+             font-size: 13px; color: var(--color-sb-text-muted); }
+.footnotes li { margin: 6px 0; }
+.footnotes li:target { background: var(--color-sb-highlight-soft); }
+.margin-note { font-size: 12.5px; color: var(--color-sb-text-muted); line-height: 1.5;
+               border-left: 2px solid var(--color-sb-border); padding-left: 10px; margin: 18px 0; }
