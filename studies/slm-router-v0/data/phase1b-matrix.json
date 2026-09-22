@@ -123,7 +123,7 @@
     },
     {
       "id": "compiler+jev",
-      "label": "NanoJev 0.6B",
+      "label": "JEV scorer",
       "unfiltered": false,
       "n": 84,
       "states": 28,
