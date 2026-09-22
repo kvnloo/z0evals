@@ -170,3 +170,52 @@ different thing, and the external reference link and the J1 pilot comparison
   in the `jev_uncertain` state id, in external links and in the J1 pilot sentence
   is explicitly allowed, with each exclusion documented in the script rather than
   silently ignored.
+
+---
+
+## Supersession as a record, not a rewrite
+
+This file is chronological and is **never rewritten**. That is the right property
+for a history, but it left a real gap: a frozen measurement can stay correct while
+what it is *taken to mean* turns out to be wrong. Until now the only way to say so
+was prose here, with a `status: superseded` value that asserted history without
+recording it.
+
+A study can now say it in its own manifest, without touching a frozen number:
+
+```yaml
+status: superseded
+supersession:
+  superseded_by: <study id that replaces this interpretation>
+  measurement_unchanged: true      # the artifacts still verify, unchanged
+  interpretation_changed: true     # but what they mean has changed
+  what_changed: >
+    The 0.941 figure was read as a capability. It is a success rate over
+    COVERED rows only; coverage is 17/28.
+  reason: >
+    The published claim did not carry the coverage denominator.
+  recorded: 2026-09-22
+  evidence: docs/audit-trail.md#<anchor>
+```
+
+The distinction is the whole point: `measurement_unchanged` and
+`interpretation_changed` are separate booleans, so "we were right about the
+number and wrong about the conclusion" is expressible, and so is the reverse.
+
+**It is enforced, not promised.** `scripts/validate.py`:
+
+* requires the block whenever `status` is `superseded` — a status alone asserts
+  history that is not written down;
+* requires the block to be absent otherwise, so it cannot be used as a comment;
+* requires a verifying artifact hash when `measurement_unchanged` is true, which
+  is what makes the claim *checkable* rather than sincere;
+* rejects `measurement_unchanged: true` with `interpretation_changed: false`,
+  which records no change at all;
+* rejects `superseded_by` naming a missing study, itself, or a cycle.
+
+The consequence worth stating plainly: **rewriting a frozen number to change what
+it is taken to mean now fails validation.** The hash check that already protected
+the artifacts is what turns "we did not change the measurement" from an assertion
+into a property. Twelve tests in `tests/test_supersession.py` cover each rule,
+including tampering with a frozen artifact and confirming the unchanged claim
+fails.
