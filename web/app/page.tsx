@@ -22,6 +22,7 @@ import ProgressRows from "@/components/figures/ProgressRows";
 import ForecastPair from "@/components/figures/ForecastPair";
 import UtilityTie from "@/components/figures/UtilityTie";
 import FamilyBoard from "@/components/figures/FamilyBoard";
+import ReferenceMap from "@/components/ReferenceMap";
 import { MarginNote, Footnotes } from "@/components/Notes";
 
 const S = study.study;
@@ -70,6 +71,7 @@ const TOC: TocItem[] = [
   { id: "explore", label: "Explore the matrix", depth: 1 },
   { id: "gate-caveats", label: "Gate defects recorded", depth: 1 },
   { id: "provenance", label: "Check or reuse the evidence", depth: 1 },
+  { id: "references", label: "References", depth: 1 },
 ];
 
 export default function Page() {
@@ -1029,6 +1031,11 @@ this is genuinely hard
               Eight cells in <code>compiler+jev+qwen3.5_4b</code> ran at n=2 rather than n=3, and
               no measured cell reached n≥10. The arm-level intervals are wide enough to matter.
             </MarginNote>
+
+            <HeadingFrog id="references" level={3}>
+              References
+            </HeadingFrog>
+            <ReferenceMap />
 
             <HeadingFrog id="notes" level={3}>
               Notes
