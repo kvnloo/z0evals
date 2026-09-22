@@ -244,7 +244,12 @@ jobs:
           }
 
           fail=0
-          check "" "How z0evals Fits Into Zer0" || fail=1
+          # The root channel was the last to migrate. Now that main serves the
+          # ported template its marker must be the article the site actually
+          # ships, not the legacy landing page title — the stale marker failed
+          # the verify step on run 35675256911 *after* every channel had
+          # deployed successfully.
+          check "" "Small Models Calling the Shots" || fail=1
           check "channels.html" "z0evals channels" || fail=1
           for ch in nightly next dev; do
             if curl -fsS -o /dev/null "$base/$ch/"; then
