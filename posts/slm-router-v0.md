@@ -23,6 +23,8 @@ toc:
     label: Gate
   - id: phase2
     label: Phase 2
+  - id: references
+    label: References
 ---
 
 <div class="evidence-banner">
@@ -192,6 +194,157 @@ The proposed first Phase 2 slice is intentionally conservative.
 The OOD families are `abstention`, `dependencies`, `parallelism`, and `uncertainty`. The frozen gate and thresholds stay untouched. The exit condition is a written, disjoint, digest-stable corpus with a 100% gold-label census.
 
 **Nothing was trained in Phase 1B.** No router or specialist was updated, no threshold was tuned, nothing was promoted, and Evolution Lab received no training artifact.
+
+## references & things that shaped this {#references}
+
+this project is obviously not happening in a vacuum. a lot of this came from trying things, stealing good abstractions from other systems, reading other people's evals, and then discovering that some of those ideas behave very differently once you put them on the same local hardware and the same typed decision.
+
+i'm leaving this intentionally broad. these are not all direct dependencies, and i'm definitely not claiming every project below agrees with the architecture we ended up with. some inspired a direction, some gave us a primitive, some gave us an eval pattern, and some were useful specifically because our results disagreed with what i expected going in.
+
+<details>
+<summary><strong>closest conceptual references</strong></summary>
+
+- [southbridge — “jev: watching the agents”](https://www.southbridge.ai/blog/jev-watching-the-agents) — the closest conceptual and visual reference for this article. the important idea was not just jev itself, but turning fuzzy agent behavior into typed questions that a cheap observer can answer.
+- [jev](https://github.com/southbridgeai/jev) — bounded probabilistic decision-making without generating prose token by token.
+- [openjev / z0intelligence](https://github.com/kvnloo/z0intelligence) — our local path for direct logit readout, trainable jev-like heads, nanojev, q-route and the common decision backend.
+- [Hermes PR #113020 — probabilistic decision providers for plugins](https://github.com/NousResearch/hermes-agent/pull/113020) — a provider-neutral binary / choice / ordinal decision runtime with full distributions, explicit abstention and replay metrics. this PR is by `fangliquanflq`, not tek.
+
+</details>
+
+<details>
+<summary><strong>tek's eval work in hermes</strong></summary>
+
+- [teknium1 — Hermes PR #88663: Browser Use mode A/B benchmark](https://github.com/NousResearch/hermes-agent/pull/88663) — turns a 204-run browser benchmark into a permanent, rerunnable eval with task batteries, multiple arms, reps and recovered baseline scorecards.
+- [teknium1 — Hermes PR #79162: reproducible core-toolset A/B eval harness](https://github.com/NousResearch/hermes-agent/pull/79162) — baseline vs fixes, one variable at a time, production-derived trap tasks, trace-based scoring and programmatic success checks.
+- [teknium1 — Hermes PR #87326: lean-tail compaction + recall eval](https://github.com/NousResearch/hermes-agent/pull/87326) — especially relevant to the token-savings side of this project: quality and retained tokens measured together instead of celebrating compression by itself.
+- [teknium1 — Hermes PR #109903: move living benchmarks into `evals/`](https://github.com/NousResearch/hermes-agent/pull/109903) — a useful repository-architecture reference for treating evals as durable artifacts instead of one-off scripts.
+
+</details>
+
+<details>
+<summary><strong>agent harnesses & execution systems</strong></summary>
+
+- [NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent) — one of the main execution environments behind this work. the skill/plugin surface is what made it possible to insert cheap typed decisions without turning every decision into another model-visible tool call.
+- [deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness) — plugin-first harness architecture, provider-neutral model execution, trajectory views and another environment we are using to test the same zer0 primitives.
+- [can1357/oh-my-pi](https://github.com/can1357/oh-my-pi) — a major reference for pushing work down into the harness: persistent workers, extension hooks, context control and the broader idea that the runtime should do more so the model has to do less.
+- [Anthropic Model Context Protocol](https://modelcontextprotocol.io/) — one of the surrounding standards for separating model reasoning from external tools/resources.
+- [OpenAI Agents SDK](https://github.com/openai/openai-agents-python) — another useful reference point for agent handoffs, tracing and runtime/tool separation.
+
+</details>
+
+<details>
+<summary><strong>zer0 architecture</strong></summary>
+
+- [aodl](https://github.com/kvnloo/aodl) — typed intent, constraints and legal-action structure. the most important phase 1b lesson maps directly onto this: illegal actions should disappear before a learned policy sees them.
+- [z0intelligence](https://github.com/kvnloo/z0intelligence) — cognition selection, escalation, `DecisionBackend`, nanojev and q-route.
+- [kerdoios](https://github.com/kvnloo/kerdoios) — compute placement, residency, provider quota and resource economics. residency turning into a 10+ second system cost is why this cannot be collapsed into the cognition router.
+- [evolution-lab](https://github.com/kvnloo/evolution-lab) — experimental search/training for q-route, mushroom-body policies, fly-derived policies and later distillation.
+- [tokenomics](https://github.com/kvnloo/tokenomics) — neutral accounting for tokens, context, latency, cost and verified outcomes.
+- [z0evals](https://github.com/kvnloo/z0evals) — the publication/certification layer this article lives in.
+- [verified-oss-loop](https://github.com/kvnloo/verified-oss-loop) — exact-head evidence, independent verification and separating generation from promotion.
+- [frontier-kb](https://github.com/kvnloo/frontier-kb) — research evidence and literature trail used to keep architecture claims separate from implementation state.
+
+</details>
+
+<details>
+<summary><strong>models & decision backends we actually cared about</strong></summary>
+
+- [Hammer / Hammer2.1](https://huggingface.co/collections/ibm-granite/hammer) — the 3b and 7b specialists that ended up being much harder to beat on bounded choice than i expected.
+- [Qwen](https://github.com/QwenLM/Qwen3) — the 4b/9b family that clarified the bounded-choice vs orchestration split.
+- [NVIDIA Nemotron](https://developer.nvidia.com/nemotron) — important mostly because the orchestrator branding made its local result a useful negative test of “model role” claims.
+- [Google FunctionGemma](https://huggingface.co/google/functiongemma-270m-it) — the sub-billion lower-bound experiment for tool/decision work.
+- [nanojev implementation in z0intelligence](https://github.com/kvnloo/z0intelligence/tree/main/src/z0int/backends) — local non-autoregressive decision backend and calibration surface.
+
+</details>
+
+<details>
+<summary><strong>local inference, serving & placement</strong></summary>
+
+- [llama.cpp](https://github.com/ggml-org/llama.cpp) — the local serving substrate behind much of the measured residency/swap behavior.
+- [vLLM](https://github.com/vllm-project/vllm) — higher-throughput serving plus the broader lesson that the inference backend itself affects what “cheap” means.
+- [LiteLLM](https://github.com/BerriAI/litellm) — useful provider-routing and spend-tracking reference; kerdoios intentionally should not become another full LLM gateway.
+- [Groq](https://console.groq.com/docs/overview) — free/fast remote capacity now used as experimental compute and counterfactual-worker capacity.
+- [Cerebras Inference](https://inference-docs.cerebras.ai/) — another high-throughput remote path now feeding the experimental inventory.
+- [OpenRouter](https://openrouter.ai/docs) — broad provider/model discovery and a useful source of free-tier experimental routes.
+- [Kubernetes](https://kubernetes.io/) — optional execution substrate for repeatable local model/services experiments, resource isolation and placement work.
+
+</details>
+
+<details>
+<summary><strong>fly, mushroom & tiny learned policies</strong></summary>
+
+- [FlyWire](https://flywire.ai/) — whole-brain drosophila connectomics and useful grounding for the scale/structure of the biological systems we keep borrowing ideas from.
+- [“the connectome of an insect brain” / drosophila connectomics work](https://www.science.org/doi/10.1126/science.add9330) — background for thinking about tiny recurrent/sensorimotor circuits as specialists rather than miniature language models.
+- [mushroom-body learning literature](https://www.nature.com/articles/nature23455) — inspiration for the sparse plastic specialist direction: cheap associative learning over a structured representation.
+- [flyforge research trail](https://github.com/kvnloo/frontier-kb) — our collected fly/mushroom literature, MaleCNS work, TMNF-C references and the distinction between a sensorimotor fly worker and a general SLM.
+- [flyforge integration in z0intelligence](https://github.com/kvnloo/z0intelligence/tree/main/omp-extensions) — current shadow/recovery integrations used to turn those ideas into measurable agent decisions.
+
+</details>
+
+<details>
+<summary><strong>related “make the model do less” work</strong></summary>
+
+- **AgentRun — “a harness for repetitive knowledge work” by Miguel Ríos Berríos / Grep** — adjacent work that frames the saving differently: compile repeated agent behavior into a workflow, skip work that cannot change the answer, and escalate the odd cases back to an agent.
+- [RLM / recursive language-model work](https://arxiv.org/abs/2512.24601) — relevant to the broader context-virtualization/offloading idea: move evidence addressing and repeated context manipulation out of the main model's raw token stream.
+- [SWE-agent](https://github.com/SWE-agent/SWE-agent) — useful reference for agent-computer interfaces and how much performance can come from constraining the interaction surface rather than only changing the model.
+- [OpenHands](https://github.com/All-Hands-AI/OpenHands) — another strong reference point for separating agent policy, runtime, tools and evaluation.
+- [DSPy](https://github.com/stanfordnlp/dspy) — relevant to treating prompts/programs as optimizable components rather than hand-written sacred text.
+
+</details>
+
+<details>
+<summary><strong>evaluation & measurement methodology</strong></summary>
+
+- [Brier score](https://en.wikipedia.org/wiki/Brier_score) — useful for bounded probabilistic decisions because top-1 accuracy throws away the thing we actually want from jev/nanojev: calibrated probability.
+- [log loss](https://en.wikipedia.org/wiki/Cross-entropy) — another proper scoring rule used when comparing distributions rather than only selected labels.
+- [reliability diagrams / calibration](https://scikit-learn.org/stable/modules/calibration.html) — background for the risk/coverage and “when should the cheap policy abstain?” framing.
+- [Wilson score interval](https://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval#Wilson_score_interval) — the confidence interval used in the bounded-choice result table.
+- [OpenTelemetry](https://opentelemetry.io/) — useful surrounding reference for thinking about execution evidence as durable traces rather than ad hoc print statements.
+- [MLflow](https://github.com/mlflow/mlflow) and [Weights & Biases](https://wandb.ai/) — general experiment-tracking references; we borrow the lineage mindset while keeping zer0's runtime/eval contracts repo-native.
+
+the methodology i want to keep is basically:
+
+```text
+record the real execution
+→ replay the same state
+→ change one thing
+→ verify externally
+→ preserve the evidence
+```
+
+not:
+
+```text
+ask the model whether the new system seems better
+```
+
+</details>
+
+<details>
+<summary><strong>future directions / not claims of this study</strong></summary>
+
+these are things connected to the architecture that phase 1b did **not** validate directly:
+
+- mushroom-body learned specialists
+- fly-derived temporal/recovery policies
+- nanojev risk/coverage routing
+- q-route progressively compiling expensive decisions into cheaper policies
+- kubernetes as an optional execution substrate
+- groq/cerebras free-tier capacity as experimental compute
+- agentrun-style workflow compilation
+- rlm-style context/evidence offloading
+- learned residency-aware placement
+- cross-harness shadow evaluation across hermes / dsh / omp
+
+the question stays the same for all of them:
+
+> **does this let the expensive model do less without making the system worse?**
+
+if yes, keep digging.
+
+if no, kill it.
+
+</details>
 
 ## Reproducibility and current publication status
 
