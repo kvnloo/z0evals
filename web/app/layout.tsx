@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Hanken_Grotesk, JetBrains_Mono } from "next/font/google";
+import { Hanken_Grotesk, JetBrains_Mono, Parastoo } from "next/font/google";
 import "./globals.css";
 
 // The reference self-hosts HK Grotesk and Departure Mono. HK Grotesk is a
@@ -17,6 +17,14 @@ const mono = JetBrains_Mono({
   display: "swap",
   variable: "--font-departure-mono",
 });
+// Parastoo is the reference's own display face and is available openly, so the
+// display role needs no substitution at all.
+const display = Parastoo({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  display: "swap",
+  variable: "--font-parastoo",
+});
 
 export const metadata: Metadata = {
   title: "Small Models Calling the Shots — z0evals",
@@ -26,7 +34,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${sans.variable} ${mono.variable}`}>
+    <html lang="en" className={`${sans.variable} ${mono.variable} ${display.variable}`}>
       <body>{children}</body>
     </html>
   );
