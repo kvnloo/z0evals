@@ -1,0 +1,17 @@
+# Publish URL map for GitHub Pages.
+#
+# Git channel names are NOT URL folders: `preview` publishes under `/next/` and
+# `nightly` under `/nightly/`, never under a catch-all `/preview/<x>/` (that
+# shape is what caused the AODL `/preview/nightly/` collision).
+#
+# Enforced by `.verified-oss-loop/pages-url-map.py check`.
+
+schema: verified-oss-loop.pages-url-map.v1
+feature_prefix: wip
+
+channels:
+  main: ""          # -> /z0evals/
+  nightly: nightly  # -> /z0evals/nightly/
+  preview: next     # -> /z0evals/next/
+  dev: dev          # -> /z0evals/dev/   (dev is gated, so it is published
+                    #    deliberately here rather than by default)
