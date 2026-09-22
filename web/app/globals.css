@@ -255,3 +255,22 @@ figcaption .fig-n { font-family: var(--font-mono); color: var(--color-sb-seconda
 .footnotes li:target { background: var(--color-sb-highlight-soft); }
 .margin-note { font-size: 12.5px; color: var(--color-sb-text-muted); line-height: 1.5;
                border-left: 2px solid var(--color-sb-border); padding-left: 10px; margin: 18px 0; }
+
+/* --------------------------------------------------------- headline figure */
+.headline {
+  display: grid; grid-template-columns: 232px minmax(0, 1fr);
+  gap: 26px; align-items: center; margin: 26px 0 8px;
+}
+.headline-figure { border-left: 2px solid var(--color-sb-secondary); padding-left: 16px; }
+.headline-value {
+  font-size: 3.1rem; line-height: 1; font-weight: 700;
+  letter-spacing: -.035em; font-variant-numeric: tabular-nums;
+  color: var(--color-sb-primary);
+}
+.headline-unit { font-size: 13px; color: var(--color-sb-text-muted); margin-top: 7px; }
+.headline-caption { font-size: 12.5px; color: var(--color-sb-text-light); margin-top: 10px; line-height: 1.45; }
+.headline-chart { min-width: 0; }
+@media (max-width: 760px) {
+  .headline { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .headline-value { font-size: 2.4rem; }
+}
