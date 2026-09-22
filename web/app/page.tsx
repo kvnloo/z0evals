@@ -209,7 +209,7 @@ remote frontier model`}</pre>
             <MarginNote n={1} label="it was the menu, not the model">
               those two routers were choosing from <em>different</em> candidate sets. when the
               menu is held equal the agreement is <strong>100%</strong>, not 48.1% &mdash; the
-              later J1_1 rerun reports <code>candidate_set_equal: true</code> on all 40 rows, and
+              later j1_1 rerun reports <code>candidate_set_equal: true</code> on all 40 rows, and
               the pre-fix corpus reports <code>0</code> matched of 40. so 48.1% measures a
               mismatched menu, not nanojev&rsquo;s quality. note also that jev was confident
               (&ge;0.7) on 21 of the 27 and nanojev agreed on only{" "}
@@ -262,7 +262,7 @@ remote frontier model`}</pre>
               not because it was the smartest model in some abstract sense. qwen3.5-9b could
               still solve a few things hammer missed. but for the actual job in front of us
               — <strong>choose among actions after the compiler has already removed the illegal
-              ones</strong> — Hammer was absurdly competitive for how cheap it was.
+              ones</strong> — hammer was absurdly competitive for how cheap it was.
             </p>
 
             <p>our early measurement looked roughly like this:</p>
@@ -332,8 +332,8 @@ nemotron-8b                17/28    ~2.7 s p50`}</pre>
               caption={
                 <>
                   {D.phase1b_measured_cells} measured cells, {D.phase1b_cells_n_ge_3} of them at
-                  n≥3. Best bounded-choice success {pct(qwen9.successRate)} ({qwen9.label},{" "}
-                  {ms(qwen9.warmP50Ms)}). The unfiltered control selected a dangerous action{" "}
+                  n≥3. best bounded-choice success {pct(qwen9.successRate)} ({qwen9.label},{" "}
+                  {ms(qwen9.warmP50Ms)}). the unfiltered control selected a dangerous action{" "}
                   {unf.dangerous} times; every compiler-first arm, zero.
                 </>
               }
@@ -381,8 +381,8 @@ nemotron-8b                17/28    ~2.7 s p50`}</pre>
               <strong>
                 {qwen4.success}/{qwen4.n}
               </strong>
-              , the same as Hammer3B, while taking <strong>{ms(qwen4.warmP50Ms)}</strong>. So on
-              bounded action choice, Qwen 4B is basically spending an extra ~1.8 seconds to arrive
+              , the same as hammer3b, while taking <strong>{ms(qwen4.warmP50Ms)}</strong>. so on
+              bounded action choice, qwen 4b is basically spending an extra ~1.8 seconds to arrive
               at the same answer.
             </p>
 
@@ -481,8 +481,8 @@ hard semantic tail
 
             <p>
               qwen3.5-9b had a measured cold total around <strong>17.2 seconds</strong>.
-              FunctionGemma was around <strong>3.1 seconds</strong>. Put that next to
-              Hammer3B&rsquo;s <strong>{ms(hammer3.warmP50Ms)}</strong> warm bounded decision.
+              functiongemma was around <strong>3.1 seconds</strong>. put that next to
+              hammer3b&rsquo;s <strong>{ms(hammer3.warmP50Ms)}</strong> warm bounded decision.
             </p>
 
             <p>
@@ -534,12 +534,12 @@ qwen4b`}</pre>
             <p>
               we tested the actual composition. not &ldquo;run both models independently and
               compare them.&rdquo; jev&rsquo;s artifact was genuinely produced, passed downstream,
-              and <em>consumed</em> by Qwen.
+              and <em>consumed</em> by qwen.
             </p>
 
             <p>
               on <strong>{study.composition.artifactConsumedStates}/28 states</strong>, the
-              integration path worked. And the result was worse.
+              integration path worked. and the result was worse.
             </p>
 
             <div className="diagram-wrapper">
@@ -606,7 +606,7 @@ qwen4b`}</pre>
 
             <p>
               but there is another detail i do not want to throw away: jev is giving us one of the
-              few proper <strong>distributions</strong> in this system. Confidence, margin,
+              few proper <strong>distributions</strong> in this system. confidence, margin,
               entropy, disagreement — those are useful signals even when the argmax itself should
               not own the action.
             </p>
@@ -645,14 +645,14 @@ qwen4b`}</pre>
 
             <p>the cleanest safety result in the whole run is almost embarrassingly simple.</p>
 
-            <p>behind the compiler: <strong>dangerous selections: 0</strong>. Without it:</p>
+            <p>behind the compiler: <strong>dangerous selections: 0</strong>. without it:</p>
 
             <pre>{`unfiltered hammer3b:
 6 dangerous selections / 84`}</pre>
 
             <p>
-              the compiler-contract slice itself went <strong>26/26</strong>. And on the
-              intentionally tempting near-miss, FunctionGemma selected the dangerous action while
+              the compiler-contract slice itself went <strong>26/26</strong>. and on the
+              intentionally tempting near-miss, functiongemma selected the dangerous action while
               the other five tested models declined it.
             </p>
 
@@ -697,7 +697,7 @@ qwen4b`}</pre>
 
             <p>
               qwen9b is the only correct measured arm there. but it exceeds the frozen{" "}
-              <strong>4,000 ms</strong> latency budget. Our utility maps both{" "}
+              <strong>4,000 ms</strong> latency budget. our utility maps both{" "}
               <em>correct but slow</em> and <em>wrong but fast</em> to exactly{" "}
               <strong>−1.000</strong>.
             </p>
@@ -718,7 +718,7 @@ qwen4b`}</pre>
 
             <p>
               the gate was reading <code>dangerous_rate</code> based on selected outcomes rather
-              than <code>exposed_dangerous</code>, so the known unfiltered Hammer3B arm — the one
+              than <code>exposed_dangerous</code>, so the known unfiltered hammer3b arm — the one
               with <strong>{unf.dangerous}/84 dangerous selections</strong> — could still own
               four regions.
             </p>
@@ -762,13 +762,13 @@ qwen4b`}</pre>
               <strong>
                 {study.features.label_disagreements} / {study.features.cells}
               </strong>{" "}
-              ({pct(study.features.label_noise_rate, 2)}). So the answer was not &ldquo;the labels
+              ({pct(study.features.label_noise_rate, 2)}). so the answer was not &ldquo;the labels
               are garbage.&rdquo;
             </p>
 
             <p>
               we found three actual collisions, and all three landed in{" "}
-              <code>{study.features.collision_class}</code>. Then we tested candidate features.
+              <code>{study.features.collision_class}</code>. then we tested candidate features.
             </p>
 
             <MetricRow
@@ -805,7 +805,7 @@ qwen4b`}</pre>
             <p>
               so <code>budget_units</code> becomes the next feature not because it sounds clever,
               but because it is both <strong>measured to matter</strong> and{" "}
-              <strong>available at runtime</strong>. That is exactly the kind of constraint I want
+              <strong>available at runtime</strong>. that is exactly the kind of constraint i want
               q-route to inherit.
             </p>
 
@@ -860,7 +860,7 @@ z0evals
             </HeadingFrog>
 
             <p>
-              phase 1b did <strong>not</strong> train anything. That was intentional.
+              phase 1b did <strong>not</strong> train anything. that was intentional.
             </p>
 
             <p>the proposed first phase 2 slice is only:</p>
@@ -890,7 +890,7 @@ ood: abstention / dependencies / parallelism / uncertainty`}</pre>
             </p>
 
             <p>
-              the job of these systems is <strong>not</strong> to become miniature chatbots. The
+              the job of these systems is <strong>not</strong> to become miniature chatbots. the
               ideal outcome is much more aggressive:
             </p>
 
@@ -1027,8 +1027,8 @@ this is genuinely hard
               check or reuse the evidence
             </HeadingFrog>
             <p>
-              run <code>{S.runId}</code>. Raw receipts are authoritative:{" "}
-              {study.provenance.canonical_raw_artifacts}. Source commits are currently local-only,
+              run <code>{S.runId}</code>. raw receipts are authoritative:{" "}
+              {study.provenance.canonical_raw_artifacts}. source commits are currently local-only,
               so this page does <strong>not</strong> claim the numbers reproduce from a fresh
               clone.
             </p>
@@ -1036,11 +1036,11 @@ this is genuinely hard
               {coverage.coldProbeArms.length} single-state cold-start probes (
               {coverage.coldProbeRows} receipts on{" "}
               <code>{coverage.coldProbeStates.join(", ")}</code>) were excluded from every
-              comparison. They measure load latency, not bounded-choice accuracy.
+              comparison. they measure load latency, not bounded-choice accuracy.
             </MarginNote>
             <MarginNote n={4} label="thin cells">
               eight cells in <code>compiler+jev+qwen3.5_4b</code> ran at n=2 rather than n=3, and
-              no measured cell reached n≥10. The arm-level intervals are wide enough to matter.
+              no measured cell reached n≥10. the arm-level intervals are wide enough to matter.
             </MarginNote>
 
             <HeadingFrog id="references" level={3}>
@@ -1066,7 +1066,7 @@ this is genuinely hard
                       pilot and is <strong>separate from</strong> <code>{S.runId}</code>; its
                       numbers must not be merged with the phase 1b tables, nor with the later
                       z0intelligence backend run at{" "}
-                      <code>results/decision-backends/20260919T015610Z/</code> (commit{" "}
+                      <code>results/decision-backends/20260919t015610z/</code> (commit{" "}
                       <code>338f904</code>), which is a different run. the pilot&rsquo;s own temp
                       artifacts were deleted; this was recovered from a captured process log, and
                       the 27 per-decision lines and the summary agree exactly.
@@ -1076,9 +1076,9 @@ this is genuinely hard
                   n: 2,
                   text: (
                     <>
-                      Confidence is emitted on only {calibration.length} of{" "}
+                      confidence is emitted on only {calibration.length} of{" "}
                       {arms[0].n * arms.length} recorded decisions, unevenly across arms —{" "}
-                      {jev.label} and Hammer 7B supply most of them. The reliability curve
+                      {jev.label} and hammer 7b supply most of them. the reliability curve
                       describes the arms that emit confidence, not every arm.
                     </>
                   ),
@@ -1090,7 +1090,7 @@ this is genuinely hard
                       {coverage.coldProbeArms.length} single-state cold-start probes (
                       {coverage.coldProbeRows} receipts on{" "}
                       <code>{coverage.coldProbeStates.join(", ")}</code>) were excluded from every
-                      comparison on this page. They measure load latency, not bounded-choice
+                      comparison on this page. they measure load latency, not bounded-choice
                       accuracy — ranking a 1.000 on three draws beside 84-decision arms would be
                       a lie of arithmetic.
                     </>
@@ -1100,7 +1100,7 @@ this is genuinely hard
                   n: 4,
                   text: (
                     <>
-                      Eight cells in <code>compiler+jev+qwen3.5_4b</code> ran at n=2 rather than
+                      eight cells in <code>compiler+jev+qwen3.5_4b</code> ran at n=2 rather than
                       n=3, and no measured cell reached n≥10.
                     </>
                   ),

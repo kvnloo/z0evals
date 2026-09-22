@@ -98,45 +98,59 @@ def _fold_tag_attrs(tag: str) -> str:
     )
 
 
-def transform(src: str) -> str:
+def transform(src: str, start_in_text: bool = False) -> str:
+    """Fold JSX text and <pre> diagrams; leave code alone.
+
+    Two modes and a brace-depth stack:
+
+      code  we are in TS/JS. Tags are scanned and their text attributes folded.
+      text  we are inside a JSX element, so characters are prose.
+
+    An expression `{ ... }` used to be emitted verbatim, which was wrong: JSX
+    *values* live in expressions — the footnotes are `text: (<> ... </>)` and
+    figure captions are `caption={<> ... </>}` — so all of that prose was skipped
+    and stayed mixed-case. Now an expression pushes a brace depth and we keep
+    processing inside it, so nested JSX is folded while the surrounding code
+    stays verbatim.
+    """
     out: list[str] = []
     i, n = 0, len(src)
-    in_text = False
+    in_text = start_in_text
     pre_depth = 0
+    # JSX element depth. A closing tag returns us to the *parent's* content, which
+    # is text whenever the parent is still open — so `</strong>` inside a `<p>` must
+    # not drop us back into code, or everything after it (". without it:") stays
+    # mixed-case. A fragment's body is already inside `<>`, so it starts at 1: with
+    # 0, the first `</code>` inside a footnote dropped the rest back to code.
+    depth = 1 if start_in_text else 0
 
     while i < n:
-        ch = src[i]
-
-        # Block and line comments are handled before anything else. They are
-        # prose, but they routinely *quote* markup (`` `<svg ...>` `` in a
-        # docstring), and entering text mode on a quoted tag never returns:
-        # the rest of the file gets folded as prose, which is how
-        # `export function FrogGlyph` became `frogglyph`.
         if src.startswith("/*", i):
             end = src.find("*/", i + 2)
             end = n if end < 0 else end + 2
-            out.append(src[i:end])
-            i = end
-            continue
+            out.append(src[i:end]); i = end; continue
         if src.startswith("//", i):
             end = src.find("\n", i)
             end = n if end < 0 else end
-            out.append(src[i:end])
-            i = end
-            continue
+            out.append(src[i:end]); i = end; continue
+
+        ch = src[i]
 
         if in_text:
             if ch == "<":
                 in_text = False
                 continue
             if ch == "{":
-                depth, j, buf = 0, i, []
+                # Emit the expression verbatim: inside `{}` JSX and plain code are
+                # indistinguishable without a JS parser, and the code must not be
+                # touched. Prose-bearing fragments are handled by
+                # fold_jsx_fragments() afterwards.
+                bdepth, j, buf = 0, i, []
                 while j < n:
                     c = src[j]
                     if c in "\"'":
                         q = c
-                        buf.append(c)
-                        j += 1
+                        buf.append(c); j += 1
                         while j < n and src[j] != q:
                             if src[j] == "\\":
                                 buf.append(src[j:j + 2]); j += 2; continue
@@ -156,10 +170,10 @@ def transform(src: str) -> str:
                         j += 1
                         continue
                     if c == "{":
-                        depth += 1
+                        bdepth += 1
                     elif c == "}":
-                        depth -= 1
-                        if depth == 0:
+                        bdepth -= 1
+                        if bdepth == 0:
                             buf.append(c); j += 1; break
                     buf.append(c); j += 1
                 out.append("".join(buf))
@@ -172,30 +186,91 @@ def transform(src: str) -> str:
             out.append(fold(ch)); i += 1
             continue
 
+        # ---- code ----
         prev = src[i - 1] if i > 0 else ""
-        is_generic = prev.isalnum() or prev in "_$."
-        if ch == "<" and not is_generic and i + 1 < n and (src[i + 1].isalpha() or src[i + 1] in "/>"):
+        # `prev in "_$."` must be guarded: the empty string is `in` every string,
+        # so an unguarded check rejected `<p>` at offset 0 and never entered text
+        # mode for the whole element.
+        is_generic = bool(prev) and (prev.isalnum() or prev in "_$.")
+        # A closing tag can never be a generic, and it is routinely preceded by an
+        # identifier character (`</strong>` after "DEF"), so `</` is exempt from the
+        # generic test — otherwise the closer is skipped and element depth never
+        # comes back down.
+        is_closing_syntax = i + 1 < n and src[i + 1] == "/"
+        looks_like_tag = (
+            ch == "<"
+            and i + 1 < n
+            and (src[i + 1].isalpha() or src[i + 1] in "/>")
+        )
+        if looks_like_tag and not is_closing_syntax:
+            # `<` after an identifier is ambiguous: `Record<string, never>` is a
+            # generic, but `abc<br/>` is a tag. A JSX tag either self-closes or
+            # carries an attribute; a generic does neither.
+            span = src[i : _scan_tag(src, i)]
+            if is_generic and not (span.endswith("/>") or '="' in span):
+                looks_like_tag = False
+        if looks_like_tag:
             end_i = _scan_tag(src, i)
             tag = src[i:end_i]
             out.append(_fold_tag_attrs(tag))
             i = end_i
-            # Whether the following characters are prose depends on the tag:
-            #
-            #   <div>      opening   -> its children are text
-            #   <Frog />   self-closing -> back to the parent, which is code
-            #   </div>     closing  -> back to the parent, which is code
-            #
-            # Treating a closing tag as an entry into text is what folded
-            # `export function Fn` after `</aside>`: the scanner never returned
-            # to code, so the rest of the file was lowercased as prose.
             is_closing = tag.startswith("</")
             is_self_closing = tag.rstrip().endswith("/>")
-            in_text = not (is_closing or is_self_closing)
+            if is_closing:
+                depth = max(0, depth - 1)
+            elif not is_self_closing:
+                depth += 1
+            in_text = depth > 0
             continue
-        out.append(ch)
-        i += 1
+
+        out.append(ch); i += 1
 
     return "".join(out)
+
+
+def fold_jsx_fragments(src: str) -> str:
+    """Fold JSX text inside bare fragments `<> ... </>`.
+
+    Footnote bodies and `caption={<> ... </>}` blocks hold their prose inside a JSX
+    expression, and `transform()` emits expressions verbatim because inside `{}` JSX
+    and plain code are indistinguishable. A `<>` fragment is pure JSX with no code
+    in it, so its text can be folded safely.
+
+    Fragments **nest** here (a footnote list sits inside a caption fragment), so the
+    closer is found with a depth counter rather than by taking the next `</>` —
+    pairing them positionally folded the wrong spans and left the footnotes
+    untouched.
+    """
+    out: list[str] = []
+    i = 0
+    n = len(src)
+    while True:
+        start = src.find("<>", i)
+        if start < 0:
+            out.append(src[i:])
+            return "".join(out)
+        depth = 0
+        j = start
+        end = -1
+        while j < n:
+            if src.startswith("<>", j):
+                depth += 1
+                j += 2
+                continue
+            if src.startswith("</>", j):
+                depth -= 1
+                if depth == 0:
+                    end = j
+                    break
+                j += 3
+                continue
+            j += 1
+        if end < 0:
+            out.append(src[i:])
+            return "".join(out)
+        out.append(src[i:start])
+        out.append("<>" + fold_jsx_fragments(transform(src[start + 2 : end], start_in_text=True)) + "</>")
+        i = end + 3
 
 
 LITERAL_SITES = (
@@ -228,7 +303,7 @@ def main() -> int:
     changed = 0
     for f in targets():
         src = f.read_text(encoding="utf-8")
-        dest = fold_literal_sites(transform(src))
+        dest = fold_literal_sites(fold_jsx_fragments(transform(src)))
         if dest != src:
             changed += 1
             n = sum(1 for x, y in zip(src.splitlines(), dest.splitlines()) if x != y)

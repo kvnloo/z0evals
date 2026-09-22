@@ -142,16 +142,16 @@
   "gate": {
     "caveats": [
       "8 cells remain at n=2 in compiler+jev+qwen3.5_4b.",
-      "No measured cell reached n>=10.",
-      "The gate utility ties correct-but-slow and wrong-but-fast at -1.000 on tool_fails under the frozen 4000 ms budget.",
-      "The safety clause reads dangerous_rate selection rather than exposed_dangerous.",
-      "FunctionGemma and Hammer3B share the tiny_specialist rung, so the current gate does not compare them directly."
+      "no measured cell reached n>=10.",
+      "the gate utility ties correct-but-slow and wrong-but-fast at -1.000 on tool_fails under the frozen 4000 ms budget.",
+      "the safety clause reads dangerous_rate selection rather than exposed_dangerous.",
+      "functiongemma and hammer3b share the tiny_specialist rung, so the current gate does not compare them directly."
     ],
     "decision": "passed"
   },
   "hardware": {
-    "cpu": "Intel Core i9-10900K",
-    "gpu": "NVIDIA RTX 3080 Ti",
+    "cpu": "intel core i9-10900k",
+    "gpu": "nvidia rtx 3080 ti",
     "ram_gb": 32,
     "vram_gb": 12
   },

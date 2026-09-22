@@ -50,14 +50,14 @@ def _label(arm: str) -> str:
         "coldprobe": "cold probe",
     }.get(prefix, prefix)
     name = (
-        model.replace("qwen3.5", "Qwen3.5")
-        .replace("hammer2.1", "Hammer2.1")
-        .replace("nemotron_orchestrator", "Nemotron Orchestrator")
-        .replace("functiongemma", "FunctionGemma")
+        model.replace("qwen3.5", "qwen3.5")
+        .replace("hammer2.1", "hammer2.1")
+        .replace("nemotron_orchestrator", "nemotron orchestrator")
+        .replace("functiongemma", "functiongemma")
         .replace("_", " ")
     )
     if arm == "deterministic.compiler_only":
-        return "Deterministic compiler only"
+        return "deterministic compiler only"
     if not model:
         return pretty
     return f"{name} · {pretty}"
@@ -120,7 +120,7 @@ def build_components(raw: Path) -> dict:
         for f in families
     ]
     corpus = {
-        "title": "Where the 1,102 receipts actually sit",
+        "title": "where the 1,102 receipts actually sit",
         "headline": [
             f"{len(all_rows):,} receipts",
             f"{len(families)} state families",
@@ -263,8 +263,8 @@ def build_components(raw: Path) -> dict:
         ]
     board_rows.sort(key=lambda r: (-r["successRate"], r["medianMs"]))
     model_board = {
-        "title": "Every arm, measured on the same 28 states",
-        "columns": ["Bounded-choice success ↑", "Median response ↓", "Dangerous selections ↓"],
+        "title": "every arm, measured on the same 28 states",
+        "columns": ["bounded-choice success ↑", "median response ↓", "dangerous selections ↓"],
         "rows": board_rows,
     }
 
@@ -298,7 +298,7 @@ def build_components(raw: Path) -> dict:
         )
     progress_rows.sort(key=lambda r: (-r["solved"], r["arm"]))
     progress = {
-        "title": "How far each arm gets through the suite",
+        "title": "how far each arm gets through the suite",
         "axisLabel": "states solved, cumulative",
         "total": len(state_order),
         "rows": progress_rows,
@@ -340,7 +340,7 @@ def build_components(raw: Path) -> dict:
             curve.append([round(step / len(rs) * 100.0, 3),
                           round(lo, 6), round(hi, 6), round(k / step, 6)])
     forecast = {
-        "title": "What one reading licenses, and what 84 readings license",
+        "title": "what one reading licenses, and what 84 readings license",
         "referenceRate": round(best["rate"], 6) if best else 0.0,
         "referenceArm": best["arm"] if best else None,
         "curve": curve,
@@ -399,7 +399,7 @@ def build_components(raw: Path) -> dict:
         })
     fam_rows.sort(key=lambda x: (x["successRate"], x["family"]))
     family_board = {
-        "title": "Every state family, with the states inside it",
+        "title": "every state family, with the states inside it",
         "columns": ["family", "receipts", "success", "p50"],
         "rows": fam_rows,
         "totalStates": len(states),
@@ -433,7 +433,7 @@ def build_components(raw: Path) -> dict:
         "budgetMs": BUDGET_MS,
         "frozenUtility": FROZEN_UTILITY,
         "distinctUtilities": sorted({p["utility"] for p in tf_points}),
-        "title": "One state where the gate cannot tell right from wrong",
+        "title": "one state where the gate cannot tell right from wrong",
         "points": tf_points,
         "correctArms": correct_arms,
         "wrongArms": wrong_arms,

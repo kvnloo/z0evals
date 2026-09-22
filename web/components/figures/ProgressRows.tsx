@@ -52,7 +52,7 @@ export default function ProgressRows({ d }: { d: ProgressData }) {
 
       {d.rows.map((r) => {
         const path = r.points
-          .map(([x, y], i) => `${i === 0 ? "M" : "L"}${((x / 100) * W).toFixed(2)} ${(H - (y / r.total) * H).toFixed(2)}`)
+          .map(([x, y], i) => `${i === 0 ? "m" : "l"}${((x / 100) * W).toFixed(2)} ${(H - (y / r.total) * H).toFixed(2)}`)
           .join(" ");
         return (
           <div className="progressRow" key={r.arm}>
@@ -96,7 +96,7 @@ export default function ProgressRows({ d }: { d: ProgressData }) {
         them is not how many states they solve but whether the compiler is standing in front of
         them, which the dangerous-selection column above settles.{" "}
         <strong>preserveaspectratio is none</strong> on these plots, as in the reference: the
-        viewBox is a coordinate system, not an aspect contract, so the stroke is pinned with
+        viewbox is a coordinate system, not an aspect contract, so the stroke is pinned with
         <code> non-scaling-stroke</code> to stay 1.5px however wide the column gets.
       </figcaption>
     </figure>

@@ -5,9 +5,9 @@ const R_PAD = 24;
 
 const RUNGS = [
   { id: "deterministic", label: "deterministic compiler", detail: "legal-action set, no model", ms: "~0.003" },
-  { id: "tiny", label: "tiny specialist", detail: "FnGemma 270M / Hammer 3B", ms: "66–195" },
+  { id: "tiny", label: "tiny specialist", detail: "fngemma 270m / hammer 3b", ms: "66–195" },
   { id: "jev", label: "nanojev bounded scorer", detail: "calibrated typed questions", ms: "31" },
-  { id: "slm", label: "local slm router", detail: "Qwen 3.5 4B / 9B", ms: "1993–3603" },
+  { id: "slm", label: "local slm router", detail: "qwen 3.5 4b / 9b", ms: "1993–3603" },
   { id: "general", label: "general fallback", detail: "escalation only", ms: "—" },
 ];
 
@@ -56,7 +56,7 @@ export default function LadderFlow() {
               <line x1={L + 4} x2={L + 18} y1={y + 12} y2={y + 12} stroke={lit ? "#29916e" : "#d9d9d9"} strokeWidth="1.5" />
               <circle cx={L + 11} cy={y + 12} r={active ? 6 : 4} fill={lit ? "#29916e" : "#fff"}
                       stroke="#29916e" strokeWidth="1.5"
-                      style={{ animation: active ? "packetPulse 1s ease-in-out infinite" : "none",
+                      style={{ animation: active ? "packetpulse 1s ease-in-out infinite" : "none",
                                transition: "r .3s ease" }} />
               <text x={L + 32} y={y + 9} fontSize="12.5" fill="#1a3029" fontWeight={active ? 700 : 500}>{r.label}</text>
               <text x={L + 32} y={y + 25} fontSize="11" fill="#888">{r.detail}</text>

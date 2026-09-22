@@ -44,7 +44,7 @@ export default function ReferenceMap() {
         <summary><strong>zer0 architecture</strong></summary>
         <ul>
           <li><a href="https://github.com/kvnloo/aodl">aodl</a> — typed intent, constraints and legal-action structure.</li>
-          <li><a href="https://github.com/kvnloo/z0intelligence">z0intelligence</a> — cognition selection, escalation, DecisionBackend, nanojev and q-route.</li>
+          <li><a href="https://github.com/kvnloo/z0intelligence">z0intelligence</a> — cognition selection, escalation, decisionbackend, nanojev and q-route.</li>
           <li><a href="https://github.com/kvnloo/kerdoios">kerdoios</a> — residency, provider quota and resource placement.</li>
           <li><a href="https://github.com/kvnloo/evolution-lab">evolution-lab</a> — q-route, mushroom/fly experiments and training.</li>
           <li><a href="https://github.com/kvnloo/tokenomics">tokenomics</a> — neutral token/context/latency/cost/outcome accounting.</li>
@@ -77,7 +77,7 @@ export default function ReferenceMap() {
           <li><a href="https://flywire.ai/">flywire</a> — whole-brain drosophila connectomics.</li>
           <li><a href="https://www.science.org/doi/10.1126/science.add9330">the connectome of an insect brain</a></li>
           <li><a href="https://www.nature.com/articles/nature23455">mushroom-body learning literature</a></li>
-          <li><a href="https://github.com/kvnloo/frontier-kb">flyforge research trail</a> — MaleCNS, TMNF-C and the sensorimotor-specialist framing.</li>
+          <li><a href="https://github.com/kvnloo/frontier-kb">flyforge research trail</a> — malecns, tmnf-c and the sensorimotor-specialist framing.</li>
           <li><a href="https://github.com/kvnloo/z0intelligence/tree/main/omp-extensions">flyforge integration</a> — current shadow/recovery integrations.</li>
         </ul>
       </details>

@@ -3,7 +3,7 @@
   "arms": [
     {
       "id": "compiler+hammer2.1_3b",
-      "label": "Hammer 3B",
+      "label": "hammer 3b",
       "unfiltered": false,
       "n": 84,
       "states": 28,
@@ -23,7 +23,7 @@
     },
     {
       "id": "compiler+qwen3.5_4b",
-      "label": "Qwen 4B",
+      "label": "qwen 4b",
       "unfiltered": false,
       "n": 84,
       "states": 28,
@@ -43,7 +43,7 @@
     },
     {
       "id": "compiler+qwen3.5_9b",
-      "label": "Qwen 9B",
+      "label": "qwen 9b",
       "unfiltered": false,
       "n": 84,
       "states": 28,
@@ -63,7 +63,7 @@
     },
     {
       "id": "compiler+hammer2.1_7b",
-      "label": "Hammer 7B",
+      "label": "hammer 7b",
       "unfiltered": false,
       "n": 84,
       "states": 28,
@@ -83,7 +83,7 @@
     },
     {
       "id": "compiler+nemotron_orchestrator_8b",
-      "label": "Nemotron 8B",
+      "label": "nemotron 8b",
       "unfiltered": false,
       "n": 84,
       "states": 28,
@@ -103,7 +103,7 @@
     },
     {
       "id": "compiler+functiongemma_270m",
-      "label": "FnGemma 270M",
+      "label": "fngemma 270m",
       "unfiltered": false,
       "n": 84,
       "states": 28,
@@ -123,7 +123,7 @@
     },
     {
       "id": "compiler+jev",
-      "label": "JEV scorer",
+      "label": "jev scorer",
       "unfiltered": false,
       "n": 84,
       "states": 28,
@@ -143,7 +143,7 @@
     },
     {
       "id": "unfiltered+hammer2.1_3b",
-      "label": "Unfiltered \u00b7 Hammer 3B",
+      "label": "unfiltered \u00b7 hammer 3b",
       "unfiltered": true,
       "n": 84,
       "states": 28,
@@ -163,7 +163,7 @@
     },
     {
       "id": "unfiltered+qwen3.5_4b",
-      "label": "Unfiltered \u00b7 Qwen 4B",
+      "label": "unfiltered \u00b7 qwen 4b",
       "unfiltered": true,
       "n": 84,
       "states": 28,
@@ -183,7 +183,7 @@
     },
     {
       "id": "unfiltered+qwen3.5_9b",
-      "label": "Unfiltered \u00b7 Qwen 9B",
+      "label": "unfiltered \u00b7 qwen 9b",
       "unfiltered": true,
       "n": 84,
       "states": 28,
@@ -203,7 +203,7 @@
     },
     {
       "id": "unfiltered+nemotron_orchestrator_8b",
-      "label": "Unfiltered \u00b7 Nemotron",
+      "label": "unfiltered \u00b7 nemotron",
       "unfiltered": true,
       "n": 84,
       "states": 28,

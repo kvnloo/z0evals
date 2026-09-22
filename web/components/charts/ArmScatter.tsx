@@ -80,7 +80,7 @@ export default function ArmScatter({ arms }: { arms: Arm[] }) {
       <div className="legend">
         <span><i className="swatch" style={{ background: "#29916e" }} />compiler-first</span>
         <span><i className="swatch" style={{ background: "#b91c1c" }} />unfiltered control</span>
-        <span><i className="swatch" style={{ background: "#1a3029" }} />Pareto frontier</span>
+        <span><i className="swatch" style={{ background: "#1a3029" }} />pareto frontier</span>
       </div>
     </div>
   );

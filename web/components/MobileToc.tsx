@@ -56,7 +56,7 @@ export default function MobileToc({ items }: { items: TocItem[] }) {
         <button
           type="button"
           className="mobile-toc-fab"
-          aria-label={open ? "Close contents" : "Open contents"}
+          aria-label={open ? "close contents" : "open contents"}
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
         >

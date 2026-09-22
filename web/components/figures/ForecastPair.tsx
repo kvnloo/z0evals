@@ -208,7 +208,7 @@ export default function ForecastPair({ d }: { d: ForecastData }) {
         receipts accumulate. the right panel is the same estimator on every arm at once: the
         widest honest interval on this page is {worst ? pct(worst.hi - worst.lo) : "—"} wide, on
         an arm with only {worst?.n ?? 0} draws.{" "}
-        <strong>one reading is not a forecast.</strong> A single state at three repetitions
+        <strong>one reading is not a forecast.</strong> a single state at three repetitions
         licenses {pct(d.errors[0]?.singleLo ?? 0)}–{pct(d.errors[0]?.singleHi ?? 0)}, which is
         consistent with almost any true rate; that is why no arm is ranked on fewer than 76
         receipts and why the six cold-start probes are excluded from every comparison.
