@@ -38,7 +38,7 @@ questions:
   - Which local SLM best handles bounded routing under latency and quality constraints?
   - How much does compiler-first legal-action filtering contribute independently of model quality?
   - Which roles require general reasoning versus a specialist or bounded scorer?
-  - Does composing JEV or a small specialist ahead of a larger model improve the downstream decision?
+  - Does composing NanoJev (the local 0.6B scorer behind the `compiler+jev` arm) or a small specialist ahead of a larger model improve the downstream decision?
   - What feature should Q-Route add before the first corpus-generation slice?
 
 artifacts:
@@ -71,7 +71,7 @@ claims:
     evidence:
       - data/phase1b-summary.json
   - id: composition-harmful
-    text: the measured JEV and Hammer3B pre-composition variants reduced Qwen4B downstream correctness in the corrected composition evaluation.
+    text: the measured NanoJev and Hammer3B pre-composition variants reduced Qwen4B downstream correctness in the corrected composition evaluation.
     evidence:
       - data/phase1b-summary.json
   - id: residency-dominates

@@ -3,7 +3,7 @@
   "arms": [
     {
       "id": "compiler+hammer2.1_3b",
-      "label": "hammer 3b",
+      "label": "hammer2.1 3b \u00b7 compiler-first",
       "unfiltered": false,
       "n": 84,
       "states": 28,
@@ -23,7 +23,7 @@
     },
     {
       "id": "compiler+qwen3.5_4b",
-      "label": "qwen 4b",
+      "label": "qwen3.5 4b \u00b7 compiler-first",
       "unfiltered": false,
       "n": 84,
       "states": 28,
@@ -43,7 +43,7 @@
     },
     {
       "id": "compiler+qwen3.5_9b",
-      "label": "qwen 9b",
+      "label": "qwen3.5 9b \u00b7 compiler-first",
       "unfiltered": false,
       "n": 84,
       "states": 28,
@@ -63,7 +63,7 @@
     },
     {
       "id": "compiler+hammer2.1_7b",
-      "label": "hammer 7b",
+      "label": "hammer2.1 7b \u00b7 compiler-first",
       "unfiltered": false,
       "n": 84,
       "states": 28,
@@ -83,7 +83,7 @@
     },
     {
       "id": "compiler+nemotron_orchestrator_8b",
-      "label": "nemotron 8b",
+      "label": "nemotron orchestrator 8b \u00b7 compiler-first",
       "unfiltered": false,
       "n": 84,
       "states": 28,
@@ -103,7 +103,7 @@
     },
     {
       "id": "compiler+functiongemma_270m",
-      "label": "fngemma 270m",
+      "label": "functiongemma 270m \u00b7 compiler-first",
       "unfiltered": false,
       "n": 84,
       "states": 28,
@@ -123,7 +123,7 @@
     },
     {
       "id": "compiler+jev",
-      "label": "jev scorer",
+      "label": "nanojev 0.6b \u00b7 compiler-first",
       "unfiltered": false,
       "n": 84,
       "states": 28,
@@ -143,7 +143,7 @@
     },
     {
       "id": "unfiltered+hammer2.1_3b",
-      "label": "unfiltered \u00b7 hammer 3b",
+      "label": "hammer2.1 3b \u00b7 unfiltered",
       "unfiltered": true,
       "n": 84,
       "states": 28,
@@ -163,7 +163,7 @@
     },
     {
       "id": "unfiltered+qwen3.5_4b",
-      "label": "unfiltered \u00b7 qwen 4b",
+      "label": "qwen3.5 4b \u00b7 unfiltered",
       "unfiltered": true,
       "n": 84,
       "states": 28,
@@ -183,7 +183,7 @@
     },
     {
       "id": "unfiltered+qwen3.5_9b",
-      "label": "unfiltered \u00b7 qwen 9b",
+      "label": "qwen3.5 9b \u00b7 unfiltered",
       "unfiltered": true,
       "n": 84,
       "states": 28,
@@ -203,7 +203,7 @@
     },
     {
       "id": "unfiltered+nemotron_orchestrator_8b",
-      "label": "unfiltered \u00b7 nemotron",
+      "label": "nemotron orchestrator 8b \u00b7 unfiltered",
       "unfiltered": true,
       "n": 84,
       "states": 28,

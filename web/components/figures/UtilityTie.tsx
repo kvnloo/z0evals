@@ -18,6 +18,8 @@
  * difference between the right answer and the wrong answer.
  */
 
+import { dataArm, longLabel, shortLabel } from "@/lib/armIdentity";
+
 export type UtilityPoint = {
   arm: string;
   alias: string | null;
@@ -139,8 +141,10 @@ export default function UtilityTie({ d }: { d: UtilityData }) {
             x={X0 - 6}
             y={yOf(a) + 3}
             textAnchor="end"
+            {...dataArm(a)}
           >
-            {a.replace(/^(compiler|unfiltered)\+/, "").slice(0, 16)}
+            <title>{`${longLabel(a)} (${a})`}</title>
+            {shortLabel(a)}
           </text>
         ))}
       </svg>

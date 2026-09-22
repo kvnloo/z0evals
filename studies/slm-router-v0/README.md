@@ -26,7 +26,7 @@ The public machine-readable summary is `data/phase1b-summary.json`.
 
 For the bounded-choice family, `compiler -> Hammer2.1-3B` is the measured default path. Qwen3.5-4B ties it on bounded-choice success but is much slower there; its measured role is orchestration, where it solved 31/40 expanded scenarios. Qwen3.5-9B retains a narrow bounded-choice niche and stronger stopping behavior, at much higher latency.
 
-JEV remains useful as a recorded calibrated distribution, but the measured pre-composition chains did not improve the downstream Qwen4B decision. FunctionGemma remains extremely fast but did not establish a quality niche in this phase. Nemotron-Orchestrator did not establish a measured niche on the tasks evaluated here.
+NanoJev (the local 0.6B scorer running behind the `compiler+jev` arm) remains useful as a recorded calibrated distribution, but the measured pre-composition chains did not improve the downstream Qwen4B decision. FunctionGemma remains extremely fast but did not establish a quality niche in this phase. Nemotron-Orchestrator did not establish a measured niche on the tasks evaluated here.
 
 The compiler is a first-class part of the result, not a prompt convention: compiler-first arms recorded zero dangerous selections, while unfiltered Hammer2.1-3B selected six dangerous actions in 84 trials.
 
