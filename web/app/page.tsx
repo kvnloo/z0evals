@@ -83,8 +83,8 @@ export default function Page() {
           <nav className="site-nav">
             <a className="brand" href="./">z0evals</a>
             <div className="links">
-              <a href="#are-we-there-yet">Results</a>
-              <a href="#appendix">Method</a>
+              <a href="#why-is-an-llm-doing-this">results</a>
+              <a href="#appendix">method</a>
               <a href="https://github.com/kvnloo/z0evals">GitHub</a>
             </div>
           </nav>
@@ -130,7 +130,7 @@ export default function Page() {
           <p>
             <code>{S.runId}</code> is immutable. all {study.density.raw_receipts.toLocaleString()} raw
             receipts came from the local <code>z0int cognition serve</code> supervisor. external
-            inference spend was <strong>$\{S.externalSpendUsd.toFixed(2)}</strong>. the measurements on
+            inference spend was <strong>{"$"}{S.externalSpendUsd.toFixed(2)}</strong>. the measurements on
             this page come from the recorded run, not a vendor benchmark or a generated illustration.
             {" "}<strong>publication status:</strong> {study.provenance.canonical_raw_artifacts}.
           </p>
