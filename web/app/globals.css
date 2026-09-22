@@ -1078,6 +1078,25 @@ figcaption .fig-n { font-family: var(--font-mono); color: var(--color-sb-seconda
 .footnotes li { margin: var(--space-2) 0; }
 .footnotes li:target { background: var(--color-sb-highlight-soft); }
 
+/* -------------------------------------------------------- reference map */
+.reference-map { font-family: var(--font-sans); font-size: var(--text-sm); }
+.reference-map p { color: var(--color-sb-text-muted); }
+.reference-map details {
+  border-top: 1px solid var(--color-sb-border);
+  padding: var(--space-3) 0;
+}
+.reference-map summary {
+  cursor: pointer;
+  font-size: var(--text-xs);
+  color: var(--color-sb-text);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.reference-map ul { margin: var(--space-3) 0 0; padding-left: 1.25em; }
+.reference-map li { margin-bottom: .5em; color: var(--color-sb-text-muted); line-height: var(--leading-normal); }
+.reference-map a { color: var(--color-sb-secondary); text-decoration: none; }
+.reference-map a:hover { text-decoration: underline; }
+
 /* ----------------------------------------------------- headline figure */
 .headline {
   display: grid;

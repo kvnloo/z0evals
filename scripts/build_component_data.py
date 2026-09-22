@@ -203,7 +203,7 @@ def build_components(raw: Path) -> dict:
         if warm:
             basis = "warm model call"
         else:
-            # `compiler+jev` never calls a model — NanoJev decides in process —
+            # `compiler+jev` is a non-generative JEV-family scorer path; preserve scorer identity separately from model-call accounting —
             # so its recorded response is the in-process decision time. Stated,
             # not silently substituted.
             warm = [r["decision_ms"] for r in rs
