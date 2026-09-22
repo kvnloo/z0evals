@@ -114,16 +114,33 @@ jobs:
 
             # Next's basePath has no trailing slash; SUB is "next/", "dev/" or "".
             CHANNEL_BASE="/${GITHUB_REPOSITORY#*/}/${SUB%/}"
-            if ( cd "$WT" \
-                 && python3 scripts/validate.py \
-                 && python3 scripts/build_site_data.py \
-                 && cd web \
-                 && npm ci --no-audit --no-fund \
-                 && Z0_BASE_PATH="$CHANNEL_BASE" npx next build ); then
-              mkdir -p "site/$SUB"
-              cp -R "$WT/web/out/." "site/$SUB"
+            ok=no
+            if [ -f "$WT/web/package.json" ]; then
+              # Migrated channel: build the ported template.
+              if ( cd "$WT" \
+                   && python3 scripts/validate.py \
+                   && python3 scripts/build_site_data.py \
+                   && cd web \
+                   && npm ci --no-audit --no-fund \
+                   && Z0_BASE_PATH="$CHANNEL_BASE" npx next build ); then
+                mkdir -p "site/$SUB"
+                cp -R "$WT/web/out/." "site/$SUB"
+                ok=yes
+                echo "built $BRANCH -> $DEST  (next, basePath=$CHANNEL_BASE)"
+              fi
+            elif [ -f "$WT/scripts/build_site.py" ]; then
+              # Channel not migrated yet: keep publishing its legacy build so a
+              # partially promoted chain never blanks the root path. This is a
+              # migration bridge, not a second site.
+              if ( cd "$WT" && python3 scripts/validate.py && python3 scripts/build_site.py ); then
+                mkdir -p "site/$SUB"
+                cp -R "$WT/site/." "site/$SUB"
+                ok=yes
+                echo "built $BRANCH -> $DEST  (legacy fallback: web/ not present on this branch)"
+              fi
+            fi
+            if [ "$ok" = yes ]; then
               built="$built $BRANCH"
-              echo "built $BRANCH -> $DEST  (basePath=$CHANNEL_BASE)"
             else
               if [ "$BRANCH" = main ]; then
                 echo "::error::main failed to build; refusing to publish a partial site"
