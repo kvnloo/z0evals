@@ -25,7 +25,7 @@
  * rows, rounded — verified against the summary (195 / 1993 / 3603 ms).
  */
 
-export type BoardCell = { value: string; frac: number; hot: boolean };
+export type BoardCell = { value: string; frac: number; hot: boolean; sub?: string };
 
 export type BoardRow = {
   arm: string;
@@ -33,6 +33,8 @@ export type BoardRow = {
   alias: string | null;
   n: number;
   correct: number;
+  wrong: number;
+  trials: number;
   successRate: number;
   medianMs: number | null;
   medianBasis: string;
@@ -102,7 +104,10 @@ export default function ModelBoard({
                     }}
                   />
                 </span>
-                <strong data-hot={c.hot || undefined}>{c.value}</strong>
+                <strong data-hot={c.hot || undefined}>
+                  {c.value}
+                  {c.sub && <small className="modelCellSub">{c.sub}</small>}
+                </strong>
               </span>
             ))}
           </div>
