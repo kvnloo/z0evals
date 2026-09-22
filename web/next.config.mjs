@@ -4,8 +4,10 @@ const nextConfig = {
   output: "export",
   trailingSlash: true,
   images: { unoptimized: true },
-  // Served under /z0evals/ on Pages; the channel path is applied at deploy time.
-  basePath: process.env.Z0_BASE_PATH || "",
-  assetPrefix: process.env.Z0_BASE_PATH || "",
+  // Served under /z0evals on Pages; the channel path is applied at deploy time.
+  // Next rejects a basePath with a trailing slash, so strip one defensively
+  // rather than trusting the caller to have removed it.
+  basePath: (process.env.Z0_BASE_PATH || "").replace(/\/+$/, ""),
+  assetPrefix: (process.env.Z0_BASE_PATH || "").replace(/\/+$/, ""),
 };
 export default nextConfig;
