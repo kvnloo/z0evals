@@ -1,0 +1,68 @@
+version: 1
+repo: kvnloo/z0evals
+id: z0evals
+kind: research
+summary: Frozen evidence and publication layer for reproducible Zer0 studies and public claims.
+
+architecture:
+  subsystems:
+    - id: study-store
+      name: Frozen study store
+      kind: evidence
+      summary: Stores pinned study inputs, public data, analyses, and figures.
+      paths:
+        - studies/
+        - schemas/
+
+    - id: import-validation
+      name: Import and validation pipeline
+      kind: validation
+      summary: Imports explicitly allowlisted artifacts from pinned local results and validates publication boundaries.
+      paths:
+        - imports/
+        - scripts/
+        - tests/
+      depends_on: [study-store]
+
+    - id: publication
+      name: Publication surface
+      kind: publication
+      summary: Turns frozen study evidence into inspectable posts and browser-facing research views.
+      paths:
+        - posts/
+        - web/
+        - research-ui.js
+      depends_on: [study-store, import-validation]
+
+  implements_mechanisms:
+    - frozen-eval-publication
+
+  provides_interfaces: []
+  consumes_interfaces: []
+
+  produces_representations:
+    - evaluation-artifact
+
+  consumes_representations:
+    - tokenomics-event
+
+  boundaries:
+    owns:
+      - frozen public study artifacts
+      - reproducible analyses and figures
+      - publication-ready claims tied to pinned evidence
+    not_here:
+      - experiment execution
+      - production routing policy
+      - private prompts or personal traces
+      - self-verification by the label-generating system
+
+  evidence:
+    docs:
+      - README.md
+      - ROADMAP.md
+      - docs/
+    tests:
+      - tests/
+    schemas:
+      - schemas/
