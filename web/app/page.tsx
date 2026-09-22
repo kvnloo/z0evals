@@ -15,6 +15,13 @@ import DensityBars from "@/components/charts/DensityBars";
 import Calibration from "@/components/charts/Calibration";
 import FamilySparklines from "@/components/FamilySparklines";
 import ActionTable from "@/components/ActionTable";
+import HeadingFrog from "@/components/HeadingFrog";
+import MobileToc from "@/components/MobileToc";
+import CorpusGrowth from "@/components/figures/CorpusGrowth";
+import ModelBoard from "@/components/figures/ModelBoard";
+import ProgressRows from "@/components/figures/ProgressRows";
+import ForecastPair from "@/components/figures/ForecastPair";
+import UtilityTie from "@/components/figures/UtilityTie";
 
 const S = study.study;
 const matrix = study.matrix as unknown as Matrix;
@@ -33,41 +40,71 @@ const familiesFull = (matrix as unknown as { families: never[] }).families;
 const pct = (v: number, d = 1) => `${(v * 100).toFixed(d)}%`;
 const ms = (v: number | null) => (v == null ? "—" : v >= 1000 ? `${(v / 1000).toFixed(2)} s` : `${Math.round(v)} ms`);
 
+const C = (study as unknown as { components: Record<string, never> }).components;
+const corpus = C.corpus as never;
+const board = C.modelBoard as never;
+const progress = C.progress as never;
+const forecast = C.forecast as never;
+const utility = C.utility as never;
+const coverage = C.coverage as never;
+
 const TOC: TocItem[] = [
-  { id: "are-we-there-yet", label: "Are we there yet?" },
-  { id: "inside-the-receipts", label: `Inside ${study.density.raw_receipts.toLocaleString()} receipts` },
-  { id: "do-the-arms-agree", label: "Do the arms agree?" },
-  { id: "does-confidence-mean-anything", label: "Does confidence mean anything?" },
-  { id: "actions", label: "What the compiler removed" },
-  { id: "families", label: "Where the difficulty lives" },
-  { id: "authors-note", label: "Author's note" },
-  { id: "appendix", label: "Appendix: what the numbers mean" },
+  { id: "are-we-there-yet", label: "Are we there yet?", depth: 0 },
+  { id: "option-1-just-ask", label: "Option 1: Just ask", depth: 1 },
+  { id: "option-2-break-into-phases", label: "Option 2: Break into phases", depth: 1 },
+  { id: "scaling-up", label: "Scaling up", depth: 1 },
+  { id: "inside-the-receipts", label: "Inside the receipts", depth: 0 },
+  { id: "jev-versus-text-models", label: "Calibrated scorers versus text models", depth: 1 },
+  { id: "safety", label: "The compiler is the safety property", depth: 0 },
+  { id: "explore", label: "Explore the matrix", depth: 0 },
+  { id: "residency", label: "Residency dominates everything", depth: 0 },
+  { id: "do-the-arms-agree", label: "Do the arms agree?", depth: 0 },
+  { id: "does-confidence-mean-anything", label: "Does confidence mean anything?", depth: 0 },
+  { id: "actions", label: "What the compiler removed", depth: 0 },
+  { id: "families", label: "Where the difficulty lives", depth: 0 },
+  { id: "authors-note", label: "Author's note", depth: 0 },
+  { id: "appendix", label: "Appendix: what the numbers mean", depth: 0 },
+  { id: "the-run", label: "The Phase 1B run", depth: 1 },
+  { id: "why", label: "Why the fast arm is also the accurate one", depth: 1 },
+  { id: "labels", label: "Family and rung labels", depth: 1 },
+  { id: "gate", label: "Gate defects recorded", depth: 1 },
+  { id: "check-or-reuse", label: "Check or reuse the evidence", depth: 1 },
 ];
 
 export default function Page() {
   return (
     <>
       <RouteProgress />
-      <header className="site-nav">
-        <a className="brand" href="./">z0evals</a>
-        <nav className="links">
-          <a href="#are-we-there-yet">Results</a>
-          <a href="#appendix">Method</a>
-          <a href="https://github.com/kvnloo/z0evals">GitHub</a>
-        </nav>
+      <header className="blog-page-header">
+        <div>
+          <nav className="site-nav">
+            <a className="brand" href="./">z0evals</a>
+            <div className="links">
+              <a href="#are-we-there-yet">Results</a>
+              <a href="#appendix">Method</a>
+              <a href="https://github.com/kvnloo/z0evals">GitHub</a>
+            </div>
+          </nav>
+        </div>
       </header>
 
       <div className="shell">
       <div className="rail"><Toc items={TOC} /></div>
-      <main className="article">
+      <MobileToc items={TOC} />
+      <main className="article article-shell">
         <div className="article-header">
-          <h1>{S.title}</h1>
+          <div>
+          <h1 className="article-title">{S.title}</h1>
+          <div className="title-accent-line" aria-hidden="true" />
           <div className="article-meta">
             {S.author}<span className="sep">·</span>{S.date}
             <span className="sep">·</span>
             <span style={{ fontFamily: "var(--font-mono)" }}>{S.runId}</span>
           </div>
+          </div>
         </div>
+
+        <div className="article-body prose">
 
         <p className="lede">
           We keep being told a small local model can route an agent&rsquo;s next move. We measured
@@ -100,7 +137,7 @@ export default function Page() {
 
         <div className="hero-rule" />
 
-        <h2 id="are-we-there-yet">Are we there yet?</h2>
+        <HeadingFrog id="are-we-there-yet" level={2}>Are we there yet?</HeadingFrog>
         <p>
           An agent turn is mostly not reasoning. It is choosing one action from the ones that are
           legal, with arguments. The first run we did told us which small models <em>looked</em>
@@ -108,14 +145,14 @@ export default function Page() {
           That is not evidence, it is a first impression.
         </p>
 
-        <h3 id="option-1-just-ask">Option 1: Just ask</h3>
+        <HeadingFrog id="option-1-just-ask" level={3}>Option 1: Just ask</HeadingFrog>
         <p>
           Give the whole job to one capable model and let it read everything. It works, and it is what
           everyone does. On this hardware it costs {ms(qwen4.warmP50Ms)} per decision for {qwen4.label}
           and {ms(qwen9.warmP50Ms)} for {qwen9.label}, and it never tells you how sure it is.
         </p>
 
-        <h3 id="option-2-break-into-phases">Option 2: Break into phases</h3>
+        <HeadingFrog id="option-2-break-into-phases" level={3}>Option 2: Break into phases</HeadingFrog>
         <p>
           Compile the legal action set first, deterministically, then ask a model only to pick from
           what is left. That is the architecture under test here: every bounded arm in this study sits
@@ -126,7 +163,7 @@ export default function Page() {
           <a href="#safety"> see Fig 4</a>.
         </p>
 
-        <h3 id="scaling-up">Scaling up</h3>
+        <HeadingFrog id="scaling-up" level={3}>Scaling up</HeadingFrog>
         <p>
           Phase 1B re-ran the cells with repeats and kept one raw receipt per call, so the distribution
           can be recomputed later without re-running anything.
@@ -136,7 +173,7 @@ export default function Page() {
           <strong>no cell reached n≥10</strong>, so no arm here is estimated better than its interval.
         </p>
 
-        <h2 id="inside-the-receipts">Inside {study.density.raw_receipts.toLocaleString()} receipts</h2>
+        <HeadingFrog id="inside-the-receipts" level={2}>Inside {study.density.raw_receipts.toLocaleString()} receipts</HeadingFrog>
         <p>
           Eight arms, {hammer3.n} decisions each, {matrix.states.length} bounded-choice states. Two
           results matter more than the rest.
@@ -146,14 +183,19 @@ export default function Page() {
           <figcaption>
             <span className="fig-n">Fig 2</span>
             Success against warm median latency, log scale, Wilson 95% intervals. {qwen9.label} is
-            best at {pct(qwen9.successRate)} for {ms(qwen9.warmP50Ms)}.{" "}
+            best at {qwen9.success} of {qwen9.n} ({pct(qwen9.successRate)}) for{" "}
+            {ms(qwen9.warmP50Ms)}.{" "}
             <strong>{hammer3.label} ties {qwen4.label} at {pct(hammer3.successRate)} for{" "}
             {(qwen4.warmP50Ms! / hammer3.warmP50Ms!).toFixed(1)}× less latency</strong> — the cheapest
             arm that is not dominated.
           </figcaption>
         </figure>
 
-        <h3 id="jev-versus-text-models">Calibrated scorers versus text models</h3>
+        <div className="diagram-wrapper">
+          <CorpusGrowth d={corpus} />
+        </div>
+
+        <HeadingFrog id="jev-versus-text-models" level={3}>Calibrated scorers versus text models</HeadingFrog>
         <p>
           {jev.label} answers a typed question in {ms(jev.warmP50Ms)} — three orders of magnitude
           under the text models — and it is the only arm on this page that returns a calibrated
@@ -166,7 +208,7 @@ export default function Page() {
           the trade the escalation ladder exists to arbitrate.
         </p>
 
-        <h2 id="safety">The compiler is the safety property</h2>
+        <HeadingFrog id="safety" level={2}>The compiler is the safety property</HeadingFrog>
         <p>
           {unf.label} selected a dangerous action <strong>{unf.dangerous} times in {unf.n}</strong>.
           Every compiler-first arm selected zero — including {fng.label}, which succeeds only{" "}
@@ -174,14 +216,18 @@ export default function Page() {
           without one does not.
         </p>
 
-        <h2 id="explore">Explore the matrix</h2>
+        <div className="diagram-wrapper">
+          <UtilityTie d={utility} />
+        </div>
+
+        <HeadingFrog id="explore" level={2}>Explore the matrix</HeadingFrog>
         <p>
           Everything below is driven by the recorded receipts. Pick arms, replay the sweep, scrub to a
           state, switch family, and switch the matrix metric.
         </p>
         <ResultsExplorer matrix={matrix} />
 
-        <h2 id="residency">Residency dominates everything</h2>
+        <HeadingFrog id="residency" level={2}>Residency dominates everything</HeadingFrog>
         <p>
           A router that ignores load cost will bounce between two models on a{" "}
           {S.hardware.vram_gb} GB card and pay a full load every turn.
@@ -197,7 +243,7 @@ export default function Page() {
           </figcaption>
         </figure>
 
-        <h2 id="do-the-arms-agree">Do the arms agree?</h2>
+        <HeadingFrog id="do-the-arms-agree" level={2}>Do the arms agree?</HeadingFrog>
         <p>
           Composing routers is the obvious next idea: put a cheap scorer in front of a strong model and
           grade its output. On these fixtures it made things worse.
@@ -240,7 +286,15 @@ export default function Page() {
           </figcaption>
         </figure>
 
-        <h2 id="does-confidence-mean-anything">Does the confidence mean anything?</h2>
+        <div className="diagram-wrapper">
+          <ModelBoard d={board} coverage={coverage} />
+        </div>
+
+        <div className="diagram-wrapper">
+          <ProgressRows d={progress} />
+        </div>
+
+        <HeadingFrog id="does-confidence-mean-anything" level={2}>Does the confidence mean anything?</HeadingFrog>
         <p>
           {jev.label} is the only arm on this page that returns a probability rather than a choice,
           which makes it the only one whose number can be checked. If a 0.8 does not mean roughly
@@ -263,7 +317,11 @@ export default function Page() {
           <em>calibrated</em>, not an answer to be trusted.
         </p>
 
-        <h2 id="actions">What the compiler removed</h2>
+        <div className="diagram-wrapper">
+          <ForecastPair d={forecast} />
+        </div>
+
+        <HeadingFrog id="actions" level={2}>What the compiler removed</HeadingFrog>
         <p>
           Every bounded arm was handed the same compiled legal set. Comparing what was offered
           against what was chosen shows the compiler doing its job: <code>fs.read</code> was
@@ -279,7 +337,7 @@ export default function Page() {
           </figcaption>
         </figure>
 
-        <h2 id="families">Where the difficulty lives</h2>
+        <HeadingFrog id="families" level={2}>Where the difficulty lives</HeadingFrog>
         <figure>
           <div className="fig-body"><FamilySparklines families={familiesFull} /></div>
           <figcaption>
@@ -290,7 +348,7 @@ export default function Page() {
           </figcaption>
         </figure>
 
-        <h2 id="authors-note">Author&rsquo;s note</h2>
+        <HeadingFrog id="authors-note" level={2}>Author&rsquo;s note</HeadingFrog>
         <p>
           The result I did not expect is that the fastest arm and the second-most-accurate arm are the
           same arm. {hammer3.label} ties {qwen4.label} on success at{" "}
@@ -309,9 +367,9 @@ export default function Page() {
           threshold — not as an answer.
         </p>
 
-        <h2 id="appendix">Appendix: what the numbers mean</h2>
+        <HeadingFrog id="appendix" level={2}>Appendix: what the numbers mean</HeadingFrog>
 
-        <h3 id="the-run">The Phase 1B run</h3>
+        <HeadingFrog id="the-run" level={3}>The Phase 1B run</HeadingFrog>
         <table className="data-table">
           <thead><tr><th>field</th><th>value</th></tr></thead>
           <tbody>
@@ -332,7 +390,7 @@ export default function Page() {
           </tbody>
         </table>
 
-        <h3 id="why">Why the fast arm is also the accurate one</h3>
+        <HeadingFrog id="why" level={3}>Why the fast arm is also the accurate one</HeadingFrog>
         <p>
           Both {hammer3.label} and {qwen4.label} score {pct(hammer3.successRate)} — they agree on{" "}
           {hammer3.success} of {hammer3.n} decisions. Where they differ is latency and failure shape:
@@ -341,7 +399,7 @@ export default function Page() {
           failure; guessing is not.
         </p>
 
-        <h3 id="labels">Family and rung labels</h3>
+        <HeadingFrog id="labels" level={3}>Family and rung labels</HeadingFrog>
         <ul>
           {matrix.families.map((f) => (
             <li key={f.name}>
@@ -351,14 +409,14 @@ export default function Page() {
           ))}
         </ul>
 
-        <h3 id="gate">Gate defects recorded</h3>
+        <HeadingFrog id="gate" level={3}>Gate defects recorded</HeadingFrog>
         <Callout kind="warning" title={`Gate decision: ${study.gate.decision}`}>
           <ul>
             {study.gate.caveats.map((c: string) => <li key={c}>{c}</li>)}
           </ul>
         </Callout>
 
-        <h3 id="check-or-reuse">Check or reuse the evidence</h3>
+        <HeadingFrog id="check-or-reuse" level={3}>Check or reuse the evidence</HeadingFrog>
         <p>
           Raw receipts remain authoritative once imported; until then the matrix on this page is a
           transcription of them. Tests at this commit: z0intelligence{" "}
@@ -366,7 +424,7 @@ export default function Page() {
           pre-existing failure, Evolution Lab {study.tests.evolution_lab.passed} passed,{" "}
           {study.tests.sha256sum.ok}/{study.tests.sha256sum.total} artifacts hashed.
         </p>
-        <h3 id="notes">Notes</h3>
+        <HeadingFrog id="notes" level={3}>Notes</HeadingFrog>
         <ol className="footnotes">
           <li id="fn-1">
             Only {calibration.length} of the {arms[0].n * arms.length} recorded decisions report a
@@ -381,6 +439,7 @@ export default function Page() {
           z0evals · frozen studies and publication ·{" "}
           <a href="https://github.com/kvnloo/z0evals">source</a>
         </p>
+        </div>
       </main>
       <aside className="aside" />
       </div>

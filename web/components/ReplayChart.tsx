@@ -135,12 +135,15 @@ export default function ReplayChart({ matrix, selected }: { matrix: Matrix; sele
         <line x1={x(cut)} x2={x(cut)} y1={T} y2={H - B} stroke="#1a3029" strokeWidth="1" opacity="0.55" />
       </svg>
 
-      <input
-        aria-label="Replay position"
-        type="range" min={0} max={1000} step={1} value={Math.round(playhead)}
-        onChange={(e) => { setPlaying(false); setPlayhead(Number(e.target.value)); }}
-        style={{ width: "100%", marginTop: 10 }}
-      />
+      <div className="scrubRow">
+        <span className="scrubLabel">Replay</span>
+        <input
+          aria-label="Replay position"
+          type="range" min={0} max={1000} step={1} value={Math.round(playhead)}
+          onChange={(e) => { setPlaying(false); setPlayhead(Number(e.target.value)); }}
+        />
+        <span className="progressValue">{Math.round((playhead / 1000) * 100)}%</span>
+      </div>
       <div className="legend">
         <span>solid = compiler-first · dashed red = unfiltered</span>
         <span>curves are drawn to the playhead; drag it, or press Replay</span>

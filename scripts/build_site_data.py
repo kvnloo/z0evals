@@ -14,12 +14,14 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import sys
 from collections import defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SUMMARY = ROOT / "studies" / "slm-router-v0" / "data" / "phase1b-summary.json"
 MATRIX_OUT = ROOT / "studies" / "slm-router-v0" / "data" / "phase1b-matrix.json"
+COMPONENTS_OUT = ROOT / "studies" / "slm-router-v0" / "data" / "phase1b-components.json"
 SITE_OUT = ROOT / "web" / "data" / "study.json"
 RUN = "p1b-20260921T1430Z"
 
@@ -125,7 +127,26 @@ def build_matrix(raw: Path) -> dict:
         runs = g["runs"]
         n = len(runs)
         k = sum(1 for x in runs if x["correct"])
-        warm = sorted(x["decisionMs"] for x in runs if x["decisionMs"] is not None)
+        # Warm p50 is the median `decision_ms` over rows the supervisor recorded
+        # as `warm_invocation`, rounded — the same definition the frozen summary
+        # uses. Including `model_swap` rows here (as this once did) inflated the
+        # median and made the page disagree with its own headline numbers:
+        # 196/2060/3680 ms instead of 195/1993/3603 ms. `compiler+jev` never
+        # calls a model, so it falls back to its in-process decision time and
+        # says so in the model board's readings line.
+        warm = sorted(
+            x["decisionMs"]
+            for x in runs
+            if x["decisionMs"] is not None and x.get("coldOrWarm") == "warm_invocation"
+        )
+        if not warm:
+            warm = sorted(
+                x["decisionMs"]
+                for x in runs
+                if x["decisionMs"] is not None
+                and x.get("coldOrWarm") == "no_model_call"
+                and x["decisionMs"] > 0
+            )
         arms.append({
             "id": arm,
             "label": ARM_LABEL.get(arm, arm),
@@ -135,7 +156,7 @@ def build_matrix(raw: Path) -> dict:
             "success": k,
             "successRate": k / n,
             "wilson95": [round(v, 4) for v in wilson(k, n)],
-            "warmP50Ms": warm[len(warm) // 2] if warm else None,
+            "warmP50Ms": (lambda v: int(round(v)))(__import__("statistics").median(warm)) if warm else None,
             "warmP95Ms": warm[min(len(warm) - 1, int(len(warm) * 0.95))] if warm else None,
             "dangerous": sum(1 for x in runs if x["dangerous"]),
             "abstained": sum(1 for x in runs if x["abstained"]),
@@ -222,6 +243,24 @@ def build_matrix(raw: Path) -> dict:
     }
 
 
+def load_components(raw: Path | None) -> dict | None:
+    """Four reference-parity figures, computed from raw receipts when present.
+
+    Falls back to the committed transcription so CI (which has no raw
+    observations) still builds a complete site.
+    """
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from build_component_data import build_components
+
+    if raw and raw.is_file():
+        comp = build_components(raw)
+        COMPONENTS_OUT.write_text(json.dumps(comp, indent=2) + "\n", encoding="utf-8")
+        return comp
+    if COMPONENTS_OUT.is_file():
+        return json.loads(COMPONENTS_OUT.read_text(encoding="utf-8"))
+    return None
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--raw", help="path to observations.jsonl")
@@ -287,6 +326,7 @@ def main() -> int:
         "tests": summary["tests"],
         "matrix": matrix,
         "matrixOrigin": origin,
+        "components": load_components(raw),
     }
     SITE_OUT.parent.mkdir(parents=True, exist_ok=True)
     SITE_OUT.write_text(json.dumps(doc, indent=2) + "\n", encoding="utf-8")
