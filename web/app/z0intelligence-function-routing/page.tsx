@@ -228,6 +228,13 @@ const story = (
       {PR.batch.successful_fallbacks} successful fallbacks.
     </p>
     <RoutingTrace providers={providerRows} admission={admission} caption={PR.caption} />
+    <MetricRow
+      items={[
+        { k: "measured usage", v: `${PR.batch.tokens.input.toLocaleString("en-US")} in`, s: `${PR.batch.tokens.output.toLocaleString("en-US")} out` },
+        { k: "physical attempts", v: `${PR.batch.physical_attempts}`, s: `${PR.batch.successful_fallbacks} successful fallbacks` },
+        { k: "attempts without usage", v: `${PR.batch.attempts_without_usage}`, s: "excluded from the token total, not counted as zero-cost" },
+      ]}
+    />
     <p>
       Fallbacks are load-bearing and were tested with a real failure: an invalid test-process Groq
       credential produced a <strong>{PR.fallback_proof.observed}</strong>.{" "}
@@ -249,7 +256,7 @@ const story = (
     <p>{FT.caption}</p>
     <MetricRow
       items={[
-        { k: "provider / model", v: FT.execution.model.replace("nvidia/", ""), s: FT.execution.provider },
+        { k: "provider / model (exact allowlist id)", v: FT.execution.model, s: FT.execution.provider },
         { k: "returned", v: FT.execution.output, s: `${FT.execution.tokens.input} in / ${FT.execution.tokens.output} out` },
         { k: "provider-reported cost", v: `$${FT.execution.cost_usd.toFixed(2)}`, s: "free_only route" },
         { k: "receipt latency", v: ms(FT.execution.latency_ms), s: `${FT.execution.latency_observations} observation` },
