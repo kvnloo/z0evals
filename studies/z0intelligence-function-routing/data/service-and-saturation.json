@@ -1,0 +1,89 @@
+{
+  "schema": "z0eval.service_and_saturation.v1",
+  "generated_from": [
+    "receipts/provider-saturation/{report.md,rpc64-summary.json,providers.json,source.json}",
+    "receipts/supervised-intelligence/{report.md,lifecycle-load.json,metrics.prom}",
+    "receipts/kind-repair/{README.md,endpoint.json,pod-verification.jsonl}",
+    "receipts/dispatch-authority/{97cc9875abcb-completed.json,executor.yaml}",
+    "receipts/free-tier/{providers.json,deployment.json}"
+  ],
+  "architecture": {
+    "shape": "many stateless executors -> one canonical authority",
+    "authority_owns": ["identity/fingerprint CAS", "ordered canonical receipt writes", "stored-result replay", "provider admission"],
+    "executors_have": "no ledger; they cannot take over an uncertain execution",
+    "router": "consumes a prepared snapshot and remains pure",
+    "services": {
+      "host": "http://127.0.0.1:11501",
+      "cluster": "http://z0intelligence.hermes-lab.svc.cluster.local:11501",
+      "executor": "http://z0intelligence-executor.hermes-lab.svc.cluster.local:11503"
+    }
+  },
+  "idempotency_rules": [
+    { "rule": "completed duplicate -> replay", "rule_id": "replay", "status": "verified", "evidence": "receipts/free-tier replay after pod replacement; receipts/intelligence restart-replay.json" },
+    { "rule": "same trace, different request -> reject", "rule_id": "conflict", "status": "verified", "evidence": "conflicting fingerprint returned HTTP 400 with no second physical execution" },
+    { "rule": "uncertain prior execution -> refuse re-execution", "rule_id": "refuse", "status": "verified", "evidence": "provider-saturation pod-proof.json: prior uncertain execution refused after pod replacement" }
+  ],
+  "admission_control": {
+    "measured_test": "64 concurrent requests from two stateless OS processes against the production authority HTTP protocol",
+    "admitted": 32,
+    "capped_before_provider_http": 32,
+    "peak_inflight": 32,
+    "released": 32,
+    "provider_http_requests": 32,
+    "fixture": "counted local HTTP fixture — NOT 64 paid provider calls and NOT two Kubernetes replicas",
+    "canonical_schema": ["z0int.decision_receipt.v1"]
+  },
+  "configured_caps": {
+    "provenance": "POLICY INPUTS from an operator handoff, not reproduced measurements",
+    "disclaimer": "The saturation report states plainly that the handoff's referenced ~330-probe report was not independently recovered or reproduced. Only the 32-admission test above is measured here.",
+    "caps": {
+      "cerebras": 32,
+      "deepseek": 32,
+      "jev": 32,
+      "groq": 16,
+      "nvidia": 12,
+      "local": 1,
+      "openrouter": { "value": 0, "note": "later raised to 1 as conservative single-call admission after validated free-route evidence" },
+      "vercel": { "value": 0, "note": "later set to 8 from imported health evidence; a free-credit call still reported a nonzero cost and stayed excluded by free_only" },
+      "nous": { "value": null, "status": "unmeasured_cap" },
+      "grok": { "value": null, "status": "unmeasured_cap" }
+    },
+    "provider_headroom": {
+      "status": "UNKNOWN",
+      "detail": "Per-provider headroom claims (e.g. Cerebras/DeepSeek/Jev large headroom, a Groq wall at measured concurrency, a lower NVIDIA wall, local serialization) are NOT reproduced in the imported receipts. The local dual-request serialization is the only per-provider concurrency behaviour measured here (two simultaneous local requests -> one real call, one refusal before HTTP).",
+      "local_serialization": "verified: 2 simultaneous requests produced 1 real Ollama call and 1 refusal before HTTP; final inflight 0"
+    },
+    "eligibility_semantics": "eligibility checks credentials, cap and durable health; unprobed providers are labelled eligible_unprobed, not healthy; 401/403 requires explicit operator reset; 429 creates a cooldown and permits fallback"
+  },
+  "lifecycle": {
+    "supervision": "enabled user systemd unit z0intelligence.service with lingering enabled",
+    "sigkill_recovery_seconds": 3.28,
+    "reboot_tested": false,
+    "readiness_publication": "lifecycle hooks publish readiness to the existing Kind EndpointSlice",
+    "concurrency_probe": {
+      "requests": 12,
+      "success": 4,
+      "http_503_backpressure": 8,
+      "peak_dispatch_concurrency": 4,
+      "note": "backpressure is explicit 503; there is no unbounded queue"
+    },
+    "focused_tests": "50 passed",
+    "no_autoscaling": {
+      "installed": false,
+      "reason": "the lane is a Service/EndpointSlice targeting one host process with no Deployment/StatefulSet scale target; KEDA and the Kubernetes metrics API are absent. Scaling a proxy would not increase model capacity."
+    }
+  },
+  "kind_connectivity_repair": {
+    "problem": "pod-to-host TCP access to 172.19.0.1:11501 timed out; EndpointSlice ready=false",
+    "finding": "the listener was already bound to 127.0.0.1 and 172.19.0.1; UFW was active; the Kind network's first IPAM entry is IPv6, so selecting entry zero alone would give the wrong address family",
+    "fix": "one persistent, scoped UFW ingress rule on the Kind bridge interface, with a rollback command recorded",
+    "verified_after": "Kind node /healthz passed; pod /readyz passed directly and via Service DNS; a real router request returned PARENT_ONLY with no external model call; EndpointSlice ready=true",
+    "not_established": "the host service remains session-managed by systemd user unit only; this repair does not by itself establish reboot availability"
+  },
+  "operational_limits": [
+    "The remote executor is at-most-once replica-safe only when every replica uses the same authority. There is no HA authority and no completion guarantee after a crash.",
+    "Uncertain claims and their permits are retained; there is no lease expiry or automatic retry. Uncertain work must be reconciled before restoring capacity.",
+    "At one point the deployed pod was Running but deliberately NotReady (HTTP 503) because its only configured credential was an OpenRouter secret whose cap was 0.",
+    "Cerebras was account-blocked after a real HTTP 403 despite being the configured default, while the host service remained ready and had proven DeepSeek/Jev/local execution."
+  ]
+}

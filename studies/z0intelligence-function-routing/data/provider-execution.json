@@ -1,0 +1,92 @@
+{
+  "schema": "z0eval.provider_execution.v1",
+  "generated_from": [
+    "receipts/automatic-routing/20260926T223650Z/{execution-summary.md,results.json,canonical-receipts.json,subagents.json}",
+    "receipts/intelligence/{report.md,canonical-receipts.json}",
+    "receipts/free-tier/{report.md,kubernetes-final.json,canonical.jsonl}",
+    "receipts/provider-saturation/{report.md,deepseek-live.json,jev-live.json,local-live.json}",
+    "receipts/jev-exception/{README.md,proof.json}"
+  ],
+  "note": "The distinction that matters throughout: a route being SELECTED is not evidence it EXECUTED. These entries record physical calls with provider-assigned identity, tokens, latency and canonical receipts. Estimated parent tokens avoided are a same-text byte/4 baseline, never measured counterfactual savings.",
+  "multi_provider_batch": {
+    "cohort": "automatic-routing/20260926T223650Z",
+    "outputs_returned": "20/20",
+    "providers_completing_real_work": 6,
+    "physical_attempts": 25,
+    "successful_fallbacks": 5,
+    "measured_usage": { "input_tokens": 2126, "output_tokens": 1440 },
+    "attempts_without_usage": 5,
+    "estimated_parent_tokens_avoided": 1775,
+    "estimate_basis": "same-text UTF-8 bytes / 4; NOT a measured counterfactual, net saving, or dollar figure",
+    "prior_failure_mode": "An earlier batch exposed a fallback serialization bug and is retained in the neighbouring 20260926T223434Z directory. A green benchmark did not previously prove that subagents were really executing; this batch reconciles started and terminal events by call trace id and checks every output hash against the winning canonical receipt.",
+    "providers": [
+      { "provider": "cerebras", "model": "qwen-3.8-27b", "tasks": 7 },
+      { "provider": "groq", "model": "openai/gpt-oss-20b", "tasks": 3 },
+      { "provider": "deepseek", "model": "deepseek-chat", "tasks": 3 },
+      { "provider": "grok", "model": "grok-4.20-0309-non-reasoning", "tasks": 2 },
+      { "provider": "nous", "model": "inclusionai/ling-3.0-flash-sante:free", "tasks": 2 },
+      { "provider": "nvidia", "model": "openai/gpt-oss-20b", "tasks": 2 },
+      { "provider": "local", "model": "qwen2.5:3b", "tasks": 1, "note": "local-only additional probe; returned 42; 58/3 measured tokens" }
+    ],
+    "fallback_proof": {
+      "trigger": "invalid test-process Groq credential",
+      "observed": "real HTTP 401, then Cerebras returned the expected output",
+      "shared_credentials_unchanged": true,
+      "also_observed": "OpenRouter and Vercel produced real 403 responses followed by successful Cerebras calls"
+    },
+    "validation": "36 focused tests passed"
+  },
+  "harness_route_matrix": {
+    "cohort": "receipts/intelligence",
+    "note": "Four concurrent HTTP clients labelled by harness. These are NOT claims of installed OMP/Hermes/DSH integration; the installed-integration proof is separate.",
+    "rows": [
+      { "client": "codex", "route": "JEV_FUNCTION", "provider": "typesafe", "model": "jev-1.13.0", "latency_ms": 572.0, "tokens_in": 377, "tokens_out": 48 },
+      { "client": "hermes", "route": "LAYA_FUNCTION", "provider": "local", "model": "laya_421m", "latency_ms": 14141.7, "tokens_in": 59, "tokens_out": 0, "note": "receipt latency includes cold import/load; inference alone measured 568.9 ms" },
+      { "client": "dsh", "route": "REMOTE_MODEL", "provider": "cerebras", "model": "qwen-3.8-27b", "latency_ms": 758.9, "tokens_in": 133, "tokens_out": 664 },
+      { "client": "omp", "route": "PARENT_ONLY", "provider": "parent", "model": "current Codex", "latency_ms": 181.4, "tokens_in": 0, "tokens_out": 0, "note": "zero delegated tokens, not zero parent consumption; latency is dispatch only and does not certify parent completion" }
+    ],
+    "parent_only_reason": "DO_NOT_DELEGATE: tiny/unknown task size; an observed tiny-task offload added 1347 uncached parent tokens"
+  },
+  "free_tier_execution": {
+    "cohort": "receipts/free-tier",
+    "provider": "openrouter",
+    "model": "nvidia/nemotron-3-super-120b-a12b:free",
+    "free_only": true,
+    "public_task": "Reply with 42",
+    "returned_output": "42",
+    "provider_reported_cost_usd": 0.0,
+    "tokens": { "input": 55, "output": 38, "note": "provider usage, including any reasoning usage" },
+    "receipt_latency_ms": 790.449,
+    "latency_observations": 1,
+    "trace": "free-k8s-c7bddd435628",
+    "canonical_dispatch_receipt": "dispatch-e1ebc20eb79f199391a5826304677e5e85951efa9be042b2acad1c3cece5fccc",
+    "pod": "z0intelligence-executor-6494bc9c58-nchbm",
+    "readiness": "HTTP 200; Kubernetes Ready; desired/ready replicas 1/1",
+    "replay": "stored output returned after pod replacement; exactly one canonical physical start/completion",
+    "conflicting_fingerprint": "HTTP 400, no second physical execution",
+    "known_defect_found_and_fixed": "the executor initially translated the authority's conflict rejection into HTTP 503; the authority still refused and did not execute. The translation was corrected and tested, and the final proof reused the same trace without another provider call.",
+    "validated_free_route_allowlist": ["nvidia/nemotron-3-super-120b-a12b:free"],
+    "excluded_despite_free_credit": {
+      "provider": "vercel",
+      "reason": "a successful response reported cost 0.00000738 USD, so it is excluded by free_only=true. Free credit is not a zero-priced route."
+    }
+  },
+  "jev_paid_exception": {
+    "cohort": "receipts/jev-exception",
+    "policy": "allow_paid_jev_verification=true; free_only=true remains in force for generic workers",
+    "exact_exception": "TypeSafe / jev-1.13.0 / evidence_sufficiency / JEV_FUNCTION",
+    "direct_call": { "latency_ms": 299.9, "tokens_in": 372, "tokens_out": 45, "answer": "supported" },
+    "canonical_receipt": "dispatch-f81d07259e4e58e2f3a4341881d56a5645d226db00465d501a73a9f7b7227771",
+    "replay": "returned stored result; ledger contains exactly one completed physical call for this identity",
+    "automatic_hook_receipt": "dispatch-20466a101988f2d961656f5f1a6ae301c12864997dbdab65d25dc078f5f1485c",
+    "automatic_consumption_receipt": "consume-dispatch-20466a101988f2d961656f5f1a6ae301c12864997dbdab65d25dc078f5f1485c",
+    "scope_limit": "proves hook delivery, not final parent answer quality",
+    "remote_consent": "scoped to the test process; no persistent broad remote-context permission was added",
+    "validation": "15 focused boundary tests passed; full suite 447 passed, 2 pre-existing failures, 1 skipped"
+  },
+  "measured_provider_latency": [
+    { "provider": "deepseek", "model": "deepseek-chat", "under": "authority admission", "tokens_in": 49, "tokens_out": 4, "latency_ms": 1316.84, "result": "SATURATION_OK" },
+    { "provider": "jev", "model": "jev-1.13.0", "under": "authority admission", "latency_ms": 248.84, "result": "completed" },
+    { "provider": "local", "model": "qwen2.5:3b", "under": "authority admission", "note": "two simultaneous requests: one real Ollama call, one refusal before HTTP; final inflight 0" }
+  ]
+}

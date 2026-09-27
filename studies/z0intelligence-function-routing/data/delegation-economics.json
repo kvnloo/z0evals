@@ -1,0 +1,128 @@
+{
+  "schema": "z0eval.delegation_economics.v1",
+  "generated_from": [
+    "receipts/nemotron-eval/20260927T032233Z-b6896a/{report.md,decision-report.json}",
+    "receipts/nemotron-ab/20260927T031636Z-185e6/{measurements.jsonl,quality.json,worker-quality.json}",
+    "receipts/cerebras-ab/cerebras-none-ab-20260927T042811Z/{DECISION.md,summary.json}",
+    "receipts/cerebras-ab/cerebras-real-ab-20260927T042531Z/{REPORT.md,summary.json}",
+    "receipts/free-worker-ab/groq-real-ab-20260927T040841Z/summary.json"
+  ],
+  "note": "Parent token deltas are measured uncached parent input plus parent output, B minus A, on matched pairs. Positive means delegation used MORE parent work. These are repeated runs of a small fixed set of tasks, not task-population estimates.",
+  "cohorts": [
+    {
+      "id": "nemotron-free-2-pair",
+      "provider": "openrouter",
+      "model": "nvidia/nemotron-3-super-120b-a12b:free",
+      "free_only": true,
+      "provider_reported_cost_usd": 0.0,
+      "pairs": 2,
+      "randomized": false,
+      "parent_cache": "all counters zero",
+      "worker_quality": {
+        "summary": "raw output had literal escaped newlines; parent repair required",
+        "gate": "exhausted 2048-token output budget; native fallback required"
+      },
+      "parent_final_quality": {
+        "summary": "22/22 checks passed in both arms",
+        "gate": "49/49 checks passed in both arms"
+      },
+      "per_task": [
+        {
+          "task": "summary",
+          "A_uncached_parent_input": 20114,
+          "B_uncached_parent_input": 20615,
+          "delta_uncached_parent_input": 501,
+          "A_parent_output": 422,
+          "B_parent_output": 390,
+          "B_worker_tokens": 1825,
+          "A_wall_seconds": 18.61,
+          "B_wall_seconds": 34.34,
+          "added_wall_seconds": 15.73
+        },
+        {
+          "task": "gate",
+          "A_uncached_parent_input": 20177,
+          "B_uncached_parent_input": 20215,
+          "delta_uncached_parent_input": 38,
+          "A_parent_output": 708,
+          "B_parent_output": 742,
+          "B_worker_tokens": 2356,
+          "A_wall_seconds": 25.68,
+          "B_wall_seconds": 49.85,
+          "added_wall_seconds": 24.17
+        }
+      ],
+      "worker_tokens_total": 4181,
+      "decision": "PARENT_ONLY; capability evidence recorded with eligible=false",
+      "reason": "Worker correctness alone did not justify delegation: parent input, latency and repair/fallback burden all increased, and no defensible positive delegation threshold was established."
+    },
+    {
+      "id": "cerebras-none-60-pair",
+      "provider": "cerebras",
+      "model": "qwen-3.8-27b",
+      "reasoning_effort": "none",
+      "temperature": 0,
+      "max_output_tokens": 2048,
+      "pairs": 60,
+      "task_repeats": "30 repeats each of two public implementation tasks; not 60 independent task families",
+      "randomized": false,
+      "physical_calls": 60,
+      "physical_statuses": { "completed": 60 },
+      "worker_quality": { "raw_pass": 60, "repair_or_fallback": 0 },
+      "parent_final_pass": { "summary": "30/30", "gate": "30/28" },
+      "grading_note": "The original grader rejected two B-arm gate outputs for using numeric as_integer_ratio. grading-v2 preserves that correction separately; no inference was rerun.",
+      "aggregate_tokens": {
+        "A_uncached_parent_input": 325894,
+        "B_uncached_parent_input": 396074,
+        "A_parent_output": 32681,
+        "B_parent_output": 31065,
+        "A_cached_parent_input": 884480,
+        "B_cached_parent_input": 861056,
+        "A_uncached_input_plus_output": 358575,
+        "B_uncached_input_plus_output": 427139,
+        "worker_input": 15960,
+        "worker_output": 44220
+      },
+      "raw_aggregate_delta_parent_tokens": 68564,
+      "cache_controlled_note": "The raw aggregate is confounded by unequal cache hits. Removing the cache imbalance algebraically still leaves +45140 parent input/output tokens. That is a sensitivity analysis, not a measured uncached saving.",
+      "equal_cache_subset": [
+        { "task": "report_summary", "pairs": 12, "mean_parent_token_delta": 522.1, "bootstrap_95pct": [506.0, 536.4] },
+        { "task": "evidence_gate", "pairs": 8, "mean_parent_token_delta": 1008.1, "bootstrap_95pct": [959.1, 1063.6] }
+      ],
+      "worker_latency": {
+        "physical_p50_ms": 625,
+        "physical_p95_ms": 1149,
+        "wrapper_wall_p50_ms": 1109,
+        "wrapper_wall_p95_ms": 2465,
+        "paired_total_added_p50_ms": 1080,
+        "paired_total_added_mean_ms": 751,
+        "paired_total_added_p95_ms": 4698,
+        "note": "Timing is noisy and is not an independent causal cost estimate."
+      },
+      "per_function": {
+        "summary": { "pairs": 30, "worker_p50_ms": 566.1, "worker_p95_ms": 1125.0, "worker_tokens": 21960 },
+        "gate": { "pairs": 30, "worker_p50_ms": 747.0, "worker_p95_ms": 1275.7, "worker_tokens": 38220 }
+      },
+      "decision": "Keep automatic generic-worker delegation ineligible",
+      "reason": "Clean, fast execution did not reduce measured parent work at these task sizes. Both tasks increased parent work in the equal-cache subset.",
+      "excluded_cohort": {
+        "id": "cerebras-real-ab-20260927T042531Z",
+        "completed_pairs": 4,
+        "target_pairs": 60,
+        "physical_statuses": { "incomplete": 4 },
+        "raw_worker_pass": 0,
+        "why": "All four worker calls exhausted the 2048-token completion budget with empty final output. Preserved as configuration failures and explicitly NOT pooled as code-quality evidence."
+      }
+    }
+  ],
+  "hypothesis": {
+    "id": "verbose-worker-does-not-reduce-parent-work",
+    "text": "Delegation cannot save parent tokens when the parent still consumes the original task plus a verbose worker response. On these task sizes the worker response is a net addition to parent context rather than a replacement for parent work.",
+    "next_experiment": "Typed or compressed worker artifacts, not simply a better worker model."
+  },
+  "unmeasured": [
+    "A task size or mix where delegation reduces parent work",
+    "Whether typed/compressed worker artifacts change the direction of the effect",
+    "Dollar savings of any kind (billing is trial_or_existing_credit_unverified in both cohorts)"
+  ]
+}
