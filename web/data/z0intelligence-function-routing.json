@@ -2,48 +2,119 @@
   "meta": {
     "slug": "z0intelligence-function-routing",
     "title": "From Model Routing to Evidence-Backed Function Routing",
-    "subtitle": "Five days of measurements on whether an automatic router actually executes, actually verifies, and actually saves work — including three falsifications.",
+    "subtitle": "Five days of measurements on whether an automatic router actually executes, actually verifies, and actually saves work \u2014 including three falsifications.",
     "author": "Zer0 Research",
     "date": "September 27, 2026",
     "status": "evidence-mixed",
     "lede": "We spent five days trying to make z0intelligence pick the right model or function automatically. Most of the value came from things that turned out to be wrong.",
     "banner": {
-      "tag": "MIXED EVIDENCE — SOME SOURCES LOCAL-ONLY",
+      "tag": "MIXED EVIDENCE \u2014 SOME SOURCES LOCAL-ONLY",
       "text": "Verifier quality figures were recomputed from raw per-example JSONL in a pinned revision. Execution, saturation and lifecycle figures are transcribed from frozen receipt cohorts. The router, service and dispatch-authority modules live in an unpublished local revision of z0intelligence and are not yet in canonical main. Provider concurrency caps are POLICY INPUTS, not reproduced measurements.",
       "preserve_ref": "refs/preserve/20260927/z0intelligence-intelligence-layer-unpublished"
     },
     "toc": [
-      { "id": "green", "label": "Everything was green" },
-      { "id": "nanojev", "label": "NanoJev autopsy" },
-      { "id": "jev", "label": "The real model" },
-      { "id": "capability", "label": "Function capability map" },
-      { "id": "providers", "label": "Providers & saturation" },
-      { "id": "freetier", "label": "Free tier & k8s" },
-      { "id": "cerebras", "label": "Cerebras: no savings" },
-      { "id": "route-demo", "label": "What would it route?" },
-      { "id": "explore", "label": "Explore: data & receipts" },
-      { "id": "claims", "label": "Claim status" },
-      { "id": "methods", "label": "Methods" }
+      {
+        "id": "green",
+        "label": "Everything was green"
+      },
+      {
+        "id": "nanojev",
+        "label": "NanoJev autopsy"
+      },
+      {
+        "id": "jev",
+        "label": "The real model"
+      },
+      {
+        "id": "capability",
+        "label": "Function capability map"
+      },
+      {
+        "id": "providers",
+        "label": "Providers & saturation"
+      },
+      {
+        "id": "freetier",
+        "label": "Free tier & k8s"
+      },
+      {
+        "id": "cerebras",
+        "label": "Cerebras: no savings"
+      },
+      {
+        "id": "route-demo",
+        "label": "What would it route?"
+      },
+      {
+        "id": "explore",
+        "label": "Explore: data & receipts"
+      },
+      {
+        "id": "claims",
+        "label": "Claim status"
+      },
+      {
+        "id": "methods",
+        "label": "Methods"
+      }
     ]
   },
-
   "pipeline": {
     "caption": "A route being selected is not evidence it executed. This is the chain every claim in this study had to survive, and the point at which each stage was actually falsified at least once.",
     "stages": [
-      { "id": "configured", "label": "configured", "gloss": "the path exists in code or config", "ev": "SOURCE", "failed": "a config entry is not an execution" },
-      { "id": "selected", "label": "selected", "gloss": "the router chose this route", "ev": "SOURCE", "failed": "an earlier batch reported success on a path that did not run" },
-      { "id": "executed", "label": "executed", "gloss": "a physical call with provider-assigned identity", "ev": "EXECUTION", "failed": "4/60 Cerebras pairs produced empty output at full token budget" },
-      { "id": "consumed", "label": "consumed", "gloss": "a downstream component used the result", "ev": "CONSUMPTION", "failed": "Laya returned a verdict the parent had to repair" },
-      { "id": "receipted", "label": "receipted", "gloss": "one canonical record exists", "ev": "RECEIPT", "failed": "replay, conflict rejection and refusal all needed separate proof" }
+      {
+        "id": "configured",
+        "label": "configured",
+        "gloss": "the path exists in code or config",
+        "ev": "SOURCE",
+        "failed": "a config entry is not an execution"
+      },
+      {
+        "id": "selected",
+        "label": "selected",
+        "gloss": "the router chose this route",
+        "ev": "SOURCE",
+        "failed": "an earlier batch reported success on a path that did not run"
+      },
+      {
+        "id": "executed",
+        "label": "executed",
+        "gloss": "a physical call with provider-assigned identity",
+        "ev": "EXECUTION",
+        "failed": "4/60 Cerebras pairs produced empty output at full token budget"
+      },
+      {
+        "id": "consumed",
+        "label": "consumed",
+        "gloss": "a downstream component used the result",
+        "ev": "CONSUMPTION",
+        "failed": "Laya returned a verdict the parent had to repair"
+      },
+      {
+        "id": "receipted",
+        "label": "receipted",
+        "gloss": "one canonical record exists",
+        "ev": "RECEIPT",
+        "failed": "replay, conflict rejection and refusal all needed separate proof"
+      }
     ]
   },
-
   "nanojev": {
     "verdict": "The training objective cannot support this primitive. The success criterion was not met, and the target ordering is inverted. Integration stopped.",
     "speed_ms_p50_cpu": 31,
     "checkpoint": "C-Tianyu/NanoJev @ 4a19595e",
-    "trained_on": ["Maze", "Snake", "ViZDoom Basic", "Predict Position"],
-    "training_pools": { "Maze": 651, "Snake": 400, "Basic": 3054, "Predict Position": 6788 },
+    "trained_on": [
+      "Maze",
+      "Snake",
+      "ViZDoom Basic",
+      "Predict Position"
+    ],
+    "training_pools": {
+      "Maze": 651,
+      "Snake": 400,
+      "Basic": 3054,
+      "Predict Position": 6788
+    },
     "local_config": {
       "dataset": "research/private_navigation_v3/views/coords_multi.jsonl",
       "set_head": "attention",
@@ -56,9 +127,8 @@
       "consequence": "correcting the contrast removed most of the apparent signal"
     },
     "trainer_location": "not in any branch of the repository; established from the publisher's recipe and config, not a local trainer",
-    "lesson": "Fast ≠ suitable objective. Interface compatibility is not capability equivalence."
+    "lesson": "Fast \u2260 suitable objective. Interface compatibility is not capability equivalence."
   },
-
   "jev": {
     "model": "jev-1.13.0",
     "provider": "typesafe",
@@ -69,9 +139,27 @@
         "id": "authored144",
         "n": 144,
         "systems": [
-          { "system": "jev-1.13.0", "role": "reference", "fba": 0.9514, "macro_f1": 0.9518, "ece": 0.0334 },
-          { "system": "direct Qwen3.5-4B", "role": "baseline", "fba": 0.8056, "macro_f1": 0.8002, "ece": 0.0678 },
-          { "system": "reranker Qwen3-Reranker-4B", "role": "baseline", "fba": 0.6319, "macro_f1": 0.5897, "ece": 0.0883 }
+          {
+            "system": "jev-1.13.0",
+            "role": "reference",
+            "fba": 0.9514,
+            "macro_f1": 0.9518,
+            "ece": 0.0334
+          },
+          {
+            "system": "direct Qwen3.5-4B",
+            "role": "baseline",
+            "fba": 0.8056,
+            "macro_f1": 0.8002,
+            "ece": 0.0678
+          },
+          {
+            "system": "reranker Qwen3-Reranker-4B",
+            "role": "baseline",
+            "fba": 0.6319,
+            "macro_f1": 0.5897,
+            "ece": 0.0883
+          }
         ],
         "binary_slice": {
           "family": "evidence_interpretation",
@@ -80,35 +168,64 @@
           "positive_class": "supported",
           "score": "P(supported)",
           "systems": [
-            { "system": "jev-1.13.0", "auroc": 0.9982, "balanced_accuracy": 0.9524 },
-            { "system": "direct Qwen3.5-4B", "auroc": 0.9894, "balanced_accuracy": 0.8810 }
+            {
+              "system": "jev-1.13.0",
+              "auroc": 0.9982,
+              "balanced_accuracy": 0.9524
+            },
+            {
+              "system": "direct Qwen3.5-4B",
+              "auroc": 0.9894,
+              "balanced_accuracy": 0.881
+            }
           ],
-          "caveat": "AUROC 0.9982 applies ONLY to this binary slice. Computed over all 144 rows with a different slice definition it is 0.5686 — the number is slice-dependent and must be quoted with its slice."
+          "caveat": "AUROC 0.9982 applies ONLY to this binary slice. Computed over all 144 rows with a different slice definition it is 0.5686 \u2014 the number is slice-dependent and must be quoted with its slice."
         }
       },
       {
         "id": "perturbations108",
         "n": 108,
         "systems": [
-          { "system": "jev-1.13.0", "role": "reference", "fba": 1.0, "macro_f1": 1.0, "ece": 0.0029 },
-          { "system": "reranker Qwen3-Reranker-4B", "role": "baseline", "fba": 0.4907, "macro_f1": 0.443, "ece": 0.0868 }
+          {
+            "system": "jev-1.13.0",
+            "role": "reference",
+            "fba": 1.0,
+            "macro_f1": 1.0,
+            "ece": 0.0029
+          },
+          {
+            "system": "reranker Qwen3-Reranker-4B",
+            "role": "baseline",
+            "fba": 0.4907,
+            "macro_f1": 0.443,
+            "ece": 0.0868
+          }
         ],
         "class_gap": {
-          "gold_ids_present": ["contradicted", "supported", "prohibited", "permitted", "A", "B"],
+          "gold_ids_present": [
+            "contradicted",
+            "supported",
+            "prohibited",
+            "permitted",
+            "A",
+            "B"
+          ],
           "insufficient_present": false,
           "disclosure": "A perfect 1.0000 on a set with no `insufficient` gold label does not exercise the hardest class in authored144 and cannot support a general abstention claim."
         }
       }
     ],
     "omitted": [
-      { "claim": "Brier 0.0408", "why": "our recomputation used a different formulation (per-class, 0.6025) and we will not publish a number we could not reproduce" }
+      {
+        "claim": "Brier 0.0408",
+        "why": "our recomputation used a different formulation (per-class, 0.6025) and we will not publish a number we could not reproduce"
+      }
     ],
     "abandoned_target": {
       "id": "abstentionbench-146-4",
       "text": "The originally targeted 146:4 AbstentionBench slice is not present in this checkout and was a poor primary reproduction target: at a 97% majority class a single accuracy number is dominated by the majority, and it does not exercise the three-way contract the runtime routes on."
     }
   },
-
   "capabilityMap": {
     "caption": "Stop asking which model is best globally. Ask which implementation has evidence for this exact function.",
     "functions": [
@@ -119,7 +236,10 @@
         "implementation": "jev-1.13.0",
         "status": "MEASURED",
         "basis": "0.9514 famBalAcc / 0.0334 ECE on authored144; 0.9982 AUROC on the binary slice",
-        "consumers": ["codex", "hermes (opt-in)"],
+        "consumers": [
+          "codex",
+          "hermes (opt-in)"
+        ],
         "caveat": "reference contract is supported/insufficient/contradicted"
       },
       {
@@ -129,7 +249,9 @@
         "implementation": "laya_421m",
         "status": "BOUNDED",
         "basis": "3 controlled packets x 3 phrasings passed; ~28 ms warm typical",
-        "consumers": ["hermes (opt-in)"],
+        "consumers": [
+          "hermes (opt-in)"
+        ],
         "caveat": "known paraphrase/generalization caveats; phrasing sensitivity ~0.025; FAST_PATH / experimental, not a universal verifier"
       },
       {
@@ -139,7 +261,10 @@
         "implementation": "provider router",
         "status": "MEASURED",
         "basis": "20/20 outputs, 6 providers completing real work, 25 attempts, 5 fallbacks",
-        "consumers": ["dsh", "codex"],
+        "consumers": [
+          "dsh",
+          "codex"
+        ],
         "caveat": "no function-quality evidence promoted from transport success"
       },
       {
@@ -149,7 +274,9 @@
         "implementation": "parent",
         "status": "MEASURED",
         "basis": "DO_NOT_DELEGATE: tiny/unknown task size; observed tiny-task offload added 1347 uncached parent tokens",
-        "consumers": ["omp"],
+        "consumers": [
+          "omp"
+        ],
         "caveat": "a real routing outcome, not a failure"
       },
       {
@@ -159,7 +286,9 @@
         "implementation": "SolPi",
         "status": "UNKNOWN",
         "basis": "host-side, not measured in these cohorts",
-        "consumers": ["host"],
+        "consumers": [
+          "host"
+        ],
         "caveat": "no evidence imported for this route in this study"
       },
       {
@@ -169,32 +298,71 @@
         "implementation": "RLM",
         "status": "UNKNOWN",
         "basis": "host-side, not measured in these cohorts",
-        "consumers": ["host"],
+        "consumers": [
+          "host"
+        ],
         "caveat": "no evidence imported for this route in this study"
       }
     ]
   },
-
   "providers": {
-    "caption": "Six providers completed real work in one batch. Caps below are POLICY INPUTS from an operator handoff whose ~330-probe reference was never reproduced — only the 32-admission test is measured here.",
+    "caption": "Six providers completed real work in one batch. Caps below are POLICY INPUTS from an operator handoff whose ~330-probe reference was never reproduced \u2014 only the 32-admission test is measured here.",
     "batch": {
       "outputs": "20/20",
       "providers_completing_real_work": 6,
       "physical_attempts": 25,
       "successful_fallbacks": 5,
-      "tokens": { "input": 2126, "output": 1440 },
+      "tokens": {
+        "input": 2126,
+        "output": 1440
+      },
       "attempts_without_usage": 5,
       "estimated_parent_tokens_avoided": 1775,
-      "estimate_basis": "same-text UTF-8 bytes / 4 — NOT a measured counterfactual, net saving, or dollar figure"
+      "estimate_basis": "same-text UTF-8 bytes / 4 \u2014 NOT a measured counterfactual, net saving, or dollar figure"
     },
     "exercised": [
-      { "provider": "cerebras", "model": "qwen-3.8-27b", "tasks": 7, "cap": 32 },
-      { "provider": "groq", "model": "openai/gpt-oss-20b", "tasks": 3, "cap": 16 },
-      { "provider": "deepseek", "model": "deepseek-chat", "tasks": 3, "cap": 32 },
-      { "provider": "grok", "model": "grok-4.20-0309-non-reasoning", "tasks": 2, "cap": null },
-      { "provider": "nous", "model": "inclusionai/ling-3.0-flash-sante:free", "tasks": 2, "cap": null },
-      { "provider": "nvidia", "model": "openai/gpt-oss-20b", "tasks": 2, "cap": 12 },
-      { "provider": "local", "model": "qwen2.5:3b", "tasks": 1, "cap": 1 }
+      {
+        "provider": "cerebras",
+        "model": "qwen-3.8-27b",
+        "tasks": 7,
+        "cap": 32
+      },
+      {
+        "provider": "groq",
+        "model": "openai/gpt-oss-20b",
+        "tasks": 3,
+        "cap": 16
+      },
+      {
+        "provider": "deepseek",
+        "model": "deepseek-chat",
+        "tasks": 3,
+        "cap": 32
+      },
+      {
+        "provider": "grok",
+        "model": "grok-4.20-0309-non-reasoning",
+        "tasks": 2,
+        "cap": null
+      },
+      {
+        "provider": "nous",
+        "model": "inclusionai/ling-3.0-flash-sante:free",
+        "tasks": 2,
+        "cap": null
+      },
+      {
+        "provider": "nvidia",
+        "model": "openai/gpt-oss-20b",
+        "tasks": 2,
+        "cap": 12
+      },
+      {
+        "provider": "local",
+        "model": "qwen2.5:3b",
+        "tasks": 1,
+        "cap": 1
+      }
     ],
     "fallback_proof": {
       "trigger": "invalid test-process Groq credential",
@@ -208,7 +376,7 @@
       "capped_before_provider_http": 32,
       "peak_inflight": 32,
       "released": 32,
-      "fixture": "counted local HTTP fixture — NOT 64 paid provider calls and NOT two Kubernetes replicas",
+      "fixture": "counted local HTTP fixture \u2014 NOT 64 paid provider calls and NOT two Kubernetes replicas",
       "headroom": {
         "status": "UNKNOWN",
         "detail": "Per-provider headroom claims (Cerebras/DeepSeek/Jev large headroom, a Groq wall at measured concurrency, a lower NVIDIA wall) are NOT reproduced in the imported receipts. The saturation report states its referenced ~330-probe report was not independently recovered or reproduced."
@@ -216,13 +384,50 @@
       "local_serialization": "verified: two simultaneous local requests produced one real Ollama call and one refusal before HTTP; final inflight 0"
     },
     "harness_routes": [
-      { "client": "codex", "route": "JEV_FUNCTION", "model": "jev-1.13.0", "latency_ms": 572.0, "tokens": [377, 48] },
-      { "client": "hermes", "route": "LAYA_FUNCTION", "model": "laya_421m", "latency_ms": 14141.7, "tokens": [59, 0], "note": "includes cold import/load; inference alone 568.9 ms" },
-      { "client": "dsh", "route": "REMOTE_MODEL", "model": "cerebras/qwen-3.8-27b", "latency_ms": 758.9, "tokens": [133, 664] },
-      { "client": "omp", "route": "PARENT_ONLY", "model": "parent", "latency_ms": 181.4, "tokens": [0, 0], "note": "dispatch only; does not certify parent completion" }
+      {
+        "client": "codex",
+        "route": "JEV_FUNCTION",
+        "model": "jev-1.13.0",
+        "latency_ms": 572.0,
+        "tokens": [
+          377,
+          48
+        ]
+      },
+      {
+        "client": "hermes",
+        "route": "LAYA_FUNCTION",
+        "model": "laya_421m",
+        "latency_ms": 14141.7,
+        "tokens": [
+          59,
+          0
+        ],
+        "note": "includes cold import/load; inference alone 568.9 ms"
+      },
+      {
+        "client": "dsh",
+        "route": "REMOTE_MODEL",
+        "model": "cerebras/qwen-3.8-27b",
+        "latency_ms": 758.9,
+        "tokens": [
+          133,
+          664
+        ]
+      },
+      {
+        "client": "omp",
+        "route": "PARENT_ONLY",
+        "model": "parent",
+        "latency_ms": 181.4,
+        "tokens": [
+          0,
+          0
+        ],
+        "note": "dispatch only; does not certify parent completion"
+      }
     ]
   },
-
   "freeTier": {
     "caption": "A compiled Python route, one authority, one executor. Replay and conflict rejection were proven by replacing the pod, not by asserting them.",
     "execution": {
@@ -232,7 +437,10 @@
       "task": "Reply with 42",
       "output": "42",
       "cost_usd": 0.0,
-      "tokens": { "input": 55, "output": 38 },
+      "tokens": {
+        "input": 55,
+        "output": 38
+      },
       "latency_ms": 790.449,
       "latency_observations": 1,
       "trace": "free-k8s-c7bddd435628",
@@ -241,16 +449,48 @@
       "readiness": "HTTP 200; Kubernetes Ready; 1/1 replicas"
     },
     "path": [
-      { "id": "harness", "label": "harness event", "detail": "native before-agent-start hook" },
-      { "id": "authority", "label": "authority", "detail": "identity/fingerprint CAS + admission" },
-      { "id": "executor", "label": "executor", "detail": "stateless, no ledger" },
-      { "id": "provider", "label": "provider", "detail": "OpenRouter free route, max_price 0" },
-      { "id": "receipt", "label": "canonical receipt", "detail": "exactly one physical start/completion" }
+      {
+        "id": "harness",
+        "label": "harness event",
+        "detail": "native before-agent-start hook"
+      },
+      {
+        "id": "authority",
+        "label": "authority",
+        "detail": "identity/fingerprint CAS + admission"
+      },
+      {
+        "id": "executor",
+        "label": "executor",
+        "detail": "stateless, no ledger"
+      },
+      {
+        "id": "provider",
+        "label": "provider",
+        "detail": "OpenRouter free route, max_price 0"
+      },
+      {
+        "id": "receipt",
+        "label": "canonical receipt",
+        "detail": "exactly one physical start/completion"
+      }
     ],
     "invariants": [
-      { "rule": "completed duplicate → replay", "status": "verified", "evidence": "stored output returned after pod replacement; exactly one canonical physical start/completion" },
-      { "rule": "same trace, different request → reject", "status": "verified", "evidence": "HTTP 400, no second physical execution" },
-      { "rule": "uncertain prior execution → refuse", "status": "verified", "evidence": "prior uncertain execution refused after pod replacement" }
+      {
+        "rule": "completed duplicate \u2192 replay",
+        "status": "verified",
+        "evidence": "stored output returned after pod replacement; exactly one canonical physical start/completion"
+      },
+      {
+        "rule": "same trace, different request \u2192 reject",
+        "status": "verified",
+        "evidence": "HTTP 400, no second physical execution"
+      },
+      {
+        "rule": "uncertain prior execution \u2192 refuse",
+        "status": "verified",
+        "evidence": "prior uncertain execution refused after pod replacement"
+      }
     ],
     "excluded": {
       "provider": "vercel",
@@ -260,22 +500,54 @@
       "supervision": "enabled user systemd unit",
       "sigkill_recovery_s": 3.28,
       "reboot_tested": false,
-      "burst": { "requests": 12, "success": 4, "http_503": 8, "peak_dispatch_concurrency": 4 },
+      "burst": {
+        "requests": 12,
+        "success": 4,
+        "http_503": 8,
+        "peak_dispatch_concurrency": 4
+      },
       "autoscaling": "none installed; the lane is a Service/EndpointSlice to one host process, and scaling a proxy would not increase model capacity"
     }
   },
-
   "cerebras": {
     "caption": "The worker was excellent. Parent work still went up.",
     "cohorts": [
-      { "id": "high-reasoning", "completed": 4, "target": 60, "status": "EXCLUDED", "why": "all four exhausted the 2048-token completion budget with empty final output — configuration failures, not pooled as quality evidence" },
-      { "id": "reasoning-none", "completed": 60, "target": 60, "status": "MEASURED", "why": "explicit reasoning_effort=none, temperature 0, max output 2048, frozen throughout" }
+      {
+        "id": "high-reasoning",
+        "completed": 4,
+        "target": 60,
+        "status": "EXCLUDED",
+        "why": "all four exhausted the 2048-token completion budget with empty final output \u2014 configuration failures, not pooled as quality evidence"
+      },
+      {
+        "id": "reasoning-none",
+        "completed": 60,
+        "target": 60,
+        "status": "MEASURED",
+        "why": "explicit reasoning_effort=none, temperature 0, max output 2048, frozen throughout"
+      }
     ],
     "headline": [
-      { "k": "worker raw quality", "v": "60/60", "s": "zero required repairs or fallbacks" },
-      { "k": "physical calls", "v": "60", "s": "all completed" },
-      { "k": "worker latency p50", "v": "625 ms", "s": "p95 1,149 ms" },
-      { "k": "paired added latency p50", "v": "1.080 s", "s": "mean 0.751 s, p95 4.698 s" }
+      {
+        "k": "worker raw quality",
+        "v": "60/60",
+        "s": "zero required repairs or fallbacks"
+      },
+      {
+        "k": "physical calls",
+        "v": "60",
+        "s": "all completed"
+      },
+      {
+        "k": "worker latency p50",
+        "v": "625 ms",
+        "s": "p95 1,149 ms"
+      },
+      {
+        "k": "paired added latency p50",
+        "v": "1.080 s",
+        "s": "mean 0.751 s, p95 4.698 s"
+      }
     ],
     "tokens": {
       "A_uncached_parent_input": 325894,
@@ -295,10 +567,25 @@
       "note": "removing the cache imbalance algebraically still leaves +45,140 input/output tokens; this is a sensitivity analysis, not a measured uncached saving"
     },
     "equal_cache": [
-      { "task": "report summary", "pairs": 12, "delta": 522.1, "lo": 506.0, "hi": 536.4 },
-      { "task": "evidence gate", "pairs": 8, "delta": 1008.1, "lo": 959.1, "hi": 1063.6 }
+      {
+        "task": "report summary",
+        "pairs": 12,
+        "delta": 522.1,
+        "lo": 506.0,
+        "hi": 536.4
+      },
+      {
+        "task": "evidence gate",
+        "pairs": 8,
+        "delta": 1008.1,
+        "lo": 959.1,
+        "hi": 1063.6
+      }
     ],
-    "parent_final_pass": { "summary": "30/30", "gate": "30/28" },
+    "parent_final_pass": {
+      "summary": "30/30",
+      "gate": "30/28"
+    },
     "grading_note": "The original grader rejected two B-arm gate outputs for using numeric as_integer_ratio. grading-v2 preserves that correction separately; no inference was rerun.",
     "decision": "Keep automatic generic-worker delegation ineligible.",
     "hypothesis": "Delegation cannot save parent tokens if the parent still consumes the original task plus a verbose worker response.",
@@ -306,16 +593,27 @@
     "nemotron": {
       "pairs": 2,
       "per_task": [
-        { "task": "summary", "delta_uncached_parent_input": 501, "added_wall_s": 15.73, "worker_tokens": 1825, "worker_quality": "literal escaped newlines; parent repair required" },
-        { "task": "gate", "delta_uncached_parent_input": 38, "added_wall_s": 24.17, "worker_tokens": 2356, "worker_quality": "exhausted 2048-token budget; native fallback required" }
+        {
+          "task": "summary",
+          "delta_uncached_parent_input": 501,
+          "added_wall_s": 15.73,
+          "worker_tokens": 1825,
+          "worker_quality": "literal escaped newlines; parent repair required"
+        },
+        {
+          "task": "gate",
+          "delta_uncached_parent_input": 38,
+          "added_wall_s": 24.17,
+          "worker_tokens": 2356,
+          "worker_quality": "exhausted 2048-token budget; native fallback required"
+        }
       ],
       "worker_tokens_total": 4181,
       "decision": "PARENT_ONLY; eligible=false",
-      "note": "its worker output did contribute — the reviewed B-arm implementation produced its own report. Contribution is not savings."
+      "note": "its worker output did contribute \u2014 the reviewed B-arm implementation produced its own report. Contribution is not savings."
     },
-    "billing": "trial_or_existing_credit_unverified — no measured $0 and no dollar savings claimed"
+    "billing": "trial_or_existing_credit_unverified \u2014 no measured $0 and no dollar savings claimed"
   },
-
   "routeDemo": {
     "caption": "Frozen decisions from the measured cohorts. Pick a task shape and see the route the system actually produced, with its recorded reason.",
     "cases": [
@@ -387,46 +685,173 @@
       }
     ]
   },
-
   "explore": {
     "claims": [
-      { "id": "false-green", "text": "A green benchmark historically did not prove workers physically executed; execution is only established by a canonical receipt with provider-assigned identity, tokens and latency.", "status": "MEASURED", "evidence": "provider-execution batch" },
-      { "id": "jev-reproduces", "text": "Jev 1.13.0 reaches 0.9514 family-balanced accuracy and 0.0334 ECE on authored144, and 0.9982 AUROC with 0.9524 balanced accuracy on the 48-example binary abstention slice.", "status": "MEASURED", "evidence": "recomputed from raw per-example JSONL" },
-      { "id": "auroc-slice", "text": "AUROC 0.9982 holds only for the binary abstention slice; over all 144 rows with a different slice definition it is 0.5686.", "status": "MEASURED", "evidence": "same raw file, two definitions" },
-      { "id": "perturbations-gap", "text": "perturbations108 scores 1.0000 but contains no `insufficient` gold label.", "status": "MEASURED", "evidence": "gold id census of the raw file" },
-      { "id": "nanojev", "text": "NanoJev was trained for game/action-choice tasks and its boolean path used a degenerate contrast; correcting it removed most of the apparent signal.", "status": "MEASURED", "evidence": "publisher recipe + local config + source inspection" },
-      { "id": "delegation", "text": "On both measured cohorts delegation increased parent work; Cerebras kept automatic generic-worker delegation ineligible despite 60/60 worker quality.", "status": "MEASURED", "evidence": "60-pair A/B + 2-pair Nemotron A/B" },
-      { "id": "no-savings", "text": "No token or dollar saving from delegation is claimed.", "status": "MEASURED", "evidence": "measured direction is negative at the tested sizes" },
-      { "id": "headroom", "text": "Per-provider headroom (Cerebras/DeepSeek/Jev large headroom, a Groq wall, a lower NVIDIA wall) is not reproduced here.", "status": "UNKNOWN", "evidence": "source report states its ~330-probe reference was not recovered" },
-      { "id": "caps", "text": "Provider concurrency caps are policy inputs, not measurements. Only the 32-admission test is measured.", "status": "BOUNDED", "evidence": "64-request burst against the authority, counted local fixture" },
-      { "id": "idempotency", "text": "Completed duplicates replay, a same-trace different-request is rejected without a second physical execution, and an uncertain prior execution is refused.", "status": "MEASURED", "evidence": "pod replacement proofs" },
-      { "id": "free-route", "text": "A real free-only execution on a provider-reported $0 route returned the expected output with one canonical physical start/completion.", "status": "MEASURED", "evidence": "free-tier execution receipt" },
-      { "id": "laya", "text": "Laya is a fast experimental verifier with known paraphrase caveats, not a universal verifier.", "status": "BOUNDED", "evidence": "3 controlled packets x 3 phrasings" },
-      { "id": "production", "text": "Production readiness is bounded: the router revision is local-only, the executor is a single replica with no autoscaler, and billing is unverified.", "status": "BOUNDED", "evidence": "deployment + lifecycle receipts" },
-      { "id": "brier", "text": "The published Brier 0.0408 is not reproduced by our formulation and is therefore not claimed.", "status": "UNKNOWN", "evidence": "our recomputation gave 0.6025 per-class" }
+      {
+        "id": "false-green",
+        "text": "A green benchmark historically did not prove workers physically executed; execution is only established by a canonical receipt with provider-assigned identity, tokens and latency.",
+        "status": "MEASURED",
+        "evidence": "provider-execution batch"
+      },
+      {
+        "id": "jev-reproduces",
+        "text": "Jev 1.13.0 reaches 0.9514 family-balanced accuracy and 0.0334 ECE on authored144, and 0.9982 AUROC with 0.9524 balanced accuracy on the 48-example binary abstention slice.",
+        "status": "MEASURED",
+        "evidence": "recomputed from raw per-example JSONL"
+      },
+      {
+        "id": "auroc-slice",
+        "text": "AUROC 0.9982 holds only for the binary abstention slice; over all 144 rows with a different slice definition it is 0.5686.",
+        "status": "MEASURED",
+        "evidence": "same raw file, two definitions"
+      },
+      {
+        "id": "perturbations-gap",
+        "text": "perturbations108 scores 1.0000 but contains no `insufficient` gold label.",
+        "status": "MEASURED",
+        "evidence": "gold id census of the raw file"
+      },
+      {
+        "id": "nanojev",
+        "text": "NanoJev was trained for game/action-choice tasks and its boolean path used a degenerate contrast; correcting it removed most of the apparent signal.",
+        "status": "MEASURED",
+        "evidence": "publisher recipe + local config + source inspection"
+      },
+      {
+        "id": "delegation",
+        "text": "On both measured cohorts delegation increased parent work; Cerebras kept automatic generic-worker delegation ineligible despite 60/60 worker quality.",
+        "status": "MEASURED",
+        "evidence": "60-pair A/B + 2-pair Nemotron A/B"
+      },
+      {
+        "id": "no-savings",
+        "text": "No token or dollar saving from delegation is claimed.",
+        "status": "MEASURED",
+        "evidence": "measured direction is negative at the tested sizes"
+      },
+      {
+        "id": "headroom",
+        "text": "Per-provider headroom (Cerebras/DeepSeek/Jev large headroom, a Groq wall, a lower NVIDIA wall) is not reproduced here.",
+        "status": "UNKNOWN",
+        "evidence": "source report states its ~330-probe reference was not recovered"
+      },
+      {
+        "id": "caps",
+        "text": "Provider concurrency caps are policy inputs, not measurements. Only the 32-admission test is measured.",
+        "status": "BOUNDED",
+        "evidence": "64-request burst against the authority, counted local fixture"
+      },
+      {
+        "id": "idempotency",
+        "text": "Completed duplicates replay, a same-trace different-request is rejected without a second physical execution, and an uncertain prior execution is refused.",
+        "status": "MEASURED",
+        "evidence": "pod replacement proofs"
+      },
+      {
+        "id": "free-route",
+        "text": "A real free-only execution on a provider-reported $0 route returned the expected output with one canonical physical start/completion.",
+        "status": "MEASURED",
+        "evidence": "free-tier execution receipt"
+      },
+      {
+        "id": "laya",
+        "text": "Laya is a fast experimental verifier with known paraphrase caveats, not a universal verifier.",
+        "status": "BOUNDED",
+        "evidence": "3 controlled packets x 3 phrasings"
+      },
+      {
+        "id": "production",
+        "text": "Production readiness is bounded: the router revision is local-only, the executor is a single replica with no autoscaler, and billing is unverified.",
+        "status": "BOUNDED",
+        "evidence": "deployment + lifecycle receipts"
+      },
+      {
+        "id": "brier",
+        "text": "The published Brier 0.0408 is not reproduced by our formulation and is therefore not claimed.",
+        "status": "UNKNOWN",
+        "evidence": "our recomputation gave 0.6025 per-class"
+      }
     ],
     "receipts": [
-      { "label": "Cerebras reasoning-none cohort decision", "ref": "receipts/cerebras-ab/cerebras-none-ab-20260927T042811Z/DECISION.md" },
-      { "label": "Cerebras excluded high-reasoning cohort", "ref": "receipts/cerebras-ab/cerebras-real-ab-20260927T042531Z/REPORT.md" },
-      { "label": "Nemotron function eval + A/B", "ref": "receipts/nemotron-eval/20260927T032233Z-b6896a/report.md" },
-      { "label": "Multi-provider execution batch", "ref": "receipts/automatic-routing/20260926T223650Z/execution-summary.md" },
-      { "label": "Free-tier execution + replay/conflict proof", "ref": "receipts/free-tier/report.md" },
-      { "label": "Provider saturation + canonical dispatch authority", "ref": "receipts/provider-saturation/report.md" },
-      { "label": "Intelligence acceptance (harness route matrix)", "ref": "receipts/intelligence/report.md" },
-      { "label": "Supervised lifecycle + harness runtime checks", "ref": "receipts/supervised-intelligence/report.md" },
-      { "label": "Kind connectivity repair", "ref": "receipts/kind-repair/README.md" },
-      { "label": "Paid Jev verification exception", "ref": "receipts/jev-exception/README.md" },
-      { "label": "NanoJev objective investigation", "ref": "zer0-arch-sprint/reports/nanojev-objective-investigation.md" },
-      { "label": "Jev verification (raw metric recomputation)", "ref": "zer0-arch-sprint/reports/jev-verification.md" }
+      {
+        "label": "Cerebras reasoning-none cohort decision",
+        "ref": "receipts/cerebras-ab/cerebras-none-ab-20260927T042811Z/DECISION.md"
+      },
+      {
+        "label": "Cerebras excluded high-reasoning cohort",
+        "ref": "receipts/cerebras-ab/cerebras-real-ab-20260927T042531Z/REPORT.md"
+      },
+      {
+        "label": "Nemotron function eval + A/B",
+        "ref": "receipts/nemotron-eval/20260927T032233Z-b6896a/report.md"
+      },
+      {
+        "label": "Multi-provider execution batch",
+        "ref": "receipts/automatic-routing/20260926T223650Z/execution-summary.md"
+      },
+      {
+        "label": "Free-tier execution + replay/conflict proof",
+        "ref": "receipts/free-tier/report.md"
+      },
+      {
+        "label": "Provider saturation + canonical dispatch authority",
+        "ref": "receipts/provider-saturation/report.md"
+      },
+      {
+        "label": "Intelligence acceptance (harness route matrix)",
+        "ref": "receipts/intelligence/report.md"
+      },
+      {
+        "label": "Supervised lifecycle + harness runtime checks",
+        "ref": "receipts/supervised-intelligence/report.md"
+      },
+      {
+        "label": "Kind connectivity repair",
+        "ref": "receipts/kind-repair/README.md"
+      },
+      {
+        "label": "Paid Jev verification exception",
+        "ref": "receipts/jev-exception/README.md"
+      },
+      {
+        "label": "NanoJev objective investigation",
+        "ref": "zer0-arch-sprint/reports/nanojev-objective-investigation.md"
+      },
+      {
+        "label": "Jev verification (raw metric recomputation)",
+        "ref": "zer0-arch-sprint/reports/jev-verification.md"
+      }
     ],
     "sources": [
-      { "repo": "kvnloo/z0intelligence", "commit": "5233c1c364a0ccab84cdd9e6c20c90078a685e1b", "role": "canonical verifier metadata, decision backends, dispatch authority, worker routing, receipts" },
-      { "repo": "kvnloo/z0intelligence", "commit": "78869d977e847f8f87f3b8806cdcd6ce44b6bc22", "role": "unpublished intelligence layer + capability-evidence fixtures", "visibility": "local-only" },
-      { "repo": "kvnloo/aodl", "commit": "a848270", "role": "intent/authority contracts" },
-      { "repo": "kvnloo/kerdoios", "commit": "70fc670", "role": "placement and resource economics" },
-      { "repo": "kvnloo/evolution-lab", "commit": "4cf52bb", "role": "experiment lineage" }
+      {
+        "repo": "kvnloo/z0intelligence",
+        "commit": "5233c1c364a0ccab84cdd9e6c20c90078a685e1b",
+        "role": "canonical verifier metadata, decision backends, dispatch authority, worker routing, receipts"
+      },
+      {
+        "repo": "kvnloo/z0intelligence",
+        "commit": "78869d977e847f8f87f3b8806cdcd6ce44b6bc22",
+        "role": "unpublished intelligence layer + capability-evidence fixtures",
+        "visibility": "local-only"
+      },
+      {
+        "repo": "kvnloo/aodl",
+        "commit": "a848270",
+        "role": "intent/authority contracts"
+      },
+      {
+        "repo": "kvnloo/kerdoios",
+        "commit": "70fc670",
+        "role": "placement and resource economics"
+      },
+      {
+        "repo": "kvnloo/evolution-lab",
+        "commit": "4cf52bb",
+        "role": "experiment lineage"
+      }
     ],
     "limitations": [
+      "The canonical validation runtime is Python 3.11; every earlier suite count in this programme was taken on Python 3.14, outside the declared support range, and is not used as final evidence.",
       "The router, service, dispatch authority and provider-saturation modules live in an unpublished local revision and are not yet in canonical main.",
       "Provider concurrency caps are policy inputs; the referenced ~330-probe report was not reproduced.",
       "Per-provider headroom is UNKNOWN in this evidence set.",
@@ -438,18 +863,59 @@
       "Estimated parent tokens avoided is a bytes/4 baseline, not a measured counterfactual.",
       "No dollar savings are claimed; billing is unverified in both delegation cohorts.",
       "The Kubernetes lane is a single replica with no autoscaler; scaling a proxy would not increase model capacity.",
-      "Reboot availability of the host service was not tested.",
-      "Wrong test runner and a silently-skipping schema cross-check were both found during this work; the corrected baseline is quoted in Methods."
+      "Reboot availability of the host service was not tested."
     ],
     "methods": [
-      { "k": "environment", "v": "Python 3.11.14", "s": "the repo's declared runtime (.python-version 3.11, requires-python >=3.10,<3.14)" },
-      { "k": "full suite", "v": "452 passed", "s": "5 live-marked failures (network/provider), 3 skipped, with declared runtime deps installed incl. torch 2.10.0" },
-      { "k": "non-live suite", "v": "452 passed", "s": "3 skipped, 5 deselected under -m 'not live'" },
-      { "k": "test runner", "v": "pytest", "s": "running the wrong runner against a unittest-declared suite produced 142 false errors on a healthy repo" },
-      { "k": "patch equivalence", "v": "both directions", "s": "necessary but not sufficient: a branch read as 'genuinely new' by patch-id had already landed under a rewritten SHA with an extra fix on top" },
-      { "k": "conflicts", "v": "semantic ≠ textual", "s": "a skill merged without textual conflict and still violated a newer frontmatter contract" },
-      { "k": "schema cross-check", "v": "silently skips", "s": "reports success while verifying nothing when an optional dependency is absent" },
-      { "k": "recomputation", "v": "raw over summary", "s": "Jev metrics were recomputed from the per-example JSONL rather than copied from shipped constants" }
+      {
+        "k": "canonical runtime",
+        "v": "Python 3.11.14",
+        "s": "the repo's declared runtime (.python-version 3.11, requires-python >=3.10,<3.14). Earlier suite counts taken on Python 3.14 are OUTSIDE the declared support range and are not used as final evidence."
+      },
+      {
+        "k": "full suite",
+        "v": "457 passed",
+        "s": "3 skipped, 0 failed, with the declared runtime plus requirements.txt (laya, flash-linear-attention) and jevkit on the path"
+      },
+      {
+        "k": "non-live suite",
+        "v": "452 passed",
+        "s": "3 skipped, 5 deselected under -m 'not live'"
+      },
+      {
+        "k": "live failures",
+        "v": "0 after deps",
+        "s": "all 5 earlier live failures were missing-package gaps, not regressions: 4 needed `laya` (in requirements.txt but not pyproject) and 1 needed `jevkit` (undeclared in both; available locally)"
+      },
+      {
+        "k": "declaration gap",
+        "v": "requirements.txt != pyproject",
+        "s": "laya and flash-linear-attention are in requirements.txt but absent from pyproject dependencies, so `pip install -e .` does not install what the laya backend needs; jevkit is in neither"
+      },
+      {
+        "k": "test runner",
+        "v": "pytest",
+        "s": "running the wrong runner against a unittest-declared suite produced 142 false errors on a healthy repo"
+      },
+      {
+        "k": "patch equivalence",
+        "v": "both directions",
+        "s": "necessary but not sufficient: a branch read as 'genuinely new' by patch-id had already landed under a rewritten SHA with an extra fix on top"
+      },
+      {
+        "k": "conflicts",
+        "v": "semantic \u2260 textual",
+        "s": "a skill merged without textual conflict and still violated a newer frontmatter contract"
+      },
+      {
+        "k": "schema cross-check",
+        "v": "silently skips",
+        "s": "reports success while verifying nothing when an optional dependency is absent"
+      },
+      {
+        "k": "recomputation",
+        "v": "raw over summary",
+        "s": "Jev metrics were recomputed from the per-example JSONL rather than copied from shipped constants"
+      }
     ]
   }
 }
