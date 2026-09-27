@@ -342,6 +342,20 @@ const story = (
         </tbody>
       </table>
     </div>
+    <MetricRow
+      items={[
+        {
+          k: "parent final pass — summary",
+          v: CB.parent_final_pass.summary,
+          s: "A / B, identical task assertions",
+        },
+        {
+          k: "parent final pass — gate",
+          v: CB.parent_final_pass.gate,
+          s: "A / B — NOT 30/30; the original grader rejected two B outputs",
+        },
+      ]}
+    />
     <Callout kind="warning" title={`Raw aggregate is +${CB.raw_aggregate_delta.toLocaleString("en-US")} — and still positive after cache control`}>
       <p>{CB.cache_controlled.note}</p>
       <p>
