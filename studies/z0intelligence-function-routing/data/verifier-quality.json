@@ -1,0 +1,114 @@
+{
+  "schema": "z0eval.verifier_quality.v1",
+  "generated_from": [
+    "z0intelligence@5233c1c:src/z0int/functions/jev.py (shipped validation block)",
+    "z0intelligence@78869d9:manifests/capability-evidence/jev-bench-authored144.jsonl",
+    "z0intelligence@78869d9:manifests/capability-evidence/jev-bench-perturbations108.jsonl"
+  ],
+  "note": "authored144 and perturbations108 figures were recomputed from the raw per-example JSONL during publication, not copied from the shipped constants. The binary abstention figures use the evidence_interpretation family (n=48) with score = P(supported) and positive = gold_id 'supported'. famBalAcc and ECE reproduce the shipped constants exactly.",
+  "benchmarks": [
+    {
+      "id": "authored144",
+      "n": 144,
+      "families": {
+        "evidence_interpretation": 48,
+        "rule_application": 48,
+        "candidate_selection": 48
+      },
+      "label_support": { "0": 55, "1": 44, "2": 45 },
+      "class_note": "three-way balanced by family; class ids are not abstention labels",
+      "systems": [
+        {
+          "system": "jev-1.13.0",
+          "kind": "reference",
+          "accuracy": 0.9514,
+          "family_balanced_accuracy": 0.9514,
+          "macro_f1": 0.9518,
+          "ece_top1": 0.0334,
+          "provenance": "recomputed from raw JSONL"
+        },
+        {
+          "system": "direct Qwen3.5-4B",
+          "kind": "baseline",
+          "accuracy": 0.8056,
+          "family_balanced_accuracy": 0.8056,
+          "macro_f1": 0.8002,
+          "ece_top1": 0.0678,
+          "provenance": "reported in jev-verification.md; raw per-example file not imported"
+        },
+        {
+          "system": "reranker Qwen3-Reranker-4B",
+          "kind": "baseline",
+          "accuracy": 0.6319,
+          "family_balanced_accuracy": 0.6319,
+          "macro_f1": 0.5897,
+          "ece_top1": 0.0883,
+          "provenance": "reported in jev-verification.md; raw per-example file not imported"
+        }
+      ],
+      "binary_abstention_slice": {
+        "family": "evidence_interpretation",
+        "n": 48,
+        "positives": 21,
+        "positive_class": "supported",
+        "negative_class": "contradicted + insufficient",
+        "systems": [
+          { "system": "jev-1.13.0", "auroc": 0.9982, "balanced_accuracy": 0.9524 },
+          { "system": "direct Qwen3.5-4B", "auroc": 0.9894, "balanced_accuracy": 0.8810 }
+        ],
+        "provenance": "recomputed from raw JSONL; AUROC and balanced accuracy reproduce the published report exactly"
+      }
+    },
+    {
+      "id": "perturbations108",
+      "n": 108,
+      "families": {
+        "evidence_interpretation": 36,
+        "rule_application": 36,
+        "candidate_selection": 36
+      },
+      "label_support": { "0": 38, "1": 36, "2": 34 },
+      "systems": [
+        {
+          "system": "jev-1.13.0",
+          "kind": "reference",
+          "accuracy": 1.0,
+          "family_balanced_accuracy": 1.0,
+          "macro_f1": 1.0,
+          "ece_top1": 0.0029,
+          "provenance": "recomputed from raw JSONL"
+        },
+        {
+          "system": "reranker Qwen3-Reranker-4B",
+          "kind": "baseline",
+          "accuracy": 0.4907,
+          "family_balanced_accuracy": 0.4907,
+          "macro_f1": 0.4430,
+          "ece_top1": 0.0868,
+          "provenance": "reported in jev-verification.md; raw per-example file not imported"
+        }
+      ],
+      "class_gap": {
+        "gold_ids_present": ["contradicted", "supported", "prohibited", "permitted", "A", "B"],
+        "insufficient_labels_present": false,
+        "disclosure": "perturbations108 contains no `insufficient` gold id. It omits the hardest class in authored144 and therefore cannot support a general abstention claim, despite the perfect score."
+      }
+    }
+  ],
+  "evidence_sufficiency_controls": {
+    "answer_present": 0.97,
+    "answer_absent": 0.01,
+    "source": "shipped validation block; per-example control file not imported"
+  },
+  "phrasing_sensitivity": {
+    "mean_abs_delta": 0.025,
+    "source": "jev-verification.md"
+  },
+  "negative_results": [
+    {
+      "id": "abstentionbench-146-4",
+      "text": "The originally targeted 146:4 AbstentionBench slice is not present in this checkout and was a poor primary reproduction target: an extreme class ratio makes a single accuracy number dominated by the majority class, and it does not exercise the three-way contract z0intelligence actually routes on.",
+      "disposition": "abandoned as the primary reproduction target"
+    }
+  ]
+}

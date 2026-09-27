@@ -1,0 +1,102 @@
+schema_version: z0eval.study.v1
+id: z0intelligence-function-routing
+title: "z0intelligence: from model routing to evidence-backed function routing"
+status: draft
+created: "2026-09-27"
+updated: "2026-09-27"
+
+run_id: z0intelligence-function-routing-20260927
+evidence_status: mixed-local-and-remote
+external_inference_spend_usd: null
+spend_note: "No verified dollar figure. Cerebras ran under an operator-authorized trial/credit recorded as trial_or_existing_credit_unverified; the direct Jev exception is a paid route under explicit operator authorization; every generic worker route was free_only."
+
+sources:
+  - repo: kvnloo/z0intelligence
+    commit: 5233c1c364a0ccab84cdd9e6c20c90078a685e1b
+    role: canonical verifier metadata, decision backends, dispatch authority, worker routing, receipts
+    visibility: public
+  - repo: kvnloo/z0intelligence
+    commit: 78869d977e847f8f87f3b8806cdcd6ce44b6bc22
+    role: unpublished intelligence layer (service, router, provider saturation, remote executor) and capability-evidence fixtures
+    visibility: local-only
+    note: preserved at refs/preserve/20260927/z0intelligence-intelligence-layer-unpublished
+  - repo: kvnloo/aodl
+    commit: a848270
+    role: intent/authority contracts consolidated onto canonical
+    visibility: public
+  - repo: kvnloo/kerdoios
+    commit: 70fc670
+    role: placement and resource economics; time-decayed trust semantics
+    visibility: public
+  - repo: kvnloo/evolution-lab
+    commit: 4cf52bb
+    role: canonical trunk for experiment lineage
+    visibility: public
+
+hardware:
+  gpu: NVIDIA RTX 3080 Ti
+  vram_gb: 12
+
+questions:
+  - Does a model selected for a function actually execute it, or only get selected?
+  - Does a fast local scorer solve the same objective as the reference verifier?
+  - Does delegating a task to a competent remote worker reduce parent work?
+  - How much concurrency does the shared authority admit before provider HTTP?
+  - Can one canonical receipt authority guarantee replay, conflict rejection and refusal to re-execute uncertain work?
+
+artifacts:
+  - path: data/verifier-quality.json
+    kind: result
+    provenance: recomputed from the raw per-example capability-evidence JSONL in the pinned local revision
+  - path: data/delegation-economics.json
+    kind: result
+    provenance: transcribed from frozen receipt cohorts in /home/kvn/Documents/ChatGPT/z0/receipts
+  - path: data/provider-execution.json
+    kind: result
+    provenance: transcribed from frozen receipt cohorts; provider identity, tokens and canonical receipt ids preserved
+  - path: data/service-and-saturation.json
+    kind: result
+    provenance: transcribed from frozen receipt cohorts; measured fields separated from policy inputs
+
+limitations:
+  - The router, service, dispatch authority and provider-saturation modules live in an unpublished local revision of z0intelligence and are not yet in canonical main.
+  - Provider concurrency caps are POLICY INPUTS from an operator handoff. Its referenced ~330-probe report was not independently recovered or reproduced. Only the 32-request admission test is measured here.
+  - Per-provider headroom (Cerebras/DeepSeek/Jev large headroom, a Groq wall, a lower NVIDIA wall) is UNKNOWN in this evidence set.
+  - Both delegation cohorts are repeated runs of a small fixed task set (2 pairs; 30 repeats of each of two tasks), not task-population samples.
+  - Parent cache exposure was measured and stratified, not randomized. Only one Cerebras pair had zero cache in both arms.
+  - The Cerebras default/high-reasoning cohort completed 4/60 pairs and is excluded rather than pooled; its failures are configuration failures, not quality measurements.
+  - perturbations108 contains no `insufficient` gold label and cannot support a general abstention claim despite a perfect score.
+  - The 146:4 AbstentionBench slice originally targeted is not present in the checkout.
+  - Estimated parent tokens avoided is a same-text bytes/4 baseline, not a measured counterfactual or net saving.
+  - No dollar savings are claimed. Billing is unverified in both delegation cohorts.
+  - The Kubernetes lane is a single replica with no autoscaler; scaling a proxy would not increase model capacity.
+  - Reboot availability of the host service was not tested.
+
+claims:
+  - id: false-green-is-the-headline
+    text: A green benchmark historically did not prove that workers physically executed; execution is only established by a canonical receipt with provider-assigned identity, tokens and latency.
+    evidence: [data/provider-execution.json]
+  - id: jev-reproduces-from-raw
+    text: Jev 1.13.0 reaches 0.9514 family-balanced accuracy and 0.0334 ECE on authored144, and 0.9982 AUROC with 0.9524 balanced accuracy on the 48-example binary abstention slice, all recomputed from the raw per-example file.
+    evidence: [data/verifier-quality.json]
+  - id: perturbations-lacks-hardest-class
+    text: perturbations108 scores 1.0000 but contains no `insufficient` gold label, so it does not exercise the hardest class and cannot support a general abstention claim.
+    evidence: [data/verifier-quality.json]
+  - id: nanojev-interface-is-not-capability
+    text: NanoJev was fast and directionally plausible, but its checkpoint was trained for game/action-choice tasks and its boolean path used a degenerate contrast; correcting the contrast removed most apparent signal.
+    evidence: [data/verifier-quality.json]
+  - id: delegation-increased-parent-work
+    text: On both measured cohorts, delegation increased parent work. Cerebras kept automatic generic-worker delegation ineligible despite 60/60 worker quality and zero repairs.
+    evidence: [data/delegation-economics.json]
+  - id: no-delegation-savings-claim
+    text: No token or dollar saving from delegation is claimed; the measured direction is negative at the task sizes tested.
+    evidence: [data/delegation-economics.json]
+  - id: one-authority-many-executors
+    text: One canonical authority owns identity/fingerprint CAS, ordered receipt writes, replay and admission; executors hold no ledger and cannot take over uncertain execution.
+    evidence: [data/service-and-saturation.json]
+  - id: idempotency-invariants-hold
+    text: Completed duplicates replay, a same-trace different-request is rejected without a second physical execution, and an uncertain prior execution is refused rather than silently repeated.
+    evidence: [data/service-and-saturation.json]
+  - id: free-route-is-real-and-zero-priced
+    text: A real free-only execution on a provider-reported $0 route returned the expected output with one canonical physical start/completion.
+    evidence: [data/provider-execution.json]
