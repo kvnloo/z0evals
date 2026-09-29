@@ -86,8 +86,23 @@
   --radius-lg: 6px;
   --radius-xl: 8px;
 
-  --sb-subshade: var(--color-sb-secondary);
+  /* Compatibility aliases used by the reference-derived SVG components. */
+  --sb-background: var(--color-sb-background);
+  --sb-bg-subtle: var(--color-sb-bg-subtle);
+  --sb-bg-muted: var(--color-sb-bg-muted);
+  --sb-border: var(--color-sb-border);
+  --sb-text: var(--color-sb-text);
+  --sb-text-muted: var(--color-sb-text-muted);
+  --sb-text-light: var(--color-sb-text-light);
+  --sb-primary: var(--color-sb-primary);
+  --sb-secondary: var(--color-sb-secondary);
   --sb-highlight: var(--color-sb-highlight);
+  --sb-highlight-medium: var(--color-sb-highlight-medium);
+  --sb-highlight-soft: var(--color-sb-highlight-soft);
+  --sb-code-bg: var(--color-sb-code-bg);
+  --sb-success: var(--color-sb-success);
+  --sb-error: var(--color-sb-error);
+  --sb-subshade: var(--color-sb-secondary);
 }
 
 html {
