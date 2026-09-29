@@ -35,3 +35,4 @@ jobs:
       - run: Z0_BASE_PATH=/z0evals npx next build
         working-directory: web
       - run: test -f web/out/index.html
+      - run: python scripts/audit_web_export.py --root web/out
