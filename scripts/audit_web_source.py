@@ -29,6 +29,12 @@ def main() -> int:
 
     css = read("web/app/globals.css")
     require("@media (max-width: 959px)" in css, "Mobile shell breakpoint must be explicit at 959px", errors)
+    for token in ("border", "bg-muted", "secondary", "text", "text-light", "highlight-soft", "error"):
+        require(
+            f"--sb-{token}: var(--color-sb-{token})" in css,
+            f"Reference SVG tokens must resolve: --sb-{token}",
+            errors,
+        )
     require(".story-grid {\n  display: block;" in css,
             "StoryShell must not reserve a grid track for its fixed rail", errors)
     require("@media (max-width: 1199px) {\n  .rail { display: none; }" not in css,
