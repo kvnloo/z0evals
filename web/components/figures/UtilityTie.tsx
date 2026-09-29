@@ -1,3 +1,6 @@
+"use client";
+
+import { useReveal } from "../charts/useReveal";
 /**
  * Figure — one state where the frozen gate cannot tell right from wrong.
  *
@@ -52,6 +55,7 @@ const TOP = 40;
 const BASE = 214;
 
 export default function UtilityTie({ d }: { d: UtilityData }) {
+  const { ref, shown } = useReveal<HTMLElement>(0.08);
   const ms = d.points.map((p) => p.ms).filter((m) => m > 0);
   const lo = Math.floor(Math.log10(Math.min(...ms, d.budgetMs)));
   const hi = Math.ceil(Math.log10(Math.max(...ms, d.budgetMs)));
@@ -67,7 +71,7 @@ export default function UtilityTie({ d }: { d: UtilityData }) {
   const budgetX = xOf(d.budgetMs);
 
   return (
-    <figure className="figure">
+    <figure className="figure" ref={ref}>
       <p className="corpusTitle">{d.title}</p>
       <p className="corpusHeadline">
         <span>
@@ -95,7 +99,15 @@ export default function UtilityTie({ d }: { d: UtilityData }) {
           fill="var(--sb-error)"
           fillOpacity={0.05}
         />
-        <line x1={budgetX} y1={TOP - 14} x2={budgetX} y2={BASE + 18} stroke="var(--sb-error)" strokeDasharray="3 3" />
+        <line
+          x1={budgetX}
+          y1={TOP - 14}
+          x2={budgetX}
+          y2={BASE + 18}
+          stroke="var(--sb-error)"
+          strokeDasharray="3 3"
+          style={{ opacity: shown ? 1 : 0, transition: "opacity .4s ease .15s" }}
+        />
         <text className="corpusLabel" x={X1} y={TOP - 20} textAnchor="end">
           past the {d.budgetMs.toLocaleString()} ms budget → utility {d.frozenUtility.toFixed(3)}
         </text>
@@ -126,6 +138,10 @@ export default function UtilityTie({ d }: { d: UtilityData }) {
             stroke={p.correct ? "var(--sb-secondary)" : "var(--sb-text-light)"}
             strokeWidth={1.2}
             fillOpacity={0.85}
+            style={{
+              opacity: shown ? 1 : 0,
+              transition: `opacity .35s ease ${Math.min(i, 30) * 18}ms`,
+            }}
           >
             <title>
               {p.arm} · rep {p.rep} · {p.ms} ms ·{" "}

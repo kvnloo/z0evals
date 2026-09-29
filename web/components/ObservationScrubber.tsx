@@ -60,7 +60,7 @@ export default function ObservationScrubber({ matrix }: { matrix: Matrix }) {
                 <td>{arm.label}</td>
                 <td className="num">{st.n}</td>
                 <td className="num" style={{ color: colour, fontWeight: 700 }}>
-                  {st.unanimous ? (rate === 1 ? "correct" : "wrong") : `split ${(rate * 3).toFixed(0)}/${st.n}`}
+                  {st.unanimous ? (rate === 1 ? "correct" : "wrong") : `split ${(rate * st.n).toFixed(0)}/${st.n}`}
                 </td>
                 <td className="num">{st.p50Ms == null ? "—" : `${Math.round(st.p50Ms).toLocaleString()} ms`}</td>
                 <td className="num">{r0.confidence == null ? "—" : r0.confidence.toFixed(3)}</td>

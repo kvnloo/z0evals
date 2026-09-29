@@ -1,22 +1,12 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useReveal } from "./charts/useReveal";
 import type { Family } from "@/data/types";
 
 /** Stacked activity per state family — the reference's task-family summary bars. */
 export default function FamilyStack({ families, selected, onSelect }: {
   families: Family[]; selected: string | null; onSelect: (f: string | null) => void;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [shown, setShown] = useState(true);
-  useEffect(() => {
-    const n = ref.current; if (!n) return;
-    if (n.getBoundingClientRect().top > window.innerHeight * 0.92) {
-      setShown(false);
-      const io = new IntersectionObserver((e) => { if (e[0]?.isIntersecting) { setShown(true); io.disconnect(); } }, { threshold: 0.3 });
-      io.observe(n);
-      return () => io.disconnect();
-    }
-  }, []);
+  const { ref, shown } = useReveal<HTMLDivElement>(0.08);
 
   const W = 860, rowH = 30, L = 132, R = 128, T = 30, B = 10;
   const H = T + families.length * rowH + B;
@@ -75,7 +65,7 @@ export default function FamilyStack({ families, selected, onSelect }: {
         {PARTS.map(([key, label, colour]) => (
           <span key={key}><i className="swatch" style={{ background: colour }} />{label}</span>
         ))}
-        <span>click a family to filter the page</span>
+        <span>click a family to filter replay, scrubber, and heatmap</span>
       </div>
     </div>
   );

@@ -81,12 +81,13 @@ export default function ResultsExplorer({ matrix }: { matrix: Matrix }) {
       </figure>
 
       <figure>
-        <div className="fig-body"><Heatmap matrix={matrix} /></div>
+        <div className="fig-body"><Heatmap matrix={scoped} /></div>
         <figcaption>
           <span className="fig-n">fig 8</span>
-          outcome matrix: {matrix.states.length} states × {matrix.arms.length} arms.
+          outcome matrix: {shown.length} states × {matrix.arms.length} arms.
           switch between success rate, dangerous selections, and repetition splits.
           every cell is a measured cell, not an interpolation.
+          {family ? <> filtered to <strong>{family}</strong>.</> : null}
         </figcaption>
       </figure>
 

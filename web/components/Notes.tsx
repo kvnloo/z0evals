@@ -25,20 +25,31 @@ export function MarginNote({
   n,
   label,
   children,
+  footnote = false,
 }: {
   n?: number;
   label?: string;
   children: ReactNode;
+  footnote?: boolean;
 }) {
   return (
     <aside className="margin-note" id={n ? `mn-${n}` : undefined}>
       {label && <span className="margin-note-label">{label}</span>}
       {children}
-      {n && (
-        <a className="fn" href={`#fn-${n}`} aria-label={`Footnote ${n}`}>
+      {n && footnote ? (
+        <a
+          className="fn"
+          href={`#fn-${n}`}
+          id={`fnref-${n}`}
+          aria-label={`Footnote ${n}`}
+        >
           [{n}]
         </a>
-      )}
+      ) : n ? (
+        <span className="fn fn-static" aria-label={`Note ${n}`}>
+          [{n}]
+        </span>
+      ) : null}
     </aside>
   );
 }

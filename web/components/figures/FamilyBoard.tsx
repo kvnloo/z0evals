@@ -159,6 +159,10 @@ export default function FamilyBoard({ d }: { d: FamilyBoardData }) {
                           r="1.9"
                           fill={dot.v === 1 ? "var(--color-sb-secondary)"
                             : dot.v < 0.5 ? "var(--color-sb-error)" : "#b45309"}
+                          style={{
+                            opacity: shown ? 1 : 0,
+                            transition: `opacity .35s ease ${i * 60 + k * 35 + 120}ms`,
+                          }}
                         />
                       ))}
                     </svg>
