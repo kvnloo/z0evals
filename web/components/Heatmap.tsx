@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";\nimport { useReveal } from "./charts/useReveal";
+import { useState } from "react";
+import { useReveal } from "./charts/useReveal";
 import type { Matrix } from "@/data/types";
 
 type Metric = "success" | "dangerous" | "split";
@@ -35,7 +36,8 @@ export default function Heatmap({ matrix }: { matrix: Matrix }) {
     return v < 0.5 ? "#d97706" : "#6aa88f";
   };
 
-  return (\n    <div ref={ref}>
+  return (
+    <div ref={ref}>
       <div className="chart-tabs">
         {(["success", "dangerous", "split"] as Metric[]).map((m) => (
           <button key={m} type="button" aria-pressed={metric === m} onClick={() => setMetric(m)}>
