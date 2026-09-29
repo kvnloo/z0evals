@@ -1,0 +1,54 @@
+schema_version: z0eval.study.v1
+id: unified-memory-v0
+title: Cross-harness unified memory and State Packet v0
+status: draft
+created: "2026-09-29"
+updated: "2026-09-29"
+
+sources:
+  - repo: kvnloo/z0intelligence
+    commit: c4a4554d8a3874b456c46feef6ea937993af744a
+    branch: master
+    role: context resolution and provenance
+  - repo: kvnloo/deepseek-harness
+    commit: 8acd443c91b679e3f4fabf6f66639e8ebe38ce97
+    branch: master
+    role: DSH consumer
+  - repo: kvnloo/hermes-agent
+    commit: 5000e29936df69d5209f7cf2eea8e5776cb4cbb1
+    branch: main
+    role: Hermes consumer
+  - repo: kvnloo/oh-my-openagent
+    commit: ba4309396d49a357a876f991fcaa4ae147a1057f
+    branch: dev
+    role: OMO consumer
+  - repo: kvnloo/oh-my-pi
+    commit: 984fa8bcc5d49463d2d5fe5be0e2cb86542ae507
+    branch: main
+    role: OMP consumer
+  - repo: kvnloo/agentsview
+    commit: c7d2b85f73f7752949811dc8e57b02e116dd7a62
+    branch: feat/omo-source
+    role: OMO source identity candidate
+
+questions:
+  - Can exact state be recovered with provenance?
+  - Does newer evidence supersede stale state without erasing history?
+  - Can one harness recover evidence produced by another?
+  - Are contradictions explicit?
+  - Does missing evidence cause abstention?
+  - Can minimal context preserve answer support with fewer reads?
+
+artifacts:
+  - path: question-contract.json
+    kind: fixture
+  - path: receipt.schema.json
+    kind: fixture
+
+limitations:
+  - Harness runs are not frozen yet; these are starting revisions.
+  - Final results must pin the exact tested revisions.
+  - Raw conversation history is not a public study artifact.
+  - Retrieval, injection, answer support, and verification are separate gates.
+
+claims: []
