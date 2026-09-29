@@ -40,9 +40,29 @@ export default function MobileToc({
     document.body.style.overflow = "hidden";
 
     const onKey = (event: KeyboardEvent) => {
-      if (event.key !== "Escape") return;
-      setOpen(false);
-      fab.current?.focus();
+      if (event.key === "Escape") {
+        setOpen(false);
+        fab.current?.focus();
+        return;
+      }
+      if (event.key !== "Tab" || !drawer.current) return;
+
+      const focusable = Array.from(
+        drawer.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        ),
+      ).filter((element) => !element.hasAttribute("aria-hidden"));
+      if (!focusable.length) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
     };
 
     document.addEventListener("keydown", onKey);
@@ -71,7 +91,10 @@ export default function MobileToc({
 
       <div
         className={`mobile-toc-backdrop${open ? " mobile-toc-backdrop-visible" : ""}`}
-        onClick={() => setOpen(false)}
+        onClick={() => {
+          setOpen(false);
+          fab.current?.focus();
+        }}
         aria-hidden="true"
       />
 
