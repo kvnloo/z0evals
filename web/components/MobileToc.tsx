@@ -4,16 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { FrogGlyph } from "./Frog";
 import type { TocItem } from "./Toc";
 
-/**
- * The reference's small-screen contents control: a fixed 64px action button
- * that opens a bottom sheet. The desktop rail is `display:none` under 890px
- * and this takes over, rather than the contents simply disappearing.
- *
- * Geometry and motion are the reference's: 64x64 button at
- * `bottom/right: 1.5rem`; backdrop fading to `#0000004d` over `.25s`; drawer
- * capped at `60vh` with `border-radius: 16px 16px 0 0` entering on
- * `transform .3s cubic-bezier(.32,.72,0,1)`.
- */
 export default function MobileToc({
   items,
   onNavigate,
@@ -23,38 +13,46 @@ export default function MobileToc({
 }) {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState<string>(items[0]?.id ?? "");
-  const drawer = useRef<HTMLDivElement>(null);\n  const fab = useRef<HTMLButtonElement>(null);
+  const drawer = useRef<HTMLDivElement>(null);
+  const fab = useRef<HTMLButtonElement>(null);
 
-  // Scroll spy, sharing the reference's rootMargin. The rail owns the desktop
-  // case; this keeps the sheet's own highlight honest when it is opened.
   useEffect(() => {
     const targets = items
       .map((i) => document.getElementById(i.id))
       .filter((el): el is HTMLElement => Boolean(el));
     if (!targets.length) return;
+
     const io = new IntersectionObserver(
       (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) setActive(e.target.id);
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(entry.target.id);
         });
       },
       { rootMargin: "-100px 0px -66% 0px" },
     );
-    targets.forEach((t) => io.observe(t));
+    targets.forEach((target) => io.observe(target));
     return () => io.disconnect();
   }, [items]);
 
   useEffect(() => {
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
-    };
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [open]);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
 
-  // Indent nested entries the way the reference indents its `li`s.
-  const depth = (label: string) => (/^\d+\.\d+/.test(label) ? 1 : 0);
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      setOpen(false);
+      fab.current?.focus();
+    };
+
+    document.addEventListener("keydown", onKey);
+    drawer.current?.querySelector<HTMLButtonElement>(".mobile-toc-close")?.focus();
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
 
   return (
     <>
@@ -65,7 +63,7 @@ export default function MobileToc({
           className="mobile-toc-fab"
           aria-label={open ? "close contents" : "open contents"}
           aria-expanded={open}
-          onClick={() => setOpen((v) => !v)}
+          onClick={() => setOpen((value) => !value)}
         >
           <FrogGlyph width={26} height={18} />
         </button>
@@ -90,7 +88,10 @@ export default function MobileToc({
           <button
             type="button"
             className="mobile-toc-close"
-            onClick={() => setOpen(false)}
+            onClick={() => {
+              setOpen(false);
+              fab.current?.focus();
+            }}
             aria-label="close contents"
           >
             close
@@ -98,23 +99,23 @@ export default function MobileToc({
         </div>
         <nav className="mobile-toc-nav">
           <ul>
-            {items.map((i) => (
-              <li key={i.id} style={{ paddingLeft: `${(i.depth ?? 0) * 0.75}rem` }}>
+            {items.map((item) => (
+              <li key={item.id} style={{ paddingLeft: `${(item.depth ?? 0) * 0.75}rem` }}>
                 <a
-                  href={`#${i.id}`}
+                  href={`#${item.id}`}
                   className="toc-link-frog"
-                  data-active={active === i.id}
+                  data-active={active === item.id}
                   onClick={(event) => {
                     setOpen(false);
                     if (!onNavigate) return;
                     event.preventDefault();
-                    onNavigate(i.id);
+                    onNavigate(item.id);
                   }}
                 >
                   <span className="toc-frog-container">
                     <FrogGlyph width={14} height={10} className="toc-frog" />
                   </span>
-                  <span>{i.label}</span>
+                  <span>{item.label}</span>
                 </a>
               </li>
             ))}
