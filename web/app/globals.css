@@ -391,6 +391,13 @@ main.article-shell {
 
 /* --------------------------------------------------------- toc rail */
 .toc { font-family: var(--font-sans); }
+.toc-scrollable-container {
+  max-height: calc(100vh - 10rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  padding-right: var(--space-2);
+}
 .toc ol, .toc ul { list-style: none; margin: 0; padding: 0; }
 .toc-sidebar ul { display: grid; gap: var(--space-1); }
 .toc-sidebar li { padding-left: 0.75rem; }
@@ -1513,3 +1520,48 @@ figcaption .fig-n { font-family: var(--font-mono); color: var(--color-sb-seconda
 }
 
 .fn-static { cursor: default; text-decoration: none; }
+
+
+/* Narrow interactive-story components. */
+@media (max-width: 600px) {
+  .capmap-row {
+    grid-template-columns: 12px minmax(0, 1fr) auto;
+    gap: var(--space-2) var(--space-3);
+    align-items: start;
+  }
+  .capmap-arrow { display: none; }
+  .capmap-impl {
+    grid-column: 2;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  .capmap-badge {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+    align-self: center;
+  }
+  .capmap-detail { padding: var(--space-4); }
+  .capmap-detail dl {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-1);
+  }
+  .capmap-detail dt:not(:first-child) { margin-top: var(--space-3); }
+
+  .rt-row {
+    grid-template-columns: 76px minmax(0, 1fr) auto;
+    gap: 6px var(--space-2);
+    align-items: center;
+  }
+  .rt-provider { grid-column: 1; }
+  .rt-model { grid-column: 2; min-width: 0; }
+  .rt-tasks { grid-column: 3; text-align: right; }
+  .rt-bar-track { grid-column: 1 / 3; grid-row: 2; }
+  .rt-cap {
+    grid-column: 3;
+    grid-row: 2;
+    justify-self: end;
+    font-size: 10px;
+  }
+  .rt-admission { padding: var(--space-3); }
+  .rt-admission-legend { gap: var(--space-2) var(--space-4); }
+}
