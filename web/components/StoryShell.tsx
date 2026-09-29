@@ -103,8 +103,12 @@ export default function StoryShell({
               type="button"
               role="tab"
               aria-selected={mode === "story"}
+              aria-controls="story-panel"
               data-active={mode === "story"}
-              onClick={() => setMode("story")}
+              onClick={() => {
+                if (firstStoryId) navigate(firstStoryId);
+                else setMode("story");
+              }}
             >
               Story
             </button>
@@ -112,8 +116,9 @@ export default function StoryShell({
               type="button"
               role="tab"
               aria-selected={mode === "explore"}
+              aria-controls="explore"
               data-active={mode === "explore"}
-              onClick={() => setMode("explore")}
+              onClick={() => navigate("explore")}
             >
               Explore
             </button>
@@ -144,7 +149,7 @@ export default function StoryShell({
           <MobileToc items={toc} onNavigate={(id) => navigate(id)} />
           <div className="article-body prose">
             <p className="story-lede">{meta.lede}</p>
-            <section data-mode="story" hidden={mode !== "story"}>
+            <section id="story-panel" data-mode="story" hidden={mode !== "story"}>
               {story}
             </section>
             <section data-mode="explore" id="explore" hidden={mode !== "explore"}>
