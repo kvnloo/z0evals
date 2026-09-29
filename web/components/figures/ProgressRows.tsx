@@ -1,3 +1,7 @@
+"use client";
+
+import { useReveal } from "../charts/useReveal";
+
 /**
  * Figure — how far each arm gets through the suite.
  *
@@ -40,8 +44,9 @@ const W = 564;
 const H = 96;
 
 export default function ProgressRows({ d }: { d: ProgressData }) {
+  const { ref, shown } = useReveal<HTMLElement>(0.08);
   return (
-    <figure className="figure">
+    <figure className="figure" ref={ref}>
       <p className="corpusTitle">{d.title}</p>
 
       <div className="progressScale">
@@ -50,7 +55,7 @@ export default function ProgressRows({ d }: { d: ProgressData }) {
         <span>{d.total} states</span>
       </div>
 
-      {d.rows.map((r) => {
+      {d.rows.map((r, rowIndex) => {
         const path = r.points
           .map(([x, y], i) => `${i === 0 ? "m" : "l"}${((x / 100) * W).toFixed(2)} ${(H - (y / r.total) * H).toFixed(2)}`)
           .join(" ");
@@ -73,6 +78,10 @@ export default function ProgressRows({ d }: { d: ProgressData }) {
                 d={`${path} L${W} ${H} L0 ${H} Z`}
                 fill="var(--sb-highlight-soft)"
                 stroke="none"
+                style={{
+                  opacity: shown ? 1 : 0,
+                  transition: `opacity .45s ease ${rowIndex * 50 + 180}ms`,
+                }}
               />
               <path
                 d={path}
@@ -80,6 +89,12 @@ export default function ProgressRows({ d }: { d: ProgressData }) {
                 stroke={r.compilerFirst ? "var(--sb-secondary)" : "var(--sb-text-light)"}
                 strokeWidth={1.5}
                 vectorEffect="non-scaling-stroke"
+                pathLength={1}
+                strokeDasharray={1}
+                strokeDashoffset={shown ? 0 : 1}
+                style={{
+                  transition: `stroke-dashoffset .7s cubic-bezier(.2,.7,.2,1) ${rowIndex * 50}ms`,
+                }}
               />
             </svg>
             <span className="progressValue">
