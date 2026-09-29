@@ -1,3 +1,6 @@
+"use client";
+
+import { useReveal } from "../charts/useReveal";
 import { dataArm } from "@/lib/armIdentity";
 /**
  * Figure — every arm on the same 28 states.
@@ -69,10 +72,11 @@ export default function ModelBoard({
   d: ModelBoardData;
   coverage: Coverage;
 }) {
+  const { ref, shown } = useReveal<HTMLElement>(0.08);
   const short = Object.entries(coverage.armsBelowThreeRepetitions);
 
   return (
-    <figure className="figure">
+    <figure className="figure" ref={ref}>
       <p className="corpusTitle">{d.title}</p>
       <p className="corpusHeadline">
         <span>{coverage.comparisonArms} comparison arms</span>
@@ -90,7 +94,7 @@ export default function ModelBoard({
           ))}
         </div>
 
-        {d.rows.map((r) => (
+        {d.rows.map((r, rowIndex) => (
           <div
             className="modelRow"
             data-model={r.compilerFirst ? "compiler-first" : undefined}
@@ -103,10 +107,11 @@ export default function ModelBoard({
                 <span className="modelTrack" aria-hidden="true">
                   <span
                     style={{
-                      width: `${(c.frac * 100).toFixed(4)}%`,
+                      width: `${shown ? (c.frac * 100).toFixed(4) : "0"}%`,
                       background: r.compilerFirst
                         ? "var(--sb-secondary)"
                         : "var(--sb-text-muted)",
+                      transition: `width .6s cubic-bezier(.2,.7,.2,1) ${rowIndex * 35 + i * 45}ms`,
                     }}
                   />
                 </span>
