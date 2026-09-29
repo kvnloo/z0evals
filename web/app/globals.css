@@ -473,7 +473,7 @@ main.article-shell {
   border-radius: 16px 16px 0 0;
   flex-direction: column;
   max-height: 60vh;
-  transition: transform .3s cubic-bezier(.32, .72, 0, 1), opacity .25s;
+  transition: transform .3s cubic-bezier(.32, .72, 0, 1), opacity .25s, visibility .25s;
   display: none;
   position: fixed;
   bottom: 0;
@@ -481,9 +481,17 @@ main.article-shell {
   right: 0;
   overflow: hidden;
   transform: translateY(100%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
   box-shadow: 0 -8px 32px #1a30291f, 0 -2px 8px #1a30290f;
 }
-.mobile-toc-drawer-open { transform: translateY(0); }
+.mobile-toc-drawer-open {
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
 .mobile-toc-drawer-head {
   display: flex;
   align-items: center;
@@ -1119,14 +1127,25 @@ figcaption .fig-n { font-family: var(--font-mono); color: var(--color-sb-seconda
 }
 
 /* --------------------------------------------------------- breakpoints */
-/* 1199px — the rail's `max()` term stops resolving and it would collide
-   with the column, so the sheet takes over. */
-@media (max-width: 1199px) {
+/* Keep laptop/desktop widths in the desktop reading mode. The previous 1199px
+   cutoff made ordinary 1024–1180px desktop windows render the mobile FAB. */
+@media (max-width: 959px) {
   .rail { display: none; }
   .mobile-toc-fab-wrapper { display: block; }
   .mobile-toc-backdrop { display: block; }
   .mobile-toc-drawer { display: flex; }
   .blog-page-header > div { padding: var(--space-6) var(--space-6) var(--space-3); }
+}
+@media (min-width: 960px) and (max-width: 1199px) {
+  .rail {
+    display: block;
+    left: 16px;
+    width: clamp(108px, calc((100vw - var(--content-width)) / 2 - 32px), 192px);
+  }
+  .toc-link-frog {
+    font-size: var(--text-xs);
+    line-height: 1.25;
+  }
 }
 @media (max-width: 890px) {
   .data-table {
@@ -1234,6 +1253,8 @@ figcaption .fig-n { font-family: var(--font-mono); color: var(--color-sb-seconda
 }
 
 .story-banner {
+  box-sizing: border-box;
+  width: min(calc(100% - var(--space-12)), var(--full-width));
   max-width: var(--full-width);
   margin: 0 auto var(--space-6);
   padding: var(--space-4) var(--space-5);
@@ -1255,17 +1276,19 @@ figcaption .fig-n { font-family: var(--font-mono); color: var(--color-sb-seconda
 .story-banner code { font-size: .78em; }
 
 .story-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--space-8);
-  max-width: var(--full-width);
-  margin: 0 auto;
+  display: block;
+  width: 100%;
+  max-width: none;
+  margin: 0;
 }
-@media (min-width: 890px) {
-  .story-grid { grid-template-columns: 200px minmax(0, 1fr); }
+.story-grid > .article {
+  width: 100%;
+  box-sizing: border-box;
+}
+@media (min-width: 960px) {
   .story-grid > .rail { display: block; }
 }
-@media (max-width: 889px) {
+@media (max-width: 959px) {
   .story-grid > .rail { display: none; }
 }
 
@@ -1473,3 +1496,18 @@ figcaption .fig-n { font-family: var(--font-mono); color: var(--color-sb-seconda
 .ft-path li { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: var(--space-3); padding: var(--space-3) var(--space-4); border-left: 2px solid var(--color-sb-secondary); background: var(--color-sb-bg-subtle); border-radius: 0 var(--radius-md, 6px) var(--radius-md, 6px) 0; font-size: var(--text-sm); }
 .ft-path strong { font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: .04em; color: var(--color-sb-secondary); }
 @media (max-width: 600px) { .ft-path li { grid-template-columns: minmax(0, 1fr); } }
+
+
+/* Site-shell hardening. */
+.site-nav { min-width: 0; }
+.site-nav .links { min-width: 0; }
+@media (max-width: 600px) {
+  .site-nav { align-items: flex-start; }
+  .site-nav .links {
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    font-size: 11px;
+  }
+  .story-banner { width: calc(100% - var(--space-8)); }
+}
