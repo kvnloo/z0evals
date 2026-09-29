@@ -59,7 +59,7 @@ export default function LadderFlow() {
               <line x1={L + 4} x2={L + 18} y1={y + 12} y2={y + 12} stroke={lit ? "#29916e" : "#d9d9d9"} strokeWidth="1.5" />
               <circle cx={L + 11} cy={y + 12} r={active ? 6 : 4} fill={lit ? "#29916e" : "#fff"}
                       stroke="#29916e" strokeWidth="1.5"
-                      style={{ animation: active ? "packetpulse 1s ease-in-out infinite" : "none",
+                      style={{ animation: active ? "packetPulse 1s ease-in-out infinite" : "none",
                                transition: "r .3s ease" }} />
               <text x={L + 32} y={y + 9} fontSize="12.5" fill="#1a3029" fontWeight={active ? 700 : 500}>{r.label}</text>
               <text x={L + 32} y={y + 25} fontSize="11" fill="#888">{r.detail}</text>
