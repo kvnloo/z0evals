@@ -80,10 +80,14 @@ def check_story_page(name: str, audit: PageAudit, errors: list[str]) -> None:
     if not any({"article-body", "prose"}.issubset(classes) for classes in audit.classes):
         errors.append(f"{name}: StoryShell article is missing the prose styling class")
 
-    # A Pages project site must never use '/' for its own home navigation.
-    bad_root = [href for href in audit.hrefs if href == "/"]
+    # A Pages project site must not use origin-root anchors for its own pages.
+    # Those escape /z0evals/ and also break /next/, /nightly/ and /dev/.
+    bad_root = [href for href in audit.hrefs if href.startswith("/") and not href.startswith("//")]
     if bad_root:
-        errors.append(f"{name}: root-absolute internal href='/' escapes the project Pages site")
+        errors.append(
+            f"{name}: root-absolute internal anchors escape the project Pages site: "
+            + ", ".join(sorted(set(bad_root)))
+        )
 
 
 def main() -> int:
