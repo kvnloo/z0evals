@@ -24,7 +24,13 @@ export type TocItem = { id: string; label: string; depth?: number };
  * no threshold — the reference configures the reveal by rootMargin rather than
  * by a percentage crossing.
  */
-export default function Toc({ items }: { items: TocItem[] }) {
+export default function Toc({
+  items,
+  onNavigate,
+}: {
+  items: TocItem[];
+  onNavigate?: (id: string) => void;
+}) {
   const [active, setActive] = useState<string>("");
 
   useEffect(() => {
@@ -58,6 +64,11 @@ export default function Toc({ items }: { items: TocItem[] }) {
                 href={`#${it.id}`}
                 className="toc-link-frog"
                 data-active={active === it.id}
+                onClick={(event) => {
+                  if (!onNavigate) return;
+                  event.preventDefault();
+                  onNavigate(it.id);
+                }}
               >
                 <span className="toc-frog-container">
                   <FrogGlyph width={14} height={10} className="toc-frog" />
