@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LOCAL ONLY: shared source binding for unified-memory source-slots-v1",
+  "type": "object",
+  "required": ["schema", "binding_id", "retrieval", "slots", "full_source_baseline"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {"const": "z0eval.unified_memory_source_binding.v1"},
+    "binding_id": {"type": "string", "minLength": 1},
+    "retrieval": {
+      "type": "object", "required": ["capability", "data_dir", "agentsview_revision"], "additionalProperties": false,
+      "properties": {
+        "capability": {"const": "agentsview.session.messages"},
+        "data_dir": {"type": "string", "minLength": 1},
+        "agentsview_revision": {"type": "string", "minLength": 7}
+      }
+    },
+    "slots": {"type": "object", "additionalProperties": {"$ref": "#/$defs/source"}},
+    "full_source_baseline": {
+      "type": "object", "required": ["policy", "sources"], "additionalProperties": false,
+      "properties": {
+        "policy": {"const": "authoritative-source-files-utf8-v1"},
+        "sources": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object", "required": ["path", "sha256", "bytes", "source_slots"], "additionalProperties": false,
+            "properties": {
+              "path": {"type": "string", "minLength": 1},
+              "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+              "bytes": {"type": "integer", "minimum": 1},
+              "source_slots": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string"}}
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "source": {
+      "type": "object", "required": ["source_id", "source_version", "trust_class", "locator", "origin", "observed_at", "fact", "retrieval", "extractor"], "additionalProperties": false,
+      "properties": {
+        "source_id": {"type": "string", "pattern": "^agentsview:(?:[0-9a-f]{2})+:(?:0|[1-9][0-9]*)$"},
+        "source_version": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+        "trust_class": {"type": "string", "minLength": 1},
+        "locator": {"type": "string", "pattern": "^agentsview://sessions/(?:[0-9a-f]{2})+/messages/(?:0|[1-9][0-9]*)$"},
+        "origin": {
+          "type": "object", "required": ["harness", "session_id"], "additionalProperties": false,
+          "properties": {"harness": {"type": "string", "minLength": 1}, "session_id": {"type": "string", "minLength": 1}}
+        },
+        "observed_at": {"type": "string", "format": "date-time"},
+        "fact": {
+          "type": "object", "required": ["key", "value", "scope", "validity"], "additionalProperties": false,
+          "properties": {"key": {"type": "string", "minLength": 1}, "value": {"type": "string", "minLength": 1}, "scope": {"type": "string", "minLength": 1}, "validity": {"type": "string", "minLength": 1}}
+        },
+        "retrieval": {
+          "type": "object", "required": ["session_id", "ordinal", "message_sha256"], "additionalProperties": false,
+          "properties": {"session_id": {"type": "string", "minLength": 1}, "ordinal": {"type": "integer", "minimum": 0}, "message_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+        },
+        "extractor": {
+          "type": "object", "required": ["kind", "quote", "key_start", "key_end", "scope_start", "scope_end", "validity_start", "validity_end", "value_start", "value_end"], "additionalProperties": false,
+          "description": "Half-open Unicode character spans in one unique verbatim quote. Every claimed field must exactly match its span. Semantic assertion relationships require independent curator review; literal matching is not general natural-language inference.",
+          "properties": {
+            "kind": {"const": "literal-span-v1"},
+            "quote": {"type": "string", "minLength": 1},
+            "key_start": {"type": "integer", "minimum": 0},
+            "key_end": {"type": "integer", "minimum": 1},
+            "scope_start": {"type": "integer", "minimum": 0},
+            "scope_end": {"type": "integer", "minimum": 1},
+            "validity_start": {"type": "integer", "minimum": 0},
+            "validity_end": {"type": "integer", "minimum": 1},
+            "value_start": {"type": "integer", "minimum": 0},
+            "value_end": {"type": "integer", "minimum": 1}
+          }
+        }
+      }
+    }
+  }
+}

@@ -5,3 +5,7 @@ site/
 imports/*.local.yaml
 .DS_Store
 _channels/
+
+# Private unified-memory source bindings and model/source captures are local only.
+studies/unified-memory-v0/.local/
+studies/unified-memory-v0/*.local.json

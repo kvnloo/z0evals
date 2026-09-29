@@ -1,0 +1,115 @@
+{
+  "schema": "z0eval.unified_memory_readiness.v1",
+  "canonical_base_revision": "acb95ab66e0cdae37ccf6a1f42355721c482edbd",
+  "executable_contract": "executable-cohort.v1.json",
+  "question_ids": [
+    "exact-identifier",
+    "supersession",
+    "cross-harness",
+    "contradiction",
+    "missing-evidence",
+    "minimal-context"
+  ],
+  "preflight": {
+    "passed": false,
+    "reason": "required source slot absent: conflict_a; conflict_b also unbound",
+    "bound_source_slot_count": 4,
+    "instantiated_prompt_count": 0,
+    "frozen_rendered_prompt_count": 6
+  },
+  "agentsview_attempts": [
+    {
+      "source_revision": "627a8afa",
+      "version": "0.39.0",
+      "mode": "supported read-only CLI session export",
+      "result": "blocked",
+      "error": "opening read-only database: schema missing usage_events.cost_usd",
+      "actual_archive_column": "usage_events.cost_microdollars"
+    },
+    {
+      "source_revision": "349d20dcb659bf83abb769661cd83a8fb7d5be39",
+      "binary_sha256": "9dcd38aaec70403b02058f6000b87d153efe29524689d0b3156b7b8cd53d31f1",
+      "mode": "fresh exact-source build; supported read-only CLI export sessions",
+      "result": "blocked",
+      "error": "schema missing index idx_messages_usage_timestamp",
+      "archive_and_config_stat_unchanged": true
+    },
+    {
+      "source_revision": "627a8afa",
+      "version": "0.39.0",
+      "binary_sha256": "e5922afc685eeb04d3727499074ea8bfa1bd1b76eb5ec41ad7b54d4444997b9d",
+      "mode": "authenticated supported GET API on existing operator-managed daemon",
+      "result": "real retrieval succeeded; partial binding only",
+      "captured_get_receipts_verified": 47,
+      "daemon_control_performed": false
+    }
+  ],
+  "safety": {
+    "writable_daemon_started": false,
+    "migration_or_reindex_authorized": false,
+    "new_memory_database_created": false,
+    "hermes_omp_omo_implementation_changes": false,
+    "model_calls": 0,
+    "provider_policy_changed": false,
+    "raw_private_source_content_in_repo": false
+  },
+  "execution": {
+    "dsh_source_revision": "8acd443c91b679e3f4fabf6f66639e8ebe38ce97",
+    "real_seam_no_model_probe": "PASS: actual current-source Agent reaches system-prompt/assemble; no-model seam records one assembly, zero neutral/native requests and blocked turn/end; configuration unchanged. Both independent contract and repaired native-stream runner audits passed; 66 tests/41 subtests plus 1 Bun test passed.",
+    "six_cases": "NOT RUN",
+    "identical_replay": "NOT RUN against real cohort",
+    "supersession_mutation": "NOT RUN against real cohort",
+    "missing_evidence_mutation": "NOT RUN against real cohort",
+    "valid_receipt_row_count": 0,
+    "dsh_runner_contribution_base": "dca8fd2e572c37fd65593cf033977001f1c7677d",
+    "diagnostic_runtime_pin_sha256": "83ccafdd47d799a50ead5fd1d1d75f809453a52ff441fc0f33a32378748f727c",
+    "runtime_qualification": "exact source/Bun/evaluated dependencies pinned; borrowed third-party runtime explicitly not source-lockfile parity; OS libraries not fully locked"
+  },
+  "evidence_stages": {
+    "retrieval": "62 successful real API capture hashes checked by parent; four qualified slot candidates match exact original native message text/time/identity. Original full-source SHA256/UTF8/bytes independently verified; quote-local supersession semantic hold resolved by an unchanged-source verbatim extension.",
+    "model_visible_injection": "no real source cohort injected",
+    "answer": "no real study model answer",
+    "independent_verification": "PASS for contract, real source candidate curation and study-only DSH capture runner. Negative controls rejected corrupted evidence and reproduced the original stream bug before repair. These are verifier/diagnostic/source checks, not real study answers; whole-cohort preflight remains closed because conflict sources are absent."
+  },
+  "source_availability": "four source slots pass literal/native provenance checks and independent source-reported semantic review; extending the new checkpoint quote with its original head-specific context resolved the supersession hold without altering source versions. Two bounded searches did not qualify a genuine same-fact/scope/validity contradiction pair",
+  "cohort_frozen_for_identical_four_harness_run": false,
+  "blocking_decision": "Select two genuine source-backed contradictory assertions about the same fact/scope/validity without fabricated disagreement or inferred labels. The whole six-case preflight must pass before DSH study invocation. Four qualified source candidates do not authorize a partial study run.",
+  "frozen_prompt_ids": {
+    "exact-identifier": "exact-identifier:f568cad4f0eef88d92852382e56ffa09cedb620cc1a51d15372c3ffc07c0cc8a",
+    "supersession": "supersession:bfd9c9a54de3153f80d83ea5caae362bdcd182cc5ca8ae163645a3313a0494dc",
+    "cross-harness": "cross-harness:d147a2a7a59c6ef487865e8fc1401e413b1ad63fe58765bd44db3dc9fbf1694b",
+    "contradiction": "contradiction:e8839bf75f1e33200209ec058c908fa002693fda35e6306809267c7a1ca6ffda",
+    "missing-evidence": "missing-evidence:f568cad4f0eef88d92852382e56ffa09cedb620cc1a51d15372c3ffc07c0cc8a",
+    "minimal-context": "minimal-context:3e8df68737ef1ef30c6c5bcd2ebe266c3e014d1dec8905f82caea01a8039dc88"
+  },
+  "source_binding": {
+    "status": "partial-blocked; local only",
+    "qualified_slot_candidates": [
+      "identifier",
+      "state_old",
+      "state_new",
+      "foreign"
+    ],
+    "unbound_slots": [
+      "conflict_a",
+      "conflict_b"
+    ],
+    "semantic_curator_approval": "PASS for four source-reported slot candidates, including the verbatim extended new head-checkpoint quote; conflict slots remain unbound",
+    "binding_sha256": "f5fcdf136a4048db0b168c3103633d24847c3329768a2cb4ed94c0f2bc24397e",
+    "source_file_baseline_bytes": 3274806343,
+    "source_file_baseline_sha256": "479242c674e7b6f3515830a76fb8b3e9084f128835df571eb989aa15c251462f"
+  },
+  "validation": {
+    "python_tests_passed": 66,
+    "subtests_passed": 41,
+    "bun_tests_passed": 1,
+    "independent_contract_review": "PASS",
+    "independent_dsh_review": "PASS",
+    "independent_source_curation": "PASS-four-source-slots-only",
+    "repository_manifests_validated": 2,
+    "changed_python_lint": "PASS",
+    "dsh_default_lint": "PASS",
+    "receipt_schema_changed": false,
+    "benchmark_conclusions_published": false
+  }
+}

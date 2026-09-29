@@ -1,5 +1,8 @@
 {
   "schema": "z0eval.unified_memory_questions.v0",
+  "executable_contract": "executable-cohort.v1.json",
+  "local_binding_schema": "source-binding.schema.v1.json",
+  "legacy_cohort": "cohort.json is a public synthetic unit fixture, not the source-bound cross-harness run cohort",
   "questions": [
     {"id": "exact-identifier", "kind": "exact", "expected": "supported"},
     {"id": "supersession", "kind": "temporal", "expected": "newest-supported"},
