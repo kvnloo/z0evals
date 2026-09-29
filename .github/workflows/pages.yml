@@ -195,6 +195,9 @@ jobs:
           echo "channels built:$built"
           find site -maxdepth 2 -name index.html | sort
 
+      - name: Audit assembled main export
+        run: python3 scripts/audit_web_export.py --root site
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
         with:
