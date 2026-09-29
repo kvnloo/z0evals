@@ -93,8 +93,9 @@ export default function Page() {
           <nav className="site-nav">
             <a className="brand" href="./">z0evals</a>
             <div className="links">
-              <a href="#held-up">results</a>
-              <a href="#appendix">method</a>
+              <a href="./" aria-current="page">phase 1b</a>
+              <a href="./z0intelligence-function-routing/">routing</a>
+              <a href="./unified-memory-v0/">memory</a>
               <a href="https://github.com/kvnloo/z0evals">github</a>
             </div>
           </nav>
