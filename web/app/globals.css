@@ -1511,3 +1511,5 @@ figcaption .fig-n { font-family: var(--font-mono); color: var(--color-sb-seconda
   }
   .story-banner { width: calc(100% - var(--space-8)); }
 }
+
+.fn-static { cursor: default; text-decoration: none; }
