@@ -2,7 +2,7 @@
   "meta": {
     "slug": "z0intelligence-function-routing",
     "title": "From Model Routing to Evidence-Backed Function Routing",
-    "subtitle": "Eight days of measurements on what z0intelligence should decide, what should stay deterministic, and when offload actually helps — including new Julia and trace-derived routing results.",
+    "subtitle": "Eight days of measurements on Jev, Julia, image decisions, real-trace routing, provider execution, and what should stay deterministic.",
     "author": "Zer0 Research",
     "date": "September 29, 2026",
     "status": "evidence-mixed",
@@ -27,6 +27,14 @@
       {
         "id": "capability",
         "label": "Function capability map"
+      },
+      {
+        "id": "measurement-state",
+        "label": "Measurement provenance"
+      },
+      {
+        "id": "image-decisions",
+        "label": "Image decisions"
       },
       {
         "id": "providers",
@@ -783,6 +791,18 @@
         "text": "The published Brier 0.0408 is not reproduced by our formulation and is therefore not claimed.",
         "status": "UNKNOWN",
         "evidence": "our recomputation gave 0.6025 per-class"
+      },
+      {
+        "id": "image-decision",
+        "text": "The first pinned multimodal decision lane is reproducible and produced 4/8 on the eight published examples; no public-split, sealed, latency or official Image JevBench score is claimed.",
+        "status": "BOUNDED",
+        "evidence": "z0intelligence #39 / PR #40 / PR #41"
+      },
+      {
+        "id": "measurement-state",
+        "text": "OMP provider usage is accumulated across turns and only marked complete when all observed turns carry provider usage; Tokenomics preserves the measurement state instead of upgrading proxies.",
+        "status": "MEASURED",
+        "evidence": "z0intelligence #37 / #38"
       }
     ],
     "receipts": [
@@ -1038,5 +1058,45 @@
       "verdict": "4 of 5; the fifth is a recording gap, not a modelling gap"
     },
     "privacy": "raw rows contain private user requests and tool output and remain gitignored; only aggregate inventory is published"
+  },
+  "imageDecision": {
+    "system": "z0int Image Decision 3B",
+    "backbone": "Qwen/Qwen2.5-VL-3B-Instruct",
+    "model_revision": "66285546d2b821cf421d4f5eb2576359d3770cd3",
+    "contract": "image + question + dynamic options -> choice + categorical probabilities",
+    "readout": "arbitrary option ids -> A/B/C/...; probabilities from restricted option logits",
+    "generated_answer_tokens_normal_path": 0,
+    "hardware_profiled": "NVIDIA GeForce RTX 3080 Ti 12 GB",
+    "public_examples": {
+      "correct": 4,
+      "total": 8,
+      "scope": "eight published example images only"
+    },
+    "rejected_variant": {
+      "name": "space-prefixed label token",
+      "correct": 4,
+      "total": 8
+    },
+    "benchmark_status": "NO_OFFICIAL_SCORE",
+    "not_claimed": [
+      "228-item public split score",
+      "456-item sealed score",
+      "official Benchmark Heaven score",
+      "p50/p95 benchmark latency",
+      "benchmark VRAM peak"
+    ],
+    "note": "The eight-example smoke result is disclosure, not a benchmark estimate. No sealed items were requested or used for tuning."
+  },
+  "measurementProvenance": {
+    "provider_usage": {
+      "behavior": "OMP bridge now accumulates provider-reported input/output usage across turns on one trace",
+      "complete_rule": "measurement_state=complete only when every observed turn carries provider usage",
+      "fallback": "missing provider usage stays partial; char-count proxy is explicitly tagged as a proxy",
+      "proof": "two provider-reported turns (10+2 and 7+2) close at 21 accumulated tokens with measurement_state=complete"
+    },
+    "tokenomics": {
+      "behavior": "measurement_state and state_reason propagate into Tokenomics receipts",
+      "rule": "derived or partial measurements are not silently promoted to complete"
+    }
   }
 }
