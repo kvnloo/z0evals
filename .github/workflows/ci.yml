@@ -33,6 +33,8 @@ jobs:
       - run: python scripts/build_site_data.py
       - run: npm ci --no-audit --no-fund
         working-directory: web
+      - run: npm run typecheck
+        working-directory: web
       - run: Z0_BASE_PATH=/z0evals npx next build
         working-directory: web
       - run: test -f web/out/index.html
