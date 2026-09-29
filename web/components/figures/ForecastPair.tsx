@@ -124,6 +124,10 @@ export default function ForecastPair({ d }: { d: ForecastData }) {
                   stroke="var(--sb-secondary)"
                   strokeWidth={1}
                   vectorEffect="non-scaling-stroke"
+                  pathLength={1}
+                  strokeDasharray={1}
+                  strokeDashoffset={shown ? 0 : 1}
+                  style={{ transition: "stroke-dashoffset .7s cubic-bezier(.2,.7,.2,1) .04s" }}
                 />
               </>
             )}
