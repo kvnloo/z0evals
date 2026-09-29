@@ -13,8 +13,8 @@ import { MarginNote } from "@/components/Notes";
 export const metadata: Metadata = {
   title: "from model routing to evidence-backed function routing — z0evals",
   description:
-    "Five days of measurements on whether an automatic router actually executes, actually "
-    + "verifies, and actually saves work — including three falsifications.",
+    "Eight days of measurements on what z0intelligence should decide, what should stay deterministic, "
+    + "and when offload actually helps — including new Julia and trace-derived routing results.",
 };
 
 const M = data.meta;
@@ -26,6 +26,9 @@ const PR = data.providers;
 const FT = data.freeTier;
 const CB = data.cerebras;
 const RD = data.routeDemo;
+const JU = data.juliaUpdate;
+const TR = data.traceRouting;
+const DD = data.decisionDatasetV2;
 const EX = data.explore;
 
 // JSON array indexing is `T | undefined` under strict mode. Narrow once, here,
@@ -362,6 +365,84 @@ const story = (
     <MarginNote n={3} label="grading correction">
       {CB.grading_note} Billing: {CB.billing}
     </MarginNote>
+
+    <h2 id="trace-routing">Real traces made the deterministic baseline win</h2>
+    <p>
+      The next question was more important than another synthetic verifier score: can these
+      decision engines predict what z0 actually needs to do on real traces? On a grouped sealed
+      split of <strong>{TR.sealed_n} decision states</strong>, the answer was no.
+    </p>
+    <div className="x-table-wrap">
+      <table className="x-table">
+        <caption>Sealed real-trace tool-family routing · {TR.classes} classes · chance {pct(TR.chance, 0)}</caption>
+        <thead>
+          <tr>
+            <th scope="col">system</th>
+            <th scope="col" className="num">accuracy</th>
+            <th scope="col" className="num">macro F1</th>
+            <th scope="col" className="num">p50</th>
+          </tr>
+        </thead>
+        <tbody>
+          {TR.systems.map((row) => (
+            <tr key={row.system}>
+              <td>{row.system}</td>
+              <td className="num">{pct(row.accuracy, 2)}</td>
+              <td className="num">{n(row.macro_f1)}</td>
+              <td className="num">{"p50_ms" in row ? `${row.p50_ms} ms` : "—"}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <Callout kind="warning" title="Five lines of deterministic routing beat both learned fast paths">
+      <p>
+        The keyword rule reached <strong>74.03%</strong>. Laya reached <strong>19.48%</strong>;
+        Julia reached <strong>10.39%</strong>. Julia also lost the binary delegate-gating task:
+        {pct(TR.delegate_gating.julia_accuracy, 2)} versus a {pct(TR.delegate_gating.majority_accuracy, 2)}
+        majority baseline.
+      </p>
+      <p>{TR.note}</p>
+    </Callout>
+
+    <h2 id="decision-dataset">Julia reproduced; the missing capability is now instrumentation</h2>
+    <p>
+      Before rejecting Julia, we fixed the adapter to render state exactly as Julia does. That
+      restored the publisher&apos;s typed CPU result exactly: <strong>
+        {JU.publisher_claim_reproduction.typed_cpu.correct}/{JU.publisher_claim_reproduction.typed_cpu.total}
+      </strong>. AG News also reproduced exactly at{" "}
+      <strong>{JU.publisher_claim_reproduction.ag_news.correct}/{JU.publisher_claim_reproduction.ag_news.total}</strong>.
+      The model is integrated faithfully; the negative result is about fit to z0&apos;s decisions,
+      not a broken adapter.
+    </p>
+    <p>
+      Confidence did not rescue it. On authored144, Julia&apos;s inference-time uncertainty
+      AUROCs sit around chance ({n(JU.selective_risk.authored144_auroc.p1, 3)} p1;{" "}
+      {n(JU.selective_risk.authored144_auroc.entropy, 3)} entropy), and coverage at a ≤10% empirical
+      error budget was only <strong>{pct(JU.selective_risk.coverage_at_le_10pct_error.authored144, 2)}</strong>.
+      {JU.selective_risk.note}.
+    </p>
+    <MetricRow
+      items={[
+        { k: "session files sampled", v: DD.files_scanned.toLocaleString("en-US"), s: `of ${DD.files_total.toLocaleString("en-US")}` },
+        { k: "outcome-backed actions", v: DD.action_rows.toLocaleString("en-US"), s: `${DD.sessions} sessions` },
+        { k: "compactions", v: DD.compactions.toLocaleString("en-US"), s: "observable events" },
+        { k: "reachable capabilities", v: `${DD.milestone.reachable_count}/5`, s: "at the requested >=500-row bar" },
+      ]}
+    />
+    <p>
+      Decision Dataset v2 reconstructs per-turn state from OMP transcripts and pairs each tool call
+      to its real <code>toolResult</code> by id. Four target capabilities now have enough
+      outcome-backed rows to study: <code>{DD.milestone.reachable.join(", ")}</code>.
+    </p>
+    <Callout kind="info" title="The fifth capability is a recording gap">
+      <p>{DD.milestone.verdict}.</p>
+      <p>
+        <code>verification_needed</code>: {DD.milestone.missing.verification_needed}.{" "}
+        <code>rlm.worker_needed</code>: {DD.milestone.missing["rlm.worker_needed"]}.
+      </p>
+      <p>{DD.privacy}.</p>
+    </Callout>
 
     <h2 id="route-demo">What would z0 route this task to?</h2>
     <p>{RD.caption}</p>
