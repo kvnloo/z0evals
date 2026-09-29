@@ -1177,8 +1177,23 @@ figcaption .fig-n { font-family: var(--font-mono); color: var(--color-sb-seconda
   .heading-frog-link { display: none; }
   .headline { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
   .headline-value { font-size: 2.4rem; }
-  .fam-row { grid-template-columns: minmax(90px, 1.2fr) 60px 1fr; }
-  .fam-score { display: none; }
+  .fam-head { display: none; }
+  .fam-row {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: var(--space-2);
+  }
+  .fam-runs,
+  .fam-score,
+  .fam-spark { display: none; }
+  .fam-p50,
+  .fam-solved { text-align: right; }
+  .fam-state-row {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: var(--space-1) var(--space-2);
+  }
+  .fam-state-name,
+  .fam-state-dang { grid-column: 1 / -1; }
+  .fam-state-n { display: none; }
   .hw-footer-inner { flex-direction: column; align-items: flex-start; }
   .wide { width: calc(100vw - var(--space-8)); }
 }
