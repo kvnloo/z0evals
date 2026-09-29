@@ -14,10 +14,16 @@ import type { TocItem } from "./Toc";
  * capped at `60vh` with `border-radius: 16px 16px 0 0` entering on
  * `transform .3s cubic-bezier(.32,.72,0,1)`.
  */
-export default function MobileToc({ items }: { items: TocItem[] }) {
+export default function MobileToc({
+  items,
+  onNavigate,
+}: {
+  items: TocItem[];
+  onNavigate?: (id: string) => void;
+}) {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState<string>(items[0]?.id ?? "");
-  const drawer = useRef<HTMLDivElement>(null);
+  const drawer = useRef<HTMLDivElement>(null);\n  const fab = useRef<HTMLButtonElement>(null);
 
   // Scroll spy, sharing the reference's rootMargin. The rail owns the desktop
   // case; this keeps the sheet's own highlight honest when it is opened.
@@ -54,6 +60,7 @@ export default function MobileToc({ items }: { items: TocItem[] }) {
     <>
       <div className="mobile-toc-fab-wrapper">
         <button
+          ref={fab}
           type="button"
           className="mobile-toc-fab"
           aria-label={open ? "close contents" : "open contents"}
@@ -74,7 +81,8 @@ export default function MobileToc({ items }: { items: TocItem[] }) {
         ref={drawer}
         className={`mobile-toc-drawer${open ? " mobile-toc-drawer-open" : ""}`}
         role="dialog"
-        aria-modal="true"
+        aria-modal={open ? "true" : undefined}
+        aria-hidden={!open}
         aria-label="contents"
       >
         <div className="mobile-toc-drawer-head">
@@ -91,12 +99,17 @@ export default function MobileToc({ items }: { items: TocItem[] }) {
         <nav className="mobile-toc-nav">
           <ul>
             {items.map((i) => (
-              <li key={i.id} style={{ paddingLeft: `${depth(i.label) * 0.75}rem` }}>
+              <li key={i.id} style={{ paddingLeft: `${(i.depth ?? 0) * 0.75}rem` }}>
                 <a
                   href={`#${i.id}`}
                   className="toc-link-frog"
                   data-active={active === i.id}
-                  onClick={() => setOpen(false)}
+                  onClick={(event) => {
+                    setOpen(false);
+                    if (!onNavigate) return;
+                    event.preventDefault();
+                    onNavigate(i.id);
+                  }}
                 >
                   <span className="toc-frog-container">
                     <FrogGlyph width={14} height={10} className="toc-frog" />
