@@ -13,8 +13,8 @@ import { MarginNote } from "@/components/Notes";
 export const metadata: Metadata = {
   title: "from model routing to evidence-backed function routing — z0evals",
   description:
-    "Eight days of measurements on what z0intelligence should decide, what should stay deterministic, "
-    + "and when offload actually helps — including new Julia and trace-derived routing results.",
+    "Eight days of measurements on Jev, Julia, image decisions, real-trace routing, provider execution, "
+    + "and what should stay deterministic.",
 };
 
 const M = data.meta;
@@ -26,6 +26,8 @@ const PR = data.providers;
 const FT = data.freeTier;
 const CB = data.cerebras;
 const RD = data.routeDemo;
+const ID = data.imageDecision;
+const MP = data.measurementProvenance;
 const JU = data.juliaUpdate;
 const TR = data.traceRouting;
 const DD = data.decisionDatasetV2;
@@ -220,6 +222,35 @@ const story = (
       function?</strong>
     </p>
     <CapabilityMap functions={capabilityEntries} caption={CM.caption} />
+
+    <h2 id="image-decisions">The first image-decision lane is real — the benchmark score is not</h2>
+    <p>
+      z0intelligence now has a pinned multimodal decision path: <strong>{ID.system}</strong>,
+      backed by <code>{ID.backbone}</code> at revision <code>{ID.model_revision.slice(0, 12)}</code>.
+      It keeps images out of the text-only DecisionBackend contract and returns a categorical
+      distribution over arbitrary supplied options rather than parsing generated prose.
+    </p>
+    <MetricRow items={[
+      { k: "published examples", v: `${ID.public_examples.correct}/${ID.public_examples.total}`, s: ID.public_examples.scope },
+      { k: "generated answer tokens", v: String(ID.generated_answer_tokens_normal_path), s: "normal single-label path" },
+      { k: "local target", v: "3080 Ti", s: "12 GB" },
+      { k: "official score", v: "UNKNOWN", s: ID.benchmark_status },
+    ]} />
+    <Callout kind="warning" title="4/8 is disclosure, not Image JevBench">
+      <p>{ID.note}</p>
+      <p>Still unclaimed: {ID.not_claimed.join("; ")}.</p>
+    </Callout>
+
+    <h2 id="measurement-state">A token count now carries its measurement state</h2>
+    <p>
+      The OMP bridge no longer treats a last-message estimate as if it covered the whole turn
+      sequence. {MP.provider_usage.behavior}. {MP.provider_usage.complete_rule}.
+    </p>
+    <Callout kind="info" title="Complete and partial are different data">
+      <p>{MP.provider_usage.fallback}.</p>
+      <p>{MP.provider_usage.proof}.</p>
+      <p>{MP.tokenomics.behavior}. {MP.tokenomics.rule}.</p>
+    </Callout>
 
     <h2 id="providers">Routing that physically executed</h2>
     <p>
