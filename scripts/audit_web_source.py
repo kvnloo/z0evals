@@ -37,6 +37,10 @@ def main() -> int:
         )
     require(".story-grid {\n  display: block;" in css,
             "StoryShell must not reserve a grid track for its fixed rail", errors)
+    require(".toc-scrollable-container {" in css and "max-height: calc(100vh - 10rem)" in css,
+            "Long desktop TOCs must scroll inside the viewport", errors)
+    require("grid-template-columns: 12px minmax(0, 1fr) auto;" in css,
+            "Capability rows need a narrow-screen layout", errors)
     require("@media (max-width: 1199px) {\n  .rail { display: none; }" not in css,
             "Desktop rail must not collapse to the mobile FAB at 1199px", errors)
 
@@ -49,6 +53,8 @@ def main() -> int:
     ladder = read("web/components/LadderFlow.tsx")
     require('"packetPulse 1s ease-in-out infinite"' in ladder,
             "Ladder must use the actual packetPulse keyframe name", errors)
+    require("@keyframes packetPulse" in css,
+            "packetPulse keyframe must exist in the stylesheet", errors)
     require('"packetpulse' not in ladder, "Lowercase packetpulse keyframe is invalid", errors)
 
     animated = [
