@@ -56,7 +56,9 @@ The transcript remains an audit source. The runtime should send only the evidenc
 
 ## Same question, four replays {#replay}
 
-Results pending. The frozen study will replay the same question IDs through DSH, Hermes, OMO, and OMP and preserve the exact tested revisions.
+The executable cohort is now frozen in `studies/unified-memory-v0/cohort.json`: `exact-identifier`, `supersession`, `cross-harness`, `contradiction`, `missing-evidence`, and `minimal-context`.
+
+OMP is the first public measured lane. DSH has the default-off AgentsView stdio transport overlay, but still needs the same frozen model-visible injection/support proof. Hermes and OMO do not yet have final comparable cohort receipts imported here, so the four-harness result remains pending.
 
 ## Make it fail on purpose {#failures}
 
@@ -64,7 +66,30 @@ The suite includes missing-evidence, duplicate-replay, contradiction, and supers
 
 ## Results {#results}
 
-No numbers yet. Tables and figures will be generated only from frozen receipts in `studies/unified-memory-v0/`.
+### OMP partial result
+
+OMP PR #107 runs the six frozen question IDs through common `z0eval.unified_memory_receipt.v0` rows and passes **16/16** focused tests.
+
+Turn-4 context:
+
+| mode | context bytes | growth |
+|---|---:|---:|
+| native | **320,075** | **+80,008** |
+| donor spill stub | **2,847** | **+701** |
+| state packet | **960** | **+0** |
+
+The State Packet is **99.70% smaller** than native turn-4 context, about **333.4× smaller**.
+
+That is a context-shaping measurement, not a four-harness correctness claim. AgentsView search failed closed on the OMP host; no hit was invented.
+
+| harness | status |
+|---|---|
+| OMP | **MEASURED** |
+| DSH | **BOUNDED** — transport exists; frozen model-visible proof pending |
+| Hermes | **PENDING** — final cohort receipts not imported |
+| OMO | **PENDING** — final cohort receipts not imported |
+
+No cross-harness aggregate is published until comparable frozen receipts exist for all required lanes.
 
 ## What this still would not prove {#limits}
 

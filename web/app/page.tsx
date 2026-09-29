@@ -118,6 +118,21 @@ export default function Page() {
           </div>
 
           <div className="article-body prose">
+            <Callout kind="info" title="latest research · september 29">
+              <p>
+                Phase 1B is still the baseline story below. Newer results now live in two
+                first-class reports:{" "}
+                <a href="./z0intelligence-function-routing/">function routing after Jev, Julia, Laya, image decisions and real traces</a>
+                {" "}and{" "}
+                <a href="./unified-memory-v0/">unified memory across DSH, Hermes, OMO and OMP</a>.
+              </p>
+              <p>
+                The newer routing work keeps Julia default-off, rejects learned tool-family routing
+                on the sealed trace slice, and records the deterministic baseline win. The memory
+                study currently has one measured OMP lane and does not claim four-harness acceptance yet.
+              </p>
+            </Callout>
+
             <HeadingFrog id="how-much" level={2}>
               how much of the llm do we actually need?
             </HeadingFrog>
