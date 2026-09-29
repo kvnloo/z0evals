@@ -78,6 +78,7 @@ export default function StoryShell({
               <a href="../">phase 1b</a>
               <a href="../z0intelligence-function-routing/">routing</a>
               <a href="../unified-memory-v0/">memory</a>
+              <a href="https://github.com/kvnloo/z0evals">github</a>
             </div>
           </nav>
         </div>
