@@ -122,7 +122,7 @@ export default function Page() {
               <p>
                 Phase 1B is still the baseline story below. Newer results now live in two
                 first-class reports:{" "}
-                <a href="./z0intelligence-function-routing/">function routing after Jev, Julia, Laya and real traces</a>
+                <a href="./z0intelligence-function-routing/">function routing after Jev, Julia, Laya, image decisions and real traces</a>
                 {" "}and{" "}
                 <a href="./unified-memory-v0/">unified memory across DSH, Hermes, OMO and OMP</a>.
               </p>
