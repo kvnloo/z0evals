@@ -143,3 +143,28 @@ The reference captures are not stored, because they are third-party content and
 are reproducible in one command: serve the saved reference DOM with its own
 stylesheets and run `shots.py`. The parallax of numbers in this document is the
 comparison.
+
+
+## September 29 shell hardening
+
+The original visual-parity pass copied the reference's small-screen control too
+literally. In actual z0evals use, desktop/laptop windows between 960 and 1199px
+were being handed the mobile floating contents button, and the newer StoryShell
+could render the fixed rail and mobile control at the same time.
+
+The product contract is now:
+
+- **>= 960px:** desktop/laptop reading mode with a fixed contents rail.
+- **< 960px:** floating contents button + bottom sheet.
+- Story pages use the same full-width article architecture as the Phase 1B page;
+  the fixed rail is not a grid column and therefore cannot shift the 680px
+  reading column.
+- Nested research-page navigation is relative to the current Pages channel, so
+  main, `/next/`, `/nightly/`, and `/dev/` do not escape to the account root.
+- TOC links switch Story/Explore state before scrolling when their target lives
+  in the other reading mode.
+- The CI export audit checks shipped fragments, TOC ordering, project-safe
+  navigation and StoryShell prose classes after the real Next export.
+
+This intentionally prioritizes correct project-site navigation and desktop
+ergonomics over byte-for-byte breakpoint parity with the external reference.
