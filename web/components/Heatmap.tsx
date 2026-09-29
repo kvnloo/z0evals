@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState } from "react";\nimport { useReveal } from "./charts/useReveal";
 import type { Matrix } from "@/data/types";
 
 type Metric = "success" | "dangerous" | "split";
@@ -9,6 +9,7 @@ type Metric = "success" | "dangerous" | "split";
  * message-by-message heatmap. One cell per (state, arm) cell we actually measured.
  */
 export default function Heatmap({ matrix }: { matrix: Matrix }) {
+  const { ref, shown } = useReveal<HTMLDivElement>(0.05);
   const [metric, setMetric] = useState<Metric>("success");
   const arms = matrix.arms;
   const states = matrix.states;
@@ -34,8 +35,7 @@ export default function Heatmap({ matrix }: { matrix: Matrix }) {
     return v < 0.5 ? "#d97706" : "#6aa88f";
   };
 
-  return (
-    <div>
+  return (\n    <div ref={ref}>
       <div className="chart-tabs">
         {(["success", "dangerous", "split"] as Metric[]).map((m) => (
           <button key={m} type="button" aria-pressed={metric === m} onClick={() => setMetric(m)}>
@@ -61,7 +61,11 @@ export default function Heatmap({ matrix }: { matrix: Matrix }) {
               const v = value(si, ai);
               return (
                 <rect key={s.id} className="mark" x={L + si * cellW + 1} y={T + ai * cellH + 1}
-                      width={cellW - 2} height={cellH - 2} rx="2" fill={fill(v)}>
+                      width={cellW - 2} height={cellH - 2} rx="2" fill={fill(v)}
+                      style={{
+                        opacity: shown ? 1 : 0,
+                        transition: `opacity .28s ease ${Math.min(ai * states.length + si, 90) * 5}ms`,
+                      }}>
                   <title>{`${s.id} · ${a.label} · ${v == null ? "not measured" : metric === "success" ? `${(v * 100).toFixed(0)}%` : v > 0 ? "yes" : "no"}`}</title>
                 </rect>
               );
