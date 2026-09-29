@@ -1,25 +1,10 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
 import Toc, { type TocItem } from "./Toc";
 import MobileToc from "./MobileToc";
+import RouteProgress from "./RouteProgress";
 
-/**
- * The reusable immersive framework for a z0evals research post.
- *
- * A study page has two layers and they are not the same document:
- *   STORY   — the argued narrative, in reading order, with visuals.
- *   EXPLORE — the exact tables, methodology, receipts and claim status.
- *
- * Keeping them as two named slots (rather than two interleaved halves) is what
- * lets the next post reuse this shell without copying the page: the shell owns
- * the header, the rail, the banner, the mode switch and the appendix furniture;
- * the study owns only its own prose and figures.
- *
- * Server render shows STORY. The switch is progressive enhancement, and the
- * explore layer is always present in the DOM so a link to `#explore` still works
- * with JavaScript disabled.
- */
 export type StoryMeta = {
   title: string;
   subtitle: string;
@@ -50,14 +35,51 @@ export default function StoryShell({
 }) {
   const [mode, setMode] = useState<"story" | "explore">("story");
 
+  const navigate = useCallback((id: string, pushHash = true) => {
+    const target = document.getElementById(id);
+    const nextMode = target?.closest('[data-mode="explore"]') ? "explore" : "story";
+    setMode(nextMode);
+
+    // hidden tab content has no layout box. Wait for React to expose the
+    // destination, then scroll and update history. Two frames is deliberate:
+    // one commits the mode change, one lets layout settle.
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const next = document.getElementById(id);
+        if (!next) return;
+        next.scrollIntoView({ block: "start" });
+        if (pushHash && window.location.hash !== `#${id}`) {
+          window.history.pushState(null, "", `#${id}`);
+        }
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    const syncFromHash = () => {
+      const id = decodeURIComponent(window.location.hash.replace(/^#/, ""));
+      if (id && document.getElementById(id)) navigate(id, false);
+    };
+    syncFromHash();
+    window.addEventListener("hashchange", syncFromHash);
+    return () => window.removeEventListener("hashchange", syncFromHash);
+  }, [navigate]);
+
+  const firstStoryId = toc.find((item) => item.id !== "explore")?.id;
+
   return (
     <div className="shell story-shell">
+      <RouteProgress />
       <header className="blog-page-header">
-        <div className="site-nav">
-          <span className="brand">z0evals</span>
-          <span className="links">
-            <a href="/">studies</a>
-          </span>
+        <div>
+          <nav className="site-nav" aria-label="research pages">
+            <a className="brand" href="../">z0evals</a>
+            <div className="links">
+              <a href="../">phase 1b</a>
+              <a href="../z0intelligence-function-routing/">routing</a>
+              <a href="../unified-memory-v0/">memory</a>
+            </div>
+          </nav>
         </div>
       </header>
 
@@ -115,11 +137,11 @@ export default function StoryShell({
 
       <div className="story-grid">
         <div className="rail">
-          <Toc items={toc} />
+          <Toc items={toc} onNavigate={(id) => navigate(id)} />
         </div>
         <div className="article">
-          <MobileToc items={toc} />
-          <div className="article-body">
+          <MobileToc items={toc} onNavigate={(id) => navigate(id)} />
+          <div className="article-body prose">
             <p className="story-lede">{meta.lede}</p>
             <section data-mode="story" hidden={mode !== "story"}>
               {story}
@@ -128,7 +150,16 @@ export default function StoryShell({
               {explore}
             </section>
             <div className="story-switch">
-              <button type="button" onClick={() => setMode(mode === "story" ? "explore" : "story")}>
+              <button
+                type="button"
+                onClick={() =>
+                  mode === "story"
+                    ? navigate("explore")
+                    : firstStoryId
+                      ? navigate(firstStoryId)
+                      : setMode("story")
+                }
+              >
                 {mode === "story" ? exploreLabel : storyLabel}
               </button>
             </div>
