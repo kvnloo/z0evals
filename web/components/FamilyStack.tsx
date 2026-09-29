@@ -65,7 +65,7 @@ export default function FamilyStack({ families, selected, onSelect }: {
         {PARTS.map(([key, label, colour]) => (
           <span key={key}><i className="swatch" style={{ background: colour }} />{label}</span>
         ))}
-        <span>click a family to filter the page</span>
+        <span>click a family to filter replay, scrubber, and heatmap</span>
       </div>
     </div>
   );
