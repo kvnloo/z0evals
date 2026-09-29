@@ -132,6 +132,14 @@ No animation library is present on either page: no `framer-motion`, no
 | Counted dangerous **selections**, not exposures | The reference counts what a draw selected. We report exposures separately and footnote the gate clause that ignores them. |
 | Empty histogram buckets | There genuinely are no measured decisions between ~10 ms and ~100 ms. Not smoothed away. |
 
+### Historical baseline note
+
+The committed `ours-*.png` captures and `measure.json` were generated before
+the September 29 StoryShell/navigation hardening. Keep them as historical
+reference evidence, but do **not** treat them as current acceptance screenshots.
+Current acceptance is the real Next export plus `audit_web_source.py`,
+`audit_web_export.py`, and the post-deploy Pages route smoke tests.
+
 ## Evidence in this directory
 
 * `ours-1440x1200.png`, `ours-1024x1200.png`, `ours-390x844.png` — full-page
