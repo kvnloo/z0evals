@@ -1,17 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import { useReveal } from "./charts/useReveal";
 
-/**
- * Reveal a headline number, then optionally disclose what it does not mean.
- *
- * Two-stage on purpose: the first figure is the one a reader would stop at, and
- * the second is the qualification that makes it honest. Both come from the same
- * data entry, so a revision cannot update one without the other.
- *
- * Server render is the FINAL state (number shown, caveat shown), so the figure is
- * correct with no JavaScript. The animation only ever plays forward from hidden.
- */
 export type MetricRevealStage = {
   k: string;
   v: string;
@@ -28,38 +19,35 @@ export default function MetricReveal({
   caption?: string;
   delayMs?: number;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
+  const { ref, shown } = useReveal<HTMLElement>(0.05, "120px 0px");
   const [step, setStep] = useState(stages.length);
-  const [armed, setArmed] = useState(false);
 
   useEffect(() => {
-    const node = ref.current;
-    if (!node || typeof window === "undefined") return;
-    if (node.getBoundingClientRect().top > window.innerHeight * 0.9) {
+    if (!shown) {
       setStep(0);
-      setArmed(true);
+      return;
     }
-  }, []);
-
-  useEffect(() => {
-    if (!armed || step >= stages.length) return;
-    const t = setTimeout(() => setStep((s) => s + 1), delayMs);
-    return () => clearTimeout(t);
-  }, [armed, step, stages.length, delayMs]);
+    if (step >= stages.length) return;
+    const timer = window.setTimeout(
+      () => setStep((value) => Math.min(stages.length, value + 1)),
+      delayMs,
+    );
+    return () => window.clearTimeout(timer);
+  }, [shown, step, stages.length, delayMs]);
 
   return (
     <figure className="metric-reveal" ref={ref}>
       <div className="metric-reveal-stages">
-        {stages.map((st, i) => (
+        {stages.map((stage, index) => (
           <div
             className="metric-reveal-stage"
-            data-kind={st.kind ?? "neutral"}
-            data-shown={i < step}
-            key={st.k}
+            data-kind={stage.kind ?? "neutral"}
+            data-shown={index < step}
+            key={stage.k}
           >
-            <div className="k">{st.k}</div>
-            <div className="v">{st.v}</div>
-            {st.s ? <div className="s">{st.s}</div> : null}
+            <div className="k">{stage.k}</div>
+            <div className="v">{stage.v}</div>
+            {stage.s ? <div className="s">{stage.s}</div> : null}
           </div>
         ))}
       </div>
