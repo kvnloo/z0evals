@@ -46,13 +46,26 @@ def main() -> int:
     require('"packetpulse' not in ladder, "Lowercase packetpulse keyframe is invalid", errors)
 
     animated = [
+        "web/components/ActionTable.tsx",
+        "web/components/EvidencePipeline.tsx",
+        "web/components/FamilyStack.tsx",
+        "web/components/Heatmap.tsx",
+        "web/components/MetricReveal.tsx",
+        "web/components/ReplayChart.tsx",
+        "web/components/RoutingTrace.tsx",
+        "web/components/charts/ArmScatter.tsx",
+        "web/components/charts/Calibration.tsx",
+        "web/components/charts/CompositionSplit.tsx",
+        "web/components/charts/DangerousBars.tsx",
+        "web/components/charts/DensityBars.tsx",
+        "web/components/charts/OrchestrationBars.tsx",
+        "web/components/charts/ResidencyBars.tsx",
         "web/components/figures/CorpusGrowth.tsx",
-        "web/components/figures/ProgressRows.tsx",
+        "web/components/figures/FamilyBoard.tsx",
         "web/components/figures/ForecastPair.tsx",
         "web/components/figures/ModelBoard.tsx",
+        "web/components/figures/ProgressRows.tsx",
         "web/components/figures/UtilityTie.tsx",
-        "web/components/figures/FamilyBoard.tsx",
-        "web/components/Heatmap.tsx",
     ]
     for path in animated:
         body = read(path)
