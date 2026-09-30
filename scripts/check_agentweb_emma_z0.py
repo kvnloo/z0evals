@@ -236,6 +236,39 @@ def main() -> None:
     reliability_summary = score_reliability(synthetic_results, synthetic_receipts)
     assert reliability_summary["passed"] is True
 
+    ladder = json.loads((STUDY / "promotion-ladder.json").read_text())
+    assert ladder["global"] == {
+        "active_routing_enabled": False,
+        "upstream_promotion_allowed": False,
+        "aggregate_override_allowed": False,
+    }
+    assert ladder["evidence_classes"]["contract"]["can_inform_quality"] is False
+    assert ladder["evidence_classes"]["deterministic_e2e"]["can_inform_quality"] is False
+    assert ladder["evidence_classes"]["model_backed_paired"]["can_inform_quality"] is True
+    assert ladder["capabilities"]["context_packet_v1"]["assist_enabled"] is False
+    assert ladder["capabilities"]["reliability_observation_v1"]["quality_authoritative"] is False
+    assert ladder["capabilities"]["report_type_v1"]["required_live_pairs"] == 1000
+    assert ladder["capabilities"]["stop_request_v1"]["required_live_pairs"] == 1000
+
+    frozen_context = json.loads(
+        (STUDY / "results" / "context-e2e-20260930.json").read_text()
+    )
+    frozen_reliability = json.loads(
+        (STUDY / "results" / "reliability-e2e-20260930.json").read_text()
+    )
+    expected_heads = {
+        "agentweb": "361e962bf652e3475f49bb8e5e21c68793c57669",
+        "z0intelligence": "7aa6be0ab0df25b1c7cb4c85709ca4cb01f392ce",
+        "z0evals": "97d54f85fa85e604c4563510e41eb3a0bff05828",
+    }
+    assert frozen_context["source_heads"] == expected_heads
+    assert frozen_reliability["source_heads"] == expected_heads
+    assert frozen_context["summary"]["eligible_for_assist_review"] is False
+    assert frozen_context["summary"]["gates"]["packet_budget_respected"] is True
+    assert frozen_context["summary"]["gates"]["fixture_required_terms_preserved"] is True
+    assert frozen_reliability["summary"]["passed"] is True
+    assert frozen_reliability["summary"]["gates"]["never_mints_quality_gold"] is True
+
     schema = json.loads((STUDY / "receipt.schema.json").read_text())
     required = set(schema["required"])
     assert {"agentweb_sha", "z0intelligence_sha", "scenario_id", "passed", "evidence"} <= required
