@@ -45,6 +45,8 @@ def main() -> int:
             "New research posts must keep the lowercase z0evals voice", errors)
     require(".heatmap-svg" in css and "min-width: 760px" in css,
             "The old post heatmap must stay readable on narrow screens", errors)
+    require(".tooltip {" in css and "animation: none;" in css,
+            "Chart tooltips must not self-dismiss while the target is still active", errors)
     require("@media (max-width: 1199px) {\n  .rail { display: none; }" not in css,
             "Desktop rail must not collapse to the mobile FAB at 1199px", errors)
 
@@ -103,6 +105,13 @@ def main() -> int:
     heatmap = read("web/components/Heatmap.tsx")
     require('className="heatmap-scroll"' in heatmap and "heatmap-svg" in heatmap,
             "Old-post heatmap must use the narrow-screen scroll surface", errors)
+
+    scatter = read("web/components/charts/ArmScatter.tsx")
+    calibration = read("web/components/charts/Calibration.tsx")
+    require("onFocus" in scatter and "tabIndex={0}" in scatter,
+            "Old-post scatter points must be keyboard readable", errors)
+    require("onFocus" in calibration and "tabIndex={0}" in calibration,
+            "Old-post calibration points must be keyboard readable", errors)
 
     routing_page = read("web/app/z0intelligence-function-routing/page.tsx")
     memory_page = read("web/app/unified-memory-v0/page.tsx")
