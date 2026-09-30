@@ -82,6 +82,11 @@
     "model_backed_paired": {
       "can_satisfy_live_sample": true,
       "can_inform_quality": true
+    },
+    "provider_emulated_e2e": {
+      "can_satisfy_live_sample": false,
+      "can_inform_quality": false,
+      "description": "Real AgentWeb/z0 transports against deterministic local provider emulators; proves campaign wiring and receipts, not model behavior."
     }
   }
 }
