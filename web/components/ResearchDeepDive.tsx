@@ -48,6 +48,37 @@ export default function ResearchDeepDive() {
         exist.
       </p>
 
+      <h3>what is public, and what is still a black box</h3>
+      <div className="x-table-wrap">
+        <table className="x-table">
+          <thead>
+            <tr><th>statement</th><th>evidence state</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>jev emits typed probabilistic decisions through choice / binary / score-shaped APIs</td>
+              <td>public product contract</td>
+            </tr>
+            <tr>
+              <td>typesafe says the system-one stack uses a new architecture, parallel sampler and rlcd</td>
+              <td>vendor-reported; independently inspectable only at the API behavior layer</td>
+            </tr>
+            <tr>
+              <td>jev is a modernbert-like encoder</td>
+              <td>unverified hypothesis; raschka&apos;s educated guess, not a published architecture fact</td>
+            </tr>
+            <tr>
+              <td>rlcd works like rlcr / brier-reward training</td>
+              <td>unverified analogy; no published algorithmic equivalence</td>
+            </tr>
+            <tr>
+              <td>jev is useful as a bounded decision primitive on some tasks</td>
+              <td>testable claim; evaluate task-by-task with frozen baselines and calibration metrics</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
       <h3>3. calibration is the whole point if confidence changes control flow</h3>
       <p>
         top-1 accuracy is insufficient once confidence decides whether we act, abstain or escalate.
@@ -73,6 +104,27 @@ export default function ResearchDeepDive() {
         not rlcr.</strong> there is no published evidence that the algorithms are the same; rlcr is
         useful here as a public mechanism for understanding why calibration-aware objectives can
         matter.
+      </p>
+
+      <h3>3b. abstention turns probabilities into a systems primitive</h3>
+      <p>
+        once confidence controls escalation, the relevant curve is not just accuracy. it is
+        <strong> risk versus coverage</strong>: how much traffic can the cheap policy accept while
+        staying under an error budget?{" "}
+        <a href="https://arxiv.org/abs/1705.08500">geifman &amp; el-yaniv (2017)</a> formalized
+        selective classification as prediction with a reject option, and{" "}
+        <a href="https://proceedings.mlr.press/v97/geifman19a.html">selectivenet</a> later trained
+        prediction and rejection jointly. this is almost exactly the operational question behind
+        our risk/coverage work: the small model does not need to be correct everywhere. it needs to
+        know a useful region where it is cheap <em>and</em> acceptably reliable, then hand the rest
+        upward.
+      </p>
+      <p>
+        calibration and selectivity are related but not identical. calibration asks whether a 0.8
+        score behaves like 80% correctness over a population. selective prediction asks what happens
+        to error as we reject lower-confidence cases. a router used for escalation should measure
+        both. a beautiful ece can still hide poor class ranking, and a useful risk/coverage curve can
+        coexist with imperfect global calibration.
       </p>
 
       <h3>4. this explains why our jev result and our nanojev failure can both be true</h3>
@@ -168,6 +220,7 @@ export default function ResearchDeepDive() {
         <li><a href="https://aclanthology.org/2022.findings-emnlp.293/">artetxe et al. — role of bidirectionality</a> — why attention direction depends on the application.</li>
         <li><a href="https://arxiv.org/abs/2412.13663">warner et al. — modernbert</a> — modern encoder efficiency/classification reference; not evidence of jev&apos;s hidden architecture.</li>
         <li><a href="https://proceedings.mlr.press/v70/guo17a.html">guo et al. — calibration of modern neural networks</a> — accuracy and calibrated confidence are different properties.</li>
+        <li><a href="https://arxiv.org/abs/1705.08500">geifman &amp; el-yaniv — selective classification</a> and <a href="https://proceedings.mlr.press/v97/geifman19a.html">selectivenet</a> — risk/coverage and explicit abstention.</li>
         <li><a href="https://doi.org/10.1198/016214506000001437">gneiting &amp; raftery — strictly proper scoring rules</a> — formal grounding for probability-quality objectives.</li>
         <li><a href="https://arxiv.org/abs/2507.16806">damani et al. — rlcr</a> — public calibration-aware rl reference; related objective, not disclosed jev training.</li>
         <li><a href="https://arxiv.org/abs/2510.00202">routerarena</a> and <a href="https://aclanthology.org/2026.findings-acl.1881/">llmrouterbench</a> — standardized routing evaluation and strong-baseline pressure.</li>
