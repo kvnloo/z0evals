@@ -15,6 +15,12 @@ architecture:
         - studies/agentweb-emma-z0-v0/scenarios.jsonl
         - studies/agentweb-emma-z0-v0/receipt.schema.json
         - scripts/check_agentweb_emma_z0.py
+        - scripts/score_agentweb_context_packet.py
+        - scripts/score_agentweb_stop_request.py
+        - scripts/score_agentweb_report_type.py
+        - studies/agentweb-emma-z0-v0/context-packet-fixtures.jsonl
+        - studies/agentweb-emma-z0-v0/stop-request-fixtures.jsonl
+        - studies/agentweb-emma-z0-v0/report-type-fixtures.jsonl
   consumes_interfaces:
     - z0int.decision_receipt.v1
   produces_representations:
