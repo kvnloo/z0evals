@@ -90,7 +90,7 @@ export default function Page() {
       <RouteProgress />
       <header className="blog-page-header">
         <div>
-          <nav className="site-nav">
+          <nav className="site-nav" aria-label="research pages">
             <a className="brand" href="./">z0evals</a>
             <div className="links">
               <a href="./" aria-current="page">phase 1b</a>
@@ -121,16 +121,15 @@ export default function Page() {
           <div className="article-body prose">
             <Callout kind="info" title="latest research · september 29">
               <p>
-                Phase 1B is still the baseline story below. Newer results now live in two
-                first-class reports:{" "}
-                <a href="./z0intelligence-function-routing/">function routing after Jev, Julia, Laya, image decisions and real traces</a>
+                phase 1b is still the baseline story below. the newer mess lives in two places:{" "}
+                <a href="./z0intelligence-function-routing/">what actually deserves a model?</a>
                 {" "}and{" "}
-                <a href="./unified-memory-v0/">unified memory across DSH, Hermes, OMO and OMP</a>.
+                <a href="./unified-memory-v0/">can four agents remember the same thing?</a>.
               </p>
               <p>
-                The newer routing work keeps Julia default-off, rejects learned tool-family routing
-                on the sealed trace slice, and records the deterministic baseline win. The memory
-                study currently has one measured OMP lane and does not claim four-harness acceptance yet.
+                short version: the dumb routing baseline beat the learned fast paths, and the
+                memory work got one really good omp context result without magically becoming a
+                four-harness win.
               </p>
             </Callout>
 

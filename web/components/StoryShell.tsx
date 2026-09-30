@@ -22,8 +22,8 @@ export default function StoryShell({
   banner,
   story,
   explore,
-  exploreLabel = "Explore the data",
-  storyLabel = "Back to the story",
+  exploreLabel = "show me the receipts",
+  storyLabel = "back to the story",
 }: {
   meta: StoryMeta;
   toc: TocItem[];

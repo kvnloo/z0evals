@@ -45,8 +45,9 @@ export default function Heatmap({ matrix }: { matrix: Matrix }) {
           </button>
         ))}
       </div>
-      <svg viewBox={`0 0 ${W} ${H}`} className="chart-svg" role="img"
-           aria-label="outcome matrix of states against arms">
+      <div className="heatmap-scroll">
+        <svg viewBox={`0 0 ${W} ${H}`} className="chart-svg heatmap-svg" role="img"
+             aria-label="outcome matrix of states against arms">
         {states.map((s, si) => (
           <text key={s.id} x={L + si * cellW + cellW / 2} y={T - 10}
                 fontSize="9" fill="#888" textAnchor="end"
@@ -74,8 +75,9 @@ export default function Heatmap({ matrix }: { matrix: Matrix }) {
             })}
           </g>
         ))}
-        <text x={L} y={H - 2} fontSize="10.5" fill="#888">{states.length} states × {arms.length} arms</text>
-      </svg>
+          <text x={L} y={H - 2} fontSize="10.5" fill="#888">{states.length} states × {arms.length} arms</text>
+        </svg>
+      </div>
       <div className="legend">
         {metric === "success" ? (
           <>

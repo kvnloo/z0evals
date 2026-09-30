@@ -11,10 +11,10 @@ import MetricRow from "@/components/MetricRow";
 import { MarginNote } from "@/components/Notes";
 
 export const metadata: Metadata = {
-  title: "from model routing to evidence-backed function routing — z0evals",
+  title: "what actually deserves a model? — z0evals",
   description:
-    "Eight days of measurements on Jev, Julia, image decisions, real-trace routing, provider execution, "
-    + "and what should stay deterministic.",
+    "we kept trying to make routing smarter. the useful part was figuring out which decisions "
+    + "should not be model problems at all.",
 };
 
 const M = data.meta;
@@ -144,143 +144,151 @@ const toc: TocItem[] = M.toc;
 
 const story = (
   <>
-    <h2 id="green">Everything was green</h2>
+    <h2 id="green">everything was green. that was the problem.</h2>
     <p>
-      The first headline to fall was our own. An earlier automatic-routing batch looked green:
-      outputs came back, the harness reported success, and the totals were plausible. Then a
-      fallback serialization bug surfaced in that same batch — and it became clear the harness had
-      been reporting on a path that was not the path that ran.
+      the first version of this looked great. outputs came back, the harness said success,
+      and the totals looked believable. then a fallback serialization bug showed us something
+      annoying: the path we were reporting on was not always the path that actually ran.
     </p>
     <p>
-      That batch is still in the evidence set, next to its successor, rather than deleted. The rule
-      we took from it is the spine of everything below: a route being <em>selected</em> is not
-      evidence it <em>executed</em>.
+      i kept that busted batch in the evidence set instead of deleting it. it is basically the
+      reason this whole post exists. <strong>selected is not executed.</strong> if i cannot prove
+      the worker physically ran, i do not get to count it.
     </p>
     <EvidencePipeline stages={pipelineStages} caption={P.caption} />
     <p>
-      Hover or tab through the stages. Each one carries the point at which it was falsified at least
-      once in this study — the failure note is part of the pipeline, because a figure that only
-      showed forward progress would repeat the mistake the study is about.
+      hover or tab through that thing. every step has been wrong at least once. that is way more
+      useful than a pretty green pipeline pretending nothing weird ever happened.
     </p>
 
-    <h2 id="nanojev">NanoJev: a fast model answering the wrong question</h2>
+    <h2 id="nanojev">nanojev was fast. it was also taking the wrong test.</h2>
     <p>
-      {N.checkpoint} looked like a win: ~{N.speed_ms_p50_cpu} ms p50 on CPU, interface-compatible
-      with our decision contract, and an initial AUROC that pointed the right way.
+      {N.checkpoint} looked awesome at first: about {N.speed_ms_p50_cpu} ms p50 on cpu, the right
+      interface, and an early auroc that looked promising.
     </p>
     <p>
-      It was trained on {N.trained_on.join(", ")} — action-choice tasks. The publisher&apos;s own
-      model card describes boolean and ordered-score support as an <em>interface affordance</em>,
-      never a training objective.
+      then i checked what it was actually trained to do. {N.trained_on.join(", ")}. action choice.
+      the boolean / ordered-score stuff was an interface affordance, not the training objective.
+      lol.
     </p>
-    <Callout kind="danger" title="The boolean path was not a measurement">
-      <pre>
-        <code>{N.boolean_defect.code}</code>
-      </pre>
+    <Callout kind="danger" title="the boolean path was not a real measurement">
+      <pre><code>{N.boolean_defect.code}</code></pre>
       <p>{N.boolean_defect.why}</p>
-      <p>
-        <strong>{N.boolean_defect.consequence}.</strong>
-      </p>
+      <p><strong>{N.boolean_defect.consequence}.</strong></p>
     </Callout>
-    <p>
-      <strong>{N.lesson}</strong>
-    </p>
+    <p><strong>fast is not the same as trained for the job.</strong> an interface can fit perfectly while the capability underneath it is totally wrong.</p>
     <MarginNote n={1} label="trainer not located">
       {N.trainer_location}.
     </MarginNote>
 
-    <h2 id="jev">The real model, and the slice that matters</h2>
-    <p>{J.proxy_correction}</p>
-    <MetricReveal stages={jevStages} caption="Recomputed from the raw per-example capability-evidence file, not copied from a shipped summary constant." />
-    <Callout kind="warning" title="AUROC 0.9982 is slice-dependent — quote it with its slice">
+    <h2 id="jev">jev was the part that actually survived</h2>
+    <p>
+      also, the first “reproduction” was not really a reproduction. we had tested proxy models
+      instead of the model from the paper. reproducing a different system very carefully is still
+      reproducing a different system.
+    </p>
+    <MetricReveal
+      stages={jevStages}
+      caption="recomputed from the raw per-example capability-evidence file. not copied from a nice-looking summary number."
+    />
+    <Callout kind="warning" title="0.9982 auroc is real, but only on that exact slice">
       <p>{jbs.caveat}</p>
     </Callout>
     <MetricRow
       items={[
         { k: "authored144", v: `${jb0.n}`, s: "3 families x 48" },
-        { k: "direct Qwen3.5-4B", v: n(jb0s1.fba), s: `ECE ${n(jb0s1.ece)}` },
-        { k: "reranker", v: n(jb0s2.fba), s: `ECE ${n(jb0s2.ece)}` },
-        { k: "perturbations108", v: n(jb1s0.fba), s: `ECE ${n(jb1s0.ece)}` },
+        { k: "direct qwen3.5-4b", v: n(jb0s1.fba), s: `ece ${n(jb0s1.ece)}` },
+        { k: "reranker", v: n(jb0s2.fba), s: `ece ${n(jb0s2.ece)}` },
+        { k: "perturbations108", v: n(jb1s0.fba), s: `ece ${n(jb1s0.ece)}` },
       ]}
     />
-    <Callout kind="warning" title="perturbations108 scores 1.0000 — and proves less than it looks">
+    <Callout kind="warning" title="1.0000 on perturbations108 looks cooler than it is">
       <p>{jbg.disclosure}</p>
-      <p>
-        Gold ids present: <code>{jbg.gold_ids_present.join(", ")}</code>.
-      </p>
+      <p>gold ids present: <code>{jbg.gold_ids_present.join(", ")}</code>.</p>
     </Callout>
-    <p>{J.abandoned_target.text}</p>
-
-    <h2 id="capability">Functions, not models</h2>
     <p>
-      The architectural conclusion from the falsifications above: stop asking a global question. A
-      model router asks <em>&ldquo;which model is best?&rdquo;</em> — a question with no stable
-      answer, because &ldquo;best&rdquo; depends on the function.
+      i also dropped the original 146:4 abstention slice as the main target. it is not in this
+      checkout, and with a 97% majority class the headline accuracy mostly tells you the majority
+      class exists. not super helpful for the three-way runtime contract we actually route on.
+    </p>
+
+    <h2 id="capability">i stopped asking which model is best</h2>
+    <p>
+      this was the architecture change. asking <em>which model is best?</em> is kind of a fake
+      question. best at what? verification? tool choice? image choice? cheap worker stuff?
     </p>
     <p>
-      z0intelligence now asks: <strong>which implementation has evidence for this exact
-      function?</strong>
+      now z0intelligence asks the smaller question: <strong>what implementation has evidence for
+      this exact job?</strong>
     </p>
-    <CapabilityMap functions={capabilityEntries} caption={CM.caption} />
+    <CapabilityMap
+      functions={capabilityEntries}
+      caption="same idea everywhere: do not ask which model wins globally. ask what has evidence for this exact job."
+    />
 
-    <h2 id="image-decisions">The first image-decision lane is real — the benchmark score is not</h2>
+    <h2 id="image-decisions">the image lane is real. the benchmark win is extremely not real.</h2>
     <p>
-      z0intelligence now has a pinned multimodal decision path: <strong>{ID.system}</strong>,
-      backed by <code>{ID.backbone}</code> at revision <code>{ID.model_revision.slice(0, 12)}</code>.
-      It keeps images out of the text-only DecisionBackend contract and returns a categorical
-      distribution over arbitrary supplied options rather than parsing generated prose.
+      we do have a pinned multimodal decision path now: <strong>{ID.system}</strong>, backed by{" "}
+      <code>{ID.backbone}</code> at <code>{ID.model_revision.slice(0, 12)}</code>. it maps whatever
+      options the task gives us into a bounded label set and reads the option logits directly.
+      no prose parsing. no pretending a generated paragraph is a probability distribution.
     </p>
     <MetricRow items={[
       { k: "published examples", v: `${ID.public_examples.correct}/${ID.public_examples.total}`, s: ID.public_examples.scope },
       { k: "generated answer tokens", v: String(ID.generated_answer_tokens_normal_path), s: "normal single-label path" },
-      { k: "local target", v: "3080 Ti", s: "12 GB" },
-      { k: "official score", v: "UNKNOWN", s: ID.benchmark_status },
+      { k: "local target", v: "3080 ti", s: "12 gb" },
+      { k: "official score", v: "unknown", s: ID.benchmark_status },
     ]} />
-    <Callout kind="warning" title="4/8 is disclosure, not Image JevBench">
+    <Callout kind="warning" title="4/8 is a smoke result. please do not turn it into a benchmark headline">
       <p>{ID.note}</p>
-      <p>Still unclaimed: {ID.not_claimed.join("; ")}.</p>
+      <p>still unclaimed: {ID.not_claimed.join("; ")}.</p>
     </Callout>
 
-    <h2 id="measurement-state">A token count now carries its measurement state</h2>
+    <h2 id="measurement-state">a token count needs a provenance tag too</h2>
     <p>
-      The OMP bridge no longer treats a last-message estimate as if it covered the whole turn
-      sequence. {MP.provider_usage.behavior}. {MP.provider_usage.complete_rule}.
+      another stupid bug class: counting the last assistant message and calling it the whole run.
+      omp now accumulates provider-reported input/output usage across the whole trace, and it only
+      gets to say <code>complete</code> when every observed turn actually carried provider usage.
     </p>
-    <Callout kind="info" title="Complete and partial are different data">
-      <p>{MP.provider_usage.fallback}.</p>
-      <p>{MP.provider_usage.proof}.</p>
-      <p>{MP.tokenomics.behavior}. {MP.tokenomics.rule}.</p>
+    <Callout kind="info" title="complete and partial are not synonyms">
+      <p>missing provider usage stays partial. the char-count fallback stays labeled as a proxy.</p>
+      <p>the two-turn proof closes at 21 tokens: 10+2, then 7+2.</p>
+      <p>that measurement state also survives into tokenomics instead of getting quietly upgraded later.</p>
     </Callout>
 
-    <h2 id="providers">Routing that physically executed</h2>
+    <h2 id="providers">routing is boring until you prove the worker actually ran</h2>
     <p>
-      Selection is cheap. Execution is the claim that needs proof. One batch returned{" "}
-      <strong>{PR.batch.outputs}</strong> outputs with <strong>
-        {PR.batch.providers_completing_real_work} distinct providers
-      </strong>{" "}
-      completing real work across {PR.batch.physical_attempts} physical attempts and{" "}
-      {PR.batch.successful_fallbacks} successful fallbacks.
+      one measured batch returned <strong>{PR.batch.outputs}</strong> outputs.{" "}
+      <strong>{PR.batch.providers_completing_real_work} providers</strong> physically completed
+      work across {PR.batch.physical_attempts} attempts, with {PR.batch.successful_fallbacks} real
+      fallbacks. that is the number i care about now, not just “router said provider x.”
     </p>
-    <RoutingTrace providers={providerRows} admission={admission} caption={PR.caption} />
+    <RoutingTrace
+      providers={providerRows}
+      admission={admission}
+      caption="six providers physically did work. the cap numbers are policy inputs; only the 32-admission test is measured here."
+    />
     <p>
-      Fallbacks are load-bearing and were tested with a real failure: an invalid test-process Groq
-      credential produced a <strong>{PR.fallback_proof.observed}</strong>.{" "}
-      {PR.fallback_proof.also}.
+      we also forced a real failure. an invalid groq credential produced{" "}
+      <strong>{PR.fallback_proof.observed}</strong>. {PR.fallback_proof.also}.
     </p>
-    <Callout kind="info" title="A caution on our own estimate">
+    <Callout kind="info" title="one estimate i am still not promoting to a fact">
       <p>
-        That report also computes &ldquo;estimated Codex-parent tokens avoided:{" "}
-        {PR.batch.estimated_parent_tokens_avoided.toLocaleString("en-US")}&rdquo;. That is a{" "}
+        the report computes “estimated codex-parent tokens avoided:{" "}
+        {PR.batch.estimated_parent_tokens_avoided.toLocaleString("en-US")}”. that is a{" "}
         {PR.batch.estimate_basis}
       </p>
     </Callout>
-    <Callout kind="warning" title="Provider headroom is UNKNOWN, not small">
+    <Callout kind="warning" title="unknown headroom means unknown. not tiny. not zero. unknown.">
       <p>{PR.saturation.headroom.detail}</p>
       <p>{PR.saturation.local_serialization}</p>
     </Callout>
 
-    <h2 id="freetier">Free tier, one authority, three invariants</h2>
-    <p>{FT.caption}</p>
+    <h2 id="freetier">free is nice. free is also not an architecture.</h2>
+    <p>
+      the free path is intentionally boring: compiled python route, one authority, one executor.
+      replay and conflict rejection were proven by replacing the pod instead of trusting an assertion.
+    </p>
     <MetricRow
       items={[
         { k: "provider / model", v: FT.execution.model.replace("nvidia/", ""), s: FT.execution.provider },
@@ -290,130 +298,76 @@ const story = (
       ]}
     />
     <ol className="ft-path">
-      {FT.path.map((s) => (
-        <li key={s.id}>
-          <strong>{s.label}</strong> <span>{s.detail}</span>
+      {FT.path.map((step) => (
+        <li key={step.id}>
+          <strong>{step.label}</strong> <span>{step.detail}</span>
         </li>
       ))}
     </ol>
     <div className="x-table-wrap">
       <table className="x-table">
-        <caption>Idempotency invariants — each proven by replacing the pod, not by asserting them</caption>
-        <thead>
-          <tr>
-            <th scope="col">rule</th>
-            <th scope="col">status</th>
-            <th scope="col">evidence</th>
-          </tr>
-        </thead>
+        <caption>the three boring invariants that keep duplicate work from becoming real money</caption>
+        <thead><tr><th>rule</th><th>status</th><th>evidence</th></tr></thead>
         <tbody>
-          {FT.invariants.map((v) => (
-            <tr key={v.rule}>
-              <td>{v.rule}</td>
-              <td>
-                <span className="x-status" data-s="MEASURED">
-                  {v.status}
-                </span>
-              </td>
-              <td>{v.evidence}</td>
+          {FT.invariants.map((value) => (
+            <tr key={value.rule}>
+              <td>{value.rule}</td>
+              <td><span className="x-status" data-s="MEASURED">{value.status}</span></td>
+              <td>{value.evidence}</td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
-    <Callout kind="info" title="Free credit is not a zero-priced route">
+    <Callout kind="info" title="free credit is not the same thing as a zero-priced route">
       <p>{FT.excluded.reason}</p>
     </Callout>
 
-    <h2 id="cerebras">Cerebras: a great worker that made the parent do more</h2>
+    <h2 id="cerebras">cerebras was good. delegation still lost.</h2>
     <p>{CB.caption}</p>
-    <MetricReveal stages={cerebrasStages} caption="Worker quality and parent-work delta come from the same frozen 60-pair cohort. Positive parent delta means delegation used MORE parent work." />
+    <MetricReveal
+      stages={cerebrasStages}
+      caption="same frozen 60-pair cohort. positive parent delta means delegation made the parent do more work."
+    />
     <div className="x-table-wrap">
       <table className="x-table">
-        <caption>Uncached parent input + output, parent-only (A) vs delegated (B)</caption>
-        <thead>
-          <tr>
-            <th scope="col">measure</th>
-            <th scope="col" className="num">A</th>
-            <th scope="col" className="num">B</th>
-          </tr>
-        </thead>
+        <caption>uncached parent input + output, parent-only (a) vs delegated (b)</caption>
+        <thead><tr><th>measure</th><th className="num">a</th><th className="num">b</th></tr></thead>
         <tbody>
-          <tr>
-            <td>uncached parent input</td>
-            <td className="num">{CB.tokens.A_uncached_parent_input.toLocaleString("en-US")}</td>
-            <td className="num">{CB.tokens.B_uncached_parent_input.toLocaleString("en-US")}</td>
-          </tr>
-          <tr>
-            <td>parent output</td>
-            <td className="num">{CB.tokens.A_parent_output.toLocaleString("en-US")}</td>
-            <td className="num">{CB.tokens.B_parent_output.toLocaleString("en-US")}</td>
-          </tr>
-          <tr>
-            <td>cached parent input</td>
-            <td className="num">{CB.tokens.A_cached_parent_input.toLocaleString("en-US")}</td>
-            <td className="num">{CB.tokens.B_cached_parent_input.toLocaleString("en-US")}</td>
-          </tr>
-          <tr>
-            <td>
-              <strong>uncached input + output</strong>
-            </td>
-            <td className="num">
-              <strong>{CB.tokens.A_uncached_input_plus_output.toLocaleString("en-US")}</strong>
-            </td>
-            <td className="num">
-              <strong>{CB.tokens.B_uncached_input_plus_output.toLocaleString("en-US")}</strong>
-            </td>
-          </tr>
-          <tr>
-            <td>worker input / output</td>
-            <td className="num">0 / 0</td>
-            <td className="num">
-              {CB.tokens.worker_input.toLocaleString("en-US")} /{" "}
-              {CB.tokens.worker_output.toLocaleString("en-US")}
-            </td>
-          </tr>
+          <tr><td>uncached parent input</td><td className="num">{CB.tokens.A_uncached_parent_input.toLocaleString("en-US")}</td><td className="num">{CB.tokens.B_uncached_parent_input.toLocaleString("en-US")}</td></tr>
+          <tr><td>parent output</td><td className="num">{CB.tokens.A_parent_output.toLocaleString("en-US")}</td><td className="num">{CB.tokens.B_parent_output.toLocaleString("en-US")}</td></tr>
+          <tr><td>cached parent input</td><td className="num">{CB.tokens.A_cached_parent_input.toLocaleString("en-US")}</td><td className="num">{CB.tokens.B_cached_parent_input.toLocaleString("en-US")}</td></tr>
+          <tr><td><strong>uncached input + output</strong></td><td className="num"><strong>{CB.tokens.A_uncached_input_plus_output.toLocaleString("en-US")}</strong></td><td className="num"><strong>{CB.tokens.B_uncached_input_plus_output.toLocaleString("en-US")}</strong></td></tr>
+          <tr><td>worker input / output</td><td className="num">0 / 0</td><td className="num">{CB.tokens.worker_input.toLocaleString("en-US")} / {CB.tokens.worker_output.toLocaleString("en-US")}</td></tr>
         </tbody>
       </table>
     </div>
-    <Callout kind="warning" title={`Raw aggregate is +${CB.raw_aggregate_delta.toLocaleString("en-US")} — and still positive after cache control`}>
+    <Callout kind="warning" title={`raw aggregate is +${CB.raw_aggregate_delta.toLocaleString("en-US")} and it stays positive after cache control`}>
       <p>{CB.cache_controlled.note}</p>
       <p>
-        Equal-cache subset: report summary{" "}
-        <strong>+{cbe0.delta.toFixed(1)}</strong> [{cbe0.lo.toFixed(1)},{" "}
-        {cbe0.hi.toFixed(1)}]; evidence gate{" "}
-        <strong>+{cbe1.delta.toFixed(1)}</strong> [{cbe1.lo.toFixed(1)},{" "}
-        {cbe1.hi.toFixed(1)}].
+        equal-cache subset: report summary <strong>+{cbe0.delta.toFixed(1)}</strong>{" "}
+        [{cbe0.lo.toFixed(1)}, {cbe0.hi.toFixed(1)}]; evidence gate{" "}
+        <strong>+{cbe1.delta.toFixed(1)}</strong> [{cbe1.lo.toFixed(1)}, {cbe1.hi.toFixed(1)}].
       </p>
     </Callout>
     <p>
-      <strong>{CB.hypothesis}</strong> {CB.next}
+      <strong>the parent cannot save tokens if it still reads the whole original task plus a giant worker response.</strong>
+      the next thing to test is typed / compressed worker output, not just an even better worker model.
     </p>
     <p>{CB.nemotron.note}</p>
-    <MarginNote n={2} label="excluded cohort">
-      {cbcoh0.why}
-    </MarginNote>
-    <MarginNote n={3} label="grading correction">
-      {CB.grading_note} Billing: {CB.billing}
-    </MarginNote>
+    <MarginNote n={2} label="excluded cohort">{cbcoh0.why}</MarginNote>
+    <MarginNote n={3} label="grading correction">{CB.grading_note} billing: {CB.billing}</MarginNote>
 
-    <h2 id="trace-routing">Real traces made the deterministic baseline win</h2>
+    <h2 id="trace-routing">then five lines of dumb rules beat the learned routers</h2>
     <p>
-      The next question was more important than another synthetic verifier score: can these
-      decision engines predict what z0 actually needs to do on real traces? On a grouped sealed
-      split of <strong>{TR.sealed_n} decision states</strong>, the answer was no.
+      this is the result that made me laugh. on a grouped sealed split of{" "}
+      <strong>{TR.sealed_n} real decision states</strong>, the deterministic keyword rule beat
+      both learned fast paths.
     </p>
     <div className="x-table-wrap">
       <table className="x-table">
-        <caption>Sealed real-trace tool-family routing · {TR.classes} classes · chance {pct(TR.chance, 0)}</caption>
-        <thead>
-          <tr>
-            <th scope="col">system</th>
-            <th scope="col" className="num">accuracy</th>
-            <th scope="col" className="num">macro F1</th>
-            <th scope="col" className="num">p50</th>
-          </tr>
-        </thead>
+        <caption>sealed real-trace tool-family routing · {TR.classes} classes · chance {pct(TR.chance, 0)}</caption>
+        <thead><tr><th>system</th><th className="num">accuracy</th><th className="num">macro f1</th><th className="num">p50</th></tr></thead>
         <tbody>
           {TR.systems.map((row) => (
             <tr key={row.system}>
@@ -426,32 +380,31 @@ const story = (
         </tbody>
       </table>
     </div>
-    <Callout kind="warning" title="Five lines of deterministic routing beat both learned fast paths">
+    <Callout kind="warning" title="the dumb baseline won by a lot">
       <p>
-        The keyword rule reached <strong>74.03%</strong>. Laya reached <strong>19.48%</strong>;
-        Julia reached <strong>10.39%</strong>. Julia also lost the binary delegate-gating task:
-        {pct(TR.delegate_gating.julia_accuracy, 2)} versus a {pct(TR.delegate_gating.majority_accuracy, 2)}
-        majority baseline.
+        keyword rule <strong>74.03%</strong>. laya <strong>19.48%</strong>. julia{" "}
+        <strong>10.39%</strong>. julia also lost the binary delegate gate:{" "}
+        {pct(TR.delegate_gating.julia_accuracy, 2)} vs {pct(TR.delegate_gating.majority_accuracy, 2)}
+        for the majority baseline.
       </p>
       <p>{TR.note}</p>
     </Callout>
 
-    <h2 id="decision-dataset">Julia reproduced; the missing capability is now instrumentation</h2>
+    <h2 id="decision-dataset">julia was not broken. honestly that made the result more useful.</h2>
     <p>
-      Before rejecting Julia, we fixed the adapter to render state exactly as Julia does. That
-      restored the publisher&apos;s typed CPU result exactly: <strong>
-        {JU.publisher_claim_reproduction.typed_cpu.correct}/{JU.publisher_claim_reproduction.typed_cpu.total}
-      </strong>. AG News also reproduced exactly at{" "}
-      <strong>{JU.publisher_claim_reproduction.ag_news.correct}/{JU.publisher_claim_reproduction.ag_news.total}</strong>.
-      The model is integrated faithfully; the negative result is about fit to z0&apos;s decisions,
-      not a broken adapter.
+      before throwing julia away, i fixed the adapter to render state exactly the way julia does.
+      typed cpu went back to <strong>{JU.publisher_claim_reproduction.typed_cpu.correct}/
+      {JU.publisher_claim_reproduction.typed_cpu.total}</strong>, exactly matching the publisher.
+      ag news reproduced too at <strong>{JU.publisher_claim_reproduction.ag_news.correct}/
+      {JU.publisher_claim_reproduction.ag_news.total}</strong>.
     </p>
     <p>
-      Confidence did not rescue it. On authored144, Julia&apos;s inference-time uncertainty
-      AUROCs sit around chance ({n(JU.selective_risk.authored144_auroc.p1, 3)} p1;{" "}
-      {n(JU.selective_risk.authored144_auroc.entropy, 3)} entropy), and coverage at a ≤10% empirical
-      error budget was only <strong>{pct(JU.selective_risk.coverage_at_le_10pct_error.authored144, 2)}</strong>.
-      {JU.selective_risk.note}.
+      so this is not “oops the adapter was bad.” the model is integrated faithfully. it just does
+      not fit this decision domain. confidence did not save it either: authored144 uncertainty
+      aurocs sit around chance ({n(JU.selective_risk.authored144_auroc.p1, 3)} p1,{" "}
+      {n(JU.selective_risk.authored144_auroc.entropy, 3)} entropy), with only{" "}
+      <strong>{pct(JU.selective_risk.coverage_at_le_10pct_error.authored144, 2)}</strong> coverage
+      at the ≤10% error budget. {JU.selective_risk.note}.
     </p>
     <MetricRow
       items={[
@@ -462,11 +415,11 @@ const story = (
       ]}
     />
     <p>
-      Decision Dataset v2 reconstructs per-turn state from OMP transcripts and pairs each tool call
-      to its real <code>toolResult</code> by id. Four target capabilities now have enough
-      outcome-backed rows to study: <code>{DD.milestone.reachable.join(", ")}</code>.
+      decision dataset v2 rebuilds per-turn state from omp transcripts and pairs each tool call to
+      its real <code>toolResult</code>. four capabilities already have enough outcome-backed rows:
+      <code>{DD.milestone.reachable.join(", ")}</code>.
     </p>
-    <Callout kind="info" title="The fifth capability is a recording gap">
+    <Callout kind="info" title="the fifth capability is not a modeling problem yet">
       <p>{DD.milestone.verdict}.</p>
       <p>
         <code>verification_needed</code>: {DD.milestone.missing.verification_needed}.{" "}
@@ -475,18 +428,24 @@ const story = (
       <p>{DD.privacy}.</p>
     </Callout>
 
-    <h2 id="route-demo">What would z0 route this task to?</h2>
-    <p>{RD.caption}</p>
-    <CapabilityMap functions={routeEntries} caption="Frozen decisions transcribed from the measured cohorts. Status is the evidence level, not a confidence score." />
+    <h2 id="route-demo">so what would z0 actually do?</h2>
+    <p>
+      pick a task shape and this shows the route the frozen cohort actually produced, plus the
+      reason it recorded. no imaginary “ideal router” in this widget.
+    </p>
+    <CapabilityMap
+      functions={routeEntries}
+      caption="frozen decisions from the measured cohorts. the status is evidence level, not a vibes score."
+    />
   </>
 );
 
 const explore = (
   <>
-    <h2 id="explore-tables">Exact tables</h2>
+    <h2 id="explore-tables">show me the tables</h2>
 
     <div className="explore-block">
-      <h3>Verifier quality</h3>
+      <h3>did the verifier actually hold up?</h3>
       <div className="x-table-wrap">
         <table className="x-table">
           <caption>authored144 — recomputed from the raw per-example file</caption>
@@ -574,7 +533,7 @@ const explore = (
     </div>
 
     <div className="explore-block">
-      <h3>Delegation cohorts</h3>
+      <h3>the delegation runs</h3>
       <div className="x-table-wrap">
         <table className="x-table">
           <caption>Cerebras qwen-3.8-27b · reasoning_effort=none · 30 repeats each of two tasks</caption>
@@ -657,7 +616,7 @@ const explore = (
     </div>
 
     <div className="explore-block">
-      <h3>Harness route matrix</h3>
+      <h3>who actually ran what?</h3>
       <div className="x-table-wrap">
         <table className="x-table">
           <caption>Four concurrent HTTP clients. Labels are clients, not claims of installed integration.</caption>
@@ -687,7 +646,7 @@ const explore = (
       </div>
     </div>
 
-    <h2 id="claims">Claim status</h2>
+    <h2 id="claims">what can i actually claim?</h2>
     <p>
       Every claim carries its evidence level. <strong>UNKNOWN</strong> is a first-class value: it
       means we did not reproduce the evidence, not that the number is small.
@@ -717,7 +676,7 @@ const explore = (
       </table>
     </div>
 
-    <h2 id="methods">Methodology</h2>
+    <h2 id="methods">how i measured this</h2>
     <div className="x-table-wrap">
       <table className="x-table">
         <thead>
@@ -739,14 +698,14 @@ const explore = (
       </table>
     </div>
 
-    <h2 id="limitations">Limitations</h2>
+    <h2 id="limitations">where this could still be wrong</h2>
     <ul>
       {EX.limitations.map((l) => (
         <li key={l}>{l}</li>
       ))}
     </ul>
 
-    <h2 id="sources">Sources &amp; receipts</h2>
+    <h2 id="sources">source pins + receipts</h2>
     <div className="x-table-wrap">
       <table className="x-table">
         <caption>Pinned revisions</caption>

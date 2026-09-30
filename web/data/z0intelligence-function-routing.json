@@ -1,84 +1,84 @@
 {
   "meta": {
     "slug": "z0intelligence-function-routing",
-    "title": "From Model Routing to Evidence-Backed Function Routing",
-    "subtitle": "Eight days of measurements on Jev, Julia, image decisions, real-trace routing, provider execution, and what should stay deterministic.",
-    "author": "Zer0 Research",
-    "date": "September 29, 2026",
+    "title": "what actually deserves a model?",
+    "subtitle": "we kept trying to make routing smarter. the useful part was figuring out which decisions should not be model problems at all.",
+    "author": "zer0 research",
+    "date": "september 29, 2026",
     "status": "evidence-mixed",
-    "lede": "We spent five days trying to make z0intelligence pick the right model or function automatically. Most of the value came from things that turned out to be wrong.",
+    "lede": "we spent a week trying to make automatic routing smarter. the funniest result was how often the dumb deterministic thing won.",
     "banner": {
-      "tag": "UPDATED SEPT 29 — MEASURED + BOUNDED EVIDENCE",
-      "text": "The routing/authority layer is now canonical in z0intelligence. Jev capability numbers are reproduced from raw evidence; Julia and trace-routing results are from canonical measured commits; provider caps remain POLICY INPUTS; cross-harness unified-memory results are tracked separately and are still incomplete."
+      "tag": "mixed evidence · some stuff worked, some stuff got wrecked",
+      "text": "jev held up. nanojev got exposed. julia reproduced and still lost on the real routing task. the provider path physically ran. delegation did not save parent work. the memory result lives in its own post."
     },
     "toc": [
       {
         "id": "green",
-        "label": "Everything was green"
+        "label": "everything was green. bad sign."
       },
       {
         "id": "nanojev",
-        "label": "NanoJev autopsy"
+        "label": "nanojev took the wrong test"
       },
       {
         "id": "jev",
-        "label": "The real model"
+        "label": "jev actually held up"
       },
       {
         "id": "capability",
-        "label": "Function capability map"
+        "label": "stop asking which model is best"
       },
       {
         "id": "image-decisions",
-        "label": "Image decisions"
+        "label": "the image lane is real"
       },
       {
         "id": "measurement-state",
-        "label": "Measurement provenance"
+        "label": "token counts need provenance too"
       },
       {
         "id": "providers",
-        "label": "Providers & saturation"
+        "label": "prove the worker actually ran"
       },
       {
         "id": "freetier",
-        "label": "Free tier & k8s"
+        "label": "free is not an architecture"
       },
       {
         "id": "cerebras",
-        "label": "Cerebras: no savings"
+        "label": "cerebras was good. delegation lost."
       },
       {
         "id": "trace-routing",
-        "label": "Real traces: deterministic wins"
+        "label": "five dumb rules beat the routers"
       },
       {
         "id": "decision-dataset",
-        "label": "Decision Dataset v2"
+        "label": "julia was not broken"
       },
       {
         "id": "route-demo",
-        "label": "What would it route?"
+        "label": "so what would z0 do?"
       },
       {
         "id": "explore",
-        "label": "Explore: data & receipts"
+        "label": "show me the receipts"
       },
       {
         "id": "claims",
-        "label": "Claim status"
+        "label": "what we can actually claim"
       },
       {
         "id": "methods",
-        "label": "Methods"
+        "label": "how we measured it"
       },
       {
         "id": "limitations",
-        "label": "Limitations"
+        "label": "what this does not prove"
       },
       {
         "id": "sources",
-        "label": "Sources & receipts"
+        "label": "receipts + source pins"
       }
     ]
   },

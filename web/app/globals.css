@@ -908,8 +908,9 @@ figcaption .fig-n { font-family: var(--font-mono); color: var(--color-sb-seconda
   padding: 6px 9px;
   border-radius: var(--radius-md);
   white-space: nowrap;
-  animation: tooltipFade 1.5s ease-out forwards;
+  animation: none;
 }
+.chart-svg .mark:focus { opacity: .72; outline: none; }
 
 /* -------------------------------------------------- family board (dense) */
 /* Six columns: family · receipts · success · p50 · sparkline · solved.
@@ -1594,4 +1595,54 @@ figcaption .fig-n { font-family: var(--font-mono); color: var(--color-sb-seconda
   }
   .rt-admission { padding: var(--space-3); }
   .rt-admission-legend { gap: var(--space-2) var(--space-4); }
+}
+
+
+/* the newer research posts intentionally inherit the original phase-1b voice. */
+.story-shell,
+.story-shell * {
+  text-transform: lowercase !important;
+}
+.story-shell code,
+.story-shell pre,
+.story-shell pre *,
+.story-shell .x-receipts code {
+  text-transform: none !important;
+}
+
+/* dense phase-1b matrices should scroll on a phone instead of becoming ant-sized. */
+.heatmap-scroll {
+  width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+@media (max-width: 600px) {
+  .heatmap-svg {
+    min-width: 760px;
+  }
+}
+.empty-state {
+  padding: var(--space-5);
+  border: 1px dashed var(--color-sb-border);
+  color: var(--color-sb-text-muted);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+}
+
+
+/* small-screen interaction polish for the original phase-1b explorer. */
+@media (max-width: 600px) {
+  .chart-tabs button,
+  .quietButton {
+    min-height: 36px;
+    padding: 6px 10px;
+  }
+  .scrubRow {
+    flex-wrap: wrap;
+  }
+  .article-meta {
+    overflow-wrap: anywhere;
+  }
 }

@@ -109,12 +109,21 @@ export default function Calibration({ rows, threshold = 0.5 }: {
         </text>
 
         {bees.map(({ r, cx, cy }, i) => (
-          <circle key={`${r.stateId}-${r.arm}-${i}`} className="mark"
-                  cx={cx} cy={cy} r="2.6"
-                  fill={r.correct ? "#29916e" : "#b91c1c"}
-                  style={{ opacity: shown ? 0.85 : 0, transition: `opacity .5s ease ${Math.min(i, 60) * 8}ms` }}
-                  onMouseEnter={() => setHover({ x: cx, y: cy, r })}
-                  onMouseLeave={() => setHover(null)} />
+          <circle
+            key={`${r.stateId}-${r.arm}-${i}`}
+            className="mark"
+            tabIndex={0}
+            aria-label={`${r.stateId}, ${r.arm}, confidence ${r.confidence.toFixed(3)}, ${r.correct ? "correct" : "wrong"}`}
+            cx={cx}
+            cy={cy}
+            r="2.6"
+            fill={r.correct ? "#29916e" : "#b91c1c"}
+            style={{ opacity: shown ? 0.85 : 0, transition: `opacity .5s ease ${Math.min(i, 60) * 8}ms` }}
+            onMouseEnter={() => setHover({ x: cx, y: cy, r })}
+            onMouseLeave={() => setHover(null)}
+            onFocus={() => setHover({ x: cx, y: cy, r })}
+            onBlur={() => setHover(null)}
+          />
         ))}
 
         {[0, 0.25, 0.5, 0.75, 1].map((t) => (
