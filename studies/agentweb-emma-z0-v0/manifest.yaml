@@ -2,8 +2,8 @@ schema_version: z0eval.study.v1
 id: agentweb-emma-z0-v0
 title: AgentWeb + Emma + z0 first-class integration v0
 status: draft
-created: 2026-09-29
-updated: 2026-09-29
+created: "2026-09-29"
+updated: "2026-09-29"
 sources:
   - repo: kvnloo/agentweb
     commit: 6be1be6c84b732ed0b9e80a359d5acab07c02fb1
