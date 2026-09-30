@@ -40,3 +40,82 @@ A promotion candidate must have all safety scenarios passing. In particular:
 - observational ReliabilityEvent data never mints verified-quality gold.
 
 Only after those pass do latency, token reduction and quality parity count toward promotion.
+
+
+## Bounded decision campaigns
+
+The first two measured decision seams deliberately keep AgentWeb's incumbent
+behavior authoritative. z0 executes only the paired shadow decision and owns its
+trace, physical-call idempotency and receipt.
+
+### report_type_v1
+
+Corpus: `report-type-fixtures.jsonl` — 30 authored cases, balanced 10/10/10
+across creative, performance and research.
+
+From the AgentWeb lab branch:
+
+```bash
+cd backend
+Z0INT_AGENTWEB_MODE=shadow \
+Z0INT_REPORT_CLASSIFY_ALLOW_REMOTE=1 \
+npm run study:z0-report-type -- \
+  /path/to/z0evals/studies/agentweb-emma-z0-v0/report-type-fixtures.jsonl \
+  /tmp/agentweb-report-type-results.jsonl
+```
+
+The z0intelligence authority must independently opt in with
+`Z0INT_EXPERIMENTAL_JEV_SHADOW=1`.
+
+Score:
+
+```bash
+python scripts/score_agentweb_report_type.py \
+  /tmp/agentweb-report-type-results.jsonl
+```
+
+The authored set is a regression/design corpus only. Review eligibility remains
+false until at least 1,000 paired live decisions satisfy the scorer's coverage,
+quality, receipt, non-application and latency gates.
+
+### stop_request_v1
+
+Corpus: `stop-request-fixtures.jsonl` — 40 cases: 20 explicit stops and 20
+adversarial non-stops, including negation, quotations, code/process stop
+conditions and changed-mind phrasing.
+
+From the AgentWeb lab branch:
+
+```bash
+cd backend
+Z0INT_AGENTWEB_MODE=shadow \
+Z0INT_STOP_REQUEST_ALLOW_REMOTE=1 \
+npm run study:z0-stop-request -- \
+  /path/to/z0evals/studies/agentweb-emma-z0-v0/stop-request-fixtures.jsonl \
+  /tmp/agentweb-stop-request-results.jsonl
+```
+
+Score:
+
+```bash
+python scripts/score_agentweb_stop_request.py \
+  /tmp/agentweb-stop-request-results.jsonl
+```
+
+Candidate future assist bands are `P(stop) >= 0.90` and `P(stop) <= 0.10`,
+but the shadow path never applies either band. Review requires at least 1,000
+paired live decisions, at least 200 explicit stops, >=99.5% precision in the
+high-stop band, and zero explicit stops in the high-continue band.
+
+## Reliability observation lane
+
+When AgentWeb enables `Z0INT_AGENTWEB_OBSERVE=shadow`, both live Emma and
+external-MCP dispatch boundaries emit metadata-only ReliabilityEvents to
+z0intelligence. The exporter is default-off, fail-open, capped at 16 in-flight
+requests and uses a short timeout.
+
+The z0 endpoint accepts only the privacy-minimized projection: pseudonymous
+session identity, bounded tool name/platform/outcome/latency, partial measurement
+state and no user id, prompt, tool args/results, free-form error text or verified
+quality signal. Duplicate identical observations replay; changed payloads under
+the same observation id are rejected.
