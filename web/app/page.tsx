@@ -95,6 +95,7 @@ export default function Page() {
             <div className="links">
               <a href="./" aria-current="page">phase 1b</a>
               <a href="./z0intelligence-function-routing/">routing</a>
+              <a href="./researching-the-frontier/">research</a>
               <a href="./unified-memory-v0/">memory</a>
               <a href="https://github.com/kvnloo/z0evals">github</a>
             </div>
@@ -121,15 +122,16 @@ export default function Page() {
           <div className="article-body prose">
             <Callout kind="info" title="latest research · september 29">
               <p>
-                phase 1b is still the baseline story below. the newer mess lives in two places:{" "}
+                phase 1b is still the baseline story below. the newer experimental mess lives in{" "}
                 <a href="./z0intelligence-function-routing/">what actually deserves a model?</a>
                 {" "}and{" "}
                 <a href="./unified-memory-v0/">can four agents remember the same thing?</a>.
               </p>
               <p>
-                short version: the dumb routing baseline beat the learned fast paths, and the
-                memory work got one really good omp context result without magically becoming a
-                four-harness win.
+                the theory and paper trail now live separately in{" "}
+                <a href="./researching-the-frontier/">how do you learn the frontier fast?</a>.
+                it traces how the research, failed hypotheses, and evals changed our mental model
+                of classifiers, routing, calibration, conditional compute, and tiny specialists.
               </p>
             </Callout>
 
