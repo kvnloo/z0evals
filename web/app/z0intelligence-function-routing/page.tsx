@@ -176,13 +176,17 @@ const story = (
       <p>{N.boolean_defect.why}</p>
       <p><strong>{N.boolean_defect.consequence}.</strong></p>
     </Callout>
-    <p><strong>{N.lesson}</strong></p>
+    <p><strong>fast is not the same as trained for the job.</strong> an interface can fit perfectly while the capability underneath it is totally wrong.</p>
     <MarginNote n={1} label="trainer not located">
       {N.trainer_location}.
     </MarginNote>
 
     <h2 id="jev">jev was the part that actually survived</h2>
-    <p>{J.proxy_correction}</p>
+    <p>
+      also, the first “reproduction” was not really a reproduction. we had tested proxy models
+      instead of the model from the paper. reproducing a different system very carefully is still
+      reproducing a different system.
+    </p>
     <MetricReveal
       stages={jevStages}
       caption="recomputed from the raw per-example capability-evidence file. not copied from a nice-looking summary number."
@@ -202,7 +206,11 @@ const story = (
       <p>{jbg.disclosure}</p>
       <p>gold ids present: <code>{jbg.gold_ids_present.join(", ")}</code>.</p>
     </Callout>
-    <p>{J.abandoned_target.text}</p>
+    <p>
+      i also dropped the original 146:4 abstention slice as the main target. it is not in this
+      checkout, and with a 97% majority class the headline accuracy mostly tells you the majority
+      class exists. not super helpful for the three-way runtime contract we actually route on.
+    </p>
 
     <h2 id="capability">i stopped asking which model is best</h2>
     <p>
@@ -213,7 +221,10 @@ const story = (
       now z0intelligence asks the smaller question: <strong>what implementation has evidence for
       this exact job?</strong>
     </p>
-    <CapabilityMap functions={capabilityEntries} caption={CM.caption} />
+    <CapabilityMap
+      functions={capabilityEntries}
+      caption="same idea everywhere: do not ask which model wins globally. ask what has evidence for this exact job."
+    />
 
     <h2 id="image-decisions">the image lane is real. the benchmark win is extremely not real.</h2>
     <p>
@@ -236,13 +247,13 @@ const story = (
     <h2 id="measurement-state">a token count needs a provenance tag too</h2>
     <p>
       another stupid bug class: counting the last assistant message and calling it the whole run.
-      the omp bridge now carries provider usage across turns instead. {MP.provider_usage.behavior}.{" "}
-      {MP.provider_usage.complete_rule}.
+      omp now accumulates provider-reported input/output usage across the whole trace, and it only
+      gets to say <code>complete</code> when every observed turn actually carried provider usage.
     </p>
     <Callout kind="info" title="complete and partial are not synonyms">
-      <p>{MP.provider_usage.fallback}.</p>
-      <p>{MP.provider_usage.proof}.</p>
-      <p>{MP.tokenomics.behavior}. {MP.tokenomics.rule}.</p>
+      <p>missing provider usage stays partial. the char-count fallback stays labeled as a proxy.</p>
+      <p>the two-turn proof closes at 21 tokens: 10+2, then 7+2.</p>
+      <p>that measurement state also survives into tokenomics instead of getting quietly upgraded later.</p>
     </Callout>
 
     <h2 id="providers">routing is boring until you prove the worker actually ran</h2>
@@ -252,7 +263,11 @@ const story = (
       work across {PR.batch.physical_attempts} attempts, with {PR.batch.successful_fallbacks} real
       fallbacks. that is the number i care about now, not just “router said provider x.”
     </p>
-    <RoutingTrace providers={providerRows} admission={admission} caption={PR.caption} />
+    <RoutingTrace
+      providers={providerRows}
+      admission={admission}
+      caption="six providers physically did work. the cap numbers are policy inputs; only the 32-admission test is measured here."
+    />
     <p>
       we also forced a real failure. an invalid groq credential produced{" "}
       <strong>{PR.fallback_proof.observed}</strong>. {PR.fallback_proof.also}.
@@ -270,7 +285,10 @@ const story = (
     </Callout>
 
     <h2 id="freetier">free is nice. free is also not an architecture.</h2>
-    <p>{FT.caption}</p>
+    <p>
+      the free path is intentionally boring: compiled python route, one authority, one executor.
+      replay and conflict rejection were proven by replacing the pod instead of trusting an assertion.
+    </p>
     <MetricRow
       items={[
         { k: "provider / model", v: FT.execution.model.replace("nvidia/", ""), s: FT.execution.provider },
@@ -332,7 +350,10 @@ const story = (
         <strong>+{cbe1.delta.toFixed(1)}</strong> [{cbe1.lo.toFixed(1)}, {cbe1.hi.toFixed(1)}].
       </p>
     </Callout>
-    <p><strong>{CB.hypothesis}</strong> {CB.next}</p>
+    <p>
+      <strong>the parent cannot save tokens if it still reads the whole original task plus a giant worker response.</strong>
+      the next thing to test is typed / compressed worker output, not just an even better worker model.
+    </p>
     <p>{CB.nemotron.note}</p>
     <MarginNote n={2} label="excluded cohort">{cbcoh0.why}</MarginNote>
     <MarginNote n={3} label="grading correction">{CB.grading_note} billing: {CB.billing}</MarginNote>
@@ -408,7 +429,10 @@ const story = (
     </Callout>
 
     <h2 id="route-demo">so what would z0 actually do?</h2>
-    <p>{RD.caption}</p>
+    <p>
+      pick a task shape and this shows the route the frozen cohort actually produced, plus the
+      reason it recorded. no imaginary “ideal router” in this widget.
+    </p>
     <CapabilityMap
       functions={routeEntries}
       caption="frozen decisions from the measured cohorts. the status is evidence level, not a vibes score."
