@@ -1,0 +1,45 @@
+{
+  "schema": "z0eval.agentweb_emma_z0_promotion_ladder.v1",
+  "evidence_classes": {
+    "contract": {
+      "can_satisfy_live_sample": false,
+      "can_inform_quality": false
+    },
+    "deterministic_e2e": {
+      "can_satisfy_live_sample": false,
+      "can_inform_quality": false
+    },
+    "model_backed_paired": {
+      "can_satisfy_live_sample": true,
+      "can_inform_quality": true
+    }
+  },
+  "capabilities": {
+    "report_type_v1": {
+      "current_stage": "model_backed_authored_pending",
+      "required_live_pairs": 1000,
+      "incumbent_remains_authoritative": true
+    },
+    "stop_request_v1": {
+      "current_stage": "model_backed_authored_pending",
+      "required_live_pairs": 1000,
+      "required_explicit_stops": 200,
+      "incumbent_remains_authoritative": true
+    },
+    "context_packet_v1": {
+      "current_stage": "deterministic_e2e_green",
+      "required_live_packets": 500,
+      "required_large_packets": 100,
+      "assist_enabled": false
+    },
+    "reliability_observation_v1": {
+      "current_stage": "deterministic_e2e_green",
+      "quality_authoritative": false
+    }
+  },
+  "global": {
+    "active_routing_enabled": false,
+    "upstream_promotion_allowed": false,
+    "aggregate_override_allowed": false
+  }
+}
