@@ -8,7 +8,8 @@ import CapabilityMap, { type CapabilityEntry } from "@/components/CapabilityMap"
 import RoutingTrace, { type ProviderRow, type AdmissionTest } from "@/components/RoutingTrace";
 import Callout from "@/components/Callout";
 import MetricRow from "@/components/MetricRow";
-import { MarginNote } from "@/components/Notes";\nimport ResearchDeepDive from "@/components/ResearchDeepDive";
+import { MarginNote } from "@/components/Notes";
+import ResearchDeepDive from "@/components/ResearchDeepDive";
 
 export const metadata: Metadata = {
   title: "what actually deserves a model? — z0evals",
@@ -212,7 +213,9 @@ const story = (
       class exists. not super helpful for the three-way runtime contract we actually route on.
     </p>
 
-    <ResearchDeepDive />\n\n    <h2 id="capability">i stopped asking which model is best</h2>
+    <ResearchDeepDive />
+
+    <h2 id="capability">i stopped asking which model is best</h2>
     <p>
       this was the architecture change. asking <em>which model is best?</em> is kind of a fake
       question. best at what? verification? tool choice? image choice? cheap worker stuff?
