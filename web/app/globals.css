@@ -1598,14 +1598,15 @@ figcaption .fig-n { font-family: var(--font-mono); color: var(--color-sb-seconda
 
 
 /* the newer research posts intentionally inherit the original phase-1b voice. */
-.story-shell {
-  text-transform: lowercase;
+.story-shell,
+.story-shell * {
+  text-transform: lowercase !important;
 }
 .story-shell code,
 .story-shell pre,
 .story-shell pre *,
 .story-shell .x-receipts code {
-  text-transform: none;
+  text-transform: none !important;
 }
 
 /* dense phase-1b matrices should scroll on a phone instead of becoming ant-sized. */
