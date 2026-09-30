@@ -1,0 +1,64 @@
+schema_version: z0eval.study.v1
+id: claude-code-savings-v0
+title: Where Claude Code tokens go, and which z0 levers actually save billed cost
+status: draft
+created: "2026-09-30"
+updated: "2026-09-30"
+
+evidence_status: local-runs-aggregated; raw run JSONL private (contains session ids and local paths)
+external_inference_spend_usd: null  # billed through the operator's Claude subscription; per-trial cost_usd is Claude Code's own reported total_cost_usd
+
+hardware:
+  host: mbp (MacBook Pro 2015, CachyOS)
+  cpu: Intel Core i7-4870HQ (4C/8T)
+  ram_gb: 15
+  gpu: AMD Radeon R9 M370X 2 GB (Vulkan; not used by these arms)
+
+harness:
+  name: Claude Code
+  version: 2.1.285
+  mode: headless (-p, --output-format json, bypassPermissions in throwaway dirs)
+  model: sonnet (claude-sonnet-5-5)
+  effort: low (short tasks), medium (long-horizon tasks)
+
+sources:
+  - repo: kvnloo/z0intelligence
+    commit: 2177fff
+    branch: feat/claude-code-harness
+    role: claude-code harness plugin, Tokenomics usage receipts, ObservationPack plugin, paired runner, pinned tasks
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: c4a4554
+    branch: master
+    role: pinned task fixture source (git archive at run time)
+
+questions:
+  - Where do billed Claude Code tokens go on short and long coding tasks (prefix, cache reads, tool output)?
+  - Does the per-session static prefix (user settings, skills, MCP) materially change billed cost?
+  - Does an immediate-pack ObservationPack port (after NVlabs/SoL-Pi) reduce billed cost at held quality?
+  - Can task-conditioned skill exposure hide prefix tokens without hiding a needed skill?
+
+artifacts:
+  - path: data/summary.json
+    kind: result
+    provenance: summarize.py over private run JSONL; aggregates only
+  - path: summarize.py
+    kind: analysis
+    provenance: public aggregation code
+
+limitations:
+  - Every trial in s1-lean-1 ran in a fresh directory, i.e. a cold session start; Claude Code's cross-session prefix cache is scoped to directory and startup git snapshot, so s1-lean-1 overstates the lean effect for repeated sessions in one directory. A warm-directory rerun is in progress.
+  - Small n (6-10 pairs per comparison, n=2-3 per cell); single model and effort per run; one host.
+  - The ObservationPack port packs immediately (Claude Code has no history-projection seam), unlike SoL-Pi's deferred replacement; it is a different mechanism from the paper's.
+  - suite-triage/suite-full truth depends on this environment's test failures; identical across arms.
+  - Tool-output replay attribution (attribute.py) is a chars/4 estimate used for locating savings, not a billing figure.
+
+claims:
+  - id: lean-prefix-cold-sessions
+    text: On cold sessions, removing user settings, MCP and skills cut billed cost a median 64.7% (10/10 pairs cheaper, sign p=0.002) with verified quality 10/10 in both arms; the mechanism is a fixed per-cold-session prefix write, not a per-task percentage.
+    evidence:
+      - data/summary.json
+  - id: obspack-null
+    text: The immediate-pack ObservationPack port showed no measurable billed-cost effect (paired medians -1.3% and +0.3%, sign p>=0.2) at unchanged quality; Claude Code already spills outputs over ~30k characters natively.
+    evidence:
+      - data/summary.json
