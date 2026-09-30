@@ -41,6 +41,10 @@ def main() -> int:
             "Long desktop TOCs must scroll inside the viewport", errors)
     require("grid-template-columns: 12px minmax(0, 1fr) auto;" in css,
             "Capability rows need a narrow-screen layout", errors)
+    require(".story-shell * {" in css and "text-transform: lowercase !important" in css,
+            "New research posts must keep the lowercase z0evals voice", errors)
+    require(".heatmap-svg" in css and "min-width: 760px" in css,
+            "The old post heatmap must stay readable on narrow screens", errors)
     require("@media (max-width: 1199px) {\n  .rail { display: none; }" not in css,
             "Desktop rail must not collapse to the mobile FAB at 1199px", errors)
 
@@ -87,10 +91,25 @@ def main() -> int:
     explorer = read("web/components/ResultsExplorer.tsx")
     require("<Heatmap matrix={scoped} />" in explorer,
             "Family filtering must apply to the heatmap", errors)
+    require("if (cur.length === 1) return cur;" in explorer,
+            "Replay controls must not allow every arm to disappear", errors)
 
     scrubber = read("web/components/ObservationScrubber.tsx")
     require("rate * st.n" in scrubber and "rate * 3" not in scrubber,
             "Split counts must use the actual measured repetition count", errors)
+    require("safeIndex" in scrubber and "states.length - 1" in scrubber,
+            "Filtered old-post scrubber must clamp its index", errors)
+
+    heatmap = read("web/components/Heatmap.tsx")
+    require('className="heatmap-scroll"' in heatmap and "heatmap-svg" in heatmap,
+            "Old-post heatmap must use the narrow-screen scroll surface", errors)
+
+    routing_page = read("web/app/z0intelligence-function-routing/page.tsx")
+    memory_page = read("web/app/unified-memory-v0/page.tsx")
+    require("everything was green. that was the problem." in routing_page,
+            "Routing story should use the informal lowercase voice", errors)
+    require("can four agents remember the same thing?" in memory_page,
+            "Memory story should use the informal lowercase voice", errors)
 
     notes = read("web/components/Notes.tsx")
     require("footnote = false" in notes and "fnref-" in notes,
