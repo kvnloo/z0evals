@@ -908,8 +908,9 @@ figcaption .fig-n { font-family: var(--font-mono); color: var(--color-sb-seconda
   padding: 6px 9px;
   border-radius: var(--radius-md);
   white-space: nowrap;
-  animation: tooltipFade 1.5s ease-out forwards;
+  animation: none;
 }
+.chart-svg .mark:focus { opacity: .72; outline: none; }
 
 /* -------------------------------------------------- family board (dense) */
 /* Six columns: family · receipts · success · p50 · sparkline · solved.
