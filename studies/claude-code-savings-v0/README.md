@@ -16,6 +16,7 @@ paired same-task arms, pinned sources, verifier-scored quality, Claude Code's ow
 | Model routing headroom (Haiku, pinned held-out, lean) | raw: 16/22 \$1.230 (worse *and* costlier than Sonnet); packet: 20/22 \$0.632 (-27%, -2 answers) | no router promoted; packet helps weaker model most |
 | ObservationPack, immediate pack (after SoL-Pi) — short tasks | billed cost -1.3% / +0.3% median, n.s.; pack rarely triggers | null |
 | ObservationPack — long recall task (n=12) | **-30.3% total, median -26.7%, Wilcoxon p=0.0068**, 12/12 verified both | promote for long sessions (opt-in) |
+| lean → lean + ObservationPack (long recall, n=6) | **-37.4% total, median -38.2%, 6/6 cheaper, Wilcoxon p=0.031**, 6/6 verified both | composes with lean |
 | Plugin usage receipts vs billed usage | exact on all four token fields after a SessionEnd sweep (Stop fires before the final message is written) | measurement fixed |
 
 ## Mechanism notes (measured)

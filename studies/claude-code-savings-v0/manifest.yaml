@@ -91,6 +91,10 @@ claims:
     text: On short tasks the immediate-pack ObservationPack port showed no measurable billed-cost effect (paired medians -1.3% and +0.3%, sign p>=0.2) at unchanged quality; the model self-truncates and Claude Code spills outputs over ~30k characters natively.
     evidence:
       - data/summary.json
+  - id: obspack-composes-with-lean
+    text: On the same long recall task, adding ObservationPack to the lean profile cut billed cost a further median 38.2% (total $1.399 to $0.876, 6/6 pairs cheaper, Wilcoxon p=0.031) with 6/6 verified in both arms, so ObservationPack composes with lean rather than overlapping it.
+    evidence:
+      - data/summary.json
   - id: obspack-long-sessions
     text: On a long-horizon recall task (12 full-file outputs, 8 over the pack threshold, then 7 detail questions without re-reading sources), ObservationPack cut total billed cost 30.3% ($4.159 to $2.900; median paired -26.7%, 9/12 cheaper, Wilcoxon p=0.0068) with 12/12 verified in both arms. The sample was extended after interim looks at n=3 and n=6; the p-value still clears 0.05/3.
     evidence:

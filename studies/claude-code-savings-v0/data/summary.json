@@ -450,6 +450,25 @@
     "cache_read_median_obspack": 134461,
     "note": "sample extended after interim looks at n=3 and n=6"
    }
+  },
+  {
+   "run": "s2-lean-obspack-recall",
+   "model": "sonnet",
+   "effort": "medium",
+   "task": "backend-review",
+   "paired": {
+    "baseline": "lean",
+    "treatment": "lean+obspack",
+    "n_pairs": 6,
+    "median_rel_cost": -0.382,
+    "total_cost_baseline": 1.399,
+    "total_cost_treatment": 0.876,
+    "treatment_cheaper": 6,
+    "wilcoxon_p": 0.03125,
+    "verified_baseline": "6/6",
+    "verified_treatment": "6/6",
+    "note": "cross-batch per-trial vs stock (s1-obspack-recall n=12): stock 0.347, lean 0.233, lean+obspack 0.146 (indicative only)"
+   }
   }
  ]
 }
