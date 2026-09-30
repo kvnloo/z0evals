@@ -32,6 +32,8 @@ jobs:
       - run: python scripts/build_site.py
       - run: test -f site/index.html
       - run: python scripts/build_site_data.py
+      - run: python scripts/build_agentweb_study_data.py
+      - run: git diff --exit-code -- web/data/agentweb-study.json
       - run: npm ci --no-audit --no-fund
         working-directory: web
       - run: npm run typecheck
@@ -39,4 +41,5 @@ jobs:
       - run: Z0_BASE_PATH=/z0evals npx next build
         working-directory: web
       - run: test -f web/out/index.html
+      - run: test -f web/out/agentweb/index.html
       - run: python scripts/audit_web_export.py --root web/out
