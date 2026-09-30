@@ -14,7 +14,8 @@ paired same-task arms, pinned sources, verifier-scored quality, Claude Code's ow
 | **Lean x State Packet (S2 composition)** | stock+raw \$1.773 15/20 -> lean+packet \$0.467 18/20 (**-74%**); factors multiply (packet 0.70, lean 0.38) | composes; dev set |
 | **Lean x State Packet, pinned held-out** | stock+raw \$2.186 21/22 -> lean+packet \$0.861 22/22 (**-61%**); predicted 0.404 vs observed 0.394 | composes on held-out; smaller than dev |
 | Model routing headroom (Haiku, pinned held-out, lean) | raw: 16/22 \$1.230 (worse *and* costlier than Sonnet); packet: 20/22 \$0.632 (-27%, -2 answers) | no router promoted; packet helps weaker model most |
-| ObservationPack, immediate pack (after SoL-Pi) | billed cost -1.3% / +0.3% median, n.s.; pack rarely triggers (model self-truncates; native spill >~30k) | null at this scale |
+| ObservationPack, immediate pack (after SoL-Pi) — short tasks | billed cost -1.3% / +0.3% median, n.s.; pack rarely triggers | null |
+| ObservationPack — long recall task (n=12) | **-30.3% total, median -26.7%, Wilcoxon p=0.0068**, 12/12 verified both | promote for long sessions (opt-in) |
 | Plugin usage receipts vs billed usage | exact on all four token fields after a SessionEnd sweep (Stop fires before the final message is written) | measurement fixed |
 
 ## Mechanism notes (measured)
