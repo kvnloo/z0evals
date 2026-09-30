@@ -96,6 +96,7 @@ def analyze(matrix):
         'independent_outcome': {'verifier_identity': None, 'available': False},
         'split': {'group_key': 'state_id', 'work_item_lineage': None, 'training_evaluation_fold': None},
         'contrasts': contrasts,
+        'unpaired_arms': sorted(set(arms) - {arm for row in contrasts for arm in row['arms']}),
         'limitations': [
             'Source correct flags are labels, not independently verified task outcomes.',
             'Compiler/unfiltered arms are descriptive contrasts; random assignment and matched attempt counterfactuals are not established.',

@@ -6,7 +6,7 @@ Issue: https://github.com/kvnloo/z0evals/issues/75
 
 **Attribution remains unresolved.** The existing Phase 1B publication contains enough data for four same-model compiler/unfiltered descriptive contrasts, but not for an independent verified-outcome causal study. This audit does not run an experiment or promote any runtime policy.
 
-All four contrasts cover exactly the same 28 state IDs. Each state's repeated attempts stay together and contribute one equally weighted state mean; 84 attempts are not 84 independent work items. A missing arm/state or duplicate state is an error, rather than permission to select a favorable intersection.
+All four contrasts cover exactly the same 28 state IDs. Each state's repeated attempts stay together and contribute one equally weighted state mean; 84 attempts are not 84 independent work items. Within each paired comparison, a missing arm/state or duplicate state is an error, rather than permission to select a favorable intersection. Entirely unpaired arms are explicitly listed in `unpaired_arms`; they are not silently dropped or treated as compared.
 
 Source-reported correctness differences (compiler minus unfiltered):
 

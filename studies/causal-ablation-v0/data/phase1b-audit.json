@@ -418,5 +418,10 @@
     "training_evaluation_fold": null,
     "work_item_lineage": null
   },
-  "supports_causal_credit": false
+  "supports_causal_credit": false,
+  "unpaired_arms": [
+    "compiler+functiongemma_270m",
+    "compiler+hammer2.1_7b",
+    "compiler+jev"
+  ]
 }

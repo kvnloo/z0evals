@@ -51,6 +51,16 @@ class CausalAblationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'same groups'):
             causal.analyze(changed)
 
+    def test_wholly_unpaired_arms_are_reported_not_silently_dropped(self):
+        changed = cohort()
+        for state in changed['states']:
+            state['arms']['compiler+other'] = copy.deepcopy(state['arms']['compiler+model'])
+            state['arms']['unfiltered+other'] = copy.deepcopy(state['arms']['unfiltered+model'])
+            del state['arms']['unfiltered+model']
+        report = causal.analyze(changed)
+        self.assertEqual(report['unpaired_arms'], ['compiler+model'])
+        self.assertEqual([row['model'] for row in report['contrasts']], ['other'])
+
     def test_duplicate_groups_are_rejected(self):
         changed = cohort()
         changed['states'].append(copy.deepcopy(changed['states'][0]))

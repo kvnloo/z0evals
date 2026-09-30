@@ -13,10 +13,10 @@ questions:
 artifacts:
 - path: README.md
   kind: analysis
-  sha256: 8b316fe7e6aca8a0a1fe5d55cab685b15d884fb04219512d8e294340e18e9f80
+  sha256: cfc8f7a484e1e312f88c07bc98af734a8f656b9f4548755330fc82574f3ab1c7
 - path: data/phase1b-audit.json
   kind: result
-  sha256: 2c4b4d7e3d9adaeb0010c37021d862398e3a2e5026086fee1438e17156dffb76
+  sha256: a63a049013431d0ab71cba392bfa6ecedd4c3f8322dcb5b34e7ed165348667d1
 limitations:
 - No new experiment or independently verified outcome; attribution remains unresolved.
 - Original runtime source/configuration pins, label generator, verifier identity,
