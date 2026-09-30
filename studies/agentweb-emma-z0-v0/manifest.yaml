@@ -6,11 +6,11 @@ created: "2026-09-29"
 updated: "2026-09-29"
 sources:
   - repo: kvnloo/agentweb
-    commit: c01f0e2fcb1f211406286970ad5d3319812fcaa7
+    commit: 707e8cb8ebc22c0e2afe4593e32e3ee24a0a9ad2
     branch: lab/z0-agentweb-emma-v0
     role: Emma adapter, tool surface, privacy projection
   - repo: kvnloo/z0intelligence
-    commit: 3244e8e4f5dd06657259ac636f4c7fdd16c93e0c
+    commit: 4fe232144ce4809c983ed21b249ee7ced1346ce1
     branch: lab/agentweb-emma-v0
     role: routing, dispatch authority, receipts, shadow planner
 questions:
