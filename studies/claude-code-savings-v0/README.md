@@ -8,7 +8,7 @@ paired same-task arms, pinned sources, verifier-scored quality, Claude Code's ow
 
 | lever | result | status |
 | --- | --- | --- |
-| Per-session static prefix (user settings + skills + MCP) | 30.6k -> 15.6k prefix tokens; cold-session billed cost -64.7% median (10/10 pairs) at equal quality | real, but a **fixed per-cold-session** saving (~12-18k cache-write tokens); warm-dir rerun pending |
+| Per-session static prefix (user settings + skills + MCP) | 30.6k -> 15.6k prefix tokens; cold-session billed cost -64.7% median (10/10 pairs) at equal quality | cold -63.8% (5/5); **warm -27.2% median (15/15)** at equal quality; cold start itself costs ~3x warm |
 | Task-conditioned skill exposure (`skillOverrides: user-invocable-only`) | hiding 45 user skills: -5.7k prefix tokens; lexical selector 3/30 recall failures | not promoted; semantic selector under test |
 | ObservationPack, immediate pack (after SoL-Pi) | billed cost -1.3% / +0.3% median, n.s.; pack rarely triggers (model self-truncates; native spill >~30k) | null at this scale |
 | Plugin usage receipts vs billed usage | exact on all four token fields after a SessionEnd sweep (Stop fires before the final message is written) | measurement fixed |

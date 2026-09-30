@@ -23,7 +23,7 @@ harness:
 
 sources:
   - repo: kvnloo/z0intelligence
-    commit: 2177fff
+    commit: 11a943b
     branch: feat/claude-code-harness
     role: claude-code harness plugin, Tokenomics usage receipts, ObservationPack plugin, paired runner, pinned tasks
     visibility: pushed
@@ -47,7 +47,7 @@ artifacts:
     provenance: public aggregation code
 
 limitations:
-  - Every trial in s1-lean-1 ran in a fresh directory, i.e. a cold session start; Claude Code's cross-session prefix cache is scoped to directory and startup git snapshot, so s1-lean-1 overstates the lean effect for repeated sessions in one directory. A warm-directory rerun is in progress.
+  - Every trial in s1-lean-1 ran in a fresh directory, i.e. a cold session start; Claude Code's cross-session prefix cache is scoped to directory and startup git snapshot, so s1-lean-1 overstates the lean effect for repeated sessions in one directory. s1-lean-warm-1 separates cold (rep 0) and warm (reps 1-3) sessions in persistent directories reset between reps.
   - Small n (6-10 pairs per comparison, n=2-3 per cell); single model and effort per run; one host.
   - The ObservationPack port packs immediately (Claude Code has no history-projection seam), unlike SoL-Pi's deferred replacement; it is a different mechanism from the paper's.
   - suite-triage/suite-full truth depends on this environment's test failures; identical across arms.
@@ -56,6 +56,14 @@ limitations:
 claims:
   - id: lean-prefix-cold-sessions
     text: On cold sessions, removing user settings, MCP and skills cut billed cost a median 64.7% (10/10 pairs cheaper, sign p=0.002) with verified quality 10/10 in both arms; the mechanism is a fixed per-cold-session prefix write, not a per-task percentage.
+    evidence:
+      - data/summary.json
+  - id: lean-prefix-warm-sessions
+    text: With a warm per-directory cache, removing user settings, MCP and skills still cut billed cost a median 27.2% on short tasks (15/15 pairs cheaper, range -16% to -50%) at equal verified quality (20/20 both arms), via fewer cache-read tokens per request.
+    evidence:
+      - data/summary.json
+  - id: cold-start-premium
+    text: A cold session start (fresh directory or changed startup git snapshot) cost ~3x a warm one for stock Claude Code on these short tasks (median $0.126 vs $0.0425), so fresh-worktree agent fleets pay a large fixed premium per session.
     evidence:
       - data/summary.json
   - id: obspack-null
