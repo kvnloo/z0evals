@@ -245,6 +245,8 @@ def main() -> None:
     assert ladder["evidence_classes"]["contract"]["can_inform_quality"] is False
     assert ladder["evidence_classes"]["deterministic_e2e"]["can_inform_quality"] is False
     assert ladder["evidence_classes"]["model_backed_paired"]["can_inform_quality"] is True
+    assert ladder["evidence_classes"]["provider_emulated_e2e"]["can_satisfy_live_sample"] is False
+    assert ladder["evidence_classes"]["provider_emulated_e2e"]["can_inform_quality"] is False
     assert ladder["capabilities"]["context_packet_v1"]["assist_enabled"] is False
     assert ladder["capabilities"]["reliability_observation_v1"]["quality_authoritative"] is False
     assert ladder["capabilities"]["report_type_v1"]["required_live_pairs"] == 1000
