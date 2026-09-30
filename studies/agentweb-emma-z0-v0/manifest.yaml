@@ -1,0 +1,30 @@
+schema_version: z0eval.study.v1
+id: agentweb-emma-z0-v0
+title: AgentWeb + Emma + z0 first-class integration v0
+status: draft
+created: 2026-09-29
+updated: 2026-09-29
+sources:
+  - repo: kvnloo/agentweb
+    commit: 2351711dc4d4842eb691ce0531fb10f6f6bcb41a
+    branch: lab/z0-agentweb-emma-v0
+    role: Emma adapter, tool surface, privacy projection
+  - repo: kvnloo/z0intelligence
+    commit: 7130c9c32e510b938ae12b35879f6f856d7b466d
+    branch: lab/agentweb-emma-v0
+    role: routing, dispatch authority, receipts, shadow planner
+questions:
+  - Does the integration preserve identity, retry, privacy, remote-context, free-only, and AgentWeb safety invariants?
+  - Does z0-owned JEV preserve incumbent behavior on the frozen eligible decision slice?
+  - Which tasks produce measurable latency or token benefit without a quality regression?
+  - Which failure modes remain unknown and require reconciliation rather than retry?
+artifacts:
+  - path: scenarios.jsonl
+    kind: fixture
+  - path: receipt.schema.json
+    kind: fixture
+limitations:
+  - No live benchmark results are claimed by this scaffold.
+  - Emma and AgentWeb production writes are outside the v0 experiment; tests are shadow, mocked, sandboxed, or read-only until explicitly promoted.
+  - Transport success and completed tool calls are not quality labels.
+claims: []
