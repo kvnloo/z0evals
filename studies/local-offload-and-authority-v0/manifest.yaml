@@ -1,0 +1,203 @@
+schema_version: z0eval.study.v1
+id: local-offload-and-authority-v0
+title: A local offload tier, a learned router, and where the authority gate belongs
+status: draft
+created: "2026-09-30"
+updated: "2026-09-30"
+
+evidence_status: pre-registered-local-runs-aggregated; per-item rows, transcripts, commands and gold labels private (contain prompts, paths and hosts)
+external_inference_spend_usd: 0.0  # every model call in this study ran on local hardware; effect/authority gold labels were written by LLM agents on the operator's subscription (not metered here)
+
+hardware:
+  offload_host:
+    name: groot
+    gpu: NVIDIA RTX 3080 Ti
+    vram_gb: 12
+    server: llama.cpp b11270, CUDA 13.3 (sm_86), router mode, --reasoning off; GPU shared with an unrelated Ollama instance
+  client_host:
+    name: mbp (MacBook Pro 2015, CachyOS)
+    cpu: Intel Core i7-4870HQ (4C/8T)
+    ram_gb: 15
+    gpu: AMD Radeon R9 M370X 2 GB (Vulkan; the host's own local model)
+
+sources:
+  - repo: kvnloo/z0intelligence
+    commit: 12085dddd4d01b7e6e22d2165640a087662a5818
+    branch: feat/groot-offload-provider
+    role: evidence_sufficiency bench driver (benchmarks/local_evidence_sufficiency.py) with llama_http arms and confident-error count; frozen set benchmarks/data/authored144.jsonl (sha256 8162d1c7...e079)
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: 8053faaeda4359621de8b82ad6a1db2a93905329
+    branch: feat/groot-offload-provider
+    role: host-defined keyless local providers as the OFFLOAD tier (whitelisted keys, capped, $0 route still needs the evidence sha256 check, no remote fallback)
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: b0724680bc7858ac872bd25c72ff8944322c6094
+    branch: integrate/claude-code-z0-stack
+    role: host-chosen local_order for local-only work (follow-up to the orchestrator-router host-ordering finding)
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: 1302c3a7cd30298d8e7efc5d3e92b76f446a9f31
+    branch: exp/orchestrator-router-v0
+    role: pre-registration, Nemotron-Orchestrator-8B shadow router (benchmarks/orchestrator_router/PREREG.md)
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: eb7c7d323c29cb6d647db57589804be073528a3e
+    branch: exp/orchestrator-router-v0
+    role: orchestrator-router results (results_v0.json, raw_v0.jsonl, vram_v0.json, PREREG.md results addendum)
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: d651753f99199541d63f735d5c7b0f7ce2b4d4ae
+    branch: feat/effect-inference-v0
+    role: effect inference v0 pre-registration (PREREG.md, cases_v0.json, score.py) before the classifier existed
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: b5389634f30c2c323a0388d69e346e95a4bd261e
+    branch: feat/effect-inference-v0
+    role: effect inference v0 classifier (frozen for the held-out run)
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: 675fd2a3dc3492f3186582d88e2338c123616e89
+    branch: feat/effect-inference-v0
+    role: effect inference v0 run 1 (in-sample 80/80) and the held-out addendum to the pre-registration
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: f6406c11091915e479cf8f1c3d4e1d0ebdd77f40
+    branch: feat/effect-inference-v0
+    role: effect inference v0 held-out result and live-cohort re-score (counts only)
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: f65e72a2712bde65039769f052932be8e7a4f8fe
+    branch: feat/effect-inference-v1
+    role: effect inference v1 pre-registration (PREREG_v1.md) before any v1 rule or held-out case
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: f7afd833ec29e37316a9350576e40b7c40b7e3d2
+    branch: feat/effect-inference-v1
+    role: effect inference v1 classifier + scoped in-prompt grants (frozen; scored once)
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: 3187f46f1de304c83e987ff9ec8956988619f6cd
+    branch: feat/effect-inference-v1
+    role: effect inference v1 held-out, dev and live-cohort results (counts only); docs/decision-opportunity.md
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: f948389ff0f5a28632e7abb3cf88dedcf0d86f4e
+    branch: feat/action-authority-v0
+    role: action-level authority parser, check, shadow PreToolUse hook and pre-registration (PREREG_v0.md), frozen before gold existed
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: a3243fa03be2b26f5538112f39ea098afd046545
+    branch: feat/action-authority-v0
+    role: action authority v0 results against pre-registered gold (RESULTS_v0.md, results_v0.json; counts only)
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: 083b99d0c495e104f6e21a01fcc02304d802b541
+    branch: feat/resource-posture-v0
+    role: resource posture v0 and its pre-registered posture-aware vs posture-blind evaluation (docs/resource-posture.md); no results yet
+    visibility: pushed
+
+private_inputs:
+  - what: evidence_sufficiency per-item outputs, one JSONL per backend (id, gold, prediction, probabilities, ms)
+    location: operator host, groot farm bench directory (not published; contains host layout)
+    sha256:
+      mbp-radeon-qwen3-0.6b-q8.jsonl: 9853ff13e79cedb4924e6598eff0fe23b6560694dddcbcc66f921204122bf038
+      groot_qwen3_06b_q8.jsonl: c7b83983fcfff3f10957e95b9fdfc9119d6da2946d77567102d7461f2035c1df
+      groot_qwen3_17b_q4.jsonl: 3f24fd5fc1f7a42dd4291599fe840c9c08c3169bf2b7a2974bb781b48b04db6e
+      groot_qwen3_4b_q4.jsonl: 085be0d325f06f227a79a573f5800fa7262ff0fa4934651946e944d503eeb6c4
+      groot_qwen3_8b_q4.jsonl: 3b0574870dc6088e1f406a49113a8d9af646d1e310751b8c9b0bc5bfe874a888
+  - what: action-authority gold labels, raw commands and prompt excerpts; live Claude Code opportunity/outcome logs
+    location: operator host (outside git by pre-registration)
+
+questions:
+  - Does a tailnet GPU box serving small Qwen3 models make a usable $0 OFFLOAD tier for bounded judgement work, and which size clears the bar?
+  - Given only the legal candidates, does a learned orchestrator (Nemotron-Orchestrator-8B) route better than the deterministic order and than a generic 8B LLM with the same prompt?
+  - Can a deterministic classifier infer from the user's prompt when a turn needs the human's authority, and do scoped in-prompt grants fix its friction without letting privileged work through?
+  - Does checking authority per tool call (effects from the actual call, grants from intent) catch every unauthorized privileged action at acceptable friction and latency?
+  - Would posture-aware routing (spend perishable frontier quota before reset, offload when it will run out) beat posture-blind routing? (pre-registered, pending)
+
+pre_registrations:
+  - experiment: orchestrator-router-v0
+    prereg: 1302c3a
+    results: eb7c7d3
+    verdict: fail (criterion c; not continued in shadow)
+  - experiment: effect-inference-v0
+    prereg: d651753
+    frozen: b538963
+    results: f6406c1
+    verdict: fail (held-out false ACT on privileged 6, target 0)
+  - experiment: effect-inference-v1
+    prereg: f65e72a
+    frozen: f7afd83
+    results: 3187f46
+    verdict: fail (held-out privileged ACT outside granted scope 8/27, target 0)
+  - experiment: action-authority-v0
+    prereg: f948389
+    results: a3243fa
+    verdict: fail (unauthorized privileged caught 112/134, target 100%); latency pass
+  - experiment: resource-posture-v0
+    prereg: 083b99d
+    results: null
+    verdict: pending
+  - experiment: groot offload admission (evidence_sufficiency)
+    prereg: null  # the >=44/48 admission bar is a proposed bar written alongside the bench, not a committed pre-registration
+    results: private bench outputs (hashes above)
+    verdict: qwen3-8b 43/48, one short of the proposed bar; used as OFFLOAD default, not admitted as a Jev replacement
+
+artifacts:
+  - path: data/summary.json
+    kind: result
+    provenance: summarize.py over the private groot bench JSONL and the pinned z0intelligence result files (git show at the commits above); aggregates only
+  - path: summarize.py
+    kind: analysis
+    provenance: public aggregation code
+
+limitations:
+  - Single principal. Every live cohort, transcript replay and label comes from one operator's Claude Code usage; in action-authority-v0 one session and its subagents carry 2,765 of 3,716 calls and all 291 parsed-privileged calls.
+  - Gold is LLM-labelled. Effect-inference held-out cases and gate relabels, and all action-authority gold, were written by separate LLM agents from a label policy, not by the user; 10 of the 22 action-authority misses carry low-confidence gold, and two effect-inference v1 misses have disputed gold.
+  - Small n. evidence_sufficiency is 48 items; the router eval has 59 labelled items (48 + 11); effect-inference held-out sets are 60 and 88; the live cohort is 10-11 linked turns.
+  - Router outcomes are reused from single prior runs, so each candidate's pass/fail per item is one sample; S1 "cost" is measured latency, not price.
+  - Orchestrator-8B was trained for multi-turn orchestration with frontier experts; a one-shot pick among small $0 local models is off-distribution for it, and temperature 0 deviates from the model card.
+  - The offload admission bar (>=44/48) was proposed alongside the bench, not committed before it ran; Jev's 46/48 is source-reported from earlier work, not re-measured here.
+  - The effect-inference v1 live-cohort table after a post-freeze detached-HEAD fix is reported next to the at-freeze table; the held-out result was scored once at the frozen commit.
+  - Action-authority replay reconstructs the branch at call time only for the session repo, reads default branches from disk today, and bounds (does not measure) the candidate net's miss rate with 80 random non-candidates.
+  - groot's GPU is shared with an unrelated Ollama instance; VRAM figures are approximate deltas.
+  - Everything evaluated here is shadow-only; nothing was enforced on live traffic.
+
+claims:
+  - id: offload-tier-speed
+    text: The same Qwen3-0.6B Q8 GGUF served from the RTX 3080 Ti farm answered the 48-item evidence_sufficiency set with a 41 ms median per item versus 1236 ms on the MacBook's Radeon (about 30x), at 27/48 vs 25/48.
+    evidence:
+      - data/summary.json
+  - id: offload-tier-size
+    text: On the same set, accuracy scaled with size on the farm - 0.6B 27/48, 1.7B 28/48, 4B 36/48, 8B 43/48 - with Qwen3-8B at a 90 ms median and 1 confident (>=0.9) error, one item short of the proposed >=44/48 admission bar; it is the OFFLOAD default, not an admitted Jev replacement.
+    evidence:
+      - data/summary.json
+  - id: orchestrator-null
+    text: Nemotron-Orchestrator-8B (thinking) beat the deterministic local order on choice accuracy (23/59 vs 8/59, McNemar p=0.0003) but tied a generic Qwen3-8B given the identical prompt (23/59 vs 23/59, 9 vs 9 discordant, p=1.0), so it failed the pre-registered rule and was not continued; a trivial cheapest rule (35/59) and a fixed strongest rule (pass rate 0.90 on S1) both did better.
+    evidence:
+      - data/summary.json
+  - id: host-order-finding
+    text: The deterministic arm's zero S1 accuracy came from host ordering (the host's own 1236 ms 0.6B listed before the farm's 41 ms copy of the same weights), which z0intelligence b072468 addressed with a host-chosen local_order; that fix is not re-evaluated here.
+    evidence:
+      - data/summary.json
+  - id: effect-inference-v0-fails
+    text: A deterministic prompt-effect classifier scored 80/80 in-sample but failed its pre-registered held-out bar - 6 false ACT on privileged (target 0; read-only baseline 20) with 1/20 unnecessary read ASKs and 47/60 class accuracy.
+    evidence:
+      - data/summary.json
+  - id: effect-inference-v1-fails
+    text: Adding scoped in-prompt grants (v1) fixed friction on granted work (ACT when granted in scope 18/21, unnecessary read ASK 0/20) but failed the pre-registered held-out bar with 8/27 privileged ACTs outside the granted scope (target 0); without grants the v1 lexicon reached 1/27 but asked on 20 of 21 granted instructions.
+    evidence:
+      - data/summary.json
+  - id: turn-level-structural
+    text: Structural finding from the v1 live cohort - a turn-level gate cannot see actions chosen mid-turn (a feature-branch push grant covered a default-branch push chosen later in the turn), so authority has to be checked against the actual tool call.
+    evidence:
+      - data/summary.json
+  - id: action-authority-v0-fails
+    text: A per-tool-call authority check replayed over 3,716 historical Claude Code calls (798 labelled) caught 112/134 unauthorized privileged calls (83.6%; target 100%, fail), with false friction 12.2% on the labelled sample (target <=5%, fail) and 2.3% population-weighted, and a hook p95 of 34 ms in a fresh interpreter (target <50 ms, pass).
+    evidence:
+      - data/summary.json
+  - id: resource-posture-pending
+    text: Resource posture v0 (BURN/BALANCED/OFFLOAD/RESERVE per budget pool) is shadow-only with a pre-registered posture-aware vs posture-blind replay; no result exists yet and none is claimed.
+    evidence:
+      - data/summary.json
