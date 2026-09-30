@@ -1,0 +1,15 @@
+{
+  "schema": "z0eval.agentweb_model_smoke_frozen.v1",
+  "observed_at": "2026-09-30",
+  "workflow_run_id": 36689356861,
+  "artifact_id": 11085470123,
+  "artifact_sha256": "fce6a365cb769725b95b52492530ff9f6c4a3df91438046e0c31a860f97c0e4c",
+  "agentweb_head": "d44758250bb6561fd27e28cde7f43dfc415bafea",
+  "credentials_available": false,
+  "missing": [
+    "OPENROUTER_API_KEY",
+    "TYPESAFE_API_KEY"
+  ],
+  "executed": false,
+  "interpretation": "Model-backed report/stop smoke did not execute. This is a blocker receipt, not passing model evidence."
+}
