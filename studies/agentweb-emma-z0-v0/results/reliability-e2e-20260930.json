@@ -1,0 +1,33 @@
+{
+  "artifact_id": 11082282510,
+  "artifact_sha256": "8314d120572e87d75be96dbe313aaa5ec47ef1c99b9bad217965390b30bc67dc",
+  "claim_scope": "synthetic bounded reliability outcomes through real AgentWeb projection/export and live local z0 ingest; not quality verification",
+  "observed_at": "2026-09-30",
+  "schema": "z0eval.agentweb_reliability_e2e_frozen.v1",
+  "source_heads": {
+    "agentweb": "361e962bf652e3475f49bb8e5e21c68793c57669",
+    "z0evals": "97d54f85fa85e604c4563510e41eb3a0bff05828",
+    "z0intelligence": "7aa6be0ab0df25b1c7cb4c85709ca4cb01f392ce"
+  },
+  "summary": {
+    "export_failures": [],
+    "gates": {
+      "all_first_exports_stored": true,
+      "all_second_exports_replayed": true,
+      "never_mints_quality_gold": true,
+      "one_durable_row_per_observation": true,
+      "projection_privacy_preserved": true,
+      "receipt_semantics_match": true
+    },
+    "missing_receipts": [],
+    "n_observed_receipts": 7,
+    "n_results": 7,
+    "passed": true,
+    "privacy_leaks": [],
+    "quality_violations": [],
+    "replay_failures": [],
+    "schema": "z0eval.agentweb_reliability_summary.v1",
+    "semantic_failures": []
+  },
+  "workflow_run_id": 36682379259
+}
