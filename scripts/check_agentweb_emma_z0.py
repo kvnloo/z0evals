@@ -184,7 +184,7 @@ def main() -> None:
     assert {"agentweb_sha", "z0intelligence_sha", "scenario_id", "passed", "evidence"} <= required
     assert schema["properties"]["agentweb_sha"]["pattern"] == "^[0-9a-f]{40}$"
     assert schema["properties"]["z0intelligence_sha"]["pattern"] == "^[0-9a-f]{40}$"
-    print("ok: agentweb-emma-z0-v0 contract (32 scenarios)")
+    print("ok: agentweb-emma-z0-v0 contract (56 scenarios)")
 
 
 if __name__ == "__main__":
