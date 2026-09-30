@@ -1,76 +1,91 @@
 ---
-title: "One Memory Plane, Four Agent Harnesses"
-subtitle: "A cross-harness test of source-backed recall, minimal state, and provenance."
+title: "can four agents remember the same thing?"
+subtitle: "i got tired of every harness having its own half-broken version of memory."
 study: unified-memory-v0
 status: evidence-pending
-author: "Zer0 Research"
-date: "September 29, 2026"
+author: "zer0 research"
+date: "september 29, 2026"
 mock_data: false
 toc:
   - id: question
-    label: Question
+    label: memory is not one thing
   - id: architecture
-    label: Architecture
+    label: one evidence path
   - id: replay
-    label: Replay
+    label: same questions everywhere
   - id: failures
-    label: Failure tests
+    label: make it fail on purpose
   - id: results
-    label: Results
+    label: omp finally gave us a number
   - id: limits
-    label: Limits
+    label: what this does not prove
 ---
 
 <div class="lede">
-Can four different agent harnesses recover the same prior state without copying an entire transcript into every model call?
+can four different agent harnesses recover the same prior state without dumping the whole transcript back into the model every time?
 </div>
 
 <div class="hero-rule"></div>
 
-## The question {#question}
+## memory is not one thing {#question}
 
-This study separates four claims that are easy to blur together: evidence was found, evidence reached the model, the answer was supported by that evidence, and an independent check accepted the answer.
+we kept saying “memory worked” when we meant four different things:
 
-No result is published until all four stages have receipts.
+```text
+retrieval -> model-visible injection -> answer support -> verification
+```
 
-## One source-backed path {#architecture}
+configured is not retrieved. retrieved is not injected. injected is not supported. supported is not verified.
+
+annoying distinction. also the whole point of the study.
+
+## one evidence path, four harnesses {#architecture}
 
 ```text
 conversation / file / git truth
           |
           v
-AgentsView / exact retrieval / other evidence capability
+agentsview / exact retrieval / other evidence capability
           |
           v
 z0intelligence
-EvidenceRef + minimal state
+evidenceref + minimal state
           |
     +-----+------+-----+
     |            |     |
-   DSH         Hermes  OMO   OMP
+   dsh         hermes  omo   omp
     |            |     |     |
     +----- comparable receipts +
 ```
 
-The transcript remains an audit source. The runtime should send only the evidence needed for the current decision.
+the transcript stays around as audit evidence. the runtime should send the model the tiny piece it actually needs, not replay the whole archaeological dig.
 
-## Same question, four replays {#replay}
+## same questions everywhere {#replay}
 
-The executable cohort is now frozen in `studies/unified-memory-v0/cohort.json`: `exact-identifier`, `supersession`, `cross-harness`, `contradiction`, `missing-evidence`, and `minimal-context`.
+the cohort is frozen in `studies/unified-memory-v0/cohort.json`:
 
-OMP is the first public measured lane. DSH has the default-off AgentsView stdio transport overlay, but still needs the same frozen model-visible injection/support proof. Hermes and OMO do not yet have final comparable cohort receipts imported here, so the four-harness result remains pending.
+- `exact-identifier`
+- `supersession`
+- `cross-harness`
+- `contradiction`
+- `missing-evidence`
+- `minimal-context`
 
-## Make it fail on purpose {#failures}
+omp is the first measured lane. dsh has the default-off agentsview stdio transport, but still needs the same frozen model-visible proof. hermes and omo are still pending.
 
-The suite includes missing-evidence, duplicate-replay, contradiction, and supersession cases. A useful memory system must know when not to answer.
+so no, this is not “four-harness memory solved” yet.
 
-## Results {#results}
+## make it fail on purpose {#failures}
 
-### OMP partial result
+the useful cases are the annoying ones: missing evidence, duplicate replay, contradiction, and supersession.
 
-OMP PR #107 runs the six frozen question IDs through common `z0eval.unified_memory_receipt.v0` rows and passes **16/16** focused tests.
+the contradiction case has to show both claims and pick no winner. the missing-evidence case has to abstain. if the memory system cannot say “i do not know,” it is just a confidence generator.
 
-Turn-4 context:
+## omp finally gave us a number {#results}
+
+omp pr #107 runs the six frozen question ids through common `z0eval.unified_memory_receipt.v0` rows and passes **16/16** focused tests.
+
+turn 4:
 
 | mode | context bytes | growth |
 |---|---:|---:|
@@ -78,19 +93,23 @@ Turn-4 context:
 | donor spill stub | **2,847** | **+701** |
 | state packet | **960** | **+0** |
 
-The State Packet is **99.70% smaller** than native turn-4 context, about **333.4× smaller**.
+that is **99.70% less context** than the native turn-4 path, about **333.4× smaller**.
 
-That is a context-shaping measurement, not a four-harness correctness claim. AgentsView search failed closed on the OMP host; no hit was invented.
+very cool. still only a context-shaping result.
+
+agentsview failed closed on the omp host, and we did not invent a hit to make the chart look nice.
 
 | harness | status |
 |---|---|
-| OMP | **MEASURED** |
-| DSH | **BOUNDED** — transport exists; frozen model-visible proof pending |
-| Hermes | **PENDING** — final cohort receipts not imported |
-| OMO | **PENDING** — final cohort receipts not imported |
+| omp | **measured** |
+| dsh | **bounded** — transport exists; frozen model-visible proof pending |
+| hermes | **pending** — final cohort receipts not imported |
+| omo | **pending** — final cohort receipts not imported |
 
-No cross-harness aggregate is published until comparable frozen receipts exist for all required lanes.
+i am leaving the pending rows pending. once all four lanes produce comparable frozen receipts, then we can aggregate them.
 
-## What this still would not prove {#limits}
+## what this does not prove {#limits}
 
-A passing v0 would establish cross-harness retrieval and context use on the frozen cases. It would not establish one universal memory backend, perfect long-horizon recall, or permission to treat retrieved text as verified truth.
+one omp lane does not establish four-harness equivalence. smaller context does not prove better answers. we also do not need one universal memory database for this to work, and retrieved text is evidence, not automatically truth.
+
+the actual goal is much less magical: same question, same evidence contract, different harness, same supported answer. once that is boring, memory starts looking like infrastructure.
