@@ -1,0 +1,31 @@
+schema_version: z0eval.study.v1
+id: causal-ablation-v0
+title: Causal attribution audit of the frozen Phase 1B publication
+status: draft
+created: '2026-09-30'
+sources:
+- repo: kvnloo/z0evals
+  commit: 028f8edf36d7c676736c1b42528a9dd642fc6056
+  role: Immutable publication input, not a full runtime/model/configuration pin
+questions:
+- Which recorded component contrasts support attribution, and which independent evidence
+  is missing?
+artifacts:
+- path: README.md
+  kind: analysis
+  sha256: 8b316fe7e6aca8a0a1fe5d55cab685b15d884fb04219512d8e294340e18e9f80
+- path: data/phase1b-audit.json
+  kind: result
+  sha256: 2c4b4d7e3d9adaeb0010c37021d862398e3a2e5026086fee1438e17156dffb76
+limitations:
+- No new experiment or independently verified outcome; attribution remains unresolved.
+- Original runtime source/configuration pins, label generator, verifier identity,
+  train/evaluation folds and real work-item lineage remain unavailable.
+- This draft audits a frozen publication input, not a completed frozen causal study.
+claims:
+- id: attribution-unresolved
+  text: Four same-backend compiler/unfiltered contrasts cover 28 state groups; source
+    correctness does not establish independently verified causal credit.
+  evidence:
+  - data/phase1b-audit.json
+  - README.md

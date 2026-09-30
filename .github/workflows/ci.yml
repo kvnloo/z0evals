@@ -22,5 +22,11 @@ jobs:
           python-version: "3.12"
       - run: python -m pip install -r requirements.txt
       - run: python scripts/validate.py
+      - run: python -m unittest discover -s tests -v
+      - run: python tests/test_arm_identity.py
+      - name: Check frozen causal audit drift
+        run: |
+          python scripts/analyze_causal_ablation.py > /tmp/phase1b-audit.json
+          cmp /tmp/phase1b-audit.json studies/causal-ablation-v0/data/phase1b-audit.json
       - run: python scripts/build_site.py
       - run: test -f site/index.html
