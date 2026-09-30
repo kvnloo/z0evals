@@ -17,7 +17,7 @@ def scenarios():
 def test_agentweb_emma_z0_scenario_matrix_is_unique_and_broad():
     rows = scenarios()
     ids = [row["id"] for row in rows]
-    assert len(rows) == 48
+    assert len(rows) == 56
     assert len(ids) == len(set(ids))
     assert {row["mode"] for row in rows} == {"off", "shadow", "active"}
     assert {
