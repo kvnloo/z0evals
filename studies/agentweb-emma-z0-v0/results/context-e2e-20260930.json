@@ -1,0 +1,54 @@
+{
+  "artifact_id": 11082436981,
+  "artifact_sha256": "b702a9f7b7f5084774ea270116e24a007db3c6acf80e7b8f44d9e80fd6ff9845",
+  "claim_scope": "authored fixture campaign only; no live AgentWeb customer KB sample and no assist/injection promotion",
+  "observed_at": "2026-09-30",
+  "schema": "z0eval.agentweb_context_e2e_frozen.v1",
+  "source_heads": {
+    "agentweb": "361e962bf652e3475f49bb8e5e21c68793c57669",
+    "z0evals": "97d54f85fa85e604c4563510e41eb3a0bff05828",
+    "z0intelligence": "7aa6be0ab0df25b1c7cb4c85709ca4cb01f392ce"
+  },
+  "summary": {
+    "applied_violations": [],
+    "budget_violations": [],
+    "eligible_for_assist_review": false,
+    "fixture_large_context_n": 3,
+    "fixture_large_context_ratios": {
+      "ctx-05-six-ranked": 0.24425714757891256,
+      "ctx-06-ten-ranked": 0.16893346934149384,
+      "ctx-17-tight-three": 0.5142118863049095
+    },
+    "gap_mismatches": [],
+    "gates": {
+      "fixture_expected_excerpts_truncated": true,
+      "fixture_large_context_compression_under_80pct": true,
+      "fixture_large_context_sample_present": true,
+      "fixture_required_terms_preserved": true,
+      "gap_semantics_match": true,
+      "live_large_context_median_compression_under_70pct": false,
+      "minimum_live_sample": false,
+      "packet_budget_respected": true,
+      "private_text_not_persisted": true,
+      "shadow_never_applied": true,
+      "source_diversity_or_explicit_budget_degradation": true,
+      "source_labels_private": true,
+      "zero_model_calls": true
+    },
+    "live_large_context_median_compression": null,
+    "live_large_context_n": 0,
+    "model_call_violations": [],
+    "n_fixture": 18,
+    "n_live": 0,
+    "n_rows": 18,
+    "persistence_violations": [],
+    "privacy_leaks": [],
+    "required_term_failures": [],
+    "schema": "z0eval.agentweb_context_packet_summary.v1",
+    "source_diversity_budget_degradations": [],
+    "source_diversity_failures": [],
+    "truncation_failures": [],
+    "weak_compression": []
+  },
+  "workflow_run_id": 36682379151
+}
