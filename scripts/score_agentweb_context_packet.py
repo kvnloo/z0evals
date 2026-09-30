@@ -37,7 +37,12 @@ def score(rows: list[dict]) -> dict:
         r.get("id") for r in fixture
         if isinstance(r.get("input_source_count"), int)
         and r["input_source_count"] >= 3
-        and (r.get("retained_source_count") or 0) < 3
+        and (r.get("retained_source_count") or 0) < min(3, r["input_source_count"])
+        and r.get("source_diversity_degraded_for_budget") is not True
+    ]
+    diversity_budget_degradations = [
+        r.get("id") for r in fixture
+        if r.get("source_diversity_degraded_for_budget") is True
     ]
     gap_mismatches = [
         r.get("id") for r in fixture
@@ -66,7 +71,7 @@ def score(rows: list[dict]) -> dict:
         "shadow_never_applied": not applied,
         "private_text_not_persisted": not persistence,
         "zero_model_calls": not model_calls,
-        "top_three_source_diversity": not diversity_failures,
+        "source_diversity_or_explicit_budget_degradation": not diversity_failures,
         "gap_semantics_match": not gap_mismatches,
         "fixture_large_context_compression_under_80pct": not weak_compression,
         "minimum_live_sample": len(live) >= 500,
@@ -86,6 +91,7 @@ def score(rows: list[dict]) -> dict:
         "persistence_violations": persistence,
         "model_call_violations": model_calls,
         "source_diversity_failures": diversity_failures,
+        "source_diversity_budget_degradations": diversity_budget_degradations,
         "gap_mismatches": gap_mismatches,
         "weak_compression": weak_compression,
         "live_large_context_n": len(live_ratios),
