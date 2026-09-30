@@ -1629,3 +1629,19 @@ figcaption .fig-n { font-family: var(--font-mono); color: var(--color-sb-seconda
   font-family: var(--font-sans);
   font-size: var(--text-sm);
 }
+
+
+/* small-screen interaction polish for the original phase-1b explorer. */
+@media (max-width: 600px) {
+  .chart-tabs button,
+  .quietButton {
+    min-height: 36px;
+    padding: 6px 10px;
+  }
+  .scrubRow {
+    flex-wrap: wrap;
+  }
+  .article-meta {
+    overflow-wrap: anywhere;
+  }
+}
