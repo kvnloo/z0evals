@@ -253,8 +253,8 @@ jobs:
           # the verify step on run 35675256911 *after* every channel had
           # deployed successfully.
           check "" "how much of the llm do we actually need?" || fail=1
-          check "z0intelligence-function-routing/" "From Model Routing to Evidence-Backed Function Routing" || fail=1
-          check "unified-memory-v0/" "One Memory Plane, Four Agent Harnesses" || fail=1
+          check "z0intelligence-function-routing/" "what actually deserves a model?" || fail=1
+          check "unified-memory-v0/" "can four agents remember the same thing?" || fail=1
           check "channels.html" "z0evals channels" || fail=1
           for ch in nightly next dev; do
             if curl -fsS -o /dev/null "$base/$ch/"; then
