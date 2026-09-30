@@ -418,10 +418,10 @@ const story = (
 
 const explore = (
   <>
-    <h2 id="explore-tables">Exact tables</h2>
+    <h2 id="explore-tables">show me the tables</h2>
 
     <div className="explore-block">
-      <h3>Verifier quality</h3>
+      <h3>did the verifier actually hold up?</h3>
       <div className="x-table-wrap">
         <table className="x-table">
           <caption>authored144 — recomputed from the raw per-example file</caption>
@@ -509,7 +509,7 @@ const explore = (
     </div>
 
     <div className="explore-block">
-      <h3>Delegation cohorts</h3>
+      <h3>the delegation runs</h3>
       <div className="x-table-wrap">
         <table className="x-table">
           <caption>Cerebras qwen-3.8-27b · reasoning_effort=none · 30 repeats each of two tasks</caption>
@@ -592,7 +592,7 @@ const explore = (
     </div>
 
     <div className="explore-block">
-      <h3>Harness route matrix</h3>
+      <h3>who actually ran what?</h3>
       <div className="x-table-wrap">
         <table className="x-table">
           <caption>Four concurrent HTTP clients. Labels are clients, not claims of installed integration.</caption>
@@ -622,7 +622,7 @@ const explore = (
       </div>
     </div>
 
-    <h2 id="claims">Claim status</h2>
+    <h2 id="claims">what can i actually claim?</h2>
     <p>
       Every claim carries its evidence level. <strong>UNKNOWN</strong> is a first-class value: it
       means we did not reproduce the evidence, not that the number is small.
@@ -652,7 +652,7 @@ const explore = (
       </table>
     </div>
 
-    <h2 id="methods">Methodology</h2>
+    <h2 id="methods">how i measured this</h2>
     <div className="x-table-wrap">
       <table className="x-table">
         <thead>
@@ -674,14 +674,14 @@ const explore = (
       </table>
     </div>
 
-    <h2 id="limitations">Limitations</h2>
+    <h2 id="limitations">where this could still be wrong</h2>
     <ul>
       {EX.limitations.map((l) => (
         <li key={l}>{l}</li>
       ))}
     </ul>
 
-    <h2 id="sources">Sources &amp; receipts</h2>
+    <h2 id="sources">source pins + receipts</h2>
     <div className="x-table-wrap">
       <table className="x-table">
         <caption>Pinned revisions</caption>
