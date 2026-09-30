@@ -1,0 +1,82 @@
+version: 1
+repo: kvnloo/z0evals
+id: z0evals
+kind: suite
+summary: Frozen evaluation and publication surface for reproducible Zer0 studies, including unified memory and SLM routing.
+
+architecture:
+  subsystems:
+    - id: study-contracts
+      name: Frozen study contracts
+      kind: evidence
+      summary: Pins study manifests, question/metric contracts, schemas, and reproducible inputs independently from the systems under evaluation.
+      paths:
+        - studies/
+        - schemas/
+        - imports/
+
+    - id: unified-memory-v0
+      name: Unified Memory v0
+      kind: evaluation
+      summary: Compares retrieval, model-visible injection, answer support, provenance, abstention, idempotency, supersession, latency, and context cost across harnesses.
+      paths:
+        - studies/unified-memory-v0/
+        - posts/unified-memory-v0.md
+        - web/app/unified-memory-v0/
+      depends_on: [study-contracts]
+
+    - id: slm-router-v0
+      name: SLM Router v0
+      kind: evaluation
+      summary: Freezes bounded-routing evidence and compares candidate decision paths without allowing the evaluated router to grade itself.
+      paths:
+        - studies/slm-router-v0/
+        - posts/slm-router-v0.md
+      depends_on: [study-contracts]
+
+    - id: publication
+      name: Research publication surface
+      kind: presentation
+      summary: Publishes reproducible study narratives, figures, charts, and frozen artifacts while keeping source claims resolvable to study evidence.
+      paths:
+        - posts/
+        - web/
+        - research-ui.js
+      depends_on: [study-contracts]
+
+  implements_mechanisms:
+    - frozen-eval-publication
+
+  provides_interfaces: []
+  consumes_interfaces: []
+
+  produces_representations:
+    - evaluation-artifact
+
+  consumes_representations:
+    - context-packet
+    - decision-receipt
+    - tokenomics-event
+
+  boundaries:
+    owns:
+      - frozen study contracts
+      - public evaluation artifacts
+      - reproducible analyses and figures
+      - publication evidence
+    not_here:
+      - model routing policy
+      - memory database authority
+      - experiment optimization
+      - runtime verification authority
+
+  evidence:
+    docs:
+      - README.md
+      - studies/unified-memory-v0/README.md
+      - studies/slm-router-v0/README.md
+    tests:
+      - tests/
+    schemas:
+      - schemas/
+      - studies/unified-memory-v0/receipt.schema.json
