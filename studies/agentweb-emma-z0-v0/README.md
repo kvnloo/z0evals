@@ -152,3 +152,21 @@ evaluated only for inputs >=8 KB because the ContextPacket has fixed provenance
 and reconstruction metadata. Assist/injection review still requires at least
 500 real shadow KB packets and at least 100 >=8 KB packets with median compression
 <=70%. Passing authored fixtures alone cannot enable context injection.
+
+
+## Promotion ladder
+
+This study now distinguishes three evidence classes. They are not interchangeable.
+
+1. **Contract evidence** — mocked/static failure injection and exact-head CI. This can prove boundary semantics but never quality.
+2. **Cross-repo deterministic E2E** — real AgentWeb transport, real z0 authority, no external model calls. This can prove privacy, replay, receipts, byte budgets, context preservation and non-application.
+3. **Model-backed paired evidence** — real incumbent + real TypeSafe/Jev shadow calls. This is the first class that may inform quality/latency tradeoffs.
+
+Promotion rules:
+
+- contract or deterministic-E2E evidence can never satisfy a live-sample gate;
+- authored report/stop corpora remain regression probes even when every row is correct;
+- context assist review still needs >=500 real shadow KB packets and >=100 large-input packets;
+- report/stop assist review still needs >=1,000 live paired decisions;
+- active routing remains blocked until a specific capability independently clears its own quality, latency, replay, privacy and safety gates;
+- no aggregate "integration passed" flag can override a failed capability-specific gate.
