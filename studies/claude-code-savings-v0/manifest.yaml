@@ -28,6 +28,11 @@ sources:
     role: claude-code harness plugin, Tokenomics usage receipts, ObservationPack plugin, paired runner, pinned tasks
     visibility: pushed
   - repo: kvnloo/z0intelligence
+    commit: bde3149
+    branch: feat/state-packet-v0
+    role: State Packet (z0int#22), frozen dev/holdout/injection sets, aggregate results_v0.json
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
     commit: c4a4554
     branch: master
     role: pinned task fixture source (git archive at run time)
@@ -64,6 +69,10 @@ claims:
       - data/summary.json
   - id: cold-start-premium
     text: A cold session start (fresh directory or changed startup git snapshot) cost ~3x a warm one for stock Claude Code on these short tasks (median $0.126 vs $0.0425), so fresh-worktree agent fleets pay a large fixed premium per session.
+    evidence:
+      - data/summary.json
+  - id: state-packet-with-tools
+    text: On a frozen held-out current-work set (7 questions x 2 reps), a SessionStart State Packet plus normal tools answered 14/14 vs 12/14 for raw tools, with half the tool calls and 30% fewer mean input tokens (53% at the median); packet-only (no tools) scored 8/14 and 0/4 on injected-abstention items, so it is an aid to tools, not a replacement. Source aggregates live in z0intelligence feat/state-packet-v0 benchmarks/state_packet/results_v0.json (bde3149).
     evidence:
       - data/summary.json
   - id: obspack-null
