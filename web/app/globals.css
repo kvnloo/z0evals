@@ -1595,3 +1595,36 @@ figcaption .fig-n { font-family: var(--font-mono); color: var(--color-sb-seconda
   .rt-admission { padding: var(--space-3); }
   .rt-admission-legend { gap: var(--space-2) var(--space-4); }
 }
+
+
+/* the newer research posts intentionally inherit the original phase-1b voice. */
+.story-shell {
+  text-transform: lowercase;
+}
+.story-shell code,
+.story-shell pre,
+.story-shell pre *,
+.story-shell .x-receipts code {
+  text-transform: none;
+}
+
+/* dense phase-1b matrices should scroll on a phone instead of becoming ant-sized. */
+.heatmap-scroll {
+  width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+@media (max-width: 600px) {
+  .heatmap-svg {
+    min-width: 760px;
+  }
+}
+.empty-state {
+  padding: var(--space-5);
+  border: 1px dashed var(--color-sb-border);
+  color: var(--color-sb-text-muted);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+}
