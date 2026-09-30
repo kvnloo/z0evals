@@ -75,6 +75,10 @@ claims:
     text: On a frozen held-out current-work set (7 questions x 2 reps), a SessionStart State Packet plus normal tools answered 14/14 vs 12/14 for raw tools, with half the tool calls and 30% fewer mean input tokens (53% at the median); packet-only (no tools) scored 8/14 and 0/4 on injected-abstention items, so it is an aid to tools, not a replacement. Source aggregates live in z0intelligence feat/state-packet-v0 benchmarks/state_packet/results_v0.json (bde3149).
     evidence:
       - data/summary.json
+  - id: lean-packet-compose
+    text: On the current-work dev set (20 trials per cell), the lean profile and the State Packet composed multiplicatively - packet cost factor 0.70 under both profiles, lean factor 0.38 with or without the packet - so lean+packet cost 74% less than stock+raw tools ($0.467 vs $1.773) while answering 18/20 vs 15/20 (dev set; correctness vs a frozen key that drifted on one question in all cells). Aggregates in z0intelligence feat/state-packet-v0 benchmarks/state_packet/results_s2.json.
+    evidence:
+      - data/summary.json
   - id: obspack-null
     text: The immediate-pack ObservationPack port showed no measurable billed-cost effect (paired medians -1.3% and +0.3%, sign p>=0.2) at unchanged quality; Claude Code already spills outputs over ~30k characters natively.
     evidence:
