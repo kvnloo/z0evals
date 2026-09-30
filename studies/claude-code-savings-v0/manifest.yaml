@@ -28,7 +28,7 @@ sources:
     role: claude-code harness plugin, Tokenomics usage receipts, ObservationPack plugin, paired runner, pinned tasks
     visibility: pushed
   - repo: kvnloo/z0intelligence
-    commit: bde3149
+    commit: f2ea159
     branch: feat/state-packet-v0
     role: State Packet (z0int#22), frozen dev/holdout/injection sets, aggregate results_v0.json
     visibility: pushed
@@ -77,6 +77,10 @@ claims:
       - data/summary.json
   - id: lean-packet-compose
     text: On the current-work dev set (20 trials per cell), the lean profile and the State Packet composed multiplicatively - packet cost factor 0.70 under both profiles, lean factor 0.38 with or without the packet - so lean+packet cost 74% less than stock+raw tools ($0.467 vs $1.773) while answering 18/20 vs 15/20 (dev set; correctness vs a frozen key that drifted on one question in all cells). Aggregates in z0intelligence feat/state-packet-v0 benchmarks/state_packet/results_s2.json.
+    evidence:
+      - data/summary.json
+  - id: lean-packet-compose-pinned-heldout
+    text: On a drift-proof held-out set (pinned fixture repos and a frozen transcript subset, 11 questions x 2 reps, keys computed before any run), the effects still compose multiplicatively - packet cost factor 0.83 (stock) / 0.81 (lean), lean factor 0.49 / 0.47, predicted 0.404 vs observed 0.394 of stock+raw - so lean+packet cost 61% less ($0.861 vs $2.186) with 22/22 vs 21/22 correct. Held-out effects are smaller than the dev-set effects. Aggregates in z0intelligence feat/state-packet-v0 benchmarks/state_packet/results_pinned.json (f2ea159).
     evidence:
       - data/summary.json
   - id: obspack-null
