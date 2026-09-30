@@ -6,11 +6,11 @@ created: "2026-09-29"
 updated: "2026-09-29"
 sources:
   - repo: kvnloo/agentweb
-    commit: 707e8cb8ebc22c0e2afe4593e32e3ee24a0a9ad2
+    commit: 361e962bf652e3475f49bb8e5e21c68793c57669
     branch: lab/z0-agentweb-emma-v0
     role: Emma adapter, tool surface, privacy projection
   - repo: kvnloo/z0intelligence
-    commit: 4fe232144ce4809c983ed21b249ee7ced1346ce1
+    commit: 7aa6be0ab0df25b1c7cb4c85709ca4cb01f392ce
     branch: lab/agentweb-emma-v0
     role: routing, dispatch authority, receipts, shadow planner
 questions:
@@ -35,6 +35,12 @@ artifacts:
     kind: dataset
   - path: reliability-observation-fixtures.jsonl
     kind: dataset
+  - path: results/context-e2e-20260930.json
+    kind: result
+    sha256: c895e10069b9c0bb3d0b1f4cffaed931f13d1845c2e2c884485bbb9cf7e041a9
+  - path: results/reliability-e2e-20260930.json
+    kind: result
+    sha256: c76b5f41e621090f8c985988a1b9631854c557763d11c366c62d4dd689156d80
 limitations:
   - No live benchmark results are claimed by this scaffold.
   - Emma and AgentWeb production writes are outside the v0 experiment; tests are shadow, mocked, sandboxed, or read-only until explicitly promoted.
