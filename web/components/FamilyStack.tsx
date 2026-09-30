@@ -30,8 +30,22 @@ export default function FamilyStack({ families, selected, onSelect }: {
           let dx = L;
           const active = selected === f.name;
           return (
-            <g key={f.name} className="mark" style={{ cursor: "pointer", opacity: selected && !active ? 0.45 : 1 }}
-               onClick={() => onSelect(active ? null : f.name)}>
+            <g
+              key={f.name}
+              className="mark"
+              role="button"
+              tabIndex={0}
+              aria-pressed={active}
+              aria-label={`filter to ${f.name.replace(/_/g, " ")}`}
+              style={{ cursor: "pointer", opacity: selected && !active ? 0.45 : 1 }}
+              onClick={() => onSelect(active ? null : f.name)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  onSelect(active ? null : f.name);
+                }
+              }}
+            >
               <text x={L - 10} y={yy + 15} textAnchor="end" fontSize="11.5"
                     fill={active ? "#1a3029" : "#3c3836"} fontWeight={active ? 700 : 400}>
                 {f.name.replace(/_/g, " ")}
