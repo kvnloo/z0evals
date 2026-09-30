@@ -9,7 +9,6 @@ import RoutingTrace, { type ProviderRow, type AdmissionTest } from "@/components
 import Callout from "@/components/Callout";
 import MetricRow from "@/components/MetricRow";
 import { MarginNote } from "@/components/Notes";
-import ResearchDeepDive from "@/components/ResearchDeepDive";
 
 export const metadata: Metadata = {
   title: "what actually deserves a model? — z0evals",
@@ -212,8 +211,6 @@ const story = (
       checkout, and with a 97% majority class the headline accuracy mostly tells you the majority
       class exists. not super helpful for the three-way runtime contract we actually route on.
     </p>
-
-    <ResearchDeepDive />
 
     <h2 id="capability">i stopped asking which model is best</h2>
     <p>
