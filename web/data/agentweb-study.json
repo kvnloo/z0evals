@@ -19,8 +19,8 @@
   },
   "frozenHeads": {
     "agentweb": "361e962bf652e3475f49bb8e5e21c68793c57669",
-    "z0intelligence": "7aa6be0ab0df25b1c7cb4c85709ca4cb01f392ce",
-    "z0evals": "97d54f85fa85e604c4563510e41eb3a0bff05828"
+    "z0evals": "97d54f85fa85e604c4563510e41eb3a0bff05828",
+    "z0intelligence": "7aa6be0ab0df25b1c7cb4c85709ca4cb01f392ce"
   },
   "context": {
     "stage": "deterministic_e2e_green",
