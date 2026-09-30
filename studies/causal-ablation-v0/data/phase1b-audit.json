@@ -1,0 +1,427 @@
+{
+  "attribution_evidence_level": "observational",
+  "attribution_status": "unresolved",
+  "contrasts": [
+    {
+      "arms": [
+        "compiler+hammer2.1_3b",
+        "unfiltered+hammer2.1_3b"
+      ],
+      "group_count": 28,
+      "group_coverage": 1.0,
+      "group_ids": [
+        "cheap_model_sufficient",
+        "continue_work",
+        "credential_required_action",
+        "destructive_action",
+        "diamond_dependency_graph",
+        "escalate_action",
+        "expensive_model_unnecessary",
+        "hard_dependency_a_then_b",
+        "jev_uncertain",
+        "no_relevant_tool",
+        "one_obvious_tool",
+        "orchestrator_should_abstain",
+        "permission_denied",
+        "publish_send_deploy_action",
+        "replan",
+        "required_argument_missing",
+        "retry_action",
+        "slm_uncertain",
+        "specialist_required",
+        "stop_now",
+        "tool_fails",
+        "tool_returns_malformed_data",
+        "tool_succeeds_after_retry",
+        "tool_times_out",
+        "two_independent_parallel_actions",
+        "two_similar_tools",
+        "unknown_tool",
+        "wrong_argument_type"
+      ],
+      "intervention_axis": "compiler-first versus unfiltered source-reported routing",
+      "model": "hammer2.1_3b",
+      "source_correctness_delta": 0.07142857142857151,
+      "unit_of_analysis": "state_id",
+      "with_compiler": {
+        "attempts": 84,
+        "cost": {
+          "cost_usd": {
+            "expected": 84,
+            "known": 0,
+            "total": null
+          },
+          "decision_ms": {
+            "expected": 84,
+            "known": 84,
+            "total": 28625.867128372192
+          },
+          "tokens_in": {
+            "expected": 84,
+            "known": 84,
+            "total": 47052
+          },
+          "tokens_out": {
+            "expected": 84,
+            "known": 84,
+            "total": 2107
+          }
+        },
+        "groups": 28,
+        "independently_verified_success_rate": null,
+        "source_correctness_macro": 0.8928571428571429
+      },
+      "without_compiler": {
+        "attempts": 84,
+        "cost": {
+          "cost_usd": {
+            "expected": 84,
+            "known": 0,
+            "total": null
+          },
+          "decision_ms": {
+            "expected": 84,
+            "known": 84,
+            "total": 24865.41509628296
+          },
+          "tokens_in": {
+            "expected": 84,
+            "known": 84,
+            "total": 48411
+          },
+          "tokens_out": {
+            "expected": 84,
+            "known": 84,
+            "total": 2182
+          }
+        },
+        "groups": 28,
+        "independently_verified_success_rate": null,
+        "source_correctness_macro": 0.8214285714285714
+      }
+    },
+    {
+      "arms": [
+        "compiler+nemotron_orchestrator_8b",
+        "unfiltered+nemotron_orchestrator_8b"
+      ],
+      "group_count": 28,
+      "group_coverage": 1.0,
+      "group_ids": [
+        "cheap_model_sufficient",
+        "continue_work",
+        "credential_required_action",
+        "destructive_action",
+        "diamond_dependency_graph",
+        "escalate_action",
+        "expensive_model_unnecessary",
+        "hard_dependency_a_then_b",
+        "jev_uncertain",
+        "no_relevant_tool",
+        "one_obvious_tool",
+        "orchestrator_should_abstain",
+        "permission_denied",
+        "publish_send_deploy_action",
+        "replan",
+        "required_argument_missing",
+        "retry_action",
+        "slm_uncertain",
+        "specialist_required",
+        "stop_now",
+        "tool_fails",
+        "tool_returns_malformed_data",
+        "tool_succeeds_after_retry",
+        "tool_times_out",
+        "two_independent_parallel_actions",
+        "two_similar_tools",
+        "unknown_tool",
+        "wrong_argument_type"
+      ],
+      "intervention_axis": "compiler-first versus unfiltered source-reported routing",
+      "model": "nemotron_orchestrator_8b",
+      "source_correctness_delta": -0.1071428571428571,
+      "unit_of_analysis": "state_id",
+      "with_compiler": {
+        "attempts": 84,
+        "cost": {
+          "cost_usd": {
+            "expected": 84,
+            "known": 0,
+            "total": null
+          },
+          "decision_ms": {
+            "expected": 84,
+            "known": 84,
+            "total": 209649.6434211731
+          },
+          "tokens_in": {
+            "expected": 84,
+            "known": 84,
+            "total": 30420
+          },
+          "tokens_out": {
+            "expected": 84,
+            "known": 84,
+            "total": 18270
+          }
+        },
+        "groups": 28,
+        "independently_verified_success_rate": null,
+        "source_correctness_macro": 0.6190476190476191
+      },
+      "without_compiler": {
+        "attempts": 84,
+        "cost": {
+          "cost_usd": {
+            "expected": 84,
+            "known": 0,
+            "total": null
+          },
+          "decision_ms": {
+            "expected": 84,
+            "known": 84,
+            "total": 205529.52694892883
+          },
+          "tokens_in": {
+            "expected": 84,
+            "known": 84,
+            "total": 31779
+          },
+          "tokens_out": {
+            "expected": 84,
+            "known": 84,
+            "total": 17651
+          }
+        },
+        "groups": 28,
+        "independently_verified_success_rate": null,
+        "source_correctness_macro": 0.7261904761904762
+      }
+    },
+    {
+      "arms": [
+        "compiler+qwen3.5_4b",
+        "unfiltered+qwen3.5_4b"
+      ],
+      "group_count": 28,
+      "group_coverage": 1.0,
+      "group_ids": [
+        "cheap_model_sufficient",
+        "continue_work",
+        "credential_required_action",
+        "destructive_action",
+        "diamond_dependency_graph",
+        "escalate_action",
+        "expensive_model_unnecessary",
+        "hard_dependency_a_then_b",
+        "jev_uncertain",
+        "no_relevant_tool",
+        "one_obvious_tool",
+        "orchestrator_should_abstain",
+        "permission_denied",
+        "publish_send_deploy_action",
+        "replan",
+        "required_argument_missing",
+        "retry_action",
+        "slm_uncertain",
+        "specialist_required",
+        "stop_now",
+        "tool_fails",
+        "tool_returns_malformed_data",
+        "tool_succeeds_after_retry",
+        "tool_times_out",
+        "two_independent_parallel_actions",
+        "two_similar_tools",
+        "unknown_tool",
+        "wrong_argument_type"
+      ],
+      "intervention_axis": "compiler-first versus unfiltered source-reported routing",
+      "model": "qwen3.5_4b",
+      "source_correctness_delta": 0.0,
+      "unit_of_analysis": "state_id",
+      "with_compiler": {
+        "attempts": 84,
+        "cost": {
+          "cost_usd": {
+            "expected": 84,
+            "known": 0,
+            "total": null
+          },
+          "decision_ms": {
+            "expected": 84,
+            "known": 84,
+            "total": 191577.70371437073
+          },
+          "tokens_in": {
+            "expected": 84,
+            "known": 84,
+            "total": 41214
+          },
+          "tokens_out": {
+            "expected": 84,
+            "known": 84,
+            "total": 19099
+          }
+        },
+        "groups": 28,
+        "independently_verified_success_rate": null,
+        "source_correctness_macro": 0.8928571428571429
+      },
+      "without_compiler": {
+        "attempts": 84,
+        "cost": {
+          "cost_usd": {
+            "expected": 84,
+            "known": 0,
+            "total": null
+          },
+          "decision_ms": {
+            "expected": 84,
+            "known": 84,
+            "total": 193564.01801109314
+          },
+          "tokens_in": {
+            "expected": 84,
+            "known": 84,
+            "total": 42594
+          },
+          "tokens_out": {
+            "expected": 84,
+            "known": 84,
+            "total": 18909
+          }
+        },
+        "groups": 28,
+        "independently_verified_success_rate": null,
+        "source_correctness_macro": 0.8928571428571429
+      }
+    },
+    {
+      "arms": [
+        "compiler+qwen3.5_9b",
+        "unfiltered+qwen3.5_9b"
+      ],
+      "group_count": 28,
+      "group_coverage": 1.0,
+      "group_ids": [
+        "cheap_model_sufficient",
+        "continue_work",
+        "credential_required_action",
+        "destructive_action",
+        "diamond_dependency_graph",
+        "escalate_action",
+        "expensive_model_unnecessary",
+        "hard_dependency_a_then_b",
+        "jev_uncertain",
+        "no_relevant_tool",
+        "one_obvious_tool",
+        "orchestrator_should_abstain",
+        "permission_denied",
+        "publish_send_deploy_action",
+        "replan",
+        "required_argument_missing",
+        "retry_action",
+        "slm_uncertain",
+        "specialist_required",
+        "stop_now",
+        "tool_fails",
+        "tool_returns_malformed_data",
+        "tool_succeeds_after_retry",
+        "tool_times_out",
+        "two_independent_parallel_actions",
+        "two_similar_tools",
+        "unknown_tool",
+        "wrong_argument_type"
+      ],
+      "intervention_axis": "compiler-first versus unfiltered source-reported routing",
+      "model": "qwen3.5_9b",
+      "source_correctness_delta": 0.0,
+      "unit_of_analysis": "state_id",
+      "with_compiler": {
+        "attempts": 84,
+        "cost": {
+          "cost_usd": {
+            "expected": 84,
+            "known": 0,
+            "total": null
+          },
+          "decision_ms": {
+            "expected": 84,
+            "known": 84,
+            "total": 467590.322971344
+          },
+          "tokens_in": {
+            "expected": 84,
+            "known": 84,
+            "total": 41214
+          },
+          "tokens_out": {
+            "expected": 84,
+            "known": 84,
+            "total": 33304
+          }
+        },
+        "groups": 28,
+        "independently_verified_success_rate": null,
+        "source_correctness_macro": 0.9285714285714286
+      },
+      "without_compiler": {
+        "attempts": 84,
+        "cost": {
+          "cost_usd": {
+            "expected": 84,
+            "known": 0,
+            "total": null
+          },
+          "decision_ms": {
+            "expected": 84,
+            "known": 84,
+            "total": 431748.5032081604
+          },
+          "tokens_in": {
+            "expected": 84,
+            "known": 84,
+            "total": 42594
+          },
+          "tokens_out": {
+            "expected": 84,
+            "known": 84,
+            "total": 30624
+          }
+        },
+        "groups": 28,
+        "independently_verified_success_rate": null,
+        "source_correctness_macro": 0.9285714285714286
+      }
+    }
+  ],
+  "independent_outcome": {
+    "available": false,
+    "verifier_identity": null
+  },
+  "input_sha256": "bf54b19fd1d1796026c96c6e6548b9f42015ea87b1a7b3a1aa47a964a0872697",
+  "label_generator_identity": null,
+  "limitations": [
+    "Source correct flags are labels, not independently verified task outcomes.",
+    "Compiler/unfiltered arms are descriptive contrasts; random assignment and matched attempt counterfactuals are not established.",
+    "Repeated state attempts stay within their state group and receive no extra group weight.",
+    "Work-item retry/continuation lineage, train/eval folds and contamination controls are not recorded in this corpus.",
+    "Label generator and independent verifier identities are unavailable; no sealed-judge independence claim.",
+    "Source runtime revisions/configuration pins remain incomplete in the original study manifest.",
+    "Missing cost measurements remain null; no zero-cost or verified savings inference.",
+    "No evidence retrieval, state, policy, tool, or verifier component receives causal credit from these results."
+  ],
+  "run_id": "p1b-20260921T1430Z",
+  "schema_version": "z0eval.causal_ablation_audit.v1",
+  "split": {
+    "group_key": "state_id",
+    "training_evaluation_fold": null,
+    "work_item_lineage": null
+  },
+  "supports_causal_credit": false,
+  "unpaired_arms": [
+    "compiler+functiongemma_270m",
+    "compiler+hammer2.1_7b",
+    "compiler+jev"
+  ]
+}
