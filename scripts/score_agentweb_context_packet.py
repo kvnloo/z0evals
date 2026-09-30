@@ -35,9 +35,8 @@ def score(rows: list[dict]) -> dict:
     ]
     diversity_failures = [
         r.get("id") for r in fixture
-        if isinstance(r.get("input_source_count"), int)
-        and r["input_source_count"] >= 3
-        and (r.get("retained_source_count") or 0) < min(3, r["input_source_count"])
+        if isinstance(r.get("source_diversity_target"), int)
+        and (r.get("retained_source_count") or 0) < r["source_diversity_target"]
         and r.get("source_diversity_degraded_for_budget") is not True
     ]
     diversity_budget_degradations = [
@@ -48,13 +47,23 @@ def score(rows: list[dict]) -> dict:
         r.get("id") for r in fixture
         if bool(r.get("expect_gap")) != bool((r.get("unresolved_gap_count") or 0) > 0)
     ]
-    compress_rows = [
+    truncation_failures = [
+        r.get("id") for r in fixture
+        if r.get("expect_compress") is True
+        and (r.get("truncated_excerpts") or 0) <= 0
+    ]
+    # ContextPacket has fixed structural/provenance overhead. Total-byte
+    # compression is meaningful only after the source payload is large enough
+    # to amortize that envelope; use the same >=8KB threshold as the live gate.
+    large_fixture_rows = [
         r for r in fixture
         if r.get("expect_compress") is True
+        and isinstance(r.get("input_content_bytes"), (int, float))
+        and r["input_content_bytes"] >= 8000
         and isinstance(r.get("compression_ratio"), (int, float))
     ]
     weak_compression = [
-        r.get("id") for r in compress_rows
+        r.get("id") for r in large_fixture_rows
         if float(r["compression_ratio"]) >= 0.80
     ]
     live_ratios = [
@@ -73,7 +82,11 @@ def score(rows: list[dict]) -> dict:
         "zero_model_calls": not model_calls,
         "source_diversity_or_explicit_budget_degradation": not diversity_failures,
         "gap_semantics_match": not gap_mismatches,
-        "fixture_large_context_compression_under_80pct": not weak_compression,
+        "fixture_expected_excerpts_truncated": not truncation_failures,
+        "fixture_large_context_sample_present": len(large_fixture_rows) >= 3,
+        "fixture_large_context_compression_under_80pct": (
+            len(large_fixture_rows) >= 3 and not weak_compression
+        ),
         "minimum_live_sample": len(live) >= 500,
         "live_large_context_median_compression_under_70pct": (
             len(live_ratios) >= 100 and median(live_ratios) <= 0.70
@@ -93,6 +106,12 @@ def score(rows: list[dict]) -> dict:
         "source_diversity_failures": diversity_failures,
         "source_diversity_budget_degradations": diversity_budget_degradations,
         "gap_mismatches": gap_mismatches,
+        "truncation_failures": truncation_failures,
+        "fixture_large_context_n": len(large_fixture_rows),
+        "fixture_large_context_ratios": {
+            str(r.get("id")): float(r["compression_ratio"])
+            for r in large_fixture_rows
+        },
         "weak_compression": weak_compression,
         "live_large_context_n": len(live_ratios),
         "live_large_context_median_compression": (
