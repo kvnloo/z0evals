@@ -21,7 +21,7 @@ def load_scenarios() -> list[dict]:
 def main() -> None:
     rows = load_scenarios()
     ids = [row["id"] for row in rows]
-    assert len(rows) == 56, len(rows)
+    assert len(rows) == 62, len(rows)
     assert len(ids) == len(set(ids)), "duplicate scenario id"
     assert {row["mode"] for row in rows} == {"off", "shadow", "active"}
 
@@ -179,12 +179,66 @@ def main() -> None:
     assert context_summary["gates"]["minimum_live_sample"] is False
     assert context_summary["eligible_for_assist_review"] is False
 
+    reliability_rows = [
+        json.loads(line)
+        for line in (STUDY / "reliability-observation-fixtures.jsonl").read_text().splitlines()
+        if line.strip()
+    ]
+    assert len(reliability_rows) == 7
+    assert {row["outcome"] for row in reliability_rows} == {
+        "success", "error", "timeout", "blocked", "skipped",
+        "pending_confirmation", "user_refused",
+    }
+
+    from score_agentweb_reliability import score as score_reliability
+    synthetic_results = []
+    synthetic_receipts = []
+    for index, row in enumerate(reliability_rows):
+        trace = "agentweb-observe-" + format(index + 1, "064x")
+        expected = {
+            key.removeprefix("expected_"): value
+            for key, value in row.items()
+            if key.startswith("expected_")
+        }
+        synthetic_results.append({
+            "id": row["id"],
+            "trace_id": trace,
+            "first_exported": True,
+            "second_exported": True,
+            "second_replayed": True,
+            "projection_privacy_ok": True,
+            "expected": expected,
+        })
+        outcome = {"source": "agentweb_reliability_event", **expected}
+        synthetic_receipts.append({
+            "schema": "z0int.decision_receipt.v1",
+            "trace_id": trace,
+            "capability_id": "agentweb.tool." + row["tool"],
+            "provider": "agentweb",
+            "route": "shadow",
+            "execution": "log_only",
+            "action_taken": row["outcome"],
+            "latency_ms": row["latency_ms"],
+            "measurement_state": "partial",
+            "state_reason": "observational_agentweb_tool_outcome_not_quality_verification",
+            "outcome": outcome,
+            "extra": {
+                "observational": True,
+                "tool": row["tool"],
+                "reliability_outcome": row["outcome"],
+                "status": "observed",
+                "quality_authoritative": False,
+            },
+        })
+    reliability_summary = score_reliability(synthetic_results, synthetic_receipts)
+    assert reliability_summary["passed"] is True
+
     schema = json.loads((STUDY / "receipt.schema.json").read_text())
     required = set(schema["required"])
     assert {"agentweb_sha", "z0intelligence_sha", "scenario_id", "passed", "evidence"} <= required
     assert schema["properties"]["agentweb_sha"]["pattern"] == "^[0-9a-f]{40}$"
     assert schema["properties"]["z0intelligence_sha"]["pattern"] == "^[0-9a-f]{40}$"
-    print("ok: agentweb-emma-z0-v0 contract (56 scenarios)")
+    print("ok: agentweb-emma-z0-v0 contract (62 scenarios)")
 
 
 if __name__ == "__main__":
