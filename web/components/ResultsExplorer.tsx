@@ -26,7 +26,11 @@ export default function ResultsExplorer({ matrix }: { matrix: Matrix }) {
   const [family, setFamily] = useState<string | null>(null);
 
   const toggle = (id: string) =>
-    setArms((cur) => (cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id]));
+    setArms((cur) => {
+      if (!cur.includes(id)) return [...cur, id];
+      if (cur.length === 1) return cur;
+      return cur.filter((x) => x !== id);
+    });
 
   const shown = useMemo(
     () => (family ? matrix.states.filter((s) => s.family === family) : matrix.states),
