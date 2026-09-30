@@ -58,10 +58,17 @@ export default function ArmScatter({ arms }: { arms: Arm[] }) {
           const [lo, hi] = a.wilson95;
           const stroke = a.unfiltered ? "#b91c1c" : "#29916e";
           return (
-            <g key={a.id} className="mark"
-               onMouseEnter={() => setHover({ x: cx, y: cy, arm: a })}
-               onMouseLeave={() => setHover(null)}
-               style={{ opacity: shown ? 1 : 0, transition: `opacity .45s ease ${i * 55}ms` }}>
+            <g
+              key={a.id}
+              className="mark"
+              tabIndex={0}
+              aria-label={`${a.label}: ${fmtPct(a.successRate)}, ${fmtMs(lat(a))}, n=${a.n}`}
+              onMouseEnter={() => setHover({ x: cx, y: cy, arm: a })}
+              onMouseLeave={() => setHover(null)}
+              onFocus={() => setHover({ x: cx, y: cy, arm: a })}
+              onBlur={() => setHover(null)}
+              style={{ opacity: shown ? 1 : 0, transition: `opacity .45s ease ${i * 55}ms` }}
+            >
               <line x1={cx} x2={cx} y1={y(lo)} y2={y(hi)} stroke={stroke} strokeWidth="1" opacity="0.4" />
               <line x1={cx - 4} x2={cx + 4} y1={y(lo)} y2={y(lo)} stroke={stroke} strokeWidth="1" opacity="0.5" />
               <line x1={cx - 4} x2={cx + 4} y1={y(hi)} y2={y(hi)} stroke={stroke} strokeWidth="1" opacity="0.5" />
