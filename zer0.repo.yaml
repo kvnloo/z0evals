@@ -1,0 +1,42 @@
+version: 1
+repo: kvnloo/z0evals
+id: z0evals
+kind: suite
+summary: >
+  Frozen-evidence surface for the downstream AgentWeb + Emma + z0 integration study.
+architecture:
+  subsystems:
+    - id: agentweb-emma-z0-v0
+      name: AgentWeb + Emma + z0 v0 study
+      kind: evaluation
+      paths:
+        - studies/agentweb-emma-z0-v0/README.md
+        - studies/agentweb-emma-z0-v0/manifest.yaml
+        - studies/agentweb-emma-z0-v0/scenarios.jsonl
+        - studies/agentweb-emma-z0-v0/receipt.schema.json
+        - scripts/check_agentweb_emma_z0.py
+        - scripts/score_agentweb_context_packet.py
+        - scripts/score_agentweb_stop_request.py
+        - scripts/score_agentweb_report_type.py
+        - studies/agentweb-emma-z0-v0/context-packet-fixtures.jsonl
+        - studies/agentweb-emma-z0-v0/stop-request-fixtures.jsonl
+        - studies/agentweb-emma-z0-v0/report-type-fixtures.jsonl
+  consumes_interfaces:
+    - z0int.decision_receipt.v1
+  produces_representations:
+    - evaluation-artifact
+  consumes_representations:
+    - decision-receipt
+  boundaries:
+    owns:
+      - Frozen scenario definitions, result receipts, exact source revisions, and publication evidence.
+    not_here:
+      - Runtime routing, execution, or user-facing authorization.
+      - Automatic promotion from passing experiments to production.
+  evidence:
+    docs:
+      - studies/agentweb-emma-z0-v0/README.md
+    tests:
+      - scripts/check_agentweb_emma_z0.py
+    schemas:
+      - studies/agentweb-emma-z0-v0/receipt.schema.json

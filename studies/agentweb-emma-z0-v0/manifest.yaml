@@ -1,0 +1,48 @@
+schema_version: z0eval.study.v1
+id: agentweb-emma-z0-v0
+title: AgentWeb + Emma + z0 first-class integration v0
+status: draft
+created: "2026-09-29"
+updated: "2026-09-29"
+sources:
+  - repo: kvnloo/agentweb
+    commit: 361e962bf652e3475f49bb8e5e21c68793c57669
+    branch: lab/z0-agentweb-emma-v0
+    role: Emma adapter, tool surface, privacy projection
+  - repo: kvnloo/z0intelligence
+    commit: 7aa6be0ab0df25b1c7cb4c85709ca4cb01f392ce
+    branch: lab/agentweb-emma-v0
+    role: routing, dispatch authority, receipts, shadow planner
+questions:
+  - Does the integration preserve identity, retry, privacy, remote-context, free-only, and AgentWeb safety invariants?
+  - Does z0-owned JEV preserve incumbent behavior on the frozen eligible decision slice?
+  - Which tasks produce measurable latency or token benefit without a quality regression?
+  - Does report_type_v1 preserve incumbent quality while moving JEV execution and receipts under z0 authority?
+  - Can stop_request_v1 produce safe asymmetric confidence bands without weakening user-control semantics?
+  - Can real AgentWeb KB retrievals compile into a bounded z0 ContextPacket while preserving relevant evidence, source diversity, privacy, and incomplete-scan semantics?
+  - Can AgentWeb tool-boundary reliability observations cross into z0 without exporting identity/error text or minting quality gold?
+  - Which failure modes remain unknown and require reconciliation rather than retry?
+artifacts:
+  - path: scenarios.jsonl
+    kind: fixture
+  - path: receipt.schema.json
+    kind: fixture
+  - path: report-type-fixtures.jsonl
+    kind: dataset
+  - path: stop-request-fixtures.jsonl
+    kind: dataset
+  - path: context-packet-fixtures.jsonl
+    kind: dataset
+  - path: reliability-observation-fixtures.jsonl
+    kind: dataset
+  - path: results/context-e2e-20260930.json
+    kind: result
+    sha256: c895e10069b9c0bb3d0b1f4cffaed931f13d1845c2e2c884485bbb9cf7e041a9
+  - path: results/reliability-e2e-20260930.json
+    kind: result
+    sha256: c76b5f41e621090f8c985988a1b9631854c557763d11c366c62d4dd689156d80
+limitations:
+  - No live benchmark results are claimed by this scaffold.
+  - Emma and AgentWeb production writes are outside the v0 experiment; tests are shadow, mocked, sandboxed, or read-only until explicitly promoted.
+  - Transport success and completed tool calls are not quality labels.
+claims: []

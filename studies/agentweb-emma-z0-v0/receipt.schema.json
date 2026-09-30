@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "z0eval.agentweb_emma_z0_receipt.v0",
+  "title": "AgentWeb + Emma + z0 experiment receipt",
+  "type": "object",
+  "required": [
+    "schema",
+    "scenario_id",
+    "agentweb_sha",
+    "z0intelligence_sha",
+    "observed",
+    "passed",
+    "evidence"
+  ],
+  "properties": {
+    "schema": {
+      "const": "z0eval.agentweb_emma_z0_receipt.v0"
+    },
+    "scenario_id": {
+      "type": "string"
+    },
+    "agentweb_sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "z0intelligence_sha": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "observed": {
+      "type": "object"
+    },
+    "passed": {
+      "type": "boolean"
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

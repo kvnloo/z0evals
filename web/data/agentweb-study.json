@@ -1,0 +1,92 @@
+{
+  "schema": "z0evals.site.agentweb-study.v1",
+  "title": "agentweb + emma + z0",
+  "subtitle": "first-class integration, still shadow-first",
+  "date": "september 30, 2026",
+  "scenarioCount": 62,
+  "families": {
+    "agentweb-guard": 4,
+    "context": 6,
+    "failure": 5,
+    "identity": 11,
+    "mode": 2,
+    "performance": 3,
+    "policy": 1,
+    "privacy": 11,
+    "quality": 8,
+    "receipt": 7,
+    "routing": 4
+  },
+  "frozenHeads": {
+    "agentweb": "361e962bf652e3475f49bb8e5e21c68793c57669",
+    "z0evals": "97d54f85fa85e604c4563510e41eb3a0bff05828",
+    "z0intelligence": "7aa6be0ab0df25b1c7cb4c85709ca4cb01f392ce"
+  },
+  "context": {
+    "stage": "deterministic_e2e_green",
+    "assistEnabled": false,
+    "rows": 18,
+    "requiredTermFailures": 0,
+    "privacyLeaks": 0,
+    "budgetViolations": 0,
+    "modelCallViolations": 0,
+    "largeContextRatios": {
+      "ctx-05-six-ranked": 0.24425714757891256,
+      "ctx-06-ten-ranked": 0.16893346934149384,
+      "ctx-17-tight-three": 0.5142118863049095
+    },
+    "eligibleForAssistReview": false,
+    "workflowRunId": 36682379151,
+    "artifactSha256": "b702a9f7b7f5084774ea270116e24a007db3c6acf80e7b8f44d9e80fd6ff9845"
+  },
+  "reliability": {
+    "stage": "deterministic_e2e_green",
+    "qualityAuthoritative": false,
+    "rows": 7,
+    "durableRows": 7,
+    "privacyLeaks": 0,
+    "qualityViolations": 0,
+    "passed": true,
+    "workflowRunId": 36682379259,
+    "artifactSha256": "8314d120572e87d75be96dbe313aaa5ec47ef1c99b9bad217965390b30bc67dc"
+  },
+  "modelCampaign": {
+    "reportStage": "model_backed_authored_pending",
+    "stopStage": "model_backed_authored_pending",
+    "credentialsAvailable": false,
+    "missing": [
+      "OPENROUTER_API_KEY",
+      "TYPESAFE_API_KEY"
+    ],
+    "executed": false,
+    "workflowRunId": 36689356861,
+    "artifactSha256": "fce6a365cb769725b95b52492530ff9f6c4a3df91438046e0c31a860f97c0e4c",
+    "requiredReportLivePairs": 1000,
+    "requiredStopLivePairs": 1000,
+    "requiredExplicitStops": 200
+  },
+  "global": {
+    "active_routing_enabled": false,
+    "upstream_promotion_allowed": false,
+    "aggregate_override_allowed": false
+  },
+  "evidenceClasses": {
+    "contract": {
+      "can_satisfy_live_sample": false,
+      "can_inform_quality": false
+    },
+    "deterministic_e2e": {
+      "can_satisfy_live_sample": false,
+      "can_inform_quality": false
+    },
+    "model_backed_paired": {
+      "can_satisfy_live_sample": true,
+      "can_inform_quality": true
+    },
+    "provider_emulated_e2e": {
+      "can_satisfy_live_sample": false,
+      "can_inform_quality": false,
+      "description": "Real AgentWeb/z0 transports against deterministic local provider emulators; proves campaign wiring and receipts, not model behavior."
+    }
+  }
+}
