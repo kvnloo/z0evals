@@ -16,7 +16,8 @@ sources:
 questions:
   - Does the integration preserve identity, retry, privacy, remote-context, free-only, and AgentWeb safety invariants?
   - Does z0-owned JEV preserve incumbent behavior on the frozen eligible decision slice?
-  - Which tasks produce measurable latency or token benefit without a quality regression?\n  - Does report_type_v1 preserve incumbent quality while moving JEV execution and receipts under z0 authority?
+  - Which tasks produce measurable latency or token benefit without a quality regression?
+  - Does report_type_v1 preserve incumbent quality while moving JEV execution and receipts under z0 authority?
   - Can stop_request_v1 produce safe asymmetric confidence bands without weakening user-control semantics?
   - Can real AgentWeb KB retrievals compile into a bounded z0 ContextPacket while preserving relevant evidence, source diversity, privacy, and incomplete-scan semantics?
   - Which failure modes remain unknown and require reconciliation rather than retry?
