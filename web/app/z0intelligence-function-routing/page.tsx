@@ -11,10 +11,10 @@ import MetricRow from "@/components/MetricRow";
 import { MarginNote } from "@/components/Notes";
 
 export const metadata: Metadata = {
-  title: "from model routing to evidence-backed function routing — z0evals",
+  title: "what actually deserves a model? — z0evals",
   description:
-    "Eight days of measurements on Jev, Julia, image decisions, real-trace routing, provider execution, "
-    + "and what should stay deterministic.",
+    "we kept trying to make routing smarter. the useful part was figuring out which decisions "
+    + "should not be model problems at all.",
 };
 
 const M = data.meta;
