@@ -47,6 +47,16 @@ sources:
     role: orchestrator-router results (results_v0.json, raw_v0.jsonl, vram_v0.json, PREREG.md results addendum)
     visibility: pushed
   - repo: kvnloo/z0intelligence
+    commit: 0e9005314061a78e3b54345cff497fb5c3ae550d
+    branch: exp/orchestrator-router-v0
+    role: addendum A1 pre-registration (PREREG_addendum_local_order.md), deterministic arm re-scored under host local_order (b072468 merged in 8f9883d); committed before the re-run
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: 336cb478f818db7c9e2f36702ba9fa9c14b5df70
+    branch: exp/orchestrator-router-v0
+    role: addendum A1 results (results_a1_local_order.json, script at f8c925a); frozen S1/S2 items, outcomes and gold identical to v0, no model calls
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
     commit: d651753f99199541d63f735d5c7b0f7ce2b4d4ae
     branch: feat/effect-inference-v0
     role: effect inference v0 pre-registration (PREREG.md, cases_v0.json, score.py) before the classifier existed
@@ -178,7 +188,11 @@ claims:
     evidence:
       - data/summary.json
   - id: host-order-finding
-    text: The deterministic arm's zero S1 accuracy came from host ordering (the host's own 1236 ms 0.6B listed before the farm's 41 ms copy of the same weights), which z0intelligence b072468 addressed with a host-chosen local_order; that fix is not re-evaluated here.
+    text: The deterministic arm's zero S1 accuracy came from host ordering (the host's own 1236 ms 0.6B listed before the farm's 41 ms copy of the same weights), which z0intelligence b072468 addressed with a host-chosen local_order.
+    evidence:
+      - data/summary.json
+  - id: host-order-fix-confirmed
+    text: Re-scored under a pre-registered addendum (0e90053 -> 336cb47) with the host's local_order [groot, local] on the same frozen S1/S2 items, outcomes and gold, the deterministic arm picks groot qwen3-8b on 48/48 S1 items - S1 pass 0.52 -> 0.90, mean regret 1.44 -> 0.13; pooled (n=59) choice accuracy 8/59 -> 12/59, pass 0.56 -> 0.86, regret 1.17 -> 0.11 (cheapest 0.35) - meeting the pre-registered confirmation reading (S1 pass >=0.85, regret below cheapest's 0.43); choice accuracy stays low by construction since gold is the cheapest passing model. The v0 orchestrator verdict is not re-adjudicated.
     evidence:
       - data/summary.json
   - id: effect-inference-v0-fails

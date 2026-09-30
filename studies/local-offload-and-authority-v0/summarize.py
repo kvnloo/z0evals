@@ -19,6 +19,7 @@ BENCH = [  # (file stem, label, host, accelerator)
 ]
 PINS = {
     'orchestrator_results': ('eb7c7d323c29cb6d647db57589804be073528a3e', 'benchmarks/orchestrator_router/results_v0.json'),
+    'orchestrator_a1_local_order': ('336cb478f818db7c9e2f36702ba9fa9c14b5df70', 'benchmarks/orchestrator_router/results_a1_local_order.json'),
     'effect_v0_heldout': ('f6406c11091915e479cf8f1c3d4e1d0ebdd77f40', 'benchmarks/effect_inference/results_v0_heldout.json'),
     'effect_v0_live': ('f6406c11091915e479cf8f1c3d4e1d0ebdd77f40', 'benchmarks/effect_inference/results_v0_live_cohort.json'),
     'effect_v1_heldout': ('3187f46f1de304c83e987ff9ec8956988619f6cd', 'benchmarks/effect_inference/results_v1_heldout.json'),
@@ -98,6 +99,16 @@ out = {
         'orch_think_proposals': orch['arms']['orch_think']['proposal_distribution'],
         'tests': orch['tests'],
         'vram_mib': orch['vram_mib'],
+    },
+    'orchestrator_router_a1_local_order': {
+        'prereg_commit': '0e9005314061a78e3b54345cff497fb5c3ae550d',
+        'frozen_input_check': src['orchestrator_a1_local_order']['frozen_input_check'],
+        'policy_local_order': src['orchestrator_a1_local_order']['policy_local_order'],
+        's1_deterministic_choice_distribution': src['orchestrator_a1_local_order']['s1_deterministic_choice_distribution'],
+        'arms_a1': {a: {s: {m: (round(x, 4) if isinstance(x, float) else x) for m, x in r.items()} for s, r in v.items()}
+                    for a, v in src['orchestrator_a1_local_order']['arms_a1'].items()},
+        'reading': src['orchestrator_a1_local_order']['reading'],
+        'exploratory_orch_think_vs_a1_deterministic': src['orchestrator_a1_local_order']['exploratory_orch_think_vs_a1_deterministic'],
     },
     'effect_inference': {
         'v0_heldout': {k: scalars(v['all']) for k, v in src['effect_v0_heldout']['arms'].items()},

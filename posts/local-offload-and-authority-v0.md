@@ -59,7 +59,9 @@ with a legal candidate set already filtered by policy, would nvidia's nemotron-o
 - a trivial `cheapest` rule got 35/59, and a fixed `strongest` rule delivered a 0.90 pass rate on the 48 evidence items. the orchestrator never proposed the 4b or 8b candidate. it optimised the stated latency preference and did not predict difficulty.
 - it costs about +6 gb of vram and a 3.6 s p50 per decision with thinking on.
 
-the deterministic arm scored 0 on the evidence set for a boring reason: the host listed its own 1236 ms copy of the 0.6b model before groot's 41 ms copy of the same weights. that is a host-ordering bug, not a routing insight, and z0intelligence b072468 lets the host choose the order. we have not re-run the eval on it.
+the deterministic arm scored 0 on the evidence set for a boring reason: the host listed its own 1236 ms copy of the 0.6b model before groot's 41 ms copy of the same weights. that is a host-ordering bug, not a routing insight, and z0intelligence b072468 lets the host choose the order.
+
+we then re-scored only the deterministic arm with this host's `local_order = [groot, local]`, under a short addendum pre-registration (0e90053) committed before the re-run. it used the same 59 items, the same per-model outcomes and the same gold, and made no model calls. the deterministic choice became groot's qwen3-8b on all 48 evidence items. the evidence-set pass rate went from 0.52 to **0.90** and mean regret from 1.44 to **0.13**. pooled over 59 items, that is 12/59 correct choices, a 0.86 pass rate and 0.11 regret, against 0.35 for `cheapest` (336cb47). the fix is confirmed. choice accuracy stays low by construction, because gold is the cheapest model that passes and the 8b rarely is. this does not change the orchestrator verdict above.
 
 ## reading authority from the prompt {#effects}
 
