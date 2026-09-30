@@ -146,7 +146,9 @@ python scripts/score_agentweb_context_packet.py \
   /tmp/agentweb-context-packet-results.jsonl
 ```
 
-Authored fixtures gate deterministic correctness, but assist/injection review also
-requires at least 500 real shadow KB packets and at least 100 large-input packets
-with median compression <=70%. Passing fixture compression alone cannot enable
-context injection.
+Authored fixtures gate deterministic correctness. Excerpt truncation is checked
+for every fixture marked compressible, while total packet/input compression is
+evaluated only for inputs >=8 KB because the ContextPacket has fixed provenance
+and reconstruction metadata. Assist/injection review still requires at least
+500 real shadow KB packets and at least 100 >=8 KB packets with median compression
+<=70%. Passing authored fixtures alone cannot enable context injection.
