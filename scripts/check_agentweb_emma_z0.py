@@ -21,7 +21,7 @@ def load_scenarios() -> list[dict]:
 def main() -> None:
     rows = load_scenarios()
     ids = [row["id"] for row in rows]
-    assert len(rows) == 48, len(rows)
+    assert len(rows) == 56, len(rows)
     assert len(ids) == len(set(ids)), "duplicate scenario id"
     assert {row["mode"] for row in rows} == {"off", "shadow", "active"}
 
@@ -61,6 +61,14 @@ def main() -> None:
         "stop-noul-replay",
         "stop-noul-mutation-conflict",
         "stop-user-control-live-sample-gate",
+        "context-boundary-opt-in",
+        "context-source-pseudonymization",
+        "context-final-byte-budget",
+        "context-source-diversity",
+        "context-lexical-focus",
+        "context-incomplete-scan-gap",
+        "context-zero-persistence-model",
+        "context-agentweb-result-unchanged",
     }
     assert hard <= set(ids), sorted(hard - set(ids))
 
@@ -131,6 +139,45 @@ def main() -> None:
     assert stop_summary["gates"]["minimum_live_sample"] is False
     assert stop_summary["gates"]["minimum_explicit_stop_sample"] is False
     assert stop_summary["eligible_for_review"] is False
+
+    context_rows = [
+        json.loads(line)
+        for line in (STUDY / "context-packet-fixtures.jsonl").read_text().splitlines()
+        if line.strip()
+    ]
+    assert len(context_rows) == 18
+    assert any(row["has_more"] is True for row in context_rows if "has_more" in row)
+    assert any(row["scan_incomplete"] is True for row in context_rows if "scan_incomplete" in row)
+    assert any(len(row["results"]) >= 10 for row in context_rows)
+    assert any(len(row["required_terms"]) >= 3 for row in context_rows)
+
+    from score_agentweb_context_packet import score as score_context
+    synthetic_context = []
+    for row in context_rows:
+        synthetic_context.append({
+            "sample_source": "fixture",
+            "id": row["id"],
+            "ok": True,
+            "applied": False,
+            "expect_gap": row["expect_gap"],
+            "expect_compress": row["expect_compress"],
+            "required_terms_preserved": True,
+            "source_label_leak": False,
+            "input_source_count": len(row["results"]),
+            "retained_source_count": min(3, len(row["results"])) if row["results"] else 0,
+            "unresolved_gap_count": 1 if row["expect_gap"] else 0,
+            "input_content_bytes": 10000 if row["expect_compress"] else 100,
+            "packet_bytes": 5000 if row["expect_compress"] else 900,
+            "max_packet_bytes": row["max_packet_bytes"],
+            "compression_ratio": 0.5 if row["expect_compress"] else 9.0,
+            "network_model_calls": 0,
+            "private_text_persisted": False,
+        })
+    context_summary = score_context(synthetic_context)
+    assert context_summary["required_term_failures"] == []
+    assert context_summary["privacy_leaks"] == []
+    assert context_summary["gates"]["minimum_live_sample"] is False
+    assert context_summary["eligible_for_assist_review"] is False
 
     schema = json.loads((STUDY / "receipt.schema.json").read_text())
     required = set(schema["required"])
