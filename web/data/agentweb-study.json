@@ -6,13 +6,13 @@
   "scenarioCount": 62,
   "families": {
     "agentweb-guard": 4,
-    "context": 9,
-    "failure": 6,
-    "identity": 10,
+    "context": 6,
+    "failure": 5,
+    "identity": 11,
     "mode": 2,
     "performance": 3,
     "policy": 1,
-    "privacy": 8,
+    "privacy": 11,
     "quality": 8,
     "receipt": 7,
     "routing": 4
