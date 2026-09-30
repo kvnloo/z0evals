@@ -119,3 +119,34 @@ session identity, bounded tool name/platform/outcome/latency, partial measuremen
 state and no user id, prompt, tool args/results, free-form error text or verified
 quality signal. Duplicate identical observations replay; changed payloads under
 the same observation id are rejected.
+
+
+### context_packet_v1
+
+Corpus: `context-packet-fixtures.jsonl` — adversarial preselected-KB cases
+covering relevant facts at head/middle/tail, duplicate sources, 10-source result
+sets, incomplete scans, tight byte budgets, and sensitive source/file labels.
+
+From the AgentWeb lab branch:
+
+```bash
+cd backend
+npm run study:z0-context-packet -- \
+  /path/to/z0evals/studies/agentweb-emma-z0-v0/context-packet-fixtures.jsonl \
+  /tmp/agentweb-context-packet-results.jsonl
+```
+
+The runner enables only the explicit context compiler boundary for each fixture;
+z0 makes zero model calls and persists no excerpt text.
+
+Score:
+
+```bash
+python scripts/score_agentweb_context_packet.py \
+  /tmp/agentweb-context-packet-results.jsonl
+```
+
+Authored fixtures gate deterministic correctness, but assist/injection review also
+requires at least 500 real shadow KB packets and at least 100 large-input packets
+with median compression <=70%. Passing fixture compression alone cannot enable
+context injection.
