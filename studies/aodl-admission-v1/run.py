@@ -75,6 +75,7 @@ def semantic_tuple(decision):
         decision.codes,
         decision.numeric_codes,
         decision.semantic_fingerprint,
+        decision.intent_source_hash,
         decision.contract_revision,
         decision.request_revision,
         decision.parent_node_id,
