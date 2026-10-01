@@ -1,0 +1,128 @@
+{
+  "schema": "z0eval.aodl_admission_cases.v1",
+  "cases": [
+    {
+      "id": "allow-bounded",
+      "expected_allow": true,
+      "expected_codes": [],
+      "document": {},
+      "request": {}
+    },
+    {
+      "id": "deny-revision",
+      "expected_allow": false,
+      "expected_codes": [
+        101
+      ],
+      "document": {},
+      "request": {
+        "request_revision": 4
+      }
+    },
+    {
+      "id": "deny-dynamic",
+      "expected_allow": false,
+      "expected_codes": [
+        102
+      ],
+      "document": {
+        "dynamic_allowed": false
+      },
+      "request": {}
+    },
+    {
+      "id": "deny-children",
+      "expected_allow": false,
+      "expected_codes": [
+        103
+      ],
+      "document": {
+        "max_children": 1
+      },
+      "request": {
+        "live_children": 1
+      }
+    },
+    {
+      "id": "deny-depth",
+      "expected_allow": false,
+      "expected_codes": [
+        104
+      ],
+      "document": {
+        "max_depth": 0
+      },
+      "request": {
+        "parent_depth": 0
+      }
+    },
+    {
+      "id": "deny-budget",
+      "expected_allow": false,
+      "expected_codes": [
+        105
+      ],
+      "document": {
+        "token_budget": 500
+      },
+      "request": {
+        "observed_tokens": 450,
+        "proposed_tokens": 51
+      }
+    },
+    {
+      "id": "deny-authority",
+      "expected_allow": false,
+      "expected_codes": [
+        106
+      ],
+      "document": {
+        "ceiling": [
+          "execute"
+        ]
+      },
+      "request": {
+        "requested": [
+          "execute",
+          "verify"
+        ]
+      }
+    },
+    {
+      "id": "deny-multi",
+      "expected_allow": false,
+      "expected_codes": [
+        103,
+        105,
+        106
+      ],
+      "document": {
+        "max_children": 1,
+        "token_budget": 10,
+        "ceiling": [
+          "execute"
+        ]
+      },
+      "request": {
+        "live_children": 1,
+        "observed_tokens": 10,
+        "proposed_tokens": 1,
+        "requested": [
+          "verify"
+        ]
+      }
+    },
+    {
+      "id": "deny-unknown-parent",
+      "expected_allow": false,
+      "expected_codes": [],
+      "expected_labels": [
+        "parent-not-declared"
+      ],
+      "document": {},
+      "request": {
+        "parent_node_id": "not-declared"
+      }
+    }
+  ]
+}

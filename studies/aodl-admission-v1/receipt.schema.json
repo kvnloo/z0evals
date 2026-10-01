@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AODL admission conformance receipt",
+  "type": "object",
+  "required": [
+    "schema",
+    "case_id",
+    "allowed",
+    "decision",
+    "codes",
+    "numeric_codes",
+    "source",
+    "aodl_canon_version",
+    "aodl_semantic_fingerprint",
+    "contract_revision",
+    "request_revision",
+    "parent_node_id",
+    "latency_us",
+    "replay_stable"
+  ],
+  "properties": {
+    "schema": {
+      "const": "z0eval.aodl_admission_receipt.v1"
+    },
+    "case_id": {
+      "type": "string"
+    },
+    "allowed": {
+      "type": "boolean"
+    },
+    "decision": {
+      "enum": [
+        "ALLOW",
+        "DENY"
+      ]
+    },
+    "codes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "numeric_codes": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "enum": [
+          101,
+          102,
+          103,
+          104,
+          105,
+          106
+        ]
+      }
+    },
+    "source": {
+      "type": "string"
+    },
+    "aodl_canon_version": {
+      "const": "aodl-canon-1"
+    },
+    "aodl_semantic_fingerprint": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "contract_revision": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "request_revision": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "parent_node_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "latency_us": {
+      "type": "number",
+      "minimum": 0
+    },
+    "replay_stable": {
+      "type": "boolean"
+    },
+    "z0int_revision": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{7,40}$"
+    },
+    "aodl_revision": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{7,40}$"
+    }
+  },
+  "additionalProperties": false
+}

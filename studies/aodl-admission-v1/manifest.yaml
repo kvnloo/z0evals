@@ -1,0 +1,38 @@
+schema_version: z0eval.study.v1
+id: aodl-admission-v1
+title: AODL intent-contract admission and replay conformance v1
+status: draft
+created: "2026-10-01"
+updated: "2026-10-01"
+
+sources:
+  - repo: kvnloo/aodl
+    commit: 68231658f0ec0338464c0916a2329b9587444312
+    branch: feat/aodl-canon-v1-clean
+    role: validation and aodl-canon-1 semantic identity
+  - repo: kvnloo/z0intelligence
+    commit: c30ddebd498b58ec570ca83c5df8c9459522e583
+    branch: feat/aodl-admission-v1
+    role: plain-Python structural admission runtime
+  - repo: kvnloo/z0intelligence
+    commit: a0e95785fe810ae0d1cfbb128096b5deca5c2712
+    branch: exp/bend-aodl-gate
+    role: independent Bend differential verifier
+
+tracker: https://github.com/kvnloo/z0evals/issues/78
+
+artifacts:
+  - path: cases.json
+    kind: frozen-cohort
+  - path: receipt.schema.json
+    kind: result-schema
+  - path: run.py
+    kind: runner
+
+claims: []
+
+limitations:
+  - Pure structural admission only; not yet wired to physical dispatch.
+  - Controller restart/drift receipts are a later slice.
+  - Bend latency is not a promotion gate; z0intelligence#48 already found no hot-path benefit.
+  - No admission result is evidence of task success.
