@@ -90,11 +90,12 @@ export default function Page() {
       <RouteProgress />
       <header className="blog-page-header">
         <div>
-          <nav className="site-nav">
+          <nav className="site-nav" aria-label="research pages">
             <a className="brand" href="./">z0evals</a>
             <div className="links">
-              <a href="#held-up">results</a>
-              <a href="#appendix">method</a>
+              <a href="./" aria-current="page">phase 1b</a>
+              <a href="./z0intelligence-function-routing/">routing</a>
+              <a href="./unified-memory-v0/">memory</a>
               <a href="https://github.com/kvnloo/z0evals">github</a>
             </div>
           </nav>
@@ -118,6 +119,20 @@ export default function Page() {
           </div>
 
           <div className="article-body prose">
+            <Callout kind="info" title="latest research · september 29">
+              <p>
+                phase 1b is still the baseline story below. the newer mess lives in two places:{" "}
+                <a href="./z0intelligence-function-routing/">what actually deserves a model?</a>
+                {" "}and{" "}
+                <a href="./unified-memory-v0/">can four agents remember the same thing?</a>.
+              </p>
+              <p>
+                short version: the dumb routing baseline beat the learned fast paths, and the
+                memory work got one really good omp context result without magically becoming a
+                four-harness win.
+              </p>
+            </Callout>
+
             <HeadingFrog id="how-much" level={2}>
               how much of the llm do we actually need?
             </HeadingFrog>
@@ -209,7 +224,7 @@ remote frontier model`}</pre>
               time, including <strong>{pilot.highRiskCount} high-risk disagreements</strong>.
             </p>
 
-            <MarginNote n={1} label="it was the menu, not the model">
+            <MarginNote n={1} footnote label="it was the menu, not the model">
               those two routers were choosing from <em>different</em> candidate sets. when the
               menu is held equal the agreement is <strong>100%</strong>, not 48.1% &mdash; the
               later j1_1 rerun reports <code>candidate_set_equal: true</code> on all 40 rows, and
@@ -648,7 +663,7 @@ qwen4b`}</pre>
               mushroom-body policies, the fly work, and q-route.
             </p>
 
-            <MarginNote n={2} label="confidence coverage">
+            <MarginNote n={2} footnote label="confidence coverage">
               only {calibration.length} of {arms[0].n * arms.length} recorded decisions emit a
               confidence at all, unevenly across arms — {nanojevArm.label} and hammer 7b supply most of
               them. the reliability curve below describes the arms that emit confidence, not every
@@ -1054,13 +1069,13 @@ this is genuinely hard
               so this page does <strong>not</strong> claim the numbers reproduce from a fresh
               clone.
             </p>
-            <MarginNote n={3} label="excluded arms">
+            <MarginNote n={3} footnote label="excluded arms">
               {coverage.coldProbeArms.length} single-state cold-start probes (
               {coverage.coldProbeRows} receipts on{" "}
               <code>{coverage.coldProbeStates.join(", ")}</code>) were excluded from every
               comparison. they measure load latency, not bounded-choice accuracy.
             </MarginNote>
-            <MarginNote n={4} label="thin cells">
+            <MarginNote n={4} footnote label="thin cells">
               eight cells in <code>compiler+jev+qwen3.5_4b</code> ran at n=2 rather than n=3, and
               no measured cell reached n≥10. the arm-level intervals are wide enough to matter.
             </MarginNote>

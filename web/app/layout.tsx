@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Hanken_Grotesk, JetBrains_Mono, Parastoo } from "next/font/google";
 import "./globals.css";
 
@@ -25,6 +25,11 @@ const display = Parastoo({
   display: "swap",
   variable: "--font-parastoo",
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
 
 export const metadata: Metadata = {
   title: "how much of the llm do we actually need? — z0evals",

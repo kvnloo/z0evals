@@ -132,6 +132,14 @@ No animation library is present on either page: no `framer-motion`, no
 | Counted dangerous **selections**, not exposures | The reference counts what a draw selected. We report exposures separately and footnote the gate clause that ignores them. |
 | Empty histogram buckets | There genuinely are no measured decisions between ~10 ms and ~100 ms. Not smoothed away. |
 
+### Historical baseline note
+
+The committed `ours-*.png` captures and `measure.json` were generated before
+the September 29 StoryShell/navigation hardening. Keep them as historical
+reference evidence, but do **not** treat them as current acceptance screenshots.
+Current acceptance is the real Next export plus `audit_web_source.py`,
+`audit_web_export.py`, and the post-deploy Pages route smoke tests.
+
 ## Evidence in this directory
 
 * `ours-1440x1200.png`, `ours-1024x1200.png`, `ours-390x844.png` — full-page
@@ -143,3 +151,28 @@ The reference captures are not stored, because they are third-party content and
 are reproducible in one command: serve the saved reference DOM with its own
 stylesheets and run `shots.py`. The parallax of numbers in this document is the
 comparison.
+
+
+## September 29 shell hardening
+
+The original visual-parity pass copied the reference's small-screen control too
+literally. In actual z0evals use, desktop/laptop windows between 960 and 1199px
+were being handed the mobile floating contents button, and the newer StoryShell
+could render the fixed rail and mobile control at the same time.
+
+The product contract is now:
+
+- **>= 960px:** desktop/laptop reading mode with a fixed contents rail.
+- **< 960px:** floating contents button + bottom sheet.
+- Story pages use the same full-width article architecture as the Phase 1B page;
+  the fixed rail is not a grid column and therefore cannot shift the 680px
+  reading column.
+- Nested research-page navigation is relative to the current Pages channel, so
+  main, `/next/`, `/nightly/`, and `/dev/` do not escape to the account root.
+- TOC links switch Story/Explore state before scrolling when their target lives
+  in the other reading mode.
+- The CI export audit checks shipped fragments, TOC ordering, project-safe
+  navigation and StoryShell prose classes after the real Next export.
+
+This intentionally prioritizes correct project-site navigation and desktop
+ergonomics over byte-for-byte breakpoint parity with the external reference.

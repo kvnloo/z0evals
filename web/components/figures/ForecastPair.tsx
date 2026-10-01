@@ -1,3 +1,7 @@
+"use client";
+
+import { useReveal } from "../charts/useReveal";
+
 /**
  * Figure pair — what one reading licenses versus what 84 readings license.
  *
@@ -48,6 +52,7 @@ const PAD_Y = 10;
 const pct = (v: number) => `${(v * 100).toFixed(1)}%`;
 
 export default function ForecastPair({ d }: { d: ForecastData }) {
+  const { ref, shown } = useReveal<HTMLElement>(0.08);
   const cx = (p: number) => PAD_X + (p / 100) * (CW - PAD_X * 2);
   const cy = (v: number) => CH - PAD_Y - v * (CH - PAD_Y * 2);
 
@@ -69,7 +74,7 @@ export default function ForecastPair({ d }: { d: ForecastData }) {
   );
 
   return (
-    <figure className="figure">
+    <figure className="figure" ref={ref}>
       <p className="corpusTitle">{d.title}</p>
 
       <div className="forecastPair">
@@ -95,7 +100,11 @@ export default function ForecastPair({ d }: { d: ForecastData }) {
                 stroke="var(--sb-bg-muted)"
               />
             ))}
-            <polygon points={band} fill="var(--sb-highlight-soft)" />
+            <polygon
+              points={band}
+              fill="var(--sb-highlight-soft)"
+              style={{ opacity: shown ? 1 : 0, transition: "opacity .5s ease .15s" }}
+            />
             {d.curve.length > 0 && (
               <>
                 <polyline
@@ -104,6 +113,10 @@ export default function ForecastPair({ d }: { d: ForecastData }) {
                   stroke="var(--sb-secondary)"
                   strokeWidth={1}
                   vectorEffect="non-scaling-stroke"
+                  pathLength={1}
+                  strokeDasharray={1}
+                  strokeDashoffset={shown ? 0 : 1}
+                  style={{ transition: "stroke-dashoffset .7s cubic-bezier(.2,.7,.2,1)" }}
                 />
                 <polyline
                   points={d.curve.map(([x, , hi]) => `${cx(x)},${cy(hi)}`).join(" ")}
@@ -111,6 +124,10 @@ export default function ForecastPair({ d }: { d: ForecastData }) {
                   stroke="var(--sb-secondary)"
                   strokeWidth={1}
                   vectorEffect="non-scaling-stroke"
+                  pathLength={1}
+                  strokeDasharray={1}
+                  strokeDashoffset={shown ? 0 : 1}
+                  style={{ transition: "stroke-dashoffset .7s cubic-bezier(.2,.7,.2,1) .04s" }}
                 />
               </>
             )}
@@ -120,6 +137,10 @@ export default function ForecastPair({ d }: { d: ForecastData }) {
               stroke="var(--sb-text)"
               strokeWidth={1.5}
               vectorEffect="non-scaling-stroke"
+              pathLength={1}
+              strokeDasharray={1}
+              strokeDashoffset={shown ? 0 : 1}
+              style={{ transition: "stroke-dashoffset .7s cubic-bezier(.2,.7,.2,1) .08s" }}
             />
           </svg>
         </div>
@@ -159,13 +180,23 @@ export default function ForecastPair({ d }: { d: ForecastData }) {
                     strokeWidth={Math.max(1, (12 / Math.max(1, d.errors.length)) * 1.6)}
                     strokeOpacity={0.5}
                     vectorEffect="non-scaling-stroke"
+                    pathLength={1}
+                    strokeDasharray={1}
+                    strokeDashoffset={shown ? 0 : 1}
+                    style={{ transition: `stroke-dashoffset .55s ease ${i * 35}ms` }}
                   >
                     <title>
                       {e.label}: {pct(e.rate)} (95% ci {pct(e.lo)}–{pct(e.hi)}), n={e.n},
                       width {pct(w)}
                     </title>
                   </line>
-                  <circle cx={EW * e.rate} cy={y} r={1.6} fill="var(--sb-text)" />
+                  <circle
+                    cx={EW * e.rate}
+                    cy={y}
+                    r={shown ? 1.6 : 0}
+                    fill="var(--sb-text)"
+                    style={{ transition: `r .25s ease ${i * 35 + 180}ms` }}
+                  />
                 </g>
               );
             })}

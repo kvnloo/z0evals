@@ -22,9 +22,14 @@ export default function RouteProgress() {
     measure();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
+    const resizeObserver =
+      typeof ResizeObserver !== "undefined" ? new ResizeObserver(onScroll) : null;
+    if (resizeObserver) resizeObserver.observe(document.body);
+
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
+      resizeObserver?.disconnect();
       if (frame) cancelAnimationFrame(frame);
     };
   }, []);

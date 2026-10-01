@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Matrix } from "@/data/types";
 
 /**
@@ -9,7 +9,17 @@ import type { Matrix } from "@/data/types";
 export default function ObservationScrubber({ matrix }: { matrix: Matrix }) {
   const [i, setI] = useState(0);
   const states = matrix.states;
-  const s = states[i];
+
+  useEffect(() => {
+    setI((value) => Math.min(value, Math.max(0, states.length - 1)));
+  }, [states.length]);
+
+  if (!states.length) {
+    return <div className="empty-state">no states in this filter.</div>;
+  }
+
+  const safeIndex = Math.min(i, states.length - 1);
+  const s = states[safeIndex];
   const arms = matrix.armOrder.filter((a) => s.arms[a]);
 
   const correct = arms.filter((a) => s.arms[a].successRate === 1).length;
@@ -21,7 +31,7 @@ export default function ObservationScrubber({ matrix }: { matrix: Matrix }) {
     <div>
       <div className="chart-tabs" style={{ alignItems: "center", gap: 10 }}>
         <span style={{ fontSize: 12.5, fontFamily: "var(--font-mono)", color: "var(--color-sb-text-muted)" }}>
-          state {i + 1} of {states.length}
+          state {safeIndex + 1} of {states.length}
         </span>
         <span style={{ fontSize: 12.5, color: "var(--color-sb-text-muted)" }}>
           {s.id} · <strong style={{ color: "var(--color-sb-secondary)" }}>{s.family}</strong>
@@ -34,11 +44,11 @@ export default function ObservationScrubber({ matrix }: { matrix: Matrix }) {
         <span className="scrubLabel">inspect</span>
         <input
           aria-label="inspect one recorded event"
-          aria-valuetext={`Event ${i + 1} of ${states.length}, ${s.family}, ${summary}`}
-          type="range" min={0} max={states.length - 1} step={1} value={i}
+          aria-valuetext={`Event ${safeIndex + 1} of ${states.length}, ${s.family}, ${summary}`}
+          type="range" min={0} max={states.length - 1} step={1} value={safeIndex}
           onChange={(e) => setI(Number(e.target.value))}
         />
-        <span className="progressValue">{i + 1}/{states.length}</span>
+        <span className="progressValue">{safeIndex + 1}/{states.length}</span>
       </div>
 
       <table className="data-table">
@@ -60,7 +70,7 @@ export default function ObservationScrubber({ matrix }: { matrix: Matrix }) {
                 <td>{arm.label}</td>
                 <td className="num">{st.n}</td>
                 <td className="num" style={{ color: colour, fontWeight: 700 }}>
-                  {st.unanimous ? (rate === 1 ? "correct" : "wrong") : `split ${(rate * 3).toFixed(0)}/${st.n}`}
+                  {st.unanimous ? (rate === 1 ? "correct" : "wrong") : `split ${(rate * st.n).toFixed(0)}/${st.n}`}
                 </td>
                 <td className="num">{st.p50Ms == null ? "—" : `${Math.round(st.p50Ms).toLocaleString()} ms`}</td>
                 <td className="num">{r0.confidence == null ? "—" : r0.confidence.toFixed(3)}</td>

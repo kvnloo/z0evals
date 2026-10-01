@@ -1,3 +1,7 @@
+"use client";
+
+import { useReveal } from "../charts/useReveal";
+
 /**
  * Figure — where the 1,102 receipts sit.
  *
@@ -53,6 +57,7 @@ const GRIDLINES = 4;
 const log10 = (v: number) => Math.log10(v);
 
 export default function CorpusGrowth({ d }: { d: CorpusData }) {
+  const { ref, shown } = useReveal<HTMLElement>(0.08);
   const h = d.histogram;
   const span = h.hiExp - h.loExp;
   const xOf = (ms: number) =>
@@ -63,7 +68,7 @@ export default function CorpusGrowth({ d }: { d: CorpusData }) {
   const yOf = (n: number) => BASE_Y - (n / h.max) * (BASE_Y - TOP_Y);
 
   return (
-    <figure className="figure">
+    <figure className="figure" ref={ref}>
       <p className="corpusTitle">{d.title}</p>
       <p className="corpusHeadline">
         {d.headline.map((s, i) => (
@@ -92,10 +97,13 @@ export default function CorpusGrowth({ d }: { d: CorpusData }) {
             <rect
               key={i}
               x={X0 + i * pitch + (pitch - barW) / 2}
-              y={yOf(n)}
+              y={shown ? yOf(n) : BASE_Y}
               width={barW}
-              height={BASE_Y - yOf(n)}
+              height={shown ? BASE_Y - yOf(n) : 0}
               fill="var(--sb-border)"
+              style={{
+                transition: `y .55s cubic-bezier(.2,.7,.2,1) ${i * 24}ms, height .55s cubic-bezier(.2,.7,.2,1) ${i * 24}ms`,
+              }}
             />
           ),
         )}
@@ -120,6 +128,10 @@ export default function CorpusGrowth({ d }: { d: CorpusData }) {
             fill="var(--sb-secondary)"
             stroke="var(--sb-secondary)"
             strokeWidth={1.2}
+            style={{
+              opacity: shown ? 1 : 0,
+              transition: `opacity .35s ease ${220 + i * 45}ms`,
+            }}
           >
             <title>
               {f.state} · {f.arm} · {f.ms} ms · selected a dangerous action
