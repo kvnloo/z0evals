@@ -1,0 +1,42 @@
+schema_version: z0eval.study.v1
+id: aodl-golden-trace-v1
+title: First governed AODL root-trace join
+status: draft
+created: "2026-10-01"
+updated: "2026-10-01"
+
+parent_studies:
+  - aodl-admission-v1
+  - aodl-runtime-v1
+tracker:
+  - https://github.com/kvnloo/z0evals/issues/78
+  - https://github.com/kvnloo/z0evals/issues/58
+
+sources:
+  - repo: kvnloo/aodl
+    commit: 68231658f0ec0338464c0916a2329b9587444312
+    role: canonical contract identity
+  - repo: kvnloo/z0intelligence
+    commit: 28db1eecbe9fa9921c52945e15d4894b6dddae3d
+    branch: feat/aodl-governed-worker-v1
+    role: first host-governed OMP-compatible remote worker canary
+
+pass_definition:
+  structural_execution_complete: true
+  verified_outcome_complete: true_for_exact_public_CANONICAL_OK_fixture
+
+non_goals:
+  - Do not treat execution completion as verified task success.
+  - Do not infer missing provider or usage stages.
+  - Do not score a winner or collapse the stages into one quality metric.
+
+
+artifacts:
+  - path: collect_golden.py
+    kind: collector
+  - path: golden-trace.schema.json
+    kind: result-schema
+  - path: golden-canary-bundle.schema.json
+    kind: bundle-schema
+  - path: import_golden.py
+    kind: sanitized-importer

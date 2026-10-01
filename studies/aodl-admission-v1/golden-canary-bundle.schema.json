@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "z0int AODL governed golden canary bundle",
+  "type": "object",
+  "required": [
+    "schema",
+    "z0int_revision",
+    "z0evals_revision",
+    "study_pinned_z0int_revision",
+    "root_trace_id",
+    "synthetic_fixture",
+    "provider_execution",
+    "verified_outcome",
+    "verification_scope",
+    "structural_execution_complete",
+    "verified_outcome_complete",
+    "golden_trace",
+    "raw_state"
+  ],
+  "properties": {
+    "schema": {"const": "z0int.aodl_golden_canary_bundle.v1"},
+    "z0int_revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "z0evals_revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "study_pinned_z0int_revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "root_trace_id": {"const": "remote-public-proof"},
+    "synthetic_fixture": {"const": "CANONICAL_OK"},
+    "provider_execution": {"const": true},
+    "verified_outcome": {"const": true},
+    "verification_scope": {"const": "exact public synthetic fixture only"},
+    "structural_execution_complete": {"const": true},
+    "verified_outcome_complete": {"const": true},
+    "golden_trace": {"const": "golden-trace.json"},
+    "raw_state": {"const": "raw/state"}
+  },
+  "additionalProperties": false
+}
