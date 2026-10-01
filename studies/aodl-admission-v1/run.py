@@ -10,7 +10,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 CASES = json.loads((HERE / "cases.json").read_text(encoding="utf-8"))
-Z0INT_REVISION = "c30ddebd498b58ec570ca83c5df8c9459522e583"
+Z0INT_REVISION = "ea249f197064cec1cf97f2851dac2efdaebca29e"
 AODL_REVISION = "68231658f0ec0338464c0916a2329b9587444312"
 
 

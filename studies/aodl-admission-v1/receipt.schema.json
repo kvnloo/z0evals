@@ -12,6 +12,7 @@
     "source",
     "aodl_canon_version",
     "aodl_semantic_fingerprint",
+    "aodl_intent_source_hash",
     "contract_revision",
     "request_revision",
     "parent_node_id",
@@ -98,6 +99,13 @@
     "aodl_revision": {
       "type": "string",
       "pattern": "^[0-9a-f]{7,40}$"
+    },
+    "aodl_intent_source_hash": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[a-f0-9]{64}$"
     }
   },
   "additionalProperties": false

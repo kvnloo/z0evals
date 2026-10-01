@@ -40,13 +40,14 @@ oracle.
 ## Required invariants
 
 - contract authority comes from validated AODL, never from caller-supplied limits;
-- `aodl-canon-1` names the exact semantic contract;
+- `aodl-canon-1` names the exact full semantic snapshot;
+- `provenance.sourceHash` is retained separately as intent/source lineage;
 - all 101–106 denial families are independently exercised;
 - multi-violation cases preserve all applicable reasons;
 - malformed/invalid/unavailable contract dependencies fail closed;
 - replay of identical inputs preserves verdict, codes and semantic fingerprint;
 - admission receipts never contain `success` or `verified_success`;
-- runtime/observation mutation must not be confused with authored intent mutation.
+- runtime/observation mutation may change the full semantic fingerprint but must not be confused with authored intent/source-lineage mutation.
 
 ## Outputs
 
