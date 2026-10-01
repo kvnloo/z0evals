@@ -1,0 +1,850 @@
+{
+ "schema": "z0evals.claude-code-savings.summary.v1",
+ "n_trials": 496,
+ "contrasts": {
+  "pooled": {
+   "C1": {
+    "A": "stock",
+    "B": "lean+packet+obspack",
+    "n_pairs": 124,
+    "tokens_change": -0.3424,
+    "tokens_median_paired_change": -0.3021,
+    "pairs_B_cheaper": 117,
+    "cost_change": -0.4544,
+    "success_A": 121,
+    "success_B": 124,
+    "ci95_cluster_boot": [
+     -0.4028,
+     -0.2814
+    ],
+    "wilcoxon_p_logratio": 9.97e-21,
+    "wilcoxon_p_holm": 2.99e-20,
+    "quality_guard": "PASS"
+   },
+   "C2": {
+    "A": "stock",
+    "B": "lean",
+    "n_pairs": 124,
+    "tokens_change": -0.3176,
+    "tokens_median_paired_change": -0.3276,
+    "pairs_B_cheaper": 118,
+    "cost_change": -0.428,
+    "success_A": 121,
+    "success_B": 121,
+    "ci95_cluster_boot": [
+     -0.3623,
+     -0.269
+    ],
+    "wilcoxon_p_logratio": 2.24e-21,
+    "wilcoxon_p_holm": 8.96e-21,
+    "quality_guard": "PASS"
+   },
+   "C3": {
+    "A": "lean",
+    "B": "lean+packet",
+    "n_pairs": 124,
+    "tokens_change": -0.0648,
+    "tokens_median_paired_change": 0.0591,
+    "pairs_B_cheaper": 46,
+    "cost_change": 0.0097,
+    "success_A": 121,
+    "success_B": 124,
+    "ci95_cluster_boot": [
+     -0.1698,
+     0.0412
+    ],
+    "wilcoxon_p_logratio": 0.545,
+    "wilcoxon_p_holm": 0.545,
+    "quality_guard": "PASS"
+   },
+   "C4": {
+    "A": "lean+packet",
+    "B": "lean+packet+obspack",
+    "n_pairs": 124,
+    "tokens_change": 0.0304,
+    "tokens_median_paired_change": 0.0012,
+    "pairs_B_cheaper": 55,
+    "cost_change": -0.0554,
+    "success_A": 124,
+    "success_B": 124,
+    "ci95_cluster_boot": [
+     -0.0293,
+     0.0902
+    ],
+    "wilcoxon_p_logratio": 0.1,
+    "wilcoxon_p_holm": 0.2,
+    "quality_guard": "PASS"
+   },
+   "S1": {
+    "A": "stock",
+    "B": "lean+packet",
+    "n_pairs": 124,
+    "tokens_change": -0.3618,
+    "tokens_median_paired_change": -0.3077,
+    "pairs_B_cheaper": 120,
+    "cost_change": -0.4224,
+    "success_A": 121,
+    "success_B": 124,
+    "ci95_cluster_boot": [
+     -0.4258,
+     -0.304
+    ],
+    "wilcoxon_p_logratio": 2.71e-21,
+    "quality_guard": "PASS"
+   }
+  },
+  "qa": {
+   "C1": {
+    "A": "stock",
+    "B": "lean+packet+obspack",
+    "n_pairs": 44,
+    "tokens_change": -0.4826,
+    "tokens_median_paired_change": -0.4811,
+    "pairs_B_cheaper": 44,
+    "cost_change": -0.6035,
+    "success_A": 41,
+    "success_B": 44,
+    "ci95_cluster_boot": [
+     -0.5899,
+     -0.3852
+    ],
+    "wilcoxon_p_logratio": 7.61e-09,
+    "wilcoxon_p_holm": 2.28e-08,
+    "quality_guard": "PASS"
+   },
+   "C2": {
+    "A": "stock",
+    "B": "lean",
+    "n_pairs": 44,
+    "tokens_change": -0.2552,
+    "tokens_median_paired_change": -0.2789,
+    "pairs_B_cheaper": 41,
+    "cost_change": -0.4774,
+    "success_A": 41,
+    "success_B": 42,
+    "ci95_cluster_boot": [
+     -0.3603,
+     -0.1582
+    ],
+    "wilcoxon_p_logratio": 6.09e-11,
+    "wilcoxon_p_holm": 2.44e-10,
+    "quality_guard": "PASS"
+   },
+   "C3": {
+    "A": "lean",
+    "B": "lean+packet",
+    "n_pairs": 44,
+    "tokens_change": -0.3547,
+    "tokens_median_paired_change": -0.2848,
+    "pairs_B_cheaper": 30,
+    "cost_change": -0.2868,
+    "success_A": 42,
+    "success_B": 44,
+    "ci95_cluster_boot": [
+     -0.4538,
+     -0.2336
+    ],
+    "wilcoxon_p_logratio": 6.29e-06,
+    "wilcoxon_p_holm": 1.26e-05,
+    "quality_guard": "PASS"
+   },
+   "C4": {
+    "A": "lean+packet",
+    "B": "lean+packet+obspack",
+    "n_pairs": 44,
+    "tokens_change": 0.0765,
+    "tokens_median_paired_change": -0.0002,
+    "pairs_B_cheaper": 24,
+    "cost_change": 0.0637,
+    "success_A": 44,
+    "success_B": 44,
+    "ci95_cluster_boot": [
+     0.0023,
+     0.142
+    ],
+    "wilcoxon_p_logratio": 0.806,
+    "wilcoxon_p_holm": 0.806,
+    "quality_guard": "PASS"
+   },
+   "S1": {
+    "A": "stock",
+    "B": "lean+packet",
+    "n_pairs": 44,
+    "tokens_change": -0.5194,
+    "tokens_median_paired_change": -0.4943,
+    "pairs_B_cheaper": 44,
+    "cost_change": -0.6273,
+    "success_A": 41,
+    "success_B": 44,
+    "ci95_cluster_boot": [
+     -0.6136,
+     -0.4176
+    ],
+    "wilcoxon_p_logratio": 1.14e-13,
+    "quality_guard": "PASS"
+   }
+  },
+  "repo": {
+   "C1": {
+    "A": "stock",
+    "B": "lean+packet+obspack",
+    "n_pairs": 80,
+    "tokens_change": -0.2697,
+    "tokens_median_paired_change": -0.274,
+    "pairs_B_cheaper": 73,
+    "cost_change": -0.3857,
+    "success_A": 80,
+    "success_B": 80,
+    "ci95_cluster_boot": [
+     -0.3189,
+     -0.2141
+    ],
+    "wilcoxon_p_logratio": 5.08e-13,
+    "wilcoxon_p_holm": 1.52e-12,
+    "quality_guard": "PASS"
+   },
+   "C2": {
+    "A": "stock",
+    "B": "lean",
+    "n_pairs": 80,
+    "tokens_change": -0.35,
+    "tokens_median_paired_change": -0.3466,
+    "pairs_B_cheaper": 77,
+    "cost_change": -0.4052,
+    "success_A": 80,
+    "success_B": 79,
+    "ci95_cluster_boot": [
+     -0.3891,
+     -0.3141
+    ],
+    "wilcoxon_p_logratio": 1.33e-14,
+    "wilcoxon_p_holm": 5.32e-14,
+    "quality_guard": "PASS"
+   },
+   "C3": {
+    "A": "lean",
+    "B": "lean+packet",
+    "n_pairs": 80,
+    "tokens_change": 0.1076,
+    "tokens_median_paired_change": 0.0663,
+    "pairs_B_cheaper": 16,
+    "cost_change": 0.1297,
+    "success_A": 79,
+    "success_B": 80,
+    "ci95_cluster_boot": [
+     0.0623,
+     0.1499
+    ],
+    "wilcoxon_p_logratio": 0.000125,
+    "wilcoxon_p_holm": 0.00025,
+    "quality_guard": "PASS"
+   },
+   "C4": {
+    "A": "lean+packet",
+    "B": "lean+packet+obspack",
+    "n_pairs": 80,
+    "tokens_change": 0.0144,
+    "tokens_median_paired_change": 0.0036,
+    "pairs_B_cheaper": 31,
+    "cost_change": -0.0858,
+    "success_A": 80,
+    "success_B": 80,
+    "ci95_cluster_boot": [
+     -0.0548,
+     0.0883
+    ],
+    "wilcoxon_p_logratio": 0.184,
+    "wilcoxon_p_holm": 0.184,
+    "quality_guard": "PASS"
+   },
+   "S1": {
+    "A": "stock",
+    "B": "lean+packet",
+    "n_pairs": 80,
+    "tokens_change": -0.28,
+    "tokens_median_paired_change": -0.2959,
+    "pairs_B_cheaper": 76,
+    "cost_change": -0.3281,
+    "success_A": 80,
+    "success_B": 80,
+    "ci95_cluster_boot": [
+     -0.3177,
+     -0.2416
+    ],
+    "wilcoxon_p_logratio": 8.77e-14,
+    "quality_guard": "PASS"
+   }
+  },
+  "repo_cold": {
+   "C1": {
+    "A": "stock",
+    "B": "lean+packet+obspack",
+    "n_pairs": 20,
+    "tokens_change": -0.297,
+    "tokens_median_paired_change": -0.2958,
+    "pairs_B_cheaper": 19,
+    "cost_change": -0.4943,
+    "success_A": 20,
+    "success_B": 20,
+    "ci95_cluster_boot": [
+     -0.354,
+     -0.2331
+    ],
+    "wilcoxon_p_logratio": 5.72e-06,
+    "wilcoxon_p_holm": 1.72e-05,
+    "quality_guard": "PASS"
+   },
+   "C2": {
+    "A": "stock",
+    "B": "lean",
+    "n_pairs": 20,
+    "tokens_change": -0.3845,
+    "tokens_median_paired_change": -0.3761,
+    "pairs_B_cheaper": 19,
+    "cost_change": -0.5422,
+    "success_A": 20,
+    "success_B": 20,
+    "ci95_cluster_boot": [
+     -0.4471,
+     -0.3098
+    ],
+    "wilcoxon_p_logratio": 3.81e-06,
+    "wilcoxon_p_holm": 1.52e-05,
+    "quality_guard": "PASS"
+   },
+   "C3": {
+    "A": "lean",
+    "B": "lean+packet",
+    "n_pairs": 20,
+    "tokens_change": 0.1674,
+    "tokens_median_paired_change": 0.0733,
+    "pairs_B_cheaper": 1,
+    "cost_change": 0.1947,
+    "success_A": 20,
+    "success_B": 20,
+    "ci95_cluster_boot": [
+     0.0835,
+     0.2747
+    ],
+    "wilcoxon_p_logratio": 0.00021,
+    "wilcoxon_p_holm": 0.00042,
+    "quality_guard": "PASS"
+   },
+   "C4": {
+    "A": "lean+packet",
+    "B": "lean+packet+obspack",
+    "n_pairs": 20,
+    "tokens_change": -0.0217,
+    "tokens_median_paired_change": 0.0014,
+    "pairs_B_cheaper": 10,
+    "cost_change": -0.0753,
+    "success_A": 20,
+    "success_B": 20,
+    "ci95_cluster_boot": [
+     -0.0866,
+     0.0435
+    ],
+    "wilcoxon_p_logratio": 0.956,
+    "wilcoxon_p_holm": 0.956,
+    "quality_guard": "PASS"
+   },
+   "S1": {
+    "A": "stock",
+    "B": "lean+packet",
+    "n_pairs": 20,
+    "tokens_change": -0.2814,
+    "tokens_median_paired_change": -0.2929,
+    "pairs_B_cheaper": 19,
+    "cost_change": -0.4531,
+    "success_A": 20,
+    "success_B": 20,
+    "ci95_cluster_boot": [
+     -0.3401,
+     -0.2126
+    ],
+    "wilcoxon_p_logratio": 1.34e-05,
+    "quality_guard": "PASS"
+   }
+  },
+  "repo_warm": {
+   "C1": {
+    "A": "stock",
+    "B": "lean+packet+obspack",
+    "n_pairs": 60,
+    "tokens_change": -0.2605,
+    "tokens_median_paired_change": -0.2561,
+    "pairs_B_cheaper": 54,
+    "cost_change": -0.3184,
+    "success_A": 60,
+    "success_B": 60,
+    "ci95_cluster_boot": [
+     -0.3259,
+     -0.1856
+    ],
+    "wilcoxon_p_logratio": 1.09e-09,
+    "wilcoxon_p_holm": 3.27e-09,
+    "quality_guard": "PASS"
+   },
+   "C2": {
+    "A": "stock",
+    "B": "lean",
+    "n_pairs": 60,
+    "tokens_change": -0.3384,
+    "tokens_median_paired_change": -0.3276,
+    "pairs_B_cheaper": 58,
+    "cost_change": -0.3203,
+    "success_A": 60,
+    "success_B": 59,
+    "ci95_cluster_boot": [
+     -0.3889,
+     -0.2892
+    ],
+    "wilcoxon_p_logratio": 2.32e-11,
+    "wilcoxon_p_holm": 9.28e-11,
+    "quality_guard": "PASS"
+   },
+   "C3": {
+    "A": "lean",
+    "B": "lean+packet",
+    "n_pairs": 60,
+    "tokens_change": 0.0889,
+    "tokens_median_paired_change": 0.0618,
+    "pairs_B_cheaper": 15,
+    "cost_change": 0.1026,
+    "success_A": 59,
+    "success_B": 60,
+    "ci95_cluster_boot": [
+     0.0323,
+     0.1456
+    ],
+    "wilcoxon_p_logratio": 0.0118,
+    "wilcoxon_p_holm": 0.0236,
+    "quality_guard": "PASS"
+   },
+   "C4": {
+    "A": "lean+packet",
+    "B": "lean+packet+obspack",
+    "n_pairs": 60,
+    "tokens_change": 0.0265,
+    "tokens_median_paired_change": 0.0039,
+    "pairs_B_cheaper": 21,
+    "cost_change": -0.0905,
+    "success_A": 60,
+    "success_B": 60,
+    "ci95_cluster_boot": [
+     -0.0624,
+     0.1199
+    ],
+    "wilcoxon_p_logratio": 0.131,
+    "wilcoxon_p_holm": 0.131,
+    "quality_guard": "PASS"
+   },
+   "S1": {
+    "A": "stock",
+    "B": "lean+packet",
+    "n_pairs": 60,
+    "tokens_change": -0.2796,
+    "tokens_median_paired_change": -0.2959,
+    "pairs_B_cheaper": 57,
+    "cost_change": -0.2506,
+    "success_A": 60,
+    "success_B": 60,
+    "ci95_cluster_boot": [
+     -0.3264,
+     -0.2316
+    ],
+    "wilcoxon_p_logratio": 1.13e-10,
+    "quality_guard": "PASS"
+   }
+  },
+  "long_horizon": {
+   "C1": {
+    "A": "stock",
+    "B": "lean+packet+obspack",
+    "n_pairs": 4,
+    "tokens_change": -0.2232,
+    "tokens_median_paired_change": -0.224,
+    "pairs_B_cheaper": 4,
+    "cost_change": -0.4825,
+    "success_A": 4,
+    "success_B": 4,
+    "ci95_cluster_boot": [
+     -0.2232,
+     -0.2232
+    ],
+    "wilcoxon_p_logratio": null,
+    "wilcoxon_p_holm": null,
+    "quality_guard": "PASS"
+   },
+   "C2": {
+    "A": "stock",
+    "B": "lean",
+    "n_pairs": 4,
+    "tokens_change": -0.2098,
+    "tokens_median_paired_change": -0.2085,
+    "pairs_B_cheaper": 4,
+    "cost_change": -0.1312,
+    "success_A": 4,
+    "success_B": 4,
+    "ci95_cluster_boot": [
+     -0.2098,
+     -0.2098
+    ],
+    "wilcoxon_p_logratio": null,
+    "wilcoxon_p_holm": null,
+    "quality_guard": "PASS"
+   },
+   "C3": {
+    "A": "lean",
+    "B": "lean+packet",
+    "n_pairs": 4,
+    "tokens_change": 0.0315,
+    "tokens_median_paired_change": 0.0311,
+    "pairs_B_cheaper": 0,
+    "cost_change": 0.0177,
+    "success_A": 4,
+    "success_B": 4,
+    "ci95_cluster_boot": [
+     0.0315,
+     0.0315
+    ],
+    "wilcoxon_p_logratio": null,
+    "wilcoxon_p_holm": null,
+    "quality_guard": "PASS"
+   },
+   "C4": {
+    "A": "lean+packet",
+    "B": "lean+packet+obspack",
+    "n_pairs": 4,
+    "tokens_change": -0.047,
+    "tokens_median_paired_change": -0.0475,
+    "pairs_B_cheaper": 4,
+    "cost_change": -0.4146,
+    "success_A": 4,
+    "success_B": 4,
+    "ci95_cluster_boot": [
+     -0.047,
+     -0.047
+    ],
+    "wilcoxon_p_logratio": null,
+    "wilcoxon_p_holm": null,
+    "quality_guard": "PASS"
+   },
+   "S1": {
+    "A": "stock",
+    "B": "lean+packet",
+    "n_pairs": 4,
+    "tokens_change": -0.1849,
+    "tokens_median_paired_change": -0.1847,
+    "pairs_B_cheaper": 4,
+    "cost_change": -0.1158,
+    "success_A": 4,
+    "success_B": 4,
+    "ci95_cluster_boot": [
+     -0.1849,
+     -0.1849
+    ],
+    "wilcoxon_p_logratio": null,
+    "quality_guard": "PASS"
+   }
+  }
+ },
+ "checks": [
+  {
+   "stratum": "pooled",
+   "contrast": "C1",
+   "matches_results_json": true
+  },
+  {
+   "stratum": "pooled",
+   "contrast": "C2",
+   "matches_results_json": true
+  },
+  {
+   "stratum": "pooled",
+   "contrast": "C3",
+   "matches_results_json": true
+  },
+  {
+   "stratum": "pooled",
+   "contrast": "C4",
+   "matches_results_json": true
+  },
+  {
+   "stratum": "pooled",
+   "contrast": "S1",
+   "matches_results_json": true
+  },
+  {
+   "stratum": "qa",
+   "contrast": "C1",
+   "matches_results_json": true
+  },
+  {
+   "stratum": "qa",
+   "contrast": "C2",
+   "matches_results_json": true
+  },
+  {
+   "stratum": "qa",
+   "contrast": "C3",
+   "matches_results_json": true
+  },
+  {
+   "stratum": "qa",
+   "contrast": "C4",
+   "matches_results_json": true
+  },
+  {
+   "stratum": "qa",
+   "contrast": "S1",
+   "matches_results_json": true
+  },
+  {
+   "stratum": "repo",
+   "contrast": "C1",
+   "matches_results_json": true
+  },
+  {
+   "stratum": "repo",
+   "contrast": "C2",
+   "matches_results_json": true
+  },
+  {
+   "stratum": "repo",
+   "contrast": "C3",
+   "matches_results_json": true
+  },
+  {
+   "stratum": "repo",
+   "contrast": "C4",
+   "matches_results_json": true
+  },
+  {
+   "stratum": "repo",
+   "contrast": "S1",
+   "matches_results_json": true
+  },
+  {
+   "stratum": "repo_cold",
+   "contrast": "C1",
+   "matches_results_json": true
+  },
+  {
+   "stratum": "repo_cold",
+   "contrast": "C2",
+   "matches_results_json": true
+  },
+  {
+   "stratum": "repo_cold",
+   "contrast": "C3",
+   "matches_results_json": true
+  },
+  {
+   "stratum": "repo_cold",
+   "contrast": "C4",
+   "matches_results_json": true
+  },
+  {
+   "stratum": "repo_cold",
+   "contrast": "S1",
+   "matches_results_json": true
+  },
+  {
+   "stratum": "repo_warm",
+   "contrast": "C1",
+   "matches_results_json": true
+  },
+  {
+   "stratum": "repo_warm",
+   "contrast": "C2",
+   "matches_results_json": true
+  },
+  {
+   "stratum": "repo_warm",
+   "contrast": "C3",
+   "matches_results_json": true
+  },
+  {
+   "stratum": "repo_warm",
+   "contrast": "C4",
+   "matches_results_json": true
+  },
+  {
+   "stratum": "repo_warm",
+   "contrast": "S1",
+   "matches_results_json": true
+  },
+  {
+   "stratum": "long_horizon",
+   "contrast": "C1",
+   "matches_results_json": true
+  },
+  {
+   "stratum": "long_horizon",
+   "contrast": "C2",
+   "matches_results_json": true
+  },
+  {
+   "stratum": "long_horizon",
+   "contrast": "C3",
+   "matches_results_json": true
+  },
+  {
+   "stratum": "long_horizon",
+   "contrast": "C4",
+   "matches_results_json": true
+  },
+  {
+   "stratum": "long_horizon",
+   "contrast": "S1",
+   "matches_results_json": true
+  }
+ ],
+ "arms": {
+  "qa/stock": {
+   "trials": 44,
+   "verified": 41,
+   "no_result": 0,
+   "is_error": 0,
+   "tokens_total": 7073042,
+   "tokens_median": 112782.0,
+   "cost_usd_total": 3.744,
+   "cache_read_total": 6532044,
+   "cache_creation_total": 494831,
+   "input_uncached_total": 430,
+   "output_total": 45737,
+   "tool_calls_mean": 4.91,
+   "turns_mean": 5.91,
+   "packet_seen": 0,
+   "obspack_packs_total": 0,
+   "wall_s_median": 24.3
+  },
+  "repo/stock": {
+   "trials": 80,
+   "verified": 80,
+   "no_result": 0,
+   "is_error": 0,
+   "tokens_total": 13626854,
+   "tokens_median": 164132.5,
+   "cost_usd_total": 8.133,
+   "cache_read_total": 12370487,
+   "cache_creation_total": 1149779,
+   "input_uncached_total": 770,
+   "output_total": 105818,
+   "tool_calls_mean": 5,
+   "turns_mean": 5.92,
+   "packet_seen": 0,
+   "obspack_packs_total": 0,
+   "wall_s_median": 23.9
+  },
+  "qa/lean": {
+   "trials": 44,
+   "verified": 42,
+   "no_result": 0,
+   "is_error": 0,
+   "tokens_total": 5267677,
+   "tokens_median": 89348.0,
+   "cost_usd_total": 1.957,
+   "cache_read_total": 5095197,
+   "cache_creation_total": 130618,
+   "input_uncached_total": 446,
+   "output_total": 41416,
+   "tool_calls_mean": 4.73,
+   "turns_mean": 5.73,
+   "packet_seen": 0,
+   "obspack_packs_total": 0,
+   "wall_s_median": 16.2
+  },
+  "repo/lean": {
+   "trials": 80,
+   "verified": 79,
+   "no_result": 0,
+   "is_error": 0,
+   "tokens_total": 8858074,
+   "tokens_median": 107939.0,
+   "cost_usd_total": 4.837,
+   "cache_read_total": 8194495,
+   "cache_creation_total": 571894,
+   "input_uncached_total": 744,
+   "output_total": 90941,
+   "tool_calls_mean": 4.61,
+   "turns_mean": 5.61,
+   "packet_seen": 0,
+   "obspack_packs_total": 0,
+   "wall_s_median": 17.8
+  },
+  "qa/lean+packet": {
+   "trials": 44,
+   "verified": 44,
+   "no_result": 0,
+   "is_error": 0,
+   "tokens_total": 3399444,
+   "tokens_median": 49285.5,
+   "cost_usd_total": 1.395,
+   "cache_read_total": 3256135,
+   "cache_creation_total": 114451,
+   "input_uncached_total": 268,
+   "output_total": 28590,
+   "tool_calls_mean": 2.3,
+   "turns_mean": 3.3,
+   "packet_seen": 44,
+   "obspack_packs_total": 0,
+   "wall_s_median": 16.8
+  },
+  "repo/lean+packet": {
+   "trials": 80,
+   "verified": 80,
+   "no_result": 0,
+   "is_error": 0,
+   "tokens_total": 9810846,
+   "tokens_median": 118798.5,
+   "cost_usd_total": 5.465,
+   "cache_read_total": 9046403,
+   "cache_creation_total": 663816,
+   "input_uncached_total": 764,
+   "output_total": 99863,
+   "tool_calls_mean": 4.79,
+   "turns_mean": 5.79,
+   "packet_seen": 80,
+   "obspack_packs_total": 0,
+   "wall_s_median": 21.4
+  },
+  "qa/lean+packet+obspack": {
+   "trials": 44,
+   "verified": 44,
+   "no_result": 0,
+   "is_error": 0,
+   "tokens_total": 3659448,
+   "tokens_median": 49306.5,
+   "cost_usd_total": 1.484,
+   "cache_read_total": 3510774,
+   "cache_creation_total": 117036,
+   "input_uncached_total": 288,
+   "output_total": 31350,
+   "tool_calls_mean": 2.66,
+   "turns_mean": 3.66,
+   "packet_seen": 44,
+   "obspack_packs_total": 0,
+   "wall_s_median": 16.4
+  },
+  "repo/lean+packet+obspack": {
+   "trials": 80,
+   "verified": 80,
+   "no_result": 0,
+   "is_error": 0,
+   "tokens_total": 9952258,
+   "tokens_median": 119876.5,
+   "cost_usd_total": 4.996,
+   "cache_read_total": 9323535,
+   "cache_creation_total": 524935,
+   "input_uncached_total": 794,
+   "output_total": 102994,
+   "tool_calls_mean": 5.04,
+   "turns_mean": 6.04,
+   "packet_seen": 80,
+   "obspack_packs_total": 52,
+   "wall_s_median": 22.5
+  }
+ }
+}

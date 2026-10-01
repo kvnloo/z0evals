@@ -1,0 +1,103 @@
+schema_version: z0eval.study.v1
+id: claude-code-savings-v1
+title: Re-measuring Claude Code token savings with the current z0 integration (pre-registered, n=124 pairs per contrast)
+status: draft
+created: "2026-09-30"
+updated: "2026-09-30"
+
+evidence_status: local-runs-aggregated; pre-registered before any measured run; raw run JSONL private (session ids, local paths, model text)
+external_inference_spend_usd: null  # billed through the operator's Claude subscription; cost_usd is Claude Code's own total_cost_usd estimate
+predecessor: claude-code-savings-v0 (z0evals branch study/claude-code-savings-v0)
+
+hardware:
+  host: mbp (MacBook Pro 2015, CachyOS)
+  cpu: Intel Core i7-4870HQ (4C/8T)
+  ram_gb: 15
+
+harness:
+  name: Claude Code
+  version: 2.1.286
+  mode: headless (-p, --output-format stream-json, --no-session-persistence); repo tasks bypassPermissions in throwaway dirs, qa tasks read-only allowlist
+  model: sonnet (claude-sonnet-5-5)
+  effort: low (all tasks except the long recall task, medium)
+  concurrency: 4 claude processes
+
+sources:
+  - repo: kvnloo/z0intelligence
+    commit: 28caf9072d256be55791f567376d40839c755cbd
+    branch: study/claude-code-savings-v1
+    role: pre-registration (PREREG.md), runner, verifier, analysis, 15 repo tasks; committed and pushed before any measured run
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: ef3f82865f019bd693afbf1b0079bf60ca2c6e00
+    branch: study/claude-code-savings-v1
+    role: freezes the 5 evolution-lab tasks before the repo suite (the qa suite had already started)
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: 0948bc1b71166611f5e0ad9b245ad073446fc70c
+    branch: study/claude-code-savings-v1
+    role: results (benchmarks/claude_code_v1/results/results.json, trials.csv) imported unchanged into data/
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: b0724680bc7858ac872bd25c72ff8944322c6094
+    branch: integrate/claude-code-z0-stack
+    role: integration under test (plugin + ObservationPack plugin) and z0intelligence task fixture source
+  - repo: kvnloo/tokenomics
+    commit: 65e8f2dd9d6c5784a2a1c67f5236d69a5ae94021
+    role: task fixture source (5 tasks)
+  - repo: kvnloo/kerdoios
+    commit: fd34a48a3584548696a3fe08a5bb80038be78618
+    role: task fixture source (4 tasks)
+  - repo: kvnloo/evolution-lab
+    commit: 4cf52bb1010d7570922c5e16710669524ccec26d
+    role: task fixture source (5 tasks)
+  - repo: kvnloo/z0intelligence
+    commit: c4a4554
+    role: fixture source of the replicated v0 long recall task (backend-review)
+
+questions:
+  - How much does the current z0 Claude Code integration (lean profile + plugin State Packet + ObservationPack) cut billed tokens versus stock Claude Code, at held task success?
+  - Do v0's per-lever effects (lean, State Packet, ObservationPack) replicate with ~5x larger samples and fresh tasks from several repos?
+  - Does any lever's saving depend on the task family (current-work questions vs coding/navigation; cold vs warm session)?
+
+artifacts:
+  - path: data/trials.csv
+    kind: result
+    sha256: e1119071b05266818a09c249ecce6fd50500a71749582a548448531b04e09012
+    provenance: per-trial aggregates (no prompts, answers, session ids or paths) from z0intelligence 0948bc1
+  - path: data/results.json
+    kind: result
+    sha256: e499542326c7706a8a52cc33ef3bef0ad444f221733f8ef5657e4c7da6745958
+    provenance: pre-registered analysis output (analyze.py) from z0intelligence 0948bc1
+  - path: data/summary.json
+    kind: analysis
+    sha256: 040a9b097787b4d46ff0cb24719dd118902f5e1721142742fa4adf5127772a88
+    provenance: summarize.py over data/trials.csv, cross-checked against results.json (30/30 match)
+  - path: summarize.py
+    kind: analysis
+    provenance: public re-derivation code (stdlib only)
+
+limitations:
+  - Primary metric is unweighted billed tokens (input + cache read + cache write + output); cache reads cost ~10x less than input and writes more, so cost_usd (Claude Code's estimate, not an invoice) is the closer billing proxy and is reported alongside.
+  - One host, one model (Sonnet), one night; repo tasks are short (median ~5 tool calls), so long coding sessions may behave differently.
+  - The long recall task has only 4 pairs per contrast (exploratory; no test).
+  - qa questions share one pinned cwd per repo across arms (as in v0), so cache state is not controlled per arm there.
+  - Under --strict-mcp-config (lean) the plugin's route_worker MCP server does not load, so worker (groot) routing is not exercised; DecisionOpportunity emission is shadow-only and never reaches the model.
+  - The evolution-lab task ids were frozen after the qa suite had started (but before the repo suite); disclosed in PREREG.md.
+
+claims:
+  - id: full-integration-saves
+    text: Pre-registered primary contrast - stock Claude Code vs lean + plugin State Packet + ObservationPack cut billed tokens 34.2% (ratio of totals, 95% task-cluster bootstrap CI -40.3% to -28.1%; 117/124 pairs cheaper; Wilcoxon on log ratios Holm p=3e-20) and Claude Code's cost estimate 45.4%, with task success 121/124 -> 124/124 (quality guard PASS).
+    evidence: [data/results.json, data/trials.csv]
+  - id: lean-replicates
+    text: The lean launch profile alone cut billed tokens 31.8% pooled (CI -36.2% to -26.9%; 118/124 cheaper; Holm p=9e-21; cost -42.8%) at equal success (121/124 both), and every stratum agreed - repo cold -38.5% tokens / -54.2% cost, repo warm -33.8% / -32.0%, qa -25.5% - consistent with v0 (warm -27%, cold -64% cost).
+    evidence: [data/results.json]
+  - id: packet-task-dependent
+    text: The State Packet's effect depends on the task family - on the v0 pinned held-out current-work questions it cut tokens a further 35.5% over lean (CI -45.4% to -23.4%, Holm p=1e-5) and raised correctness 42/44 -> 44/44, replicating v0 (stock -> lean+packet cost -62.7% here vs -61% in v0); on fresh coding/navigation tasks in new directories, where it has no session history to report, it added 10.8% tokens (CI +6.2% to +15.0%, Holm p=2.5e-4) with no quality change (79/80 -> 80/80). Pooled, the two cancel (-6.5%, n.s.).
+    evidence: [data/results.json]
+  - id: obspack-null-short
+    text: ObservationPack had no measurable token effect on short tasks (pooled +3.0%, CI -2.9% to +9.0%, Holm p=0.20); it never packed on qa questions (0 packs in 44 trials), so the qa +7.6% difference is noise by construction.
+    evidence: [data/results.json]
+  - id: obspack-long-cost
+    text: On the replicated v0 long recall task (n=4, exploratory) ObservationPack packed 7 outputs per run, roughly halved cache-write tokens and cut cost 41.5% (4/4 cheaper) while total unweighted tokens fell only 4.7% (one extra cache-read turn) - directionally consistent with v0's long-session result, and an example where the unweighted token metric understates a billing saving.
+    evidence: [data/trials.csv]
