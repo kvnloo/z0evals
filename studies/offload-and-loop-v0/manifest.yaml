@@ -1,0 +1,143 @@
+schema_version: z0eval.study.v1
+id: offload-and-loop-v0
+title: Local offload that passed a format check but not a faithfulness check, and a learning loop that is data-bound
+status: draft
+created: "2026-09-30"
+updated: "2026-09-30"
+
+evidence_status: pre-registered-local-runs-aggregated plus one source-reported operator measurement (utilization); task items, model outputs, judge rows, transcript excerpts, labelling excerpts, session ids and per-turn rows are private upstream; only aggregates are published here
+external_inference_spend_usd: null  # Haiku/Sonnet arms and the Sonnet judge ran through claude -p on the operator's Claude subscription (not metered here); local arms on groot; the density, loop and utilization parts make no model calls
+base_note: branched from origin/main (fb14919), as the recent studies were; z0evals nightly lags (it does not carry the recent study merges on dev)
+
+hardware:
+  bench_host:
+    name: groot
+    gpu: NVIDIA RTX 3080 Ti
+    vram_gb: 12
+    server: farm llama.cpp route groot/qwen3-8b-q4km (and qwen3-14b, exploratory), temperature 0; GPU shared with another tenant during the speed-offload run (utilisation 14-84%)
+  frontier_arms:
+    note: Haiku and Sonnet via claude -p; frontier latency is duration_api_ms, which excludes CLI start and so favours the frontier
+
+sources:
+  - repo: kvnloo/z0intelligence
+    commit: d716a38632530e90d95d878d02f1525c61f876f2
+    branch: feat/speed-offload-v0
+    role: speed-first offload v0 pre-registration (benchmarks/speed_offload/PREREG.md), frozen-set builder, runner, scorer and set counts/sha256, before any local-vs-frontier measurement
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: 535b8af088d7a5927115d5f839a3fdaf0ed13390
+    branch: feat/speed-offload-v0
+    role: speed-offload results (docs/speed-offload-v0.md, manifests/task_classes.v0.json equivalence records); summarize_tool_output recorded speed_qualified, four classes not_equivalent
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: 2c0c339ab21003b7984c5427ed2b84e52f4871d5
+    branch: feat/speed-offload-v0
+    role: demotion of summarize_tool_output to not_equivalent after the faithfulness result; the registry pin read by summarize.py
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: 2870516cf2d691b8b179699f039128ccaada07c9
+    branch: exp/summarize-faithfulness-v0
+    role: summarize faithfulness v0 pre-registration (decision 20), 160-item set manifest, runner, blinded judge and scorer, before any model output on the set
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: 9b8289c2b8532a5990f846a213acf801368d32c2
+    branch: exp/summarize-faithfulness-v0
+    role: faithfulness results (benchmarks/summarize_faithfulness/results.v0.json, docs/summarize-faithfulness-v0.md)
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: 17a88bacffbe200e9571b70ec62394dc88134093
+    branch: feat/verified-outcomes-v0
+    role: verified outcomes v0 (z0intelligence#54) - turn_outcome_verified.v0 and the credit join; semantics in docs/verified-outcomes.md
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: 44312256be715347b7baa1beacbc82c163b45284
+    branch: feat/verification-density-v0
+    role: verification density v0 pre-registration (targets T1-T4 and verifiers before measurement). Cited only; nothing is read or quoted from this commit, because its test fixtures carried paraphrased private prompts
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: bd370e69b1513bcf66e6c4b2113ecddee344cd19
+    branch: feat/verification-density-v0
+    role: verification density v0 results (T1 not met, every density verifier demoted to low, piped-test defect found). Cited only; the same rule as the prereg commit applies
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: b6abbd202f2ca5c1061d266ae41009df3bdc58bf
+    branch: integrate/claude-code-z0-stack
+    role: verification density squashed into the install target with synthetic test strings only; docs/verification-density.md and docs/prereg/verification-density-v0.md here are byte-identical to bd370e6 and are the documents summarize.py reads
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: 5d0a85cb56028d45cc1fef54b56a5f86900e6a1c
+    branch: feat/loop-export-v0
+    role: outcomes export --sweep-since, the counts-only volume sweep behind the loop projection
+    visibility: pushed
+  - repo: kvnloo/evolution-lab
+    commit: ded915a5617eb6013b0a10e3928ece159c451231
+    branch: exp/verified-loop-v0
+    role: verified loop v0 pre-registration (docs/prereg/verified-loop-v0.md) - policies, grouped CV, sufficiency gate, decision rule and projection method, before any learner code or result
+    visibility: pushed
+  - repo: kvnloo/evolution-lab
+    commit: 1b80a4e44972a9069248fb58a82ca2926143cde6
+    branch: exp/verified-loop-v0
+    role: verified loop v0 result (results/verified-loop-v0.json, metrics and counts only) - INSUFFICIENT_DATA and the data-volume projection
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: 5bc290f143de0767f43ba329dd9e07bd47f6dca8
+    branch: feat/utilization-v0
+    role: utilization v0 instrument and definition (docs/utilization.md, z0int utilization). The headline numbers are an operator run of this instrument and are not in the commit
+    visibility: pushed
+
+private_inputs:
+  - what: speed-offload and faithfulness task items, model outputs, judge rows and the speed-offload evidence file (cited upstream by sha256)
+    location: operator host (~/.cache and ~/.z0int/evidence; not published)
+  - what: transcripts, verified-outcome rows, labelling excerpts for the density precision sample, and the loop export table
+    location: operator host (private state and research stores; not published)
+  - what: the utilization run's raw JSON and the operator's counts-only write-up
+    location: operator host (not published); the counts used here are copied from that write-up and labelled source-reported
+
+questions:
+  - Which worker task classes can a local groot model take from the frontier at equal quality and lower p95 latency (speed-first offload)?
+  - Is the one class that qualified (summarize_tool_output) faithful enough to offload once faithfulness, not format, is measured?
+  - How many live Claude Code turns get an independently verified outcome, and can new verifiers raise that share to 0.20?
+  - Is there enough verified live data for a learned gate to be compared with the deterministic gate, and if not, how long until there is?
+  - How often does z0 change what happens in the user's real agent work today?
+
+pre_registrations:
+  - experiment: speed-offload-v0
+    prereg: d716a38
+    results: 535b8af
+    demotion: 2c0c339
+    verdict: summarize_tool_output speed_qualified on a format-and-facts check (local 60/60 vs Haiku 59/60, p95 893 vs 2054 ms); the other four classes not_equivalent; after the faithfulness result no class is speed-qualified
+  - experiment: summarize-faithfulness-v0 (decision 20)
+    prereg: 2870516
+    results: 9b8289c
+    verdict: fail - hallucinated items 26.3% vs Haiku 13.2% (upper bound +18.9 pp vs +2 pp margin); critical-fact recall 0.816 vs 0.893 (lower bound -10.5 pp vs -5 pp margin); qwen3-14b (exploratory) also fails both
+  - experiment: verification-density-v0 (z0intelligence#54)
+    prereg: 4431225
+    results: bd370e6
+    squashed_into: b6abbd2
+    verdict: T1 not met (0.129 vs target 0.20); T2 no verifier reached the precision bar, all demoted to low; T3 unchanged at 28 resolved/wk; T4 met (gh cold 36 s, warm 20 s); found the v0 piped-test defect (about 24% of v0 test-success signals were not passes)
+  - experiment: verified-loop-v0
+    prereg: ded915a
+    results: 1b80a4e
+    verdict: INSUFFICIENT_DATA (6 analysis rows, 1 not-success, 1 group); projection about 24 weeks to the sufficiency gate and about 30 weeks to 80% power on live volume
+  - experiment: utilization-v0
+    prereg: none (instrument baseline, not a test)
+    verdict: 26.3% (51/194) at baseline, 27.9% (56/201) an hour later; all from ObservationPack shortening; 0 offloads, 0 enforced decisions
+
+artifacts:
+  - path: data/summary.json
+    kind: result
+    provenance: summarize.py over the pinned source files (git show at the commits above); aggregates only. The speed-offload rule is re-applied to the recorded numbers and matches the 535b8af statuses; the faithfulness non-inferiority calls are re-derived from the bounds; the loop sufficiency checks and weeks-to-gate/power are re-derived from the result counts; the density counts are checked against 20 anchor strings in the pinned document; utilization counts are source-reported
+  - path: summarize.py
+    kind: analysis
+    provenance: public aggregation code
+
+limitations:
+  - Single principal. Every set, transcript and session comes from one operator's machines and repos over about one day.
+  - The speed-offload sets are small (48-60 items per class) synthetic wrappers around z0 artefacts, not sampled route_worker traffic; frontier latency is duration_api_ms, which excludes CLI start (wall-clock p95 for claude -p was 4-6 s); the GPU was shared during the local run; Claude Code has no temperature control.
+  - The speed-offload check for summarize_tool_output was format-and-facts (at most 40 words, file count as digits, one changed file named) on git-stat items only. It could not see invented outcomes, miscounts or dropped failures, which is the main lesson of this study.
+  - The faithfulness judge is a single model (Sonnet), which is also an arm; it was blinded to arm, and the deterministic critical-fact recall and the contradicted-only robustness check point the same way. Mutation-made pytest failures are real output but not a sample of production failures. One Haiku item was dropped unjudged (1/160).
+  - Verification density rests on 31 live turns and a precision sample of fewer than 50 firings per verifier; the pipe and install fixes were made after the labels were seen and are exploratory; the user-cue patterns were written after reading the prompts, so their recall is optimistic.
+  - The piped-test defect means some v0 verified_success labels (and so some rows in the loop table, which was built before the fix) are suspect until re-verified.
+  - The loop projection is a linear extrapolation of a one-day sweep with 1 observed live not-success; the planning not-success rate (0.043) is pooled across cohorts and the 834-row power target is very uncertain. 325 of the 331 swept sessions are eval/probe harness sessions with a different distribution.
+  - The utilization headline is an operator run of the pinned instrument, not a pinned artifact; Hermes, OMP and Codex units are estimated from local counts; posture was BURN for the whole window, under which about 0 offloads is the designed behaviour.
+  - Nothing here was promoted. No routing, capability entry, gate or verifier confidence changed because of these results, except the shadow-only demotion of summarize_tool_output.
