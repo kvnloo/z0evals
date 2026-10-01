@@ -1,0 +1,101 @@
+schema_version: z0eval.study.v1
+id: claude-code-savings-v0
+title: Where Claude Code tokens go, and which z0 levers actually save billed cost
+status: draft
+created: "2026-09-30"
+updated: "2026-09-30"
+
+evidence_status: local-runs-aggregated; raw run JSONL private (contains session ids and local paths)
+external_inference_spend_usd: null  # billed through the operator's Claude subscription; per-trial cost_usd is Claude Code's own reported total_cost_usd
+
+hardware:
+  host: mbp (MacBook Pro 2015, CachyOS)
+  cpu: Intel Core i7-4870HQ (4C/8T)
+  ram_gb: 15
+  gpu: AMD Radeon R9 M370X 2 GB (Vulkan; not used by these arms)
+
+harness:
+  name: Claude Code
+  version: 2.1.285
+  mode: headless (-p, --output-format json, bypassPermissions in throwaway dirs)
+  model: sonnet (claude-sonnet-5-5)
+  effort: low (short tasks), medium (long-horizon tasks)
+
+sources:
+  - repo: kvnloo/z0intelligence
+    commit: 11a943b
+    branch: feat/claude-code-harness
+    role: claude-code harness plugin, Tokenomics usage receipts, ObservationPack plugin, paired runner, pinned tasks
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: f2ea159
+    branch: feat/state-packet-v0
+    role: State Packet (z0int#22), frozen dev/holdout/injection sets, aggregate results_v0.json
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: c4a4554
+    branch: master
+    role: pinned task fixture source (git archive at run time)
+
+questions:
+  - Where do billed Claude Code tokens go on short and long coding tasks (prefix, cache reads, tool output)?
+  - Does the per-session static prefix (user settings, skills, MCP) materially change billed cost?
+  - Does an immediate-pack ObservationPack port (after NVlabs/SoL-Pi) reduce billed cost at held quality?
+  - Can task-conditioned skill exposure hide prefix tokens without hiding a needed skill?
+
+artifacts:
+  - path: data/summary.json
+    kind: result
+    provenance: summarize.py over private run JSONL; aggregates only
+  - path: summarize.py
+    kind: analysis
+    provenance: public aggregation code
+
+limitations:
+  - Every trial in s1-lean-1 ran in a fresh directory, i.e. a cold session start; Claude Code's cross-session prefix cache is scoped to directory and startup git snapshot, so s1-lean-1 overstates the lean effect for repeated sessions in one directory. s1-lean-warm-1 separates cold (rep 0) and warm (reps 1-3) sessions in persistent directories reset between reps.
+  - Small n (6-10 pairs per comparison, n=2-3 per cell); single model and effort per run; one host.
+  - The ObservationPack port packs immediately (Claude Code has no history-projection seam), unlike SoL-Pi's deferred replacement; it is a different mechanism from the paper's.
+  - suite-triage/suite-full truth depends on this environment's test failures; identical across arms.
+  - Tool-output replay attribution (attribute.py) is a chars/4 estimate used for locating savings, not a billing figure.
+
+claims:
+  - id: lean-prefix-cold-sessions
+    text: On cold sessions, removing user settings, MCP and skills cut billed cost a median 64.7% (10/10 pairs cheaper, sign p=0.002) with verified quality 10/10 in both arms; the mechanism is a fixed per-cold-session prefix write, not a per-task percentage.
+    evidence:
+      - data/summary.json
+  - id: lean-prefix-warm-sessions
+    text: With a warm per-directory cache, removing user settings, MCP and skills still cut billed cost a median 27.2% on short tasks (15/15 pairs cheaper, range -16% to -50%) at equal verified quality (20/20 both arms), via fewer cache-read tokens per request.
+    evidence:
+      - data/summary.json
+  - id: cold-start-premium
+    text: A cold session start (fresh directory or changed startup git snapshot) cost ~3x a warm one for stock Claude Code on these short tasks (median $0.126 vs $0.0425), so fresh-worktree agent fleets pay a large fixed premium per session.
+    evidence:
+      - data/summary.json
+  - id: state-packet-with-tools
+    text: On a frozen held-out current-work set (7 questions x 2 reps), a SessionStart State Packet plus normal tools answered 14/14 vs 12/14 for raw tools, with half the tool calls and 30% fewer mean input tokens (53% at the median); packet-only (no tools) scored 8/14 and 0/4 on injected-abstention items, so it is an aid to tools, not a replacement. Source aggregates live in z0intelligence feat/state-packet-v0 benchmarks/state_packet/results_v0.json (bde3149).
+    evidence:
+      - data/summary.json
+  - id: lean-packet-compose
+    text: On the current-work dev set (20 trials per cell), the lean profile and the State Packet composed multiplicatively - packet cost factor 0.70 under both profiles, lean factor 0.38 with or without the packet - so lean+packet cost 74% less than stock+raw tools ($0.467 vs $1.773) while answering 18/20 vs 15/20 (dev set; correctness vs a frozen key that drifted on one question in all cells). Aggregates in z0intelligence feat/state-packet-v0 benchmarks/state_packet/results_s2.json.
+    evidence:
+      - data/summary.json
+  - id: lean-packet-compose-pinned-heldout
+    text: On a drift-proof held-out set (pinned fixture repos and a frozen transcript subset, 11 questions x 2 reps, keys computed before any run), the effects still compose multiplicatively - packet cost factor 0.83 (stock) / 0.81 (lean), lean factor 0.49 / 0.47, predicted 0.404 vs observed 0.394 of stock+raw - so lean+packet cost 61% less ($0.861 vs $2.186) with 22/22 vs 21/22 correct. Held-out effects are smaller than the dev-set effects. Aggregates in z0intelligence feat/state-packet-v0 benchmarks/state_packet/results_pinned.json (f2ea159).
+    evidence:
+      - data/summary.json
+  - id: haiku-router-headroom
+    text: On the pinned held-out set with the lean profile, Haiku without the packet was both less correct and more expensive than Sonnet (16/22, $1.230 vs 20/22, $1.063) because it explored more; with the packet Haiku was 27% cheaper than Sonnet but 2/22 less correct, so no model router is promoted for this task family. The packet helped Haiku more than Sonnet (cost x0.51 and +4 correct vs x0.81 and +2).
+    evidence:
+      - data/summary.json
+  - id: obspack-null-short
+    text: On short tasks the immediate-pack ObservationPack port showed no measurable billed-cost effect (paired medians -1.3% and +0.3%, sign p>=0.2) at unchanged quality; the model self-truncates and Claude Code spills outputs over ~30k characters natively.
+    evidence:
+      - data/summary.json
+  - id: obspack-composes-with-lean
+    text: On the same long recall task, adding ObservationPack to the lean profile cut billed cost a further median 38.2% (total $1.399 to $0.876, 6/6 pairs cheaper, Wilcoxon p=0.031) with 6/6 verified in both arms, so ObservationPack composes with lean rather than overlapping it.
+    evidence:
+      - data/summary.json
+  - id: obspack-long-sessions
+    text: On a long-horizon recall task (12 full-file outputs, 8 over the pack threshold, then 7 detail questions without re-reading sources), ObservationPack cut total billed cost 30.3% ($4.159 to $2.900; median paired -26.7%, 9/12 cheaper, Wilcoxon p=0.0068) with 12/12 verified in both arms. The sample was extended after interim looks at n=3 and n=6; the p-value still clears 0.05/3.
+    evidence:
+      - data/summary.json
