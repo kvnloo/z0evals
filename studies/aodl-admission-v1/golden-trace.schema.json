@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AODL governed golden trace",
+  "type": "object",
+  "required": [
+    "schema",
+    "root_trace_id",
+    "structural_execution_complete",
+    "verified_outcome_complete",
+    "checks",
+    "stages",
+    "limitations"
+  ],
+  "properties": {
+    "schema": {"const": "z0eval.aodl_golden_trace.v1"},
+    "root_trace_id": {"type": "string"},
+    "structural_execution_complete": {"type": "boolean"},
+    "verified_outcome_complete": {"type": "boolean"},
+    "checks": {"type": "object"},
+    "stages": {
+      "type": "object",
+      "required": [
+        "governed_preparation",
+        "aodl_admission",
+        "dispatch",
+        "provider_admission",
+        "physical_execution",
+        "gate_latency",
+        "verified_outcome"
+      ]
+    },
+    "limitations": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}
