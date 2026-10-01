@@ -1,0 +1,33 @@
+schema_version: z0eval.study.v1
+id: aodl-runtime-v1
+title: AODL dispatch ordering, restart, and drift proof
+status: draft
+created: "2026-10-01"
+updated: "2026-10-01"
+
+parent_study: aodl-admission-v1
+tracker: https://github.com/kvnloo/z0evals/issues/78
+
+sources:
+  - repo: kvnloo/aodl
+    commit: 68231658f0ec0338464c0916a2329b9587444312
+    branch: feat/aodl-canon-v1-clean
+    role: canonical validation and semantic identity
+  - repo: kvnloo/z0intelligence
+    commit: 0b0fce161d78baa143a0c84a9c9d42201198c12d
+    branch: feat/aodl-observation-v1
+    role: dispatch admission, canonical ledger, drift projection, Tokenomics measurement
+
+scope:
+  provider_execution: false
+  network_calls: false
+  credentials: false
+
+acceptance:
+  - ALLOW admission receipt is durable before dispatch-start.
+  - DENY creates no dispatch-start row.
+  - restart after admission-before-dispatch reuses the existing admission.
+  - identical replay creates no duplicate admission or Tokenomics event.
+  - runtime drift does not mutate authored intent/source lineage.
+  - drift event and observation receipt are idempotent.
+  - no structural or observation receipt mints task success.
