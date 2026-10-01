@@ -102,22 +102,22 @@ export default function Page() {
         </div>
       </header>
 
-      <div className="shell">
-        <div className="rail"><Toc items={TOC} /></div>
-        <MobileToc items={TOC} />
-        <main className="article article-shell">
-          <div className="article-header">
-            <div>
-              <h1 className="article-title">how much of the llm do we actually need?</h1>
-              <div className="title-accent-line" aria-hidden="true" />
-              <div className="article-meta">
-                {S.author}<span className="sep">·</span>{S.date}
-                <span className="sep">·</span>
-                <span style={{ fontFamily: "var(--font-mono)" }}>{S.runId}</span>
-              </div>
-            </div>
+      <header className="article-header">
+        <div>
+          <h1 className="article-title">how much of the llm do we actually need?</h1>
+          <div className="title-accent-line" aria-hidden="true" />
+          <div className="article-meta">
+            {S.author}<span className="sep">·</span>{S.date}
+            <span className="sep">·</span>
+            <span style={{ fontFamily: "var(--font-mono)" }}>{S.runId}</span>
           </div>
+        </div>
+      </header>
 
+      <div className="shell story-grid">
+        <div className="rail"><Toc items={TOC} /></div>
+        <main className="article">
+          <MobileToc items={TOC} />
           <div className="article-body prose">
             <Callout kind="info" title="latest research · september 29">
               <p>
