@@ -11,7 +11,7 @@ sources:
     branch: feat/aodl-canon-v1-clean
     role: validation and aodl-canon-1 semantic identity
   - repo: kvnloo/z0intelligence
-    commit: ea249f197064cec1cf97f2851dac2efdaebca29e
+    commit: ba43be05c450035929804cf4f8e1f4588c871777
     branch: feat/aodl-admission-v1
     role: plain-Python structural admission runtime
   - repo: kvnloo/z0intelligence

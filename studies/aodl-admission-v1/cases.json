@@ -9,6 +9,20 @@
       "request": {}
     },
     {
+      "id": "allow-budget-boundary",
+      "expected_allow": true,
+      "expected_codes": [],
+      "document": {
+        "budget_dim": "tokens",
+        "budget_limit": 500
+      },
+      "request": {
+        "budget_dim": "tokens",
+        "observed_value": 400,
+        "proposed_value": 100
+      }
+    },
+    {
       "id": "deny-revision",
       "expected_allow": false,
       "expected_codes": [
@@ -57,17 +71,99 @@
       }
     },
     {
-      "id": "deny-budget",
+      "id": "deny-budget-tokens",
       "expected_allow": false,
       "expected_codes": [
         105
       ],
       "document": {
-        "token_budget": 500
+        "budget_dim": "tokens",
+        "budget_limit": 500
       },
       "request": {
-        "observed_tokens": 450,
-        "proposed_tokens": 51
+        "budget_dim": "tokens",
+        "observed_value": 450,
+        "proposed_value": 51
+      }
+    },
+    {
+      "id": "deny-budget-premium_tokens",
+      "expected_allow": false,
+      "expected_codes": [
+        105
+      ],
+      "document": {
+        "budget_dim": "premium_tokens",
+        "budget_limit": 500
+      },
+      "request": {
+        "budget_dim": "premium_tokens",
+        "observed_value": 450,
+        "proposed_value": 51
+      }
+    },
+    {
+      "id": "deny-budget-latency_ms",
+      "expected_allow": false,
+      "expected_codes": [
+        105
+      ],
+      "document": {
+        "budget_dim": "latency_ms",
+        "budget_limit": 500
+      },
+      "request": {
+        "budget_dim": "latency_ms",
+        "observed_value": 450,
+        "proposed_value": 51
+      }
+    },
+    {
+      "id": "deny-budget-usd",
+      "expected_allow": false,
+      "expected_codes": [
+        105
+      ],
+      "document": {
+        "budget_dim": "usd",
+        "budget_limit": 500
+      },
+      "request": {
+        "budget_dim": "usd",
+        "observed_value": 450,
+        "proposed_value": 51
+      }
+    },
+    {
+      "id": "deny-budget-joules",
+      "expected_allow": false,
+      "expected_codes": [
+        105
+      ],
+      "document": {
+        "budget_dim": "joules",
+        "budget_limit": 500
+      },
+      "request": {
+        "budget_dim": "joules",
+        "observed_value": 450,
+        "proposed_value": 51
+      }
+    },
+    {
+      "id": "deny-budget-attention",
+      "expected_allow": false,
+      "expected_codes": [
+        105
+      ],
+      "document": {
+        "budget_dim": "attention",
+        "budget_limit": 500
+      },
+      "request": {
+        "budget_dim": "attention",
+        "observed_value": 450,
+        "proposed_value": 51
       }
     },
     {
@@ -98,15 +194,17 @@
       ],
       "document": {
         "max_children": 1,
-        "token_budget": 10,
+        "budget_dim": "tokens",
+        "budget_limit": 10,
         "ceiling": [
           "execute"
         ]
       },
       "request": {
         "live_children": 1,
-        "observed_tokens": 10,
-        "proposed_tokens": 1,
+        "budget_dim": "tokens",
+        "observed_value": 10,
+        "proposed_value": 1,
         "requested": [
           "verify"
         ]
@@ -123,6 +221,53 @@
       "request": {
         "parent_node_id": "not-declared"
       }
+    },
+    {
+      "id": "deny-invalid-contract",
+      "expected_allow": false,
+      "expected_codes": [],
+      "expected_labels": [
+        "contract-invalid"
+      ],
+      "document": {
+        "invalid_kind": true
+      },
+      "request": {}
+    },
+    {
+      "id": "deny-future-canon",
+      "expected_allow": false,
+      "expected_codes": [],
+      "expected_labels": [
+        "canonical-version-mismatch"
+      ],
+      "api_mode": "future-canon",
+      "document": {},
+      "request": {}
+    },
+    {
+      "id": "deny-malformed-observed",
+      "expected_allow": false,
+      "expected_codes": [],
+      "expected_labels": [
+        "proposal-or-contract-shape"
+      ],
+      "document": {},
+      "request": {
+        "malformed_observed": true
+      }
+    },
+    {
+      "id": "deny-huge-budget",
+      "expected_allow": false,
+      "expected_codes": [],
+      "expected_labels": [
+        "budget-shape"
+      ],
+      "document": {
+        "huge_budget": true
+      },
+      "request": {}
     }
   ]
 }
