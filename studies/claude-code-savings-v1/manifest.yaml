@@ -69,6 +69,16 @@ sources:
     branch: feat/packet-gating-v0
     role: "addendum v1b: results (benchmarks/claude_code_v1b/results/) imported unchanged into data/v1b/"
     visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: 69f4ca212e4ceebcfc7cf27ca68a4d21236dbce1
+    branch: study/obspack-long-v1
+    role: "addendum obspack-long: pre-registration (benchmarks/obspack_long_v1/PREREG.md), committed and pushed before any measured run"
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: df4f3f432f27aa146a3359cfcfaa483d52367adb
+    branch: study/obspack-long-v1
+    role: "addendum obspack-long: results (benchmarks/obspack_long_v1/results/) imported unchanged into data/obspack-long/; runner session-limit fix 53b259b"
+    visibility: pushed
 
 questions:
   - How much does the current z0 Claude Code integration (lean profile + plugin State Packet + ObservationPack) cut billed tokens versus stock Claude Code, at held task success?
@@ -102,6 +112,17 @@ artifacts:
     kind: result
     sha256: cc3f762fbbc2146cbc8a6cc11206ee8ee979ccb03f97598ce899874eb51adc25
     provenance: v1b per-trial aggregates (no prompts, answers, session ids or paths) from z0intelligence 04b9186
+  - path: ADDENDUM-obspack-long.md
+    kind: other
+    provenance: addendum text for the pre-registered obspack-long-v1 follow-up (ObservationPack on long sessions)
+  - path: data/obspack-long/results.json
+    kind: result
+    sha256: 1d10afb144465a0dead0f4f4a89015b0a7421d19630a46375fc849bc6e922a96
+    provenance: obspack-long-v1 pre-registered analysis output from z0intelligence df4f3f4 (aggregate-only)
+  - path: data/obspack-long/trials.csv
+    kind: result
+    sha256: 11fb5e39ff7203e6a52439e0afbd186edc9869ce3bf4a8d08fa1cf6875d4d795
+    provenance: obspack-long-v1 per-trial aggregates (no prompts, answers, session ids or paths) from z0intelligence df4f3f4
 
 limitations:
   - Primary metric is unweighted billed tokens (input + cache read + cache write + output); cache reads cost ~10x less than input and writes more, so cost_usd (Claude Code's estimate, not an invoice) is the closer billing proxy and is reported alongside.
@@ -130,3 +151,6 @@ claims:
   - id: v1b-gated-packet-fails-prereg
     text: "Addendum v1b (pre-registered, 372 trials, same suites): a prompt-gated State Packet (injected at UserPromptSubmit only for the fact families DecisionOpportunity scoping names, scoped to those families) FAILED both pre-registered tests against the v1 SessionStart packet. Repo tasks - session -> gated -7.3% tokens (CI -13.8% to +0.8%; 67/80 cheaper; Wilcoxon p=1.4e-5; cost -7.0%) misses the required CI < 0; gated vs plain lean was flat (median +0.1%, CI -13.6% to +6.7%) while the session packet was +4.7% (median +6.9%, 15/80 cheaper). qa questions - gated +16.6% vs the session packet (CI -4.8% to +45.6%) fails the +5% non-inferiority margin, though it still cut 17.8% vs lean (median -21.8%, p=0.002) at 44/44 correct. Quality guard PASS everywhere."
     evidence: [ADDENDUM-v1b.md, data/v1b/results.json, data/v1b/trials.csv]
+  - id: obspack-long-cost-dump-heavy-only
+    text: "Addendum obspack-long (pre-registered, 208 sessions, 10 long tasks): lean -> lean+obspack cut Claude Code estimated cost 30.7% (task-cluster CI -50.0% to -1.9%, Wilcoxon p=0.012, 26/40 cheaper; tokens -9.5% n.s.; success 39/40 both; guard PASS), meeting the pre-registered criterion. The saving is entirely from directed-recall (whole-file dump) tasks (-64.2%, 12/12 cheaper, 25 packs/session; one recall miss, stratum guard 12->11 FAIL); on long multi-bug debugging sessions packing rarely fired (1.2/session) and cost changed +1.3% (lean, n.s.) / +5.3% (stock, CI +2.4..+8.0). stock -> lean+obspack -39.9%."
+    evidence: [ADDENDUM-obspack-long.md, data/obspack-long/results.json, data/obspack-long/trials.csv]

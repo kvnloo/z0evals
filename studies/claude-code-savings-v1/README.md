@@ -27,4 +27,6 @@ Lean was the lever that held up everywhere.
 
 **Addendum v1b (2026-10-01):** a prompt-gated packet (`packet: "gated"`) failed both pre-registered tests against the SessionStart packet. On repo tasks it was −7.3% tokens, but the CI reached +0.8%. On qa it was +16.6% against a +5% margin. See [ADDENDUM-v1b.md](ADDENDUM-v1b.md) and `data/v1b/`. The same branch makes route_worker loadable under lean.
 
+**Addendum obspack-long (2026-10-01):** on 10 long tasks (208 real sessions, pre-registered), ObservationPack cut Claude Code's estimated cost 30.7% over lean (CI −50.0 … −1.9, p=0.012; success 39/40 both). The whole saving came from whole-file dump tasks (−64%); on long debugging sessions packing rarely fired and cost was flat (+1.3% lean, +5.3% stock). See [ADDENDUM-obspack-long.md](ADDENDUM-obspack-long.md) and `data/obspack-long/`.
+
 See the post `posts/claude-code-savings-v1.md` and the claims in `manifest.yaml`.
