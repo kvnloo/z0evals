@@ -4,6 +4,8 @@ from __future__ import annotations
 import importlib.util
 from pathlib import Path
 
+import pytest
+
 ROOT=Path(__file__).resolve().parents[1]
 PATH=ROOT/"studies"/"aodl-admission-v1"/"collect_golden.py"
 spec=importlib.util.spec_from_file_location("collect_golden",PATH)
@@ -125,6 +127,40 @@ def test_unknown_usage_fails_structural_trace():
     assert proof["checks"]["usage_known"] is False
 
 
+@pytest.mark.parametrize("field", ["input_tokens", "output_tokens"])
+@pytest.mark.parametrize("value", [True, False, -1, None, 1.5, "4"])
+def test_invalid_usage_is_not_measured_usage(field, value):
+    receipts, outcomes, tokenomics = base_rows()
+    physical = next(r for r in receipts if r.get("trace_id") == PHYSICAL)
+    physical[field] = value
+    proof = G.collect(receipts, outcomes, tokenomics, ROOT_TRACE)
+    assert proof["checks"]["usage_known"] is False
+    assert proof["structural_execution_complete"] is False
+    assert proof["stages"]["physical_execution"][field] is value
+
+
+def test_zero_measured_usage_is_valid():
+    receipts, outcomes, tokenomics = base_rows()
+    physical = next(r for r in receipts if r.get("trace_id") == PHYSICAL)
+    physical.update(input_tokens=0, output_tokens=0)
+    proof = G.collect(receipts, outcomes, tokenomics, ROOT_TRACE)
+    assert proof["checks"]["usage_known"] is True
+    assert proof["structural_execution_complete"] is True
+
+
+def test_negative_gold_remains_complete_evidence():
+    receipts, _, tokenomics = base_rows()
+    outcomes = [{
+        "trace_id": PHYSICAL,
+        "outcome_tier": "gold",
+        "outcome": {"verified_success": False, "verification_source": "fixture"},
+    }]
+    proof = G.collect(receipts, outcomes, tokenomics, ROOT_TRACE)
+    assert proof["structural_execution_complete"] is True
+    assert proof["verified_outcome_complete"] is True
+    assert proof["stages"]["verified_outcome"]["outcome"]["verified_success"] is False
+
+
 def test_generated_proof_matches_frozen_schema():
     import json
     import jsonschema
@@ -217,6 +253,21 @@ def test_importer_accepts_only_sanitized_pinned_bundle(tmp_path):
     assert golden["verified_outcome_complete"] is True
     assert set(hashes)==set(I.REQUIRED_FILES)
     assert "raw" not in hashes
+
+
+def test_archive_validation_preserves_negative_gold_without_rescoring_it(tmp_path):
+    import json
+    bundle_dir = tmp_path / "bundle"
+    make_bundle(bundle_dir)
+    path = bundle_dir / "golden-trace.json"
+    proof = json.loads(path.read_text())
+    proof["stages"]["verified_outcome"]["outcome"]["verified_success"] = False
+    path.write_text(json.dumps(proof) + "\n")
+    # Archive validation is not a positive canary/promotion decision. Do not
+    # discard complete negative evidence or reinterpret its original outcome.
+    _, archived, _ = I.validate_bundle(bundle_dir)
+    assert archived["verified_outcome_complete"] is True
+    assert archived["stages"]["verified_outcome"]["outcome"]["verified_success"] is False
 
 
 def test_importer_rejects_revision_mismatch(tmp_path):

@@ -100,8 +100,11 @@ def collect(receipts, outcomes, tokenomics, root_trace_id):
     admission_payload = (admission.get("extra") or {}).get("aodl_admission") if admission else None
     usage_known = bool(
         physical
-        and isinstance(physical.get("input_tokens"), int)
-        and isinstance(physical.get("output_tokens"), int)
+        # bool is an int subclass, but neither it nor a negative count is usage.
+        and all(
+            type(physical.get(field)) is int and physical[field] >= 0
+            for field in ("input_tokens", "output_tokens")
+        )
     )
 
     checks = {
