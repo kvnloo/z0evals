@@ -42,6 +42,9 @@ questions:
 artifacts:
   - path: question-contract.json
     kind: fixture
+  - path: cohort.json
+    kind: fixture
+    sha256: 382c97003ad81b5cbd7771c35279e4c3babeb3d4c47804d869f7c13b59488d00
   - path: receipt.schema.json
     kind: fixture
 
