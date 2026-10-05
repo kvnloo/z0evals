@@ -61,3 +61,22 @@ def test_speculative_mutation_discards_even_with_replay_pass():
         },
     )
     assert out["decision"] == "DISCARD"
+
+
+def _main() -> int:
+    tests = [(name, fn) for name, fn in sorted(globals().items())
+             if name.startswith("test_") and callable(fn)]
+    failed = 0
+    for name, fn in tests:
+        try:
+            fn()
+            print(f"  PASS  {name}")
+        except Exception as exc:
+            failed += 1
+            print(f"  FAIL  {name}: {exc}")
+    print(f"\n{len(tests) - failed}/{len(tests)} passed")
+    return 1 if failed else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(_main())
