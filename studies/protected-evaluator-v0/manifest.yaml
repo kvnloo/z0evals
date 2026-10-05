@@ -2,7 +2,7 @@ schema_version: z0eval.study.v1
 id: protected-evaluator-v0
 title: Protected evaluator API and contamination drill
 status: draft
-created: 2026-10-05
+created: "2026-10-05"
 sources:
   - repo: kvnloo/evolution-lab
     commit: 753d66a18404431f0eb070e85afac95a0f5c787b
