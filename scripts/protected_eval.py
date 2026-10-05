@@ -8,11 +8,13 @@ log stores hashes, not protected rows or prediction contents.
 from __future__ import annotations
 
 import argparse
+import fcntl
 import hashlib
 import json
 import os
 import re
 import tempfile
+from contextlib import contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -83,6 +85,19 @@ def load_manifest(path: Path) -> dict[str, Any]:
 
 def _state_path(state_dir: Path) -> Path:
     return state_dir / "state.json"
+
+
+@contextmanager
+def _locked_state(state_dir: Path):
+    state_dir.mkdir(parents=True, exist_ok=True)
+    lock_path = state_dir / "state.lock"
+    with lock_path.open("a+", encoding="utf-8") as lock:
+        lock_path.chmod(0o600)
+        fcntl.flock(lock.fileno(), fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            fcntl.flock(lock.fileno(), fcntl.LOCK_UN)
 
 
 def _audit_path(state_dir: Path) -> Path:
@@ -197,75 +212,77 @@ def score_predictions(
     if cohort["training_allowed"]:
         raise ProtectedEvalError("protected scoring cohort cannot be training_allowed")
 
-    state = load_state(state_dir, manifest)
-    if state["status"] != "active":
-        raise ProtectedEvalError(f"suite cannot mint sealed credit while status={state['status']}")
-    max_queries = int(manifest["scoring"]["max_queries"])
-    if int(state["query_count"]) >= max_queries:
-        raise ProtectedEvalError("protected evaluator query budget exhausted")
+    with _locked_state(state_dir):
+        state = load_state(state_dir, manifest)
+        if state["status"] != "active":
+            raise ProtectedEvalError(f"suite cannot mint sealed credit while status={state['status']}")
+        max_queries = int(manifest["scoring"]["max_queries"])
+        if int(state["query_count"]) >= max_queries:
+            raise ProtectedEvalError("protected evaluator query budget exhausted")
 
-    truth_path = _resolve_truth_ref(str(cohort["truth_ref"]))
-    truth = _read_jsonl(truth_path, "expected")
-    predictions = _read_jsonl(predictions_path, "prediction")
-    if predictions.keys() != truth.keys():
-        raise ProtectedEvalError("prediction IDs must exactly match the protected cohort IDs")
+        truth_path = _resolve_truth_ref(str(cohort["truth_ref"]))
+        truth = _read_jsonl(truth_path, "expected")
+        predictions = _read_jsonl(predictions_path, "prediction")
+        if predictions.keys() != truth.keys():
+            raise ProtectedEvalError("prediction IDs must exactly match the protected cohort IDs")
 
-    correct = sum(predictions[item_id] == expected for item_id, expected in truth.items())
-    score = correct / len(truth)
-    verdict = "KEEP" if score >= float(manifest["scoring"]["pass_threshold"]) else "DISCARD"
-    query_index = int(state["query_count"]) + 1
+        correct = sum(predictions[item_id] == expected for item_id, expected in truth.items())
+        score = correct / len(truth)
+        verdict = "KEEP" if score >= float(manifest["scoring"]["pass_threshold"]) else "DISCARD"
+        query_index = int(state["query_count"]) + 1
 
-    public_core = {
-        "schema": RESULT_SCHEMA,
-        "suite_id": manifest["id"],
-        "suite_version": manifest["version"],
-        "cohort": cohort_name,
-        "candidate_id": candidate_id,
-        "candidate_revision": candidate_revision,
-        "metric": manifest["scoring"]["metric"],
-        "score": score,
-        "verdict": verdict,
-        "query_index": query_index,
-        "sealed_credit": True,
-    }
-    public_core["result_sha256"] = _sha256_bytes(
-        json.dumps(public_core, sort_keys=True, separators=(",", ":")).encode()
-    )
+        public_core = {
+            "schema": RESULT_SCHEMA,
+            "suite_id": manifest["id"],
+            "suite_version": manifest["version"],
+            "cohort": cohort_name,
+            "candidate_id": candidate_id,
+            "candidate_revision": candidate_revision,
+            "metric": manifest["scoring"]["metric"],
+            "score": score,
+            "verdict": verdict,
+            "query_index": query_index,
+            "sealed_credit": True,
+        }
+        public_core["result_sha256"] = _sha256_bytes(
+            json.dumps(public_core, sort_keys=True, separators=(",", ":")).encode()
+        )
 
-    audit = {
-        "at": _now(),
-        "suite_id": manifest["id"],
-        "suite_version": manifest["version"],
-        "cohort": cohort_name,
-        "candidate_id": candidate_id,
-        "candidate_revision": candidate_revision,
-        "query_index": query_index,
-        "predictions_sha256": _sha256_file(predictions_path),
-        "result_sha256": public_core["result_sha256"],
-        "score": score,
-        "verdict": verdict,
-    }
-    _append_audit(state_dir, audit)
-    state["query_count"] = query_index
-    state["updated_at"] = audit["at"]
-    _atomic_json(_state_path(state_dir), state)
-    return public_core
+        audit = {
+            "at": _now(),
+            "suite_id": manifest["id"],
+            "suite_version": manifest["version"],
+            "cohort": cohort_name,
+            "candidate_id": candidate_id,
+            "candidate_revision": candidate_revision,
+            "query_index": query_index,
+            "predictions_sha256": _sha256_file(predictions_path),
+            "result_sha256": public_core["result_sha256"],
+            "score": score,
+            "verdict": verdict,
+        }
+        _append_audit(state_dir, audit)
+        state["query_count"] = query_index
+        state["updated_at"] = audit["at"]
+        _atomic_json(_state_path(state_dir), state)
+        return public_core
 
 
 def mark_contaminated(
     manifest: dict[str, Any], state_dir: Path, *, reason: str, replacement_suite: str | None = None
 ) -> dict[str, Any]:
-    state = load_state(state_dir, manifest)
-    state["status"] = "contaminated"
-    state["contamination"] = {
-        "at": _now(),
-        "reason_sha256": _sha256_bytes(reason.encode()),
-    }
-    if replacement_suite:
-        state["superseded_by"] = replacement_suite
-    state["updated_at"] = state["contamination"]["at"]
-    _atomic_json(_state_path(state_dir), state)
-    return public_status(state)
+    with _locked_state(state_dir):
+        state = load_state(state_dir, manifest)
+        state["status"] = "contaminated"
+        state["contamination"] = {
+            "at": _now(),
+            "reason_sha256": _sha256_bytes(reason.encode()),
+        }
+        if replacement_suite:
+            state["superseded_by"] = replacement_suite
+        state["updated_at"] = state["contamination"]["at"]
+        _atomic_json(_state_path(state_dir), state)
+        return public_status(state)
 
 
 def supersede(
@@ -273,12 +290,13 @@ def supersede(
 ) -> dict[str, Any]:
     if not replacement_suite:
         raise ProtectedEvalError("replacement_suite is required")
-    state = load_state(state_dir, manifest)
-    state["status"] = "superseded"
-    state["superseded_by"] = replacement_suite
-    state["updated_at"] = _now()
-    _atomic_json(_state_path(state_dir), state)
-    return public_status(state)
+    with _locked_state(state_dir):
+        state = load_state(state_dir, manifest)
+        state["status"] = "superseded"
+        state["superseded_by"] = replacement_suite
+        state["updated_at"] = _now()
+        _atomic_json(_state_path(state_dir), state)
+        return public_status(state)
 
 
 def public_status(state: dict[str, Any]) -> dict[str, Any]:
