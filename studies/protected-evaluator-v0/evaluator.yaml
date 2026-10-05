@@ -1,0 +1,33 @@
+schema: z0eval.protected.v1
+id: z0-training-protected-v0
+version: "2026-10-05.1"
+
+label_generator:
+  id: training-fixture-author-v0
+
+verifier:
+  id: exact-match-protected-v0
+  independent_of:
+    - training-fixture-author-v0
+
+cohorts:
+  development:
+    role: development
+    optimizer_queryable: false
+    training_allowed: true
+    truth_ref: env://Z0EVAL_DEVELOPMENT_ROOT/development.jsonl
+  confirm:
+    role: confirm
+    optimizer_queryable: true
+    training_allowed: false
+    truth_ref: env://Z0EVAL_PROTECTED_ROOT/confirm.jsonl
+  future:
+    role: future
+    optimizer_queryable: false
+    training_allowed: false
+    truth_ref: env://Z0EVAL_PROTECTED_ROOT/future.jsonl
+
+scoring:
+  metric: exact_match
+  pass_threshold: 0.90
+  max_queries: 8

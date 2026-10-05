@@ -1,0 +1,23 @@
+schema_version: z0eval.study.v1
+id: protected-evaluator-v0
+title: Protected evaluator API and contamination drill
+status: draft
+created: "2026-10-05"
+sources:
+  - repo: kvnloo/evolution-lab
+    commit: 753d66a18404431f0eb070e85afac95a0f5c787b
+    role: optimizer/training-provider integration
+questions:
+  - Can an adaptive optimizer obtain a useful aggregate score without receiving protected truth?
+  - Does contamination or supersession stop a suite from minting sealed credit?
+  - Is future confirmation kept outside the optimizer-queryable cohort?
+artifacts:
+  - path: evaluator.yaml
+    kind: other
+  - path: README.md
+    kind: analysis
+limitations:
+  - The drill uses temporary synthetic protected truth in tests; no protected dataset is committed.
+  - Filesystem separation alone is not treated as a security boundary.
+  - The v0 scorer implements exact match only.
+  - Protected evaluator state uses POSIX flock for serialized query-budget accounting.
