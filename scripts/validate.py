@@ -9,6 +9,8 @@ from pathlib import Path
 import yaml
 from jsonschema import Draft202012Validator
 
+from protected_eval import ProtectedEvalError, validate_evaluator_manifest
+
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -56,9 +58,20 @@ def main() -> None:
                     print(f"{path}: frozen source is not a full commit SHA: {src}")
                     errors += 1
 
+    evaluators = sorted((ROOT / "studies").glob("*/evaluator.yaml"))
+    for path in evaluators:
+        try:
+            data = yaml.safe_load(path.read_text(encoding="utf-8"))
+            if not isinstance(data, dict):
+                raise ProtectedEvalError("evaluator manifest must be a mapping")
+            validate_evaluator_manifest(data)
+        except (OSError, yaml.YAMLError, ProtectedEvalError) as exc:
+            print(f"{path}: protected evaluator error: {exc}")
+            errors += 1
+
     if errors:
         raise SystemExit(f"{errors} validation error(s)")
-    print(f"ok: {len(manifests)} study manifest(s)")
+    print(f"ok: {len(manifests)} study manifest(s), {len(evaluators)} protected evaluator(s)")
 
 
 if __name__ == "__main__":
