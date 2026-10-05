@@ -1,0 +1,14 @@
+{
+  "schema": "z0eval.z0live_identity.v1",
+  "actor_id": "personaplex-7b-nf4",
+  "provider": "local",
+  "model": "brianmatzelle/personaplex-7b-v1-bnb-4bit",
+  "model_revision": "bde165223cb92cc30fd8279878978838c12d25c5",
+  "runtime_backend": "cuda",
+  "quantization": "nf4",
+  "host_fingerprint": "replace-with-measured-host-fingerprint",
+  "hardware_class": "rtx-3080-ti-12gb+i9-10900k",
+  "harness": "omp",
+  "harness_revision": "6d8552d7f9df1852826923f07f0eed4fe29511f3",
+  "adapter_revision": "f296ffbe727d2d6dbaca470e197b0982079e27f4"
+}
