@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "z0eval.z0live_result.v1",
+  "type": "object",
+  "required": [
+    "schema",
+    "decision",
+    "identity",
+    "fixture",
+    "contract_replay",
+    "limitations"
+  ],
+  "properties": {
+    "schema": {"const": "z0eval.result.v1"},
+    "study": {"const": "z0live-v0"},
+    "decision": {"enum": ["KEEP", "DISCARD", "PARTIAL", "NOT_COMPARABLE"]},
+    "identity": {"type": "object"},
+    "fixture": {
+      "type": "object",
+      "required": ["revision", "sha256"]
+    },
+    "contract_replay": {
+      "type": "object",
+      "required": ["passed", "cases_total", "cases_passed"]
+    },
+    "metrics": {"type": ["object", "null"]},
+    "speculation": {"type": ["object", "null"]},
+    "limitations": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  },
+  "additionalProperties": true
+}
