@@ -1,0 +1,48 @@
+schema_version: z0eval.study.v1
+id: z0live-v0
+title: Realtime voice control, attention, and actor conformance v0
+status: draft
+created: "2026-10-04"
+updated: "2026-10-04"
+
+hardware:
+  target_gpu: NVIDIA RTX 3080 Ti
+  target_vram_gb: 12
+  target_cpu: Intel Core i9-10900K
+  note: Contract replay is hardware-independent; actor/runtime claims require matching host evidence.
+
+sources:
+  - repo: kvnloo/z0live
+    commit: f296ffbe727d2d6dbaca470e197b0982079e27f4
+    branch: feat/brainstorm-session-lifecycle
+    role: canonical realtime contracts, fixtures, replay, actor adapters, OMP extension, speculation gate
+  - repo: kvnloo/z0intelligence
+    commit: 4c17773fcd9db2b52831e8603c1bde21bbd05c4e
+    branch: feat/brainstorm-voice-residency
+    role: hardware-aware Brainstorm VoicePlan admission
+  - repo: kvnloo/oh-my-pi
+    commit: 6d8552d7f9df1852826923f07f0eed4fe29511f3
+    branch: main
+    role: OMP extension API and execution authority
+
+questions:
+  - Do frozen floor, barge-in, attention, and harness-control semantics replay deterministically?
+  - Does partial speech remain strictly side-effect-free before final authority?
+  - Can OMP integrate as an extension without z0live-specific core changes?
+  - On the RTX 3080 Ti host, which admitted actor gives the best latency/naturalness/resource frontier?
+  - Does speculative prewarm achieve at least 50 ms p50 useful gain with zero speculative mutations?
+
+artifacts:
+  - path: identity.example.json
+    kind: fixture
+  - path: result.schema.json
+    kind: fixture
+
+limitations:
+  - The canonical voice fixtures remain in z0live and are not copied into this study.
+  - This draft pins the implementation revision but does not claim PersonaPlex hardware performance.
+  - Naturalness, TTFA, interruption-to-silence, long-session stability, and VRAM require target-host runs.
+  - A deterministic replay pass alone can produce only PARTIAL certification, never KEEP.
+  - OMP turn completion is not treated as verified success.
+
+claims: []
