@@ -1,0 +1,502 @@
+[
+  {
+    "turn": 1,
+    "file": "src/z0int/agentsview_ro.py",
+    "messages": 3,
+    "raw_bytes": 2656,
+    "view_bytes": 516,
+    "ratio": 0.1943,
+    "built": 2,
+    "placeholders": 0
+  },
+  {
+    "turn": 2,
+    "file": "src/z0int/agentweb_bridge_capabilities.py",
+    "messages": 6,
+    "raw_bytes": 5134,
+    "view_bytes": 724,
+    "ratio": 0.141,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 3,
+    "file": "src/z0int/agentweb_bridge_protocol.py",
+    "messages": 9,
+    "raw_bytes": 13275,
+    "view_bytes": 1019,
+    "ratio": 0.0768,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 4,
+    "file": "src/z0int/agentweb_bridge_wire.py",
+    "messages": 12,
+    "raw_bytes": 16976,
+    "view_bytes": 1672,
+    "ratio": 0.0985,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 5,
+    "file": "src/z0int/alignbench.py",
+    "messages": 15,
+    "raw_bytes": 25089,
+    "view_bytes": 2189,
+    "ratio": 0.0872,
+    "built": 2,
+    "placeholders": 0
+  },
+  {
+    "turn": 6,
+    "file": "src/z0int/ao_experiment.py",
+    "messages": 18,
+    "raw_bytes": 33208,
+    "view_bytes": 2671,
+    "ratio": 0.0804,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 7,
+    "file": "src/z0int/aodl_dispatch.py",
+    "messages": 21,
+    "raw_bytes": 39571,
+    "view_bytes": 2851,
+    "ratio": 0.072,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 8,
+    "file": "src/z0int/aodl_observation.py",
+    "messages": 24,
+    "raw_bytes": 46547,
+    "view_bytes": 3154,
+    "ratio": 0.0678,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 9,
+    "file": "src/z0int/artifacts.py",
+    "messages": 27,
+    "raw_bytes": 54664,
+    "view_bytes": 3540,
+    "ratio": 0.0648,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 10,
+    "file": "src/z0int/automatic.py",
+    "messages": 30,
+    "raw_bytes": 61301,
+    "view_bytes": 3818,
+    "ratio": 0.0623,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 11,
+    "file": "src/z0int/autoresearch/daemon.py",
+    "messages": 33,
+    "raw_bytes": 64462,
+    "view_bytes": 3973,
+    "ratio": 0.0616,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 12,
+    "file": "src/z0int/autoresearch/mutations.py",
+    "messages": 36,
+    "raw_bytes": 67221,
+    "view_bytes": 4174,
+    "ratio": 0.0621,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 13,
+    "file": "src/z0int/autoresearch/queue.py",
+    "messages": 39,
+    "raw_bytes": 72848,
+    "view_bytes": 4821,
+    "ratio": 0.0662,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 14,
+    "file": "src/z0int/autoresearch/replay.py",
+    "messages": 42,
+    "raw_bytes": 80985,
+    "view_bytes": 5150,
+    "ratio": 0.0636,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 15,
+    "file": "src/z0int/autoresearch/resources.py",
+    "messages": 45,
+    "raw_bytes": 85239,
+    "view_bytes": 5799,
+    "ratio": 0.068,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 16,
+    "file": "src/z0int/autoresearch/retrieval_exec.py",
+    "messages": 48,
+    "raw_bytes": 93386,
+    "view_bytes": 5995,
+    "ratio": 0.0642,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 17,
+    "file": "src/z0int/autoresearch/schema.py",
+    "messages": 51,
+    "raw_bytes": 94821,
+    "view_bytes": 6160,
+    "ratio": 0.065,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 18,
+    "file": "src/z0int/autoresearch/store.py",
+    "messages": 54,
+    "raw_bytes": 96017,
+    "view_bytes": 6559,
+    "ratio": 0.0683,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 19,
+    "file": "src/z0int/backends/__init__.py",
+    "messages": 57,
+    "raw_bytes": 96976,
+    "view_bytes": 6763,
+    "ratio": 0.0697,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 20,
+    "file": "src/z0int/backends/base.py",
+    "messages": 60,
+    "raw_bytes": 105099,
+    "view_bytes": 7065,
+    "ratio": 0.0672,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 21,
+    "file": "src/z0int/backends/bench/analytics.py",
+    "messages": 63,
+    "raw_bytes": 111973,
+    "view_bytes": 7268,
+    "ratio": 0.0649,
+    "built": 2,
+    "placeholders": 0
+  },
+  {
+    "turn": 22,
+    "file": "src/z0int/backends/bench/bootstrap.py",
+    "messages": 66,
+    "raw_bytes": 120117,
+    "view_bytes": 7601,
+    "ratio": 0.0633,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 23,
+    "file": "src/z0int/backends/bench/contract.py",
+    "messages": 69,
+    "raw_bytes": 121251,
+    "view_bytes": 8078,
+    "ratio": 0.0666,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 24,
+    "file": "src/z0int/backends/bench/eligibility.py",
+    "messages": 72,
+    "raw_bytes": 129374,
+    "view_bytes": 8290,
+    "ratio": 0.0641,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 25,
+    "file": "src/z0int/backends/bench/fixtures.py",
+    "messages": 75,
+    "raw_bytes": 132943,
+    "view_bytes": 8480,
+    "ratio": 0.0638,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 26,
+    "file": "src/z0int/backends/bench/materialize.py",
+    "messages": 78,
+    "raw_bytes": 141090,
+    "view_bytes": 8696,
+    "ratio": 0.0616,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 27,
+    "file": "src/z0int/backends/bench/metrics.py",
+    "messages": 81,
+    "raw_bytes": 145545,
+    "view_bytes": 8885,
+    "ratio": 0.061,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 28,
+    "file": "src/z0int/backends/bench/pareto.py",
+    "messages": 84,
+    "raw_bytes": 153682,
+    "view_bytes": 9238,
+    "ratio": 0.0601,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 29,
+    "file": "src/z0int/backends/bench/run_manifest.py",
+    "messages": 87,
+    "raw_bytes": 156325,
+    "view_bytes": 9436,
+    "ratio": 0.0604,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 30,
+    "file": "src/z0int/backends/decider.py",
+    "messages": 90,
+    "raw_bytes": 164454,
+    "view_bytes": 9643,
+    "ratio": 0.0586,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 31,
+    "file": "src/z0int/backends/device.py",
+    "messages": 93,
+    "raw_bytes": 165639,
+    "view_bytes": 10182,
+    "ratio": 0.0615,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 32,
+    "file": "src/z0int/backends/julia_worker.py",
+    "messages": 96,
+    "raw_bytes": 172666,
+    "view_bytes": 10326,
+    "ratio": 0.0598,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 33,
+    "file": "src/z0int/backends/laya.py",
+    "messages": 99,
+    "raw_bytes": 180290,
+    "view_bytes": 10512,
+    "ratio": 0.0583,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 34,
+    "file": "src/z0int/backends/named_questions.py",
+    "messages": 102,
+    "raw_bytes": 184598,
+    "view_bytes": 10691,
+    "ratio": 0.0579,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 35,
+    "file": "src/z0int/backends/nanojev.py",
+    "messages": 105,
+    "raw_bytes": 190177,
+    "view_bytes": 10874,
+    "ratio": 0.0572,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 36,
+    "file": "src/z0int/backends/openjev_direct.py",
+    "messages": 108,
+    "raw_bytes": 196106,
+    "view_bytes": 11086,
+    "ratio": 0.0565,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 37,
+    "file": "src/z0int/backends/registry.py",
+    "messages": 111,
+    "raw_bytes": 201776,
+    "view_bytes": 11249,
+    "ratio": 0.0557,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 38,
+    "file": "src/z0int/battery.py",
+    "messages": 114,
+    "raw_bytes": 204191,
+    "view_bytes": 11672,
+    "ratio": 0.0572,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 39,
+    "file": "src/z0int/bridge/generation.py",
+    "messages": 117,
+    "raw_bytes": 206744,
+    "view_bytes": 11863,
+    "ratio": 0.0574,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 40,
+    "file": "src/z0int/bridge/protocol.py",
+    "messages": 120,
+    "raw_bytes": 210017,
+    "view_bytes": 12046,
+    "ratio": 0.0574,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 41,
+    "file": "src/z0int/bridge/worker.py",
+    "messages": 123,
+    "raw_bytes": 218138,
+    "view_bytes": 12586,
+    "ratio": 0.0577,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 42,
+    "file": "src/z0int/capabilities/context_project_state.py",
+    "messages": 126,
+    "raw_bytes": 224559,
+    "view_bytes": 12803,
+    "ratio": 0.057,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 43,
+    "file": "src/z0int/check_class.py",
+    "messages": 129,
+    "raw_bytes": 229925,
+    "view_bytes": 13316,
+    "ratio": 0.0579,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 44,
+    "file": "src/z0int/claude_code_launch.py",
+    "messages": 132,
+    "raw_bytes": 237491,
+    "view_bytes": 13721,
+    "ratio": 0.0578,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 45,
+    "file": "src/z0int/claude_code_obs.py",
+    "messages": 135,
+    "raw_bytes": 241353,
+    "view_bytes": 14274,
+    "ratio": 0.0591,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 46,
+    "file": "src/z0int/claude_code_skills.py",
+    "messages": 138,
+    "raw_bytes": 249482,
+    "view_bytes": 14860,
+    "ratio": 0.0596,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 47,
+    "file": "src/z0int/cognition/__init__.py",
+    "messages": 144,
+    "raw_bytes": 253316,
+    "view_bytes": 15262,
+    "ratio": 0.0602,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 48,
+    "file": "src/z0int/cognition/adapters/__init__.py",
+    "messages": 147,
+    "raw_bytes": 254622,
+    "view_bytes": 15483,
+    "ratio": 0.0608,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 49,
+    "file": "src/z0int/cognition/adapters/transport.py",
+    "messages": 150,
+    "raw_bytes": 262136,
+    "view_bytes": 15938,
+    "ratio": 0.0608,
+    "built": 4,
+    "placeholders": 0
+  },
+  {
+    "turn": 50,
+    "file": "src/z0int/cognition/escalation.py",
+    "messages": 153,
+    "raw_bytes": 270271,
+    "view_bytes": 16621,
+    "ratio": 0.0615,
+    "built": 4,
+    "placeholders": 0
+  }
+]
