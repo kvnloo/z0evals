@@ -131,6 +131,7 @@ jobs:
               # Migrated channel: build the ported template.
               if ( cd "$WT" \
                    && python3 scripts/validate.py \
+                   && { [ ! -f scripts/validate_optchat_publication.py ] || python3 scripts/validate_optchat_publication.py; } \
                    && python3 scripts/build_site_data.py \
                    && cd web \
                    && npm ci --no-audit --no-fund \
@@ -264,6 +265,7 @@ jobs:
           check "unified-memory-v0/" "can four agents remember the same thing?" || fail=1
           check "unified-memory-v0/" "optmem-update" || fail=1
           check "unified-memory-v0/" "optchat-update" || fail=1
+          check "optchat-long-horizon-v0/" "does optchat stay small after fifty tool calls?" || fail=1
           check "researching-the-frontier/" "how do you learn the frontier fast?" || fail=1
           check "channels.html" "z0evals channels" || fail=1
           # Use build outputs, not a 404 probe that silently accepts data loss.

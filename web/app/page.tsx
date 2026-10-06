@@ -97,6 +97,7 @@ export default function Page() {
               <a href="./z0intelligence-function-routing/">routing</a>
               <a href="./researching-the-frontier/">research</a>
               <a href="./unified-memory-v0/">memory</a>
+              <a href="./optchat-long-horizon-v0/">optchat</a>
               <a href="https://github.com/kvnloo/z0evals">github</a>
             </div>
           </nav>
@@ -120,12 +121,12 @@ export default function Page() {
         <main className="article">
           <MobileToc items={TOC} />
           <div className="article-body prose">
-            <Callout kind="info" title="latest research · september 29">
+            <Callout kind="info" title="latest research · october 5">
               <p>
-                phase 1b is still the baseline story below. the newer experimental mess lives in{" "}
-                <a href="./z0intelligence-function-routing/">what actually deserves a model?</a>
-                {" "}and{" "}
-                <a href="./unified-memory-v0/">can four agents remember the same thing?</a>.
+                phase 1b is still the baseline story below. the newer work continues in{" "}
+                <a href="./z0intelligence-function-routing/">what actually deserves a model?</a>,{" "}
+                <a href="./unified-memory-v0/">can four agents remember the same thing?</a>, and{" "}
+                <a href="./optchat-long-horizon-v0/">does optchat stay small after fifty tool calls?</a>.
               </p>
               <p>
                 the theory and paper trail now live separately in{" "}

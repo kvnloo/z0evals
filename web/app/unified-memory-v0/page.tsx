@@ -110,6 +110,11 @@ const story = (
       <p>the sections below preserve the september 29 report. the implementation update above does not rescore it.</p>
     </Callout>
 
+    <Callout kind="info" title="new · october 5">
+      <p>the <a href="../optchat-long-horizon-v0/">optmem / optchat follow-up</a> now has its own
+        fifty-turn context-size report. it remains unscored: smaller views do not certify recall quality.</p>
+    </Callout>
+
     <h2 id="contract">memory is not one thing</h2>
     <p>
       this kept biting us because we would say “memory worked” when we actually meant one of like

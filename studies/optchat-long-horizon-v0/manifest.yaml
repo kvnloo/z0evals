@@ -1,0 +1,35 @@
+schema_version: z0eval.study.v1
+id: optchat-long-horizon-v0
+title: OptChat context size on a 50-turn file review
+status: draft
+scoring: unscored
+created: "2026-10-05"
+updated: "2026-10-05"
+
+sources:
+  - repo: kvnloo/z0intelligence
+    commit: 0828b7738d35e712b57814aa09a8bddf82a48fcc
+    role: OptChat log and compactor under test, plus the public files that were catted
+
+questions:
+  - After 50 tool-heavy turns, is the OptChat view smaller than the accumulated transcript?
+  - Does that shrink on the same protocol used for SoL-Pi, extended from 12 files to 50?
+  - Does a free local model actually build the nodes, or do placeholders remain?
+
+artifacts:
+  - path: turns.json
+    kind: result
+    sha256: f2f1b5da19e275b45c3120c9a08401d855359f653f5cce4dcdcec673ccd0d22f
+  - path: summary.json
+    kind: result
+
+limitations:
+  - Context bytes only. No answer-quality verifier. Not a promotion.
+  - The SoL-Pi house task is 12 files and n=12 paired trials, not 50 turns.
+  - The free router has n_ctx=2048, so the compactor saw a 1600-character excerpt, not the gist 64k-token view.
+  - The off arm is the accumulated transcript size. Live omp could not send turn 7+ on argv.
+  - The current OMP hook adds the view beside the host transcript. This study measures the view against the transcript, which is the gist comparison, not that additive hook.
+  - Source commit is the pin HEAD. OptChat itself is uncommitted on that tree.
+  - "scoring is unscored. one context-size trajectory, no held-out answer check."
+
+claims: []
