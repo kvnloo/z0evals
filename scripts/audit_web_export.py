@@ -168,6 +168,7 @@ def main() -> int:
     pages = {
         "phase1b": root / "index.html",
         "routing": root / "z0intelligence-function-routing" / "index.html",
+        "research": root / "researching-the-frontier" / "index.html",
         "memory": root / "unified-memory-v0" / "index.html",
     }
 
@@ -184,7 +185,7 @@ def main() -> int:
         check_toc_order(name, audit, errors)
         check_relative_links(name, path, root, audit, errors)
 
-    for name in ("routing", "memory"):
+    for name in ("routing", "research", "memory"):
         if name in parsed:
             check_story_page(name, parsed[name], errors)
     if "memory" in parsed:
