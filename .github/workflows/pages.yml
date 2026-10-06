@@ -60,6 +60,8 @@ jobs:
     # workflow_run fires for failed runs too; never rebuild from a failed promote.
     if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
+    outputs:
+      channel_paths: ${{ steps.channels.outputs.paths }}
     env:
       BASE: /${{ github.event.repository.name }}/
     steps:
@@ -89,11 +91,13 @@ jobs:
           python3 .verified-oss-loop/pages-url-map.py check --root . --base "$BASE"
 
       - name: Build every channel
+        id: channels
         run: |
           set -euo pipefail
           rm -rf site _channels
           mkdir -p site _channels
           built=""
+          paths=""
 
           for BRANCH in main nightly preview dev; do
             if ! git rev-parse --verify -q "origin/$BRANCH" >/dev/null; then
@@ -149,12 +153,12 @@ jobs:
             fi
             if [ "$ok" = yes ]; then
               built="$built $BRANCH"
+              paths="$paths ${SUB:-.}"
             else
-              if [ "$BRANCH" = main ]; then
-                echo "::error::main failed to build; refusing to publish a partial site"
-                exit 1
-              fi
-              echo "::warning::$BRANCH failed to build — omitted from this deploy"
+              # Replacing Pages with a partial artifact deletes the old channel.
+              # Preserve the previous deployment instead of reporting success.
+              echo "::error::$BRANCH failed to build; refusing to publish a partial site"
+              exit 1
             fi
             git worktree remove --force "$WT" >/dev/null 2>&1 || true
           done
@@ -192,6 +196,7 @@ jobs:
             echo '</ul></body></html>'
           } > site/channels.html
 
+          echo "paths=$paths" >> "$GITHUB_OUTPUT"
           echo "channels built:$built"
           find site -maxdepth 2 -name index.html | sort
 
@@ -226,9 +231,11 @@ jobs:
       - name: Verify every published channel
         env:
           PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+          CHANNEL_PATHS: ${{ needs.build.outputs.channel_paths }}
         run: |
           set -euo pipefail
           base="${PAGE_URL%/}"
+          : "${CHANNEL_PATHS:?missing expected published-channel paths}"
 
           check() {
             local suffix="$1" needle="$2"
@@ -255,12 +262,14 @@ jobs:
           check "" "how much of the llm do we actually need?" || fail=1
           check "z0intelligence-function-routing/" "what actually deserves a model?" || fail=1
           check "unified-memory-v0/" "can four agents remember the same thing?" || fail=1
+          check "unified-memory-v0/" "optmem-update" || fail=1
+          check "unified-memory-v0/" "optchat-update" || fail=1
+          check "researching-the-frontier/" "how do you learn the frontier fast?" || fail=1
           check "channels.html" "z0evals channels" || fail=1
-          for ch in nightly next dev; do
-            if curl -fsS -o /dev/null "$base/$ch/"; then
-              check "$ch/" "" || fail=1
-            else
-              echo "note /$ch/ not published for this run"
-            fi
+          # Use build outputs, not a 404 probe that silently accepts data loss.
+          # Config-disabled or absent branches never enter this expected set.
+          for path in $CHANNEL_PATHS; do
+            [ "$path" = . ] && continue
+            check "$path" "" || fail=1
           done
           exit "$fail"
