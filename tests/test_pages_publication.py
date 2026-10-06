@@ -47,7 +47,7 @@ class PagesPublicationTests(unittest.TestCase):
     shift
   done
   [ "$url" != "$BROKEN" ] || return 22
-  local body='z0evals how much of the llm do we actually need? what actually deserves a model? can four agents remember the same thing? how do you learn the frontier fast? optmem-update optchat-update z0evals channels'
+  local body='z0evals how much of the llm do we actually need? what actually deserves a model? can four agents remember the same thing? does optchat stay small after fifty tool calls? how do you learn the frontier fast? optmem-update optchat-update z0evals channels'
   if [ -n "$OMIT" ]; then body="${body//$OMIT/}"; fi
   printf '%s' "$body" > "$out"
 }
@@ -68,6 +68,9 @@ sleep() { :; }
         for marker in ('optmem-update', 'optchat-update'):
             with self.subTest(marker=marker):
                 self.assertNotEqual(self.run_live_guard(omit=marker).returncode, 0)
+
+    def test_missing_optchat_article_fails(self):
+        self.assertNotEqual(self.run_live_guard(omit='does optchat stay small after fifty tool calls?').returncode, 0)
 
     def test_unpublished_channel_is_not_required(self):
         result = self.run_live_guard('https://example.invalid/z0evals/dev/', paths='nightly/ next/')
