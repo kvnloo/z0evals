@@ -6,24 +6,26 @@ import Callout from "@/components/Callout";
 
 export const metadata: Metadata = {
   title: "can four agents remember the same thing? — z0evals",
-  description: "unified-memory v0: same questions, same evidence contract, four different agent harnesses.",
+  description: "unified-memory v0, updated october 5: integrated OptMem foundations, separate OptChat experiments, and the unchanged four-harness evidence boundary.",
 };
 
 const meta: StoryMeta = {
   title: "can four agents remember the same thing?",
   subtitle: "i got tired of every harness having its own half-broken version of memory.",
   author: "zer0 research",
-  date: "september 29, 2026",
+  date: "updated october 5, 2026",
   status: "evidence-pending",
-  lede: "the cohort is frozen. omp is measured. the four-harness result is still not done, and i am not pretending it is.",
+  lede: "optmem's structural foundation is integrated. optchat is a separate harness experiment. the original cohort is still partial, so implementation progress and measured recall stay separate.",
 };
 
 const banner: StoryBanner = {
-  tag: "partial result · omp measured",
-  text: "dsh has the transport path but still needs the same frozen model-visible proof. hermes and omo do not have final comparable cohort receipts imported yet. so: one measured lane, not four.",
+  tag: "implementation update · original cohort still partial",
+  text: "the october 5 update below reports pinned public implementation evidence, not a new recall benchmark. the september 29 cohort measurements remain unchanged; no four-harness aggregate is claimed.",
 };
 
 const toc: TocItem[] = [
+  { id: "optmem-update", label: "what landed in optmem", depth: 0 },
+  { id: "optchat-update", label: "optchat is a different layer", depth: 0 },
   { id: "contract", label: "memory is not one thing", depth: 0 },
   { id: "cohort", label: "freeze the questions first", depth: 0 },
   { id: "omp", label: "omp finally gave us a number", depth: 0 },
@@ -33,6 +35,81 @@ const toc: TocItem[] = [
 
 const story = (
   <>
+    <h2 id="optmem-update">what actually landed in optmem</h2>
+    <p>
+      the old page stopped at the september 29 cohort. work continued, but the publication did
+      not. this is the missing implementation update, frozen to the public revisions linked below.
+    </p>
+    <p>
+      first, credit where it belongs: <a href="https://github.com/VictorTaelin/OptMem">Victor Taelin's OptMem</a>
+      {" "}is the upstream reference for the temporal-memory approach. Kevin directed the z0 integration
+      and identified the missing publication. our adaptation and its evidence are separate from the original project.
+    </p>
+    <p>
+      z0intelligence integrated the event ledger, optmem-style temporal projection, and scoped memory
+      contract through reconciliation pr #109 at <code>b345aa2</code>. the exact source is inspectable in the{" "}
+      <a href="https://github.com/kvnloo/z0intelligence/blob/b345aa2bef199779cac8672b08d535cb28526fd7/docs/pr-reconciliation-2026-10-02.md">pinned reconciliation record</a>
+      {" "}and <a href="https://github.com/kvnloo/z0intelligence/blob/b345aa2bef199779cac8672b08d535cb28526fd7/src/z0int/memory/optmem_tree.py">pinned temporal projection</a>.
+    </p>
+    <p>
+      <code>events.jsonl</code> stays canonical. the tree is a rebuildable view over older history;
+      recent events remain raw, sticky historical events can be expanded, and <code>zoom()</code>
+      {" "}returns the original event payloads. rebuilding that view does not turn it into another authority.
+    </p>
+    <Callout kind="warning" title="structural memory is not semantic recall">
+      <p>
+        this implementation explicitly proves structure, not semantic summarization. its coarse
+        nodes contain counts and digests, not learned conversation summaries. integration tests
+        are not a new model-quality result, and the old 960-byte omp measurement below is not an optmem benchmark.
+      </p>
+    </Callout>
+
+    <h2 id="optchat-update">optchat is a different layer</h2>
+    <p>
+      shared memory and a harness's compacted chat history are related, but they are not the same
+      store. the new optchat work keeps those responsibilities separate:
+    </p>
+    <div className="x-table-wrap">
+      <table className="x-table">
+        <thead><tr><th>slice</th><th>status on october 5</th><th>boundary</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>optmem foundation</td><td>integrated structural baseline</td>
+            <td>canonical event log plus derived temporal view; no semantic-quality qualification</td>
+          </tr>
+          <tr>
+            <td>omp optchat</td><td>open pr #126</td>
+            <td>append-only harness chat log and compactor; not a new shared memory store</td>
+          </tr>
+          <tr>
+            <td>hermes optchat</td><td>draft pr #127, stacked on #126</td>
+            <td>optional off / shadow / on adapter; default off, separate Hermes log root</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      the omp snapshot is <a href="https://github.com/kvnloo/z0intelligence/commit/0828b7738d35e712b57814aa09a8bddf82a48fcc"><code>0828b77</code></a>
+      {" "}in <a href="https://github.com/kvnloo/z0intelligence/pull/126">pr #126</a>.
+      the hermes adapter is <a href="https://github.com/kvnloo/z0intelligence/commit/fc31fb5ca3e1322af3951080dfb0cd95b76fc93d"><code>fc31fb5</code></a>
+      {" "}in <a href="https://github.com/kvnloo/z0intelligence/pull/127">pr #127</a>.
+      these are pinned implementation snapshots, not a claim that either open branch has reached the runtime default.
+    </p>
+    <p>
+      #126 reports focused optchat/retrieval-replay tests. #127 reports green core-unit and no new
+      optchat, hermes-adapter, or memory failures relative to its base, while the full offline suite
+      still has base failures. that is narrower than saying the whole stack is green.
+      publishing this update does not merge those runtime prs or enable either adapter.
+    </p>
+    <p>
+      the next missing evidence is comparable answer support, provenance, contradictions, abstention,
+      context size, and cold/warm latency against the same frozen questions. private chat logs and
+      personal memory stores are not imported into this public report.
+    </p>
+    <Callout kind="info" title="the original cohort, unchanged">
+      <p>the sections below preserve the september 29 report. the implementation update above does not rescore it.</p>
+    </Callout>
+
     <h2 id="contract">memory is not one thing</h2>
     <p>
       this kept biting us because we would say “memory worked” when we actually meant one of like
@@ -122,6 +199,10 @@ const explore = (
   <>
     <h2>show me the receipts</h2>
     <ul>
+      <li><a href="https://github.com/VictorTaelin/OptMem">Victor Taelin — original OptMem project</a></li>
+      <li><a href="https://github.com/kvnloo/z0intelligence/pull/109">z0intelligence #109 — integrated event ledger, OptMem projection, and scoped memory contract</a></li>
+      <li><a href="https://github.com/kvnloo/z0intelligence/pull/126">z0intelligence #126 — separate OMP OptChat experiment</a></li>
+      <li><a href="https://github.com/kvnloo/z0intelligence/pull/127">z0intelligence #127 — optional Hermes OptChat adapter</a></li>
       <li>z0evals #56 / pr #57 / pr #59 — cohort + receipt contract</li>
       <li>kvnloo/oh-my-pi#107 — measured omp lane</li>
       <li>kvnloo/deepseek-harness#2 — dsh transport overlay</li>
