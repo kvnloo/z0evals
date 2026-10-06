@@ -143,6 +143,22 @@ def check_story_page(name: str, audit: PageAudit, errors: list[str]) -> None:
         )
 
 
+def check_memory_progress(audit: PageAudit, errors: list[str]) -> None:
+    """Do not publish the old memory page without its credited, pinned update."""
+    for ident in ("optmem-update", "optchat-update"):
+        if ident not in audit.ids:
+            errors.append(f"memory: missing published progress section {ident}")
+    required_sources = (
+        "https://github.com/VictorTaelin/OptMem",
+        "https://github.com/kvnloo/z0intelligence/blob/b345aa2bef199779cac8672b08d535cb28526fd7/src/z0int/memory/optmem_tree.py",
+        "https://github.com/kvnloo/z0intelligence/commit/0828b7738d35e712b57814aa09a8bddf82a48fcc",
+        "https://github.com/kvnloo/z0intelligence/commit/fc31fb5ca3e1322af3951080dfb0cd95b76fc93d",
+    )
+    for href in required_sources:
+        if href not in audit.hrefs:
+            errors.append(f"memory: missing progress provenance {href}")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--root", default="web/out", help="Next static export directory")
@@ -171,6 +187,8 @@ def main() -> int:
     for name in ("routing", "memory"):
         if name in parsed:
             check_story_page(name, parsed[name], errors)
+    if "memory" in parsed:
+        check_memory_progress(parsed["memory"], errors)
 
     if errors:
         print("web export audit failed:")
