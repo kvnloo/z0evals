@@ -2,8 +2,9 @@ schema_version: z0eval.study.v1
 id: unified-memory-v0
 title: Cross-harness unified memory and State Packet v0
 status: draft
+scoring: unscored
 created: "2026-09-29"
-updated: "2026-09-29"
+updated: "2026-10-04"
 
 sources:
   - repo: kvnloo/z0intelligence
@@ -50,5 +51,6 @@ limitations:
   - Final results must pin the exact tested revisions.
   - Raw conversation history is not a public study artifact.
   - Retrieval, injection, answer support, and verification are separate gates.
+  - "scoring is unscored: no harness receipts have been frozen, so this study is not a pass and not a fail."
 
 claims: []
