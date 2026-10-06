@@ -79,8 +79,11 @@ class PublicationTests(unittest.TestCase):
     def test_route_uses_shared_shell_and_frozen_data(self):
         source = (ROOT / 'web/app/optchat-long-horizon-v0/page.tsx').read_text()
         self.assertIn('return <StoryShell', source)
-        self.assertIn('../../../studies/optchat-long-horizon-v0/turns.json', source)
-        self.assertIn('../../../studies/optchat-long-horizon-v0/summary.json', source)
+        self.assertIn('@/data/optchat-long-horizon-v0.json', source)
+        builder = (ROOT / 'scripts/build_site_data.py').read_text()
+        self.assertIn('OPTCHAT_SOURCE', builder)
+        self.assertIn('OPTCHAT_SITE_OUT', builder)
+        self.assertIn('optchat-long-horizon-v0', builder)
         self.assertIn('status: "unscored"', source)
         self.assertIn('source-reported', source)
         self.assertIn('uncommitted', source)

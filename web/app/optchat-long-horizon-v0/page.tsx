@@ -4,8 +4,10 @@ import type { TocItem } from "@/components/Toc";
 import MetricRow from "@/components/MetricRow";
 import Callout from "@/components/Callout";
 // Read the frozen artifacts, not a second transcription of the measurements.
-import summary from "../../../studies/optchat-long-horizon-v0/summary.json";
-import turns from "../../../studies/optchat-long-horizon-v0/turns.json";
+import optchat from "@/data/optchat-long-horizon-v0.json";
+
+const summary = optchat.summary;
+const turns = optchat.turns;
 
 export const metadata: Metadata = {
   title: "does optchat stay small after fifty tool calls? — z0evals",
