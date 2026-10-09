@@ -1,0 +1,16 @@
+{
+  "source_component": "existing OMP qualification launcher",
+  "registered_change": "omp-launcher-paths.patch",
+  "original_r15_wrapper_sha256": "2741d6f211696ff0d0eec8471fb708c88874782a881b4c786574ec020567b8e5",
+  "dependency_snapshot_sha256": "63e5427f0cd7ca4442e580844056cd1ef76c0e7ce3eeaa151511ba4b0796939c",
+  "dependency_historical_identity": "not pinned by original wrapper; current recovered snapshot only",
+  "corrected_dependency_sha256": "c34dc321325bbf58381460b41ec6c97df9a0c7d114f612494817c8f696dc9f62",
+  "patch_sha256": "17862bc9ae8772eeb363cdd82a0faeb336fe182ade41f0cf5658707011474dde",
+  "path_helper_sha256": "d372708a153dc6e3ac8ebbeb838774c0921d62349354b06f91a1dcfe92830323",
+  "production_path_helper_owner": "kvnloo/z0intelligence",
+  "production_path_helper_source_ref": "4c41fd5b148fb04e63b1f721ccf3ef564aa78330",
+  "classification": "evaluation correction; no runtime rollout or authorization",
+  "original_verdict_reproduction": "mutation proposal escaped the one-file scope",
+  "original_results_preserved": true,
+  "native_and_independent_verifiers": "separate explicit per-run executors; native remains the default"
+}

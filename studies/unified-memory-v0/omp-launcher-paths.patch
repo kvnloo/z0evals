@@ -1,0 +1,102 @@
+--- a/qualify.py
++++ b/qualify.py
+@@ -79,6 +79,7 @@
+ OUTPUT_REL = "tools/probe_exact_path.py"
+ MISSING_REL = "tools/__omp_qualification_missing__.py"
+ VERIFIER_ID = "pytest:context-resolution-exact-path"
++OWNING_VERIFIER_EXECUTOR = "native"
+ INPUT = (
+     "Add tools/probe_exact_path.py. It must accept one repository-relative path and print one JSON object "
+     "with exactly these four keys: source_id, locator, source_version, excerpt. The excerpt must be bounded. Do not emit other metadata keys. Reuse an existing production implementation "
+@@ -322,6 +323,7 @@
+             "candidate_ref": Z0INT_REF,
+             "candidate_path": OUTPUT_REL,
+             "verifier_binding": binding,
++            "owning_verifier_executor": OWNING_VERIFIER_EXECUTOR,
+             "approval": {"flag": "--approval-mode", "value": "always-ask", "auto_approve_flags": []},
+             "provider": {"id": "nous", "selector": SELECTOR, "api": "openai-completions", "operational_max_tokens": 8192},
+             "route_handoff_required": ["effective_native_provider", "configured_provider", "inference_service", "model", "base_url", "api_key_env"],
+@@ -621,7 +623,11 @@
+ 
+ def transcript_proof(
+     rows: list[dict[str, Any]], main_input: str, provenance: dict[str, Any], extension_sha256: str,
++    *, candidate_root: Path,
+ ) -> tuple[dict[str, Any], dict[str, Any]]:
++    from omp_qualification_paths import canonical_output_target
++    header = next(row for row in rows if row.get("type") == "session")
++    execution_cwd = Path(header["cwd"])
+     entries = [(index, row, row.get("message")) for index, row in enumerate(rows)
+                if row.get("type") == "message" and isinstance(row.get("message"), dict)]
+     messages = [message for _, _, message in entries]
+@@ -676,7 +682,7 @@
+     for item in writes:
+         proposed = item[3]
+         require(proposed.get("name") == "write" and isinstance(proposed.get("arguments"), dict)
+-                and proposed["arguments"].get("path") == OUTPUT_REL, "mutation proposal escaped the one-file scope")
++                and canonical_output_target(candidate_root, proposed["arguments"].get("path"), execution_cwd) == candidate_root.resolve() / OUTPUT_REL, "mutation proposal escaped the one-file scope")
+         result = next((row for _index, row, message in entries
+                        if message.get("role") == "toolResult" and message.get("toolCallId") == proposed.get("id")), None)
+         require(result is not None, "mutation proposal has no native result")
+@@ -689,7 +695,7 @@
+     require(len(successful_writes) == 1, f"expected one successful native mutation, observed {len(successful_writes)}")
+     call_index, call_row, owning_message, call = successful_writes[0]
+     require(call.get("name") == "write" and isinstance(call.get("arguments"), dict), "the mutation decision must be native write")
+-    require(call["arguments"].get("path") == OUTPUT_REL, "model chose a path outside the one-file scope")
++    require(canonical_output_target(candidate_root, call["arguments"].get("path"), execution_cwd) == candidate_root.resolve() / OUTPUT_REL, "model chose a path outside the one-file scope")
+     require(owning_message.get("provider") == "nous"
+             and owning_message.get("model") == MODEL,
+             "the write decision did not come from the pinned native Nous model")
+@@ -1396,6 +1402,7 @@
+     binding: dict[str, Any],
+     packet_id: str,
+     by_type: dict[str, list[tuple[Any, dict[str, Any]]]],
++    candidate_root: Path,
+ ) -> dict[str, Any]:
+     injections = sorted(by_type.get("reuse.injected", []), key=lambda item: item[0].event_id)
+     model_inputs = sorted(by_type.get("reuse.model_input", []), key=lambda item: item[0].event_id)
+@@ -1489,7 +1496,10 @@
+             "write mutation check parent or event order differs from its final-body witness")
+     require(mutation.get("model_input_sha256") == model.get("request_sha256"),
+             "write guard does not bind the selected final provider-body hash")
+-    require(mutation.get("target_paths") == [OUTPUT_REL] and mutation.get("tool_name") == "write",
++    from omp_qualification_paths import canonical_output_target
++    targets = mutation.get("target_paths")
++    require(isinstance(targets, list) and len(targets) == 1 and mutation.get("tool_name") == "write"
++            and canonical_output_target(candidate_root, targets[0], candidate_root) == candidate_root.resolve() / OUTPUT_REL,
+             "native mutation receipt does not bind the only allowed write")
+     mutation_decision = mutation.get("decision")
+     require(mutation.get("status") == "current" and mutation.get("valid") is True
+@@ -1596,7 +1606,7 @@
+     require(prep.get("packet_metadata_sha256") == packet_metadata_sha,
+             "prepared EventLog packet metadata digest differs from its payload")
+ 
+-    native_chain = _native_write_chain(prep_event, binding, packet_id, by_type)
++    native_chain = _native_write_chain(prep_event, binding, packet_id, by_type, candidate_root)
+     if partial is not None:
+         partial["native_rounds"] = native_chain["rounds"]
+         partial["native_write_chain"] = native_chain["write_chain"]
+@@ -1706,6 +1716,8 @@
+             "qualification launcher changed after preparation")
+     require(plan.get("main_input") == INPUT and plan.get("main_input_sha256") == digest_bytes(INPUT.encode()),
+             "prepared main input is not the exact reviewed input")
++    require(plan.get("owning_verifier_executor") == OWNING_VERIFIER_EXECUTOR
++            and OWNING_VERIFIER_EXECUTOR in {"native", "independent"}, "prepared verifier executor changed")
+     task_id = plan.get("task_id")
+     require(isinstance(task_id, str) and re.fullmatch(r"omp-live-[0-9a-f]{32}", task_id) is not None,
+             "prepared task id is malformed")
+@@ -1857,9 +1869,14 @@
+             f"native transcript contains {len(state['provider_errors']['transcript'])} provider or tool errors")
+     tool_decision, model_pin = transcript_proof(
+         session_rows, INPUT, plan["pins"]["omp_runtime_resolution"], extension_sha,
++        candidate_root=candidate,
+     )
+     state["tool_decision"] = tool_decision
+-    require(len(tool_decision["native_owning_verifiers"]) == 1, "OMP did not run its prebound owning verifier exactly once")
++    require(OWNING_VERIFIER_EXECUTOR in {"native", "independent"}, "unknown owning-verifier executor")
++    if OWNING_VERIFIER_EXECUTOR == "native":
++        require(len(tool_decision["native_owning_verifiers"]) == 1, "OMP did not run its prebound owning verifier exactly once")
++    else:
++        require(not tool_decision["native_owning_verifiers"], "independent-only scenario executed a native verifier")
+     state["model_pin"] = model_pin
+     require(plan["main_input"] == INPUT and plan["main_input_sha256"] == digest_bytes(INPUT.encode()),
+             "prepared main-input hash mismatch")
