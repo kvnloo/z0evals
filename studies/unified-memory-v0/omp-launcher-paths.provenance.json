@@ -4,8 +4,8 @@
   "original_r15_wrapper_sha256": "2741d6f211696ff0d0eec8471fb708c88874782a881b4c786574ec020567b8e5",
   "dependency_snapshot_sha256": "63e5427f0cd7ca4442e580844056cd1ef76c0e7ce3eeaa151511ba4b0796939c",
   "dependency_historical_identity": "not pinned by original wrapper; current recovered snapshot only",
-  "corrected_dependency_sha256": "c7eea9fec02d4407b958145592e0b1acc1bceeebfce5feaa9d24393be7be66cd",
-  "patch_sha256": "24ab8967d33bab24c49111ffefa78ac6859a3940d11a6fc2c9ff1c6fb67f47e1",
+  "corrected_dependency_sha256": "da7bd0e281abaacdcd36a718fe49255ee7a39b61883706ef8982099658f65da7",
+  "patch_sha256": "6a9c88fea05f369c4c0a6c737094eb4bae1718ba88c5dcfc711ff69e5b3c90fd",
   "path_helper_sha256": "d372708a153dc6e3ac8ebbeb838774c0921d62349354b06f91a1dcfe92830323",
   "production_path_helper_owner": "kvnloo/z0intelligence",
   "production_path_helper_source_ref": "4c41fd5b148fb04e63b1f721ccf3ef564aa78330",
@@ -14,8 +14,14 @@
   "original_results_preserved": true,
   "native_and_independent_verifiers": "separate explicit per-run executors; native remains the default",
   "receipt_path_resolution": "uses recorded native execution cwd; caller must supply it explicitly",
-  "corrected_wrapper_sha256": "801975c522296a1eb8bc2dbd7c8bb28384b0aec3c8603d99e1ed5d5abfd51b88",
+  "corrected_wrapper_sha256": "bd85ae20b73d3b086d663fe30359ee931823ada5a8e7b6beaa20cdd6d9ca7f43",
   "patch_application": "git apply --unidiff-zero; place patched qualify.py beside wrapper as qualify-base.py, with registered path helper",
   "dependency_freeze": "wrapper hashes and executes the same retained byte strings; loads the verified helper explicitly",
-  "validation_source_ref": "4ac01fc18f80be6a741be6fd583906e68160be28"
+  "validation_source_ref": "4ac01fc18f80be6a741be6fd583906e68160be28",
+  "tested_handoff_wrapper_sha256": "ba641927f6d7b5ccf6e522e253f2cb6f5284b6df329c7a220d7d6e4372d6348b",
+  "native_target_scope": "generated native callback resolves against ctx.cwd and real filesystem parent; exact one-file target; symlinks rejected; native approvals unchanged",
+  "caller_validation": "public resolver and direct exact-path helper accepted; independent behavioral oracle remains required; copied reads/hashes and dynamic calls rejected",
+  "live_test_source_ref": "4ac01fc18f80be6a741be6fd583906e68160be28",
+  "live_test_registry_ref": "172e06830af7a3cea88e7390264433506fad0c77",
+  "handoff_template_difference": "registered wrapper locates frozen source relative to existing WORK; tested handoff has the equivalent absolute path; both have independent hashes"
 }

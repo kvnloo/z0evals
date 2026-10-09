@@ -16,34 +16,218 @@
 @@ -692 +698 @@
 -    require(call["arguments"].get("path") == OUTPUT_REL, "model chose a path outside the one-file scope")
 +    require(canonical_output_target(candidate_root, call["arguments"].get("path"), execution_cwd) == candidate_root.resolve() / OUTPUT_REL, "model chose a path outside the one-file scope")
-@@ -1398,0 +1405,2 @@
+@@ -743,0 +750 @@
++    """Check reuse intent; the independent caller oracle checks actual behavior."""
+@@ -745,26 +752,2 @@
+-    helper_imports = [node for node in ast.walk(tree) if isinstance(node, ast.ImportFrom)
+-                      and node.module == "z0int.context_resolve"]
+-    if any(alias.name == "_fetch_exact_path" for node in helper_imports for alias in node.names):
+-        helper_calls = [node for node in ast.walk(tree) if isinstance(node, ast.Call)
+-                        and dotted_name(node.func) == "_fetch_exact_path"]
+-        require(len(helper_calls) == 1, "caller must invoke the existing exact-path helper once")
+-        require(not any(isinstance(node, ast.Call) and dotted_name(node.func).split(".")[-1]
+-                        in {"read_bytes", "read_text", "stat", "sha256", "open"}
+-                        for node in ast.walk(tree)), "caller duplicates production snapshot logic")
+-        require(not any(isinstance(node, ast.Import) and any(alias.name not in {"sys", "json", "argparse"}
+-                        for alias in node.names) for node in ast.walk(tree)), "caller imports extra implementations")
+-        return
+-    imported: set[tuple[str, str]] = set()
+-    calls: list[ast.Call] = []
+-    allowed_modules = {"sys", "json", "pathlib", "argparse", "z0int.context_resolve"}
+-    allowed_calls = {
+-        "InformationNeed", "resolve_context", "print", "json.dumps", "Path.cwd", "Path",
+-        "argparse.ArgumentParser", "ArgumentParser", "len", "str", "SystemExit", "sys.exit",
+-    }
+-    allowed_attrs = {
+-        "argv", "cwd", "evidence", "source_id", "source_version", "locator", "excerpt", "dumps",
+-        "path", "unresolved_gaps", "add_argument", "parse_args", "error", "strip", "parts",
+-        "is_absolute", "as_posix",
+-    }
+-    function_names = {node.name for node in ast.walk(tree) if isinstance(node, ast.FunctionDef)}
+-    parsed_arg_names: set[str] = set()
++    allowed_modules = {"sys", "json", "argparse", "pathlib", "z0int.context_resolve", "__future__"}
++    imported = {}
+@@ -772,3 +755,24 @@
+-        if isinstance(node, ast.Assign) and isinstance(node.value, ast.Call):
+-            if dotted_name(node.value.func).endswith(".parse_args"):
+-                parsed_arg_names.update(target.id for target in node.targets if isinstance(target, ast.Name))
++        if isinstance(node, ast.Import):
++            require(all(alias.name in allowed_modules for alias in node.names), "caller imports extra implementations")
++        elif isinstance(node, ast.ImportFrom):
++            require(node.level == 0 and node.module in allowed_modules, "caller imports extra implementations")
++            require(all(alias.name != "*" for alias in node.names), "caller cannot use star imports")
++            if node.module == "__future__":
++                require(all(alias.name == "annotations" for alias in node.names), "unsupported future import")
++            if node.module == "z0int.context_resolve":
++                require(all(alias.name in {"_fetch_exact_path", "resolve_context", "InformationNeed"} for alias in node.names), "caller imports additional evidence implementations")
++                imported.update((alias.asname or alias.name, alias.name) for alias in node.names)
++    calls = [node for node in ast.walk(tree) if isinstance(node, ast.Call)]
++    reuse_calls = [node for node in calls if imported.get(dotted_name(node.func)) in {"_fetch_exact_path", "resolve_context"}]
++    require(len(reuse_calls) == 1, "caller must invoke one existing production evidence implementation")
++    if imported.get(dotted_name(reuse_calls[0].func)) == "resolve_context":
++        needs = [node for node in calls if imported.get(dotted_name(node.func)) == "InformationNeed"]
++        require(len(needs) == 1, "caller must create one exact-path need")
++        keywords = {item.arg: item.value for item in needs[0].keywords}
++        require(isinstance(keywords.get("kind"), ast.Constant) and keywords["kind"].value == "exact_path"
++                and "path" in keywords, "caller must request exact_path evidence for its input")
++    functions = {node.name for node in ast.walk(tree) if isinstance(node, ast.FunctionDef)}
++    allowed_calls = {"Path", "Path.cwd", "print", "json.dumps", "len", "str", "type", "list", "any", "isinstance",
++                     "SystemExit", "sys.exit", "sys.path.insert", "argparse.ArgumentParser", "ArgumentParser"}
++    methods = {"add_argument", "parse_args", "error", "strip", "is_absolute", "as_posix", "expanduser",
++               "startswith", "get", "to_dict", "join"}
+@@ -776,13 +780 @@
+-        if isinstance(node, (ast.Import, ast.ImportFrom)):
+-            module = node.module if isinstance(node, ast.ImportFrom) else None
+-            names = [alias.name for alias in node.names]
+-            if isinstance(node, ast.Import):
+-                names = [alias.name for alias in node.names]
+-                require(all(name in allowed_modules for name in names), "generated caller imports a disallowed module")
+-                imported.update((name, "") for name in names)
+-            else:
+-                require(module in allowed_modules, "generated caller imports from a disallowed module")
+-                require(all(name != "*" for name in names), "generated caller cannot use star imports")
+-                imported.update((module or "", name) for name in names)
+-        elif isinstance(node, ast.Call):
+-            calls.append(node)
++        if isinstance(node, ast.Call):
+@@ -790,3 +782,7 @@
+-            safe_method = re.fullmatch(r"[A-Za-z][A-Za-z0-9_]*\.(add_argument|parse_args|error|strip|is_absolute|as_posix)", name)
+-            require(name in allowed_calls or name in function_names or safe_method is not None,
+-                    f"generated caller uses an unapproved call: {name}")
++            root_location = (isinstance(node.func, ast.Attribute) and node.func.attr == "resolve"
++                             and isinstance(node.func.value, ast.Call) and dotted_name(node.func.value.func) == "Path"
++                             and len(node.func.value.args) == 1 and isinstance(node.func.value.args[0], ast.Name)
++                             and node.func.value.args[0].id == "__file__")
++            require(name in allowed_calls or name in functions or name in imported
++                    or root_location or (isinstance(node.func, ast.Attribute) and node.func.attr in methods),
++                    f"caller uses non-reuse implementation or dynamic call: {name}")
+@@ -794,94 +790,4 @@
+-            require(node.attr in allowed_attrs, f"generated caller uses an unapproved attribute: {node.attr}")
+-        elif isinstance(node, (ast.AsyncFunctionDef, ast.ClassDef, ast.Lambda, ast.With, ast.AsyncWith, ast.Try,
+-                               ast.For, ast.AsyncFor, ast.While, ast.Delete, ast.Global, ast.Nonlocal)):
+-            raise RuntimeError("generated caller contains unsupported executable structure")
+-        elif isinstance(node, (ast.ListComp, ast.SetComp, ast.DictComp, ast.GeneratorExp)):
+-            raise RuntimeError("generated caller contains unsupported comprehension code")
+-        elif isinstance(node, ast.Name):
+-            require(node.id == "__name__" or not node.id.startswith("__"), "generated caller uses a dunder name")
+-    require({("z0int.context_resolve", "InformationNeed"), ("z0int.context_resolve", "resolve_context")} <= imported,
+-            "generated caller must import the actual production helper and need type")
+-    need_calls = [call for call in calls if dotted_name(call.func) == "InformationNeed"]
+-    resolve_calls = [call for call in calls if dotted_name(call.func) == "resolve_context"]
+-    require(len(need_calls) == 1 and len(resolve_calls) == 1, "caller must create one exact-path need and resolve it once")
+-    need_keywords = {item.arg: item.value for item in need_calls[0].keywords}
+-    require(isinstance(need_keywords.get("kind"), ast.Constant) and need_keywords["kind"].value == "exact_path",
+-            "caller must request exact_path evidence")
+-    require("path" in need_keywords, "caller must bind the CLI path to the exact-path need")
+-    path_expr = need_keywords["path"]
+-    supplied_path_names = {
+-        target.id
+-        for node in ast.walk(tree)
+-        if isinstance(node, ast.Assign)
+-        and any(isinstance(target, ast.Name) for target in node.targets)
+-        and (
+-            any(isinstance(value, ast.Subscript) and dotted_name(value.value) == "sys.argv" for value in ast.walk(node.value))
+-            or isinstance(node.value, ast.Attribute) and isinstance(node.value.value, ast.Name)
+-            and node.value.value.id in parsed_arg_names and node.value.attr == "path"
+-        )
+-        for target in node.targets
+-        if isinstance(target, ast.Name)
+-    }
+-    path_is_cli = isinstance(path_expr, ast.Name) and path_expr.id in supplied_path_names
+-    path_is_argparse = isinstance(path_expr, ast.Attribute) and isinstance(path_expr.value, ast.Name) and path_expr.value.id in parsed_arg_names and path_expr.attr == "path"
+-    path_is_sysargv = isinstance(path_expr, ast.Subscript) and dotted_name(path_expr.value) == "sys.argv"
+-    require(path_is_cli or path_is_argparse or path_is_sysargv,
+-            "caller must resolve the supplied command-line path")
+-    path_guard = next((node for node in ast.walk(tree) if isinstance(node, ast.If)
+-                       and any(isinstance(child, ast.Call) and dotted_name(child.func).endswith(".is_absolute")
+-                               for child in ast.walk(node.test))
+-                       and any(isinstance(child, ast.Attribute) and child.attr == "parts"
+-                               for child in ast.walk(node.test))
+-                       and any(isinstance(child, ast.Constant) and child.value == ".."
+-                               for child in ast.walk(node.test))), None)
+-    guard_message = False
+-    if path_guard is not None:
+-        guard_message = any(
+-            isinstance(item, ast.Raise) and isinstance(item.exc, ast.Call)
+-            and dotted_name(item.exc.func) == "SystemExit"
+-            and item.exc.args and isinstance(item.exc.args[0], ast.Constant)
+-            and item.exc.args[0].value == "repository-relative path required"
+-            for item in ast.walk(path_guard)
+-        )
+-    require(path_guard is not None and guard_message
+-            and resolve_calls[0].lineno > path_guard.lineno,
+-            "caller must reject absolute and parent-traversal paths before resolving evidence")
+-
+-    packet_names = {
+-        target.id for call in resolve_calls
+-        for node in ast.walk(tree) if isinstance(node, ast.Assign) and node.value is call
+-        for target in node.targets if isinstance(target, ast.Name)
+-    }
+-    evidence_names = {
+-        target.id for node in ast.walk(tree) if isinstance(node, ast.Assign)
+-        and isinstance(node.value, ast.Subscript) and isinstance(node.value.value, ast.Attribute)
+-        and isinstance(node.value.value.value, ast.Name) and node.value.value.value.id in packet_names
+-        and node.value.value.attr == "evidence"
+-        for target in node.targets if isinstance(target, ast.Name)
+-    }
+-    emitted: dict[str, str] = {}
+-    for call in calls:
+-        if dotted_name(call.func) != "json.dumps" or not call.args or not isinstance(call.args[0], ast.Dict):
+-            continue
+-        for key_node, value_node in zip(call.args[0].keys, call.args[0].values):
+-            if isinstance(key_node, ast.Constant) and isinstance(key_node.value, str) and isinstance(value_node, ast.Attribute):
+-                if isinstance(value_node.value, ast.Name) and value_node.value.id in evidence_names:
+-                    emitted[key_node.value] = value_node.attr
+-    required_fields = {"source_id", "locator", "source_version", "excerpt"}
+-    require(all(emitted.get(key) == key for key in required_fields),
+-            "caller JSON fields must come directly from the resolved evidence reference")
+-    completeness_gate = False
+-    for node in ast.walk(tree):
+-        if not isinstance(node, ast.If):
+-            continue
+-        attrs = {dotted_name(item) for item in ast.walk(node.test) if isinstance(item, ast.Attribute)}
+-        has_evidence_gate = any(name.endswith(".evidence") for name in attrs)
+-        has_gap_gate = any(name.endswith(".unresolved_gaps") for name in attrs)
+-        exits = any(isinstance(item, ast.Raise) and any(
+-            isinstance(child, ast.Call) and dotted_name(child.func) == "SystemExit" for child in ast.walk(item)
+-        ) for item in ast.walk(node))
+-        if has_evidence_gate and has_gap_gate and exits:
+-            completeness_gate = True
+-            break
+-    require(completeness_gate, "caller must stop when helper evidence is missing or unresolved gaps remain")
+-
++            require(not node.attr.startswith("__") or (node.attr == "__name__" and isinstance(node.value, ast.Call) and dotted_name(node.value.func) == "type"), "caller uses dynamic object internals")
++        elif isinstance(node, (ast.AsyncFunctionDef, ast.ClassDef, ast.Lambda, ast.With, ast.AsyncWith,
++                               ast.AsyncFor, ast.Delete, ast.Global, ast.Nonlocal)):
++            raise RuntimeError("caller contains unsupported executable structure")
+@@ -1398,0 +1305,2 @@
 +    candidate_root: Path,
 +    execution_cwd: Path,
-@@ -1492 +1500,4 @@
+@@ -1492 +1400,4 @@
 -    require(mutation.get("target_paths") == [OUTPUT_REL] and mutation.get("tool_name") == "write",
 +    from omp_qualification_paths import canonical_output_target
 +    targets = mutation.get("target_paths")
 +    require(isinstance(targets, list) and len(targets) == 1 and mutation.get("tool_name") == "write"
 +            and canonical_output_target(candidate_root, targets[0], execution_cwd) == candidate_root.resolve() / OUTPUT_REL,
-@@ -1531 +1542 @@
+@@ -1531 +1442 @@
 -                partial: dict[str, Any] | None = None) -> dict[str, Any]:
 +                partial: dict[str, Any] | None = None, *, execution_cwd: Path) -> dict[str, Any]:
-@@ -1599 +1610 @@
+@@ -1599 +1510 @@
 -    native_chain = _native_write_chain(prep_event, binding, packet_id, by_type)
 +    native_chain = _native_write_chain(prep_event, binding, packet_id, by_type, candidate_root, execution_cwd)
-@@ -1708,0 +1720,2 @@
+@@ -1708,0 +1620,2 @@
 +    require(plan.get("owning_verifier_executor") == OWNING_VERIFIER_EXECUTOR
 +            and OWNING_VERIFIER_EXECUTOR in {"native", "independent"}, "prepared verifier executor changed")
-@@ -1859,0 +1873 @@
+@@ -1859,0 +1773 @@
 +        candidate_root=candidate,
-@@ -1862 +1876,5 @@
+@@ -1862 +1776,5 @@
 -    require(len(tool_decision["native_owning_verifiers"]) == 1, "OMP did not run its prebound owning verifier exactly once")
 +    require(OWNING_VERIFIER_EXECUTOR in {"native", "independent"}, "unknown owning-verifier executor")
 +    if OWNING_VERIFIER_EXECUTOR == "native":
 +        require(len(tool_decision["native_owning_verifiers"]) == 1, "OMP did not run its prebound owning verifier exactly once")
 +    else:
 +        require(not tool_decision["native_owning_verifiers"], "independent-only scenario executed a native verifier")
-@@ -1868 +1886,2 @@
+@@ -1868 +1786,2 @@
 -        trace = event_proof(plan["task_id"], session_id, candidate, partial_trace)
 +        trace = event_proof(plan["task_id"], session_id, candidate, partial_trace,
 +                            execution_cwd=Path(next(row for row in session_rows if row.get("type") == "session")["cwd"]))
@@ -59,7 +243,7 @@
 +import types as _types
 +_FROZEN_BASE = Path(_SELF).with_name("qualify-base.py")
 +_BASE_BYTES = _FROZEN_BASE.read_bytes()
-+if _hashlib.sha256(_BASE_BYTES).hexdigest() != "c7eea9fec02d4407b958145592e0b1acc1bceeebfce5feaa9d24393be7be66cd":
++if _hashlib.sha256(_BASE_BYTES).hexdigest() != "da7bd0e281abaacdcd36a718fe49255ee7a39b61883706ef8982099658f65da7":
 +    raise RuntimeError("Frozen launcher dependency changed")
 +_HELPER = Path(_SELF).with_name("omp_qualification_paths.py")
 +_HELPER_BYTES = _HELPER.read_bytes()
@@ -73,3 +257,44 @@
 @@ -17,0 +33,2 @@
 +
 +OWNING_VERIFIER_EXECUTOR = "independent"
+@@ -21,2 +38,2 @@
+-Z0INT = Path("/mnt/zer0models/z0-wt/reuse-gate-hint")
+-Z0INT_REF = "1f8ec56dc6189d8735f1939792049f10fe00067d"
++Z0INT = WORK / "z0int-codex-integration"
++Z0INT_REF = "4ac01fc18f80be6a741be6fd583906e68160be28"
+@@ -28 +45 @@
+-BRIDGE_REUSE_SHA = "54c8d1e1b4373bd6950ec05c48f8416a260f7d18c93f4d084c2b7c1bd0815205"
++BRIDGE_REUSE_SHA = "471f4b01b4ac2aeca6611047358c6f9cdf9852a9c843525ffca8cb6113ba0cee"
+@@ -31 +48 @@
+-REGISTRY_REPO = Path("/mnt/zer0models/z0-wt/z0-registry-reconcile")
++REGISTRY_REPO = Path("/home/kvn/tmp/z0")
+@@ -33,2 +50,2 @@
+-REGISTRY_REF = "8c956ebed6356747f338022007725260216879ae"
+-REGISTRY_SHA = "465217426d7b1da0087f3a432c05093476ef4294db2e9b9f28ad1d2e2eb80019"
++REGISTRY_REF = "172e06830af7a3cea88e7390264433506fad0c77"
++REGISTRY_SHA = "a395e01c9ba2c42b45b2f7e8271dbe06246813b02ce473c1c2a3765855748b12"
+@@ -69 +86 @@
+-    text = text.replace(relative, f"event.input?.path === {json.dumps(absolute)}")  # noqa: F821
++    text = text.replace(relative, "qualificationWriteTarget(event.input?.path, ctx.cwd)")  # noqa: F821
+@@ -72 +89,3 @@
+-    handler = '  pi.on("tool_call", (event) => {\n'
++    text = text.replace('pi.on("tool_call", (event) => {', 'pi.on("tool_call", (event, ctx) => {')
++    text = text.replace('pi.on("tool_result", (event) => {', 'pi.on("tool_result", (event, ctx) => {')
++    handler = '  pi.on("tool_call", (event, ctx) => {\n'
+@@ -78 +97 @@
+-        '      const target = raw.startsWith("~") ? raw : resolvePath(process.cwd(), raw);\n'
++        '      const target = raw.startsWith("~") ? raw : resolvePath(ctx.cwd, raw);\n'
+@@ -87 +106,12 @@
+-    text = text.replace(anchor, anchor + 'import { resolve as resolvePath } from "node:path";\n')
++    text = text.replace(anchor, anchor + 'import { resolve as resolvePath, dirname, basename, join } from "node:path";\n'
++                        + 'import { realpathSync, lstatSync } from "node:fs";\n')
++    # The generated shim still permits exactly one canonical target; approvals stay native.
++    predicate = ("function qualificationWriteTarget(raw: unknown, cwd: string): boolean {\n"
++                 "  if (typeof raw !== \"string\" || !raw.trim()) return false;\n"
++                 "  const logical = resolvePath(cwd, raw);\n"
++                 "  try {\n"
++                 "    if (lstatSync(logical).isSymbolicLink()) return false;\n"
++                 "  } catch (error) { if (error.code !== \"ENOENT\") return false; }\n"
++                 "  try { return join(realpathSync(dirname(logical)), basename(logical)) === "
++                 + json.dumps(absolute) + "; } catch { return false; }\n}\n")
++    text = text.replace("export default function qualificationExtension(pi) {", predicate + "export default function qualificationExtension(pi) {")
