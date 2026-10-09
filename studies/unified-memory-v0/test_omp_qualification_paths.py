@@ -24,6 +24,14 @@ class QualificationScopeTests(unittest.TestCase):
         absolute = canonical_output_target(self.root, str(relative), self.root.parent)
         self.assertEqual(relative, absolute)
 
+    def test_relative_target_uses_recorded_execution_directory(self):
+        neutral = self.root.parent / "neutral"
+        neutral.mkdir()
+        target = canonical_output_target(self.root, "../candidate/tools/probe_exact_path.py", neutral)
+        self.assertEqual(target, self.root / "tools/probe_exact_path.py")
+        with self.assertRaises(ValueError):
+            canonical_output_target(self.root, "tools/probe_exact_path.py", neutral)
+
     def test_escape_and_other_file_are_denied(self):
         paths = ("../outside.py", "tools/other.py", str(self.root.parent / "candidate-sibling/tools/probe_exact_path.py"))
         for path in paths:
