@@ -9,7 +9,9 @@ runs the behavioral oracle, validates approval receipts, or proves helper reuse.
 
 - Coordination: [z0intelligence #137](https://github.com/kvnloo/z0intelligence/issues/137#issuecomment-6090259589).
 - Original EventLog 534 witness reference: [Claude lane report](https://github.com/kvnloo/z0intelligence/issues/137#issuecomment-6088711509).
-- Current corrected-state handoff: [comment 6090204305](https://github.com/kvnloo/z0intelligence/issues/137#issuecomment-6090204305), source `686db4db2551f59806e27e2f964b74647bc3861e`, compact presentation, EXTEND, shared workstream scope, neutral start directory. The older `4ac01fc18f80be6a741be6fd583906e68160be28` is historical, not fresh corrected-state acceptance.
+- Historical corrected-state handoff reviewed on 2026-10-09 before 22:51 UTC: [comment 6090204305](https://github.com/kvnloo/z0intelligence/issues/137#issuecomment-6090204305), source `686db4db2551f59806e27e2f964b74647bc3861e`, compact presentation, EXTEND, shared workstream scope, neutral start directory. The older `4ac01fc18f80be6a741be6fd583906e68160be28` is historical, not fresh corrected-state acceptance.
+- New-run handoff published later on 2026-10-09: [comment 6090611759](https://github.com/kvnloo/z0intelligence/issues/137#issuecomment-6090611759) explicitly supersedes v2 **for NEW runs only**. It pins source `532a444ffaaa8de3623d4c97d77eaff8b5e34313`, registry `172e06830af7a3cea88e7390264433506fad0c77`, and evaluation PR #94 head `081dce921fc074af2dcbed1072df0d46bc80aa5a`. The immutable handoff SHA-256 is `870e89c9bb71895e0d350ae410bea369a2d674f1aabd471a8306ef3d535163a9`; use its exact dependency hashes and supported owning invocation on the authorized original host, not a derived wrapper. This is an explicitly repo-scoped attempt, not proof of unscoped owner discovery.
+- The latest handoff reports 117-test archival full/compact replays but preserves unresolved approval/model-delivery qualification and explicitly leaves **fresh shared OMP acceptance open**. Those are source-reported results, not measurements reproduced by this exporter. This documentation update grants no native execution, private-handoff access, credential access, or route authorization.
 - This tool reuses `scripts/import_local.py`'s SHA-256 helper and pinned-source convention. The existing `omp_qualification_paths.py`, patch, provenance, independent task oracle, and owning tests retain their owners. No Claude implementation or verification semantics are rewritten.
 - z0evals freezes/export evidence; the original owning launcher remains responsible for execution and adjudication. Preserve Claude and human credits.
 
@@ -46,7 +48,7 @@ Keep the spec and private manifest outside the repository, in an operator-owned
 private directory. Install the existing repository requirements if needed. Use
 Python 3.10+ and Git. This workflow adds no dependencies.
 
-Example `capture-spec.json` (replace every path and hash; placeholder hashes are
+Historical archival example `capture-spec.json` (the `686db4d` pin below is not a new-run recommendation; replace every path and hash; placeholder hashes are
 intentionally invalid, so this example cannot manufacture a passing capture):
 
 ```json
@@ -160,3 +162,13 @@ redaction-by-allowlist, missing inputs, digest drift, checkout drift, duplicate
 JSON keys, malformed CLI input, and path/output safety. The last suite exercises
 the existing production path helper; it does not run OMP. None substitutes for
 the absent original real witness or a successful fresh corrected-state task.
+
+### Recorded exporter verification provenance
+
+The export implementation at `92b12cf1d023350e411740fdf084e0f8781a5ad3`
+was checked with 38 repository tests (including 20 capture/export tests), and the
+existing qualification-path suite passed 7 tests against source
+`686db4db2551f59806e27e2f964b74647bc3861e`. Those seven tests remain attributed
+to that historical source; they have **not** been silently repinned or rerun
+against the later `532a444f` handoff. The later handoff notice changes only this
+guide, not exported evidence, launcher bytes, or execution status.
