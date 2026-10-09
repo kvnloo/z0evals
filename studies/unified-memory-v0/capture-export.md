@@ -172,3 +172,103 @@ existing qualification-path suite passed 7 tests against source
 to that historical source; they have **not** been silently repinned or rerun
 against the later `532a444f` handoff. The later handoff notice changes only this
 guide, not exported evidence, launcher bytes, or execution status.
+
+## Executable original-host handoff (latest refresh: 2026-10-09 23:37 UTC)
+
+The preceding handoff notice is historical. [Comment 6090730208](https://github.com/kvnloo/z0intelligence/issues/137#issuecomment-6090730208)
+supersedes it with release `launcher-release-c239aef6382d57a3`, handoff SHA-256
+`a81a94ff590d627473eacbefd5c9438b86c9b63fdc3afdab084f54998f89f62f`, and evaluation
+head `bb6bef974f1604a0c727244044b4e145e88746b1`. Source and registry pins are unchanged.
+The executable below freezes its seven published dependency hashes and reuses
+`omp_capture.py`; it does not reconstruct or execute the owning launcher.
+
+[Comment 6091033247](https://github.com/kvnloo/z0intelligence/issues/137#issuecomment-6091033247)
+subsequently reports a **real fresh OMP repair loop**, existing `_fetch_exact_path`
+reuse, artifact `15816779ab850baadde5bb3c5c480999fb1d76f0e68665c7e5f7a7d54cc6a04b`,
+117 green tests, events 641→642→643→644 and verified outcome event 649 / trace
+`bcc3065093d94cd4a44615e42b8c060c`. It explicitly retains unresolved strict launcher
+status and does not claim first-attempt unsteered success. These are **source-reported
+results, not independently reproduced here**. Public comments do not supply the
+full witness or measured latency/token counts. The local workflow must not turn
+that report into a fresh-run attestation or a shared PASS.
+
+### One executable, two safe modes
+
+Run `python3 scripts/omp_local_handoff.py --help`. Then, on the original authorized
+host, bind shell variables to the **actual existing** files and a new output pair:
+
+- `OMP_RELEASE`: the existing `launcher-release-c239aef6382d57a3` directory
+- `OMP_SPEC`: the private capture spec described above, using the real source and
+  registry checkouts and the exact eight file roles
+- `OMP_PROVIDER_CONFIG`: the existing provider configuration file, owned by the
+  current operator with no group/other permissions; no login, refresh, install,
+  environment change, or credential copy is requested
+- `OMP_MANIFEST`, `OMP_EXPORT`: new files in an existing private output directory
+
+No fabricated defaults are supplied. These commands fail if a binding is absent:
+
+```bash
+python3 scripts/omp_local_handoff.py preflight --release-dir "${OMP_RELEASE:?bind original release}" --spec "${OMP_SPEC:?bind private capture spec}" --provider-config "${OMP_PROVIDER_CONFIG:?bind existing local config}"
+python3 scripts/omp_local_handoff.py capture --release-dir "${OMP_RELEASE:?}" --spec "${OMP_SPEC:?}" --provider-config "${OMP_PROVIDER_CONFIG:?}" --manifest "${OMP_MANIFEST:?choose new manifest}" --export "${OMP_EXPORT:?choose new export}"
+```
+
+Both modes check bundle bytes, declared source/registry pins, every evidence hash,
+and provider-file metadata. Provider contents are never opened or hashed; the
+provider file cannot also be a spec, bundle dependency, or evidence file, including
+hardlink aliases. Only capture writes outputs, through the existing exporter.
+No arbitrary shell command or live-execution mode exists. A successful preflight
+means **local integrity only**, not provider usability, free-route authorization,
+EventLog semantics, actual helper reuse, or verified behavior. Public export keeps
+its original allowlist and `source_reported_unverified` status. Full raw traces and
+provider secrets remain local; only evidence hashes and typed metrics are exported.
+
+### Exact remaining operator steps
+
+1. Use the original host's existing EventLog tools to locate event 534 and its lane
+   status references, then the actual fresh session
+   `01a122e4-d340-7000-85d0-e9b9def7c8f1`, events 641–644 and 649. Preserve retries,
+   denied writes, scoped-memory evidence, native approval receipts, and the exact
+   accepted artifact. Do not search protected session directories or substitute
+   public comments for the witness. Supply a selected export and complete witness
+   as explicit files; their formats/semantics remain the owning producer's contract.
+2. Obtain the **existing exact release**, frozen oracle, owning-test receipt and
+   trusted expected hashes from that host. Include source `532a444f…` and registry
+   `172e0683…` checkouts in the spec. Bind `launcher` to `qualify-r13.py`,
+   `launcher_base` to `qualify-base.py`, `path_helper` and `task_oracle` to their
+   release filenames. The wrapper is separately verified as `run-native.py`.
+3. Extract actual latency and the four token dimensions from the original native
+   run records into the typed metadata. Keep unavailable values null, first-turn
+   status separate, and strict unresolved qualification explicit in the original
+   witness. Hashing supplied files does not adjudicate those claims.
+4. Run preflight and capture. Keep the full trace and private manifest locally;
+   review only the allowlisted summary for any separately authorized publication.
+5. If an entirely new OMP attempt is needed, return to the owning launcher/operator
+   for a reviewed fresh run directory and normal native per-write approval on the
+   existing free route. Do **not** rerun the published already-used attempt directory
+   or accept an arbitrary replacement command. This tool intentionally performs no
+   paid inference, model download, auth change, or live run.
+
+Without these original inputs the supported result is exit 2, no export and no
+execution. The present sandbox has no original bundle, EventLog 534, full witness
+or provider configuration. Tests of this handoff use synthetic fixtures/mocks
+only and establish fail-closed plumbing, not acceptance of the private bundle.
+
+### Executable-handoff validation receipt
+
+On 2026-10-09, this change passed `python3 -m unittest discover -s tests`
+(**40 tests**, including 20 exporter and 11 handoff tests), plus
+`python3 tests/test_arm_identity.py` (**9 disjoint module-level tests** omitted by
+unittest discovery), for **49 repository tests total**. `python3 scripts/validate.py`
+(3 manifests, 1 protected evaluator), and `git diff --check`. The unchanged path
+suite passed **7 tests against historical source `686db4db2551f59806e27e2f964b74647bc3861e`**;
+this is not a rerun against the latest launcher source. An actual CLI invocation
+with missing original inputs returned **exit 2**, without creating evidence.
+The complete preflight's positive plumbing test substitutes synthetic pins within
+the test only; production CLI cannot enable those substitutions or accept fixture
+kind. No canonical private-bundle success was observed.
+
+Pytest was unavailable in the default Python. A separate pre-existing Python
+3.14 test environment could not collect this repository because it lacked PyYAML
+and the owning source import; that attempt is not a passing aggregate receipt.
+The repository unittest and validator commands above ran in the default configured
+Python. No model, provider, live OMP, or new free-route usability test was run.
