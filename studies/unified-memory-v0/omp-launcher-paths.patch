@@ -476,3 +476,52 @@
 @@ -107 +143 @@
 -subprocess = _NeutralStart()
 +subprocess = _ScopedLaunch()
+--- a/run_omp_live_qualification.py
++++ b/run_omp_live_qualification.py
+@@ -5,0 +6 @@
++import hashlib
+@@ -14,2 +15,3 @@
+-WORK = Path(__file__).resolve().parent
+-QUALIFY = WORK / "omp_live_qualification/qualify.py"
++WORK = Path("/home/kvn/Documents/ChatGPT/z0/.work/critical-path")
++QUALIFY = Path(__file__).with_name("qualify-r13.py")
++QUALIFY_SHA = '4ed8e4d8f23838782a356e0d4d526ce61a892733b6fc9912e2fb81f064df3a30'
+@@ -22 +24 @@
+-def launch(run_dir: Path, allow_live: bool) -> int:
++def launch(run_dir: Path, allow_live: bool, prepare: bool = False) -> int:
+@@ -24 +26 @@
+-    if not allow_live:
++    if not allow_live and not prepare:
+@@ -26 +28 @@
+-    if not sys.stdin.isatty() or not sys.stdout.isatty():
++    if not prepare and (not sys.stdin.isatty() or not sys.stdout.isatty()):
+@@ -31,0 +34,2 @@
++    if hashlib.sha256(QUALIFY.read_bytes()).hexdigest() != QUALIFY_SHA:
++        raise ValueError("registered qualification launcher changed")
+@@ -38,0 +43,9 @@
++
++    child_env = {
++        "HOME": os.environ["HOME"],
++        "PATH": f"{NATIVE_BUN.parent}:/usr/local/bin:/usr/bin:/bin",
++        "LANG": "C.UTF-8",
++        "TERM": os.environ.get("TERM", "xterm-256color"),
++    }
++    if prepare:
++        return subprocess.run([str(NATIVE_PYTHON), str(QUALIFY), "--prepare", "--run-dir", str(run_dir)], env=child_env).returncode
+@@ -65,7 +78 @@
+-    child_env = {
+-        "HOME": os.environ["HOME"],
+-        "PATH": f"{NATIVE_BUN.parent}:/usr/local/bin:/usr/bin:/bin",
+-        "LANG": "C.UTF-8",
+-        "TERM": os.environ.get("TERM", "xterm-256color"),
+-        KEY_ENV: key,
+-    }
++    child_env[KEY_ENV] = key
+@@ -93 +100,3 @@
+-    parser.add_argument("--allow-live", action="store_true")
++    gates = parser.add_mutually_exclusive_group(required=True)
++    gates.add_argument("--allow-live", action="store_true")
++    gates.add_argument("--prepare", action="store_true")
+@@ -96 +105 @@
+-        return launch(args.run_dir, args.allow_live)
++        return launch(args.run_dir, args.allow_live, args.prepare)
