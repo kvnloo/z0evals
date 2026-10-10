@@ -54,6 +54,16 @@ Historical unbound state is not silently upgraded; rotate explicitly to a new
 suite/version with a new private state directory. Hashes remain in private
 state/audit, with no raw truth or filesystem paths added to public output.
 
+For no-skill/candidate comparisons, pass `score --baseline-predictions FILE
+--baseline-revision FULL_GIT_SHA` alongside the existing candidate arguments.
+Both vectors must cover exactly the same frozen cohort and use the same metric;
+one paired comparison consumes one adaptive query. The aggregate receipt binds
+the baseline revision and scored prediction hash and reports its score and
+candidate-minus-baseline delta. A tie or regression is DISCARD even when the
+absolute pass threshold is met. KEEP in this scorer only means the supplied
+predictions clear these gates; it does not prove native model execution,
+repeatability, safe tool behavior, measurement completeness or adoption approval.
+
 ## Drill
 
 `tests/test_protected_eval.py` creates temporary protected truth outside the repository

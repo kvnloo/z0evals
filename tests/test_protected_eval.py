@@ -386,6 +386,49 @@ class ProtectedEvaluatorTests(unittest.TestCase):
                                ("development", development / "development.jsonl")):
                 self.assertEqual(state["cohort_revisions"][name], hashlib.sha256(path.read_bytes()).hexdigest())
 
+    def test_paired_baseline_requires_lift_on_the_same_complete_cohort(self) -> None:
+        for candidate_correct, baseline_correct, verdict in ((True, True, "DISCARD"), (True, False, "KEEP"),
+                                                            (False, True, "DISCARD")):
+            with self.subTest(candidate=candidate_correct, baseline=baseline_correct), tempfile.TemporaryDirectory() as td:
+                root = Path(td)
+                protected, development, predictions = self._fixture(root)
+                baseline = root / "baseline.jsonl"
+                for path, correct in ((predictions, candidate_correct), (baseline, baseline_correct)):
+                    self._write_jsonl(path, [
+                        {"id": "sealed-item-1", "prediction": "alpha"},
+                        {"id": "sealed-item-2", "prediction": "beta" if correct else "wrong"},
+                    ])
+                with self._env(protected, development):
+                    result = P.score_predictions(
+                        self._manifest(), cohort_name="confirm", predictions_path=predictions,
+                        candidate_id="candidate-skill", candidate_revision="a" * 40,
+                        state_dir=root / "state", baseline_predictions_path=baseline,
+                        baseline_revision="b" * 40,
+                    )
+                self.assertEqual(result["verdict"], verdict)
+                self.assertEqual(result["baseline"]["score"], 1.0 if baseline_correct else 0.5)
+                self.assertEqual(result["baseline"]["score_delta"],
+                                 (1.0 if candidate_correct else 0.5) - (1.0 if baseline_correct else 0.5))
+                self.assertEqual(result["baseline"]["revision"], "b" * 40)
+                self.assertEqual(result["baseline"]["predictions_sha256"], hashlib.sha256(baseline.read_bytes()).hexdigest())
+                self.assertEqual(result["query_index"], 1)
+                for value in ("sealed-item-1", "sealed-item-2", "alpha", "beta"):
+                    self.assertNotIn(value, json.dumps(result))
+
+    def test_incomplete_baseline_cannot_establish_paired_credit(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            protected, development, predictions = self._fixture(root)
+            baseline = root / "baseline.jsonl"
+            self._write_jsonl(baseline, [{"id": "sealed-item-1", "prediction": "alpha"}])
+            with self._env(protected, development):
+                with self.assertRaisesRegex(P.ProtectedEvalError, "baseline IDs"):
+                    P.score_predictions(
+                        self._manifest(), cohort_name="confirm", predictions_path=predictions,
+                        candidate_id="partial-baseline", candidate_revision="a" * 40,
+                        state_dir=root / "state", baseline_predictions_path=baseline, baseline_revision="b" * 40,
+                    )
+
 
 if __name__ == "__main__":
     unittest.main()

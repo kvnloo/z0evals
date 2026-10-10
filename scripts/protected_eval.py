@@ -212,6 +212,17 @@ def _truth_cohorts(manifest: dict[str, Any]) -> tuple[dict[str, dict[str, dict[s
     return cohorts, revisions
 
 
+def _score_exact_match(truth_rows: dict[str, dict[str, Any]], predictions: dict[str, Any], metric: str) -> float:
+    if metric == "group_macro_exact_match":
+        groups: dict[str, list[bool]] = {}
+        for item_id, row in truth_rows.items():
+            groups.setdefault(row["group"], []).append(predictions[item_id] == row["expected"])
+        return sum(sum(matches) / len(matches) for matches in groups.values()) / len(groups)
+    if metric == "exact_match":
+        return sum(predictions[item_id] == row["expected"] for item_id, row in truth_rows.items()) / len(truth_rows)
+    raise ProtectedEvalError("unsupported protected scoring metric")
+
+
 def score_predictions(
     manifest: dict[str, Any],
     *,
@@ -220,9 +231,15 @@ def score_predictions(
     candidate_id: str,
     candidate_revision: str,
     state_dir: Path,
+    baseline_predictions_path: Path | None = None,
+    baseline_revision: str | None = None,
 ) -> dict[str, Any]:
     if not PIN_RE.fullmatch(candidate_revision):
         raise ProtectedEvalError("candidate_revision must be a full 40-character git SHA")
+    if (baseline_predictions_path is None) != (baseline_revision is None):
+        raise ProtectedEvalError("paired scoring requires baseline predictions and revision together")
+    if baseline_revision is not None and not PIN_RE.fullmatch(baseline_revision):
+        raise ProtectedEvalError("baseline_revision must be a full 40-character git SHA")
     cohort = (manifest.get("cohorts") or {}).get(cohort_name)
     if not cohort:
         raise ProtectedEvalError(f"unknown cohort {cohort_name!r}")
@@ -252,18 +269,21 @@ def score_predictions(
         if predictions.keys() != truth.keys():
             raise ProtectedEvalError("prediction IDs must exactly match the protected cohort IDs")
 
-        correct = sum(predictions[item_id] == expected for item_id, expected in truth.items())
         metric = manifest["scoring"]["metric"]
-        if metric == "group_macro_exact_match":
-            groups: dict[str, list[bool]] = {}
-            for item_id, row in truth_rows.items():
-                groups.setdefault(row["group"], []).append(predictions[item_id] == row["expected"])
-            score = sum(sum(matches) / len(matches) for matches in groups.values()) / len(groups)
-        elif metric == "exact_match":
-            score = correct / len(truth)
-        else:
-            raise ProtectedEvalError("unsupported protected scoring metric")
+        score = _score_exact_match(truth_rows, predictions, metric)
         verdict = "KEEP" if score >= float(manifest["scoring"]["pass_threshold"]) else "DISCARD"
+        baseline = None
+        if baseline_predictions_path is not None:
+            baseline_rows, baseline_digest = _read_jsonl_rows(baseline_predictions_path, "prediction")
+            if baseline_rows.keys() != truth.keys():
+                raise ProtectedEvalError("baseline IDs must exactly match the protected cohort IDs")
+            baseline_score = _score_exact_match(
+                truth_rows, {item_id: row["prediction"] for item_id, row in baseline_rows.items()}, metric,
+            )
+            baseline = {"revision": baseline_revision, "score": baseline_score,
+                        "score_delta": score - baseline_score, "predictions_sha256": baseline_digest}
+            if score <= baseline_score:
+                verdict = "DISCARD"
         query_index = int(state["query_count"]) + 1
 
         public_core = {
@@ -279,6 +299,8 @@ def score_predictions(
             "query_index": query_index,
             "sealed_credit": True,
         }
+        if baseline is not None:
+            public_core["baseline"] = baseline
         public_core["result_sha256"] = _sha256_bytes(
             json.dumps(public_core, sort_keys=True, separators=(",", ":")).encode()
         )
@@ -296,6 +318,8 @@ def score_predictions(
             "score": score,
             "verdict": verdict,
         }
+        if baseline is not None:
+            audit["baseline"] = baseline
         _append_audit(state_dir, audit)
         state["query_count"] = query_index
         state["cohort_revisions"] = revisions
@@ -360,6 +384,8 @@ def main(argv: list[str] | None = None) -> int:
     score.add_argument("--predictions", type=Path, required=True)
     score.add_argument("--candidate-id", required=True)
     score.add_argument("--candidate-revision", required=True)
+    score.add_argument("--baseline-predictions", type=Path)
+    score.add_argument("--baseline-revision")
 
     contaminate = sub.add_parser("contaminate")
     contaminate.add_argument("--reason", required=True)
@@ -377,6 +403,7 @@ def main(argv: list[str] | None = None) -> int:
                 manifest, cohort_name=args.cohort, predictions_path=args.predictions,
                 candidate_id=args.candidate_id, candidate_revision=args.candidate_revision,
                 state_dir=args.state_dir,
+                baseline_predictions_path=args.baseline_predictions, baseline_revision=args.baseline_revision,
             )
         elif args.command == "contaminate":
             output = mark_contaminated(
