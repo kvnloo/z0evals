@@ -260,6 +260,51 @@ class ProtectedEvaluatorTests(unittest.TestCase):
                 )
             self.assertEqual(result["score"], 0.5)
 
+    def test_repeated_easy_branches_cannot_inflate_group_macro_credit(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            protected, development, predictions = self._fixture(root)
+            rows = [{"id": f"retry-{i}", "expected": "alpha", "group": "easy-task"} for i in range(19)]
+            rows.append({"id": "hard-task", "expected": "beta", "group": "hard-task"})
+            self._write_jsonl(protected / "confirm.jsonl", rows)
+            self._write_jsonl(predictions, [
+                {"id": row["id"], "prediction": "alpha"} for row in rows
+            ])
+            manifest = self._manifest()
+            manifest["scoring"]["metric"] = "group_macro_exact_match"
+            with self._env(protected, development):
+                result = P.score_predictions(
+                    manifest, cohort_name="confirm", predictions_path=predictions,
+                    candidate_id="branch-inflation", candidate_revision="a" * 40,
+                    state_dir=root / "state",
+                )
+            self.assertEqual(result["score"], 0.5)
+            self.assertEqual(result["verdict"], "DISCARD")
+
+    def test_group_macro_score_preserves_partial_success_within_each_task(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            protected, development, predictions = self._fixture(root)
+            self._write_jsonl(protected / "confirm.jsonl", [
+                {"id": "sealed-item-1", "expected": "alpha", "group": "first"},
+                {"id": "sealed-item-2", "expected": "beta", "group": "first"},
+                {"id": "third", "expected": "gamma", "group": "second"},
+            ])
+            self._write_jsonl(predictions, [
+                {"id": "sealed-item-1", "prediction": "alpha"},
+                {"id": "sealed-item-2", "prediction": "wrong"},
+                {"id": "third", "prediction": "gamma"},
+            ])
+            manifest = self._manifest()
+            manifest["scoring"]["metric"] = "group_macro_exact_match"
+            with self._env(protected, development):
+                result = P.score_predictions(
+                    manifest, cohort_name="confirm", predictions_path=predictions,
+                    candidate_id="group-balanced", candidate_revision="a" * 40,
+                    state_dir=root / "state",
+                )
+            self.assertEqual(result["score"], 0.75)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -38,6 +38,14 @@ candidate text. Native extraction/source references must substantiate that
 grouping before a real generated skill is evaluated. This guard alone does not
 establish extraction completeness, efficacy or adoption eligibility.
 
+The registered scorer uses `group_macro_exact_match`: compute exact-match
+accuracy within each work-item group, then average those group accuracies with
+equal weight. Nineteen correct retries of an easy task plus one failed distinct
+task score 0.5, not 0.95. This prevents branch count from supplying improvement
+credit. `exact_match` remains available for explicitly item-weighted controls;
+the result names the selected metric. Historical item-weighted scores remain
+at their original manifest/version and are not recomputed as new outcomes.
+
 ## Drill
 
 `tests/test_protected_eval.py` creates temporary protected truth outside the repository

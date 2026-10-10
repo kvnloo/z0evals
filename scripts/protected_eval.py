@@ -248,7 +248,16 @@ def score_predictions(
             raise ProtectedEvalError("prediction IDs must exactly match the protected cohort IDs")
 
         correct = sum(predictions[item_id] == expected for item_id, expected in truth.items())
-        score = correct / len(truth)
+        metric = manifest["scoring"]["metric"]
+        if metric == "group_macro_exact_match":
+            groups: dict[str, list[bool]] = {}
+            for item_id, row in truth_rows.items():
+                groups.setdefault(row["group"], []).append(predictions[item_id] == row["expected"])
+            score = sum(sum(matches) / len(matches) for matches in groups.values()) / len(groups)
+        elif metric == "exact_match":
+            score = correct / len(truth)
+        else:
+            raise ProtectedEvalError("unsupported protected scoring metric")
         verdict = "KEEP" if score >= float(manifest["scoring"]["pass_threshold"]) else "DISCARD"
         query_index = int(state["query_count"]) + 1
 

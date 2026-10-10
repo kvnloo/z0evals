@@ -47,7 +47,7 @@
       "type": "object",
       "required": ["metric", "pass_threshold", "max_queries"],
       "properties": {
-        "metric": {"const": "exact_match"},
+        "metric": {"enum": ["exact_match", "group_macro_exact_match"]},
         "pass_threshold": {"type": "number", "minimum": 0, "maximum": 1},
         "max_queries": {"type": "integer", "minimum": 1, "maximum": 1000}
       },
