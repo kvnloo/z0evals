@@ -73,3 +73,55 @@ contamination, supersession, future-cohort refusal, and verifier independence.
 This is a contract drill, not a claim that filesystem secrecy alone protects an
 evaluator. Production deployment still needs an actual trust boundary (separate
 process/service/account or equivalent access control).
+
+## First factory diagnostic
+
+The first native comparison consumed one private proposal from
+[Evolution Lab PR35](https://github.com/kvnloo/evolution-lab/pull/35), frozen at
+`6443ea336be0a4f927c9e053cc7734461689fb68`; its integrity CLI was independently
+tested at `c7009db5f6813ded46ff9e23183f38d5c4d8cd13` (23 refusal tests).
+The original ai-data-extraction fork remained unchanged at
+`9176c2dd81c8a101b52debd4cec88573284e2b30`. Raw corpus, draft text, protected
+questions/labels and native transcripts remain private.
+
+Two new read-only work items used independent production oracles from
+z0intelligence `e1c6596de51e2a05eb0fcb8065b75b109ddf8b04` and Evolution Lab
+`0212fee31a78cdba506f4d2684813962bfe0efb0`. They are a bounded source-identification
+transfer diagnostic, not an implementation-reuse benchmark, representative
+capability battery or unseen-code certification. All nine source sessions remain
+one exposed development family; retries and branches supply no extra credit.
+
+Both arms used real OMP 18.8.1, the frozen SDK tree
+`1744f67c2f25241fad2a993e499875edce999699` and native addon 18.8.1, with local
+Qwen2.5-Coder 7B Q4_K_M weights. A temporary parameter-only alias raised runtime
+context to 32768 without new weights, daemon or global-default changes; its
+manifest digest was
+`cf0e39a496ed6a66b219be2d822bf4380478fc6a15306c0a72d7472580c60d47`.
+The exact reviewed proposal hash was
+`7b3b31f4b0e2c8cf3c1777bdbcce8ef7963281adbf5a3fb4f5e444b316ee4969`.
+Native file ingestion delivered that body explicitly; no skill was installed.
+The task prompts, source revisions, tools and permissions were otherwise the
+same. Cold/warm cache conditions were not matched, so latency is not comparable.
+
+| Condition | Correct work items | Actual inspection calls | Group-macro score |
+| --- | ---: | ---: | ---: |
+| No-skill baseline | 0 / 2 | 0 | 0.0 |
+| Explicit first-proposal body | 0 / 2 | 0 | 0.0 |
+
+The existing production scorer returned **DISCARD**, delta 0.0, query 1 at
+manifest version `2026-10-10.3`. Its aggregate result digest is
+`349af6745d37b8e9c1c73578c56a284ec6e49ecdf8b04ceaa7ec9e6d62210215`;
+the serialized public result file SHA-256 is
+`3a396dc5cadf9d702098bbc4582917071b04315799017e9cd217dae00e5c33fd`.
+This is observed incorrect native behavior, not an unexecuted test or a positive
+adoption result. `sealed_credit` in the score receipt describes its protected
+scoring provenance; it does not override DISCARD or certify agent behavior.
+
+Negative setup evidence remains separate: the initial native prompts were
+truncated by a 4096-context provider; an unsupported model-config API silently
+fell back; pointing discovery at a single skill folder loaded no proposal;
+availability alone did not make the model read it; print mode did not expand a
+literal skill slash command. These attempts cannot be credited as body-efficacy
+comparisons. The second, write-oriented proposal remains unexecuted and
+unqualified. Privacy/redistribution/installation gates remain in force; no
+learning gain, safety certification, savings or production adoption is claimed.
