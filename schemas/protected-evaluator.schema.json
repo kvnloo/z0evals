@@ -38,7 +38,13 @@
           "role": {"enum": ["development", "confirm", "ood", "future"]},
           "optimizer_queryable": {"type": "boolean"},
           "training_allowed": {"type": "boolean"},
-          "truth_ref": {"type": "string", "pattern": "^env://[A-Z_][A-Z0-9_]*(/.*)?$"}
+          "truth_ref": {"type": "string", "pattern": "^env://[A-Z_][A-Z0-9_]*(/.*)?$"},
+          "baseline_revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+          "baseline_predictions_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+        },
+        "dependentRequired": {
+          "baseline_revision": ["baseline_predictions_sha256"],
+          "baseline_predictions_sha256": ["baseline_revision"]
         },
         "additionalProperties": false
       }
@@ -47,7 +53,7 @@
       "type": "object",
       "required": ["metric", "pass_threshold", "max_queries"],
       "properties": {
-        "metric": {"const": "exact_match"},
+        "metric": {"enum": ["exact_match", "group_macro_exact_match"]},
         "pass_threshold": {"type": "number", "minimum": 0, "maximum": 1},
         "max_queries": {"type": "integer", "minimum": 1, "maximum": 1000}
       },

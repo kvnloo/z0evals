@@ -16,8 +16,10 @@ import re
 import tempfile
 from contextlib import contextmanager
 from datetime import datetime, timezone
+from fractions import Fraction
 from pathlib import Path
 from typing import Any
+import unicodedata
 
 import yaml
 from jsonschema import Draft202012Validator
@@ -39,14 +41,6 @@ def _now() -> str:
 
 def _sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
-
-
-def _sha256_file(path: Path) -> str:
-    h = hashlib.sha256()
-    with path.open("rb") as fh:
-        for chunk in iter(lambda: fh.read(1024 * 1024), b""):
-            h.update(chunk)
-    return h.hexdigest()
 
 
 def validate_evaluator_manifest(data: dict[str, Any]) -> None:
@@ -109,6 +103,9 @@ def _default_state(manifest: dict[str, Any]) -> dict[str, Any]:
         "schema": STATE_SCHEMA,
         "suite_id": manifest["id"],
         "suite_version": manifest["version"],
+        "manifest_sha256": _sha256_bytes(json.dumps(manifest, sort_keys=True, separators=(",", ":")).encode()),
+        "cohort_revisions": None,
+        "registered": False,
         "status": "active",
         "query_count": 0,
         "contamination": None,
@@ -142,6 +139,11 @@ def load_state(state_dir: Path, manifest: dict[str, Any]) -> dict[str, Any]:
     state = json.loads(path.read_text(encoding="utf-8"))
     if state.get("suite_id") != manifest["id"] or state.get("suite_version") != manifest["version"]:
         raise ProtectedEvalError("state belongs to a different suite/version")
+    if not state.get("manifest_sha256"):
+        raise ProtectedEvalError("historical evaluator state is unbound; use explicit suite rotation")
+    current_manifest = _sha256_bytes(json.dumps(manifest, sort_keys=True, separators=(",", ":")).encode())
+    if state["manifest_sha256"] != current_manifest:
+        raise ProtectedEvalError("evaluator manifest changed under the same suite/version")
     return state
 
 
@@ -175,22 +177,87 @@ def _resolve_truth_ref(ref: str) -> Path:
     return target
 
 
-def _read_jsonl(path: Path, value_key: str) -> dict[str, Any]:
+def _read_jsonl_rows(path: Path, value_key: str) -> tuple[dict[str, dict[str, Any]], str]:
     result: dict[str, Any] = {}
-    with path.open(encoding="utf-8") as fh:
+    digest = hashlib.sha256()
+    with path.open("rb") as fh:
         for line_no, raw in enumerate(fh, 1):
+            digest.update(raw)
             if not raw.strip():
                 continue
             row = json.loads(raw)
+            if not isinstance(row, dict):
+                raise ProtectedEvalError("evaluation rows must be JSON objects")
             item_id = str(row.get("id") or "")
             if not item_id or value_key not in row:
                 raise ProtectedEvalError(f"{path.name}:{line_no} requires id and {value_key}")
             if item_id in result:
                 raise ProtectedEvalError(f"duplicate item id in {path.name}")
-            result[item_id] = row[value_key]
+            result[item_id] = row
     if not result:
         raise ProtectedEvalError(f"{path.name} is empty")
-    return result
+    return result, digest.hexdigest()
+
+
+def _lineage_group(row: dict[str, Any]) -> str:
+    group = row.get("group")
+    if not isinstance(group, str) or not group or group != group.strip():
+        raise ProtectedEvalError("truth rows require normalized nonempty work-item lineage groups")
+    group = "".join(c for c in group if unicodedata.category(c) != "Cf").strip()
+    group = unicodedata.normalize("NFKC", unicodedata.normalize("NFKC", group).casefold())
+    if not group:
+        raise ProtectedEvalError("truth rows require nonempty work-item lineage groups")
+    return group
+
+
+def _truth_cohorts(manifest: dict[str, Any]) -> tuple[dict[str, dict[str, dict[str, Any]]], dict[str, str]]:
+    """Validate trusted work-item groups before any cohort can earn sealed credit."""
+    cohorts = {}
+    revisions = {}
+    owners: dict[str, str] = {}
+    item_owners: dict[str, str] = {}
+    for name, cohort in manifest["cohorts"].items():
+        rows, revisions[name] = _read_jsonl_rows(_resolve_truth_ref(str(cohort["truth_ref"])), "expected")
+        for item_id, row in rows.items():
+            group = _lineage_group(row)
+            if group in owners and owners[group] != name:
+                raise ProtectedEvalError("work-item lineage overlaps across evaluator cohorts")
+            if item_id in item_owners and item_owners[item_id] != name:
+                raise ProtectedEvalError("item identity lineage overlaps across evaluator cohorts")
+            owners[group] = name
+            item_owners[item_id] = name
+        cohorts[name] = rows
+    return cohorts, revisions
+
+
+def freeze_suite(manifest: dict[str, Any], state_dir: Path) -> dict[str, Any]:
+    """Evaluator-owner preparation, before exposing the score-only query boundary."""
+    validate_evaluator_manifest(manifest)
+    with _locked_state(state_dir):
+        state = load_state(state_dir, manifest)
+        if state["status"] != "active":
+            raise ProtectedEvalError("only an active suite can be registered")
+        if state.get("registered"):
+            return public_status(state)
+        if state["query_count"] or state.get("cohort_revisions") is not None:
+            raise ProtectedEvalError("unregistered historical state requires explicit suite rotation")
+        _, revisions = _truth_cohorts(manifest)
+        state["cohort_revisions"] = revisions
+        state["registered"] = True
+        state["updated_at"] = _now()
+        _atomic_json(_state_path(state_dir), state)
+        return public_status(state)
+
+
+def _score_exact_match(truth_rows: dict[str, dict[str, Any]], predictions: dict[str, Any], metric: str) -> Fraction:
+    if metric == "group_macro_exact_match":
+        groups: dict[str, list[bool]] = {}
+        for item_id, row in truth_rows.items():
+            groups.setdefault(_lineage_group(row), []).append(predictions[item_id] == row["expected"])
+        return sum((Fraction(sum(matches), len(matches)) for matches in groups.values()), Fraction()) / len(groups)
+    if metric == "exact_match":
+        return Fraction(sum(predictions[item_id] == row["expected"] for item_id, row in truth_rows.items()), len(truth_rows))
+    raise ProtectedEvalError("unsupported protected scoring metric")
 
 
 def score_predictions(
@@ -201,17 +268,9 @@ def score_predictions(
     candidate_id: str,
     candidate_revision: str,
     state_dir: Path,
+    baseline_predictions_path: Path | None = None,
+    baseline_revision: str | None = None,
 ) -> dict[str, Any]:
-    if not PIN_RE.fullmatch(candidate_revision):
-        raise ProtectedEvalError("candidate_revision must be a full 40-character git SHA")
-    cohort = (manifest.get("cohorts") or {}).get(cohort_name)
-    if not cohort:
-        raise ProtectedEvalError(f"unknown cohort {cohort_name!r}")
-    if not cohort["optimizer_queryable"]:
-        raise ProtectedEvalError(f"cohort {cohort_name!r} is not optimizer-queryable")
-    if cohort["training_allowed"]:
-        raise ProtectedEvalError("protected scoring cohort cannot be training_allowed")
-
     with _locked_state(state_dir):
         state = load_state(state_dir, manifest)
         if state["status"] != "active":
@@ -220,16 +279,60 @@ def score_predictions(
         if int(state["query_count"]) >= max_queries:
             raise ProtectedEvalError("protected evaluator query budget exhausted")
 
-        truth_path = _resolve_truth_ref(str(cohort["truth_ref"]))
-        truth = _read_jsonl(truth_path, "expected")
-        predictions = _read_jsonl(predictions_path, "prediction")
-        if predictions.keys() != truth.keys():
-            raise ProtectedEvalError("prediction IDs must exactly match the protected cohort IDs")
-
-        correct = sum(predictions[item_id] == expected for item_id, expected in truth.items())
-        score = correct / len(truth)
-        verdict = "KEEP" if score >= float(manifest["scoring"]["pass_threshold"]) else "DISCARD"
         query_index = int(state["query_count"]) + 1
+        state["query_count"] = query_index
+        state["updated_at"] = _now()
+        _atomic_json(_state_path(state_dir), state)
+        score = None
+        baseline = None
+        comparable = False
+        verdict = "NOT_COMPARABLE"
+        predictions_sha256 = None
+        try:
+            if not isinstance(candidate_revision, str) or not PIN_RE.fullmatch(candidate_revision):
+                raise ProtectedEvalError("candidate_revision must be a full 40-character git SHA")
+            if (baseline_predictions_path is None) != (baseline_revision is None):
+                raise ProtectedEvalError("paired scoring requires baseline predictions and revision together")
+            if baseline_revision is not None and (not isinstance(baseline_revision, str) or not PIN_RE.fullmatch(baseline_revision)):
+                raise ProtectedEvalError("baseline_revision must be a full 40-character git SHA")
+            cohort = (manifest.get("cohorts") or {}).get(cohort_name)
+            if not cohort:
+                raise ProtectedEvalError(f"unknown cohort {cohort_name!r}")
+            if not cohort["optimizer_queryable"]:
+                raise ProtectedEvalError(f"cohort {cohort_name!r} is not optimizer-queryable")
+            if cohort["training_allowed"]:
+                raise ProtectedEvalError("protected scoring cohort cannot be training_allowed")
+            if state.get("registered"):
+                truth_rows, digest = _read_jsonl_rows(_resolve_truth_ref(str(cohort["truth_ref"])), "expected")
+                if digest != (state.get("cohort_revisions") or {}).get(cohort_name):
+                    raise ProtectedEvalError("protected cohort revision changed; use explicit suite rotation")
+                prediction_rows, predictions_sha256 = _read_jsonl_rows(predictions_path, "prediction")
+                if prediction_rows.keys() != truth_rows.keys():
+                    raise ProtectedEvalError("prediction IDs must exactly match the protected cohort IDs")
+                metric = manifest["scoring"]["metric"]
+                score = _score_exact_match(truth_rows, {k: row["prediction"] for k, row in prediction_rows.items()}, metric)
+                if score < Fraction(str(manifest["scoring"]["pass_threshold"])):
+                    verdict = "DISCARD"
+                if baseline_predictions_path is not None:
+                    baseline_rows, baseline_digest = _read_jsonl_rows(baseline_predictions_path, "prediction")
+                    if baseline_rows.keys() != truth_rows.keys():
+                        raise ProtectedEvalError("baseline IDs must exactly match the protected cohort IDs")
+                    baseline_score = _score_exact_match(truth_rows, {k: row["prediction"] for k, row in baseline_rows.items()}, metric)
+                    baseline = {"revision": baseline_revision, "score": float(baseline_score),
+                                "score_delta": float(score - baseline_score), "predictions_sha256": baseline_digest}
+                    comparable = (baseline_revision != candidate_revision
+                                  and baseline_revision == cohort.get("baseline_revision")
+                                  and baseline_digest == cohort.get("baseline_predictions_sha256"))
+                    if comparable:
+                        verdict = "KEEP" if score >= Fraction(str(manifest["scoring"]["pass_threshold"])) and score > baseline_score else "DISCARD"
+        except (ProtectedEvalError, OSError, ValueError) as exc:
+            _append_audit(state_dir, {"at": _now(), "suite_id": manifest["id"],
+                "suite_version": manifest["version"], "cohort": cohort_name, "candidate_id": candidate_id,
+                "candidate_revision": candidate_revision, "query_index": query_index,
+                "verdict": "NOT_COMPARABLE", "reason": "input_refused"})
+            if isinstance(exc, ProtectedEvalError):
+                raise
+            raise ProtectedEvalError("evaluation input is invalid or unavailable") from exc
 
         public_core = {
             "schema": RESULT_SCHEMA,
@@ -239,11 +342,13 @@ def score_predictions(
             "candidate_id": candidate_id,
             "candidate_revision": candidate_revision,
             "metric": manifest["scoring"]["metric"],
-            "score": score,
+            "score": float(score) if score is not None else None,
             "verdict": verdict,
             "query_index": query_index,
-            "sealed_credit": True,
+            "sealed_credit": bool(state.get("registered") and comparable),
         }
+        if baseline is not None:
+            public_core["baseline"] = baseline
         public_core["result_sha256"] = _sha256_bytes(
             json.dumps(public_core, sort_keys=True, separators=(",", ":")).encode()
         )
@@ -256,11 +361,13 @@ def score_predictions(
             "candidate_id": candidate_id,
             "candidate_revision": candidate_revision,
             "query_index": query_index,
-            "predictions_sha256": _sha256_file(predictions_path),
+            "predictions_sha256": predictions_sha256,
             "result_sha256": public_core["result_sha256"],
-            "score": score,
+            "score": float(score) if score is not None else None,
             "verdict": verdict,
         }
+        if baseline is not None:
+            audit["baseline"] = baseline
         _append_audit(state_dir, audit)
         state["query_count"] = query_index
         state["updated_at"] = audit["at"]
@@ -308,6 +415,7 @@ def public_status(state: dict[str, Any]) -> dict[str, Any]:
         "status": state["status"],
         "query_count": int(state["query_count"]),
         "contaminated": contamination is not None,
+        "registered": bool(state.get("registered")),
         "superseded_by": state.get("superseded_by"),
         "updated_at": state.get("updated_at"),
     }
@@ -324,6 +432,8 @@ def main(argv: list[str] | None = None) -> int:
     score.add_argument("--predictions", type=Path, required=True)
     score.add_argument("--candidate-id", required=True)
     score.add_argument("--candidate-revision", required=True)
+    score.add_argument("--baseline-predictions", type=Path)
+    score.add_argument("--baseline-revision")
 
     contaminate = sub.add_parser("contaminate")
     contaminate.add_argument("--reason", required=True)
@@ -332,6 +442,7 @@ def main(argv: list[str] | None = None) -> int:
     rotate = sub.add_parser("supersede")
     rotate.add_argument("--replacement-suite", required=True)
     sub.add_parser("status")
+    sub.add_parser("freeze", help="evaluator-owner preparation; never expose this command to optimizers")
 
     args = parser.parse_args(argv)
     manifest = load_manifest(args.manifest)
@@ -341,7 +452,10 @@ def main(argv: list[str] | None = None) -> int:
                 manifest, cohort_name=args.cohort, predictions_path=args.predictions,
                 candidate_id=args.candidate_id, candidate_revision=args.candidate_revision,
                 state_dir=args.state_dir,
+                baseline_predictions_path=args.baseline_predictions, baseline_revision=args.baseline_revision,
             )
+        elif args.command == "freeze":
+            output = freeze_suite(manifest, args.state_dir)
         elif args.command == "contaminate":
             output = mark_contaminated(
                 manifest, args.state_dir, reason=args.reason, replacement_suite=args.replacement_suite
