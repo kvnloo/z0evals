@@ -80,7 +80,9 @@ float conversion occurs only for aggregate output. A registered tie or regressio
 is DISCARD, and positive lift cannot bypass the absolute threshold. A high score
 without the pinned incumbent, with altered baseline bytes/revision, or with the
 same candidate and baseline revision is NOT_COMPARABLE with no sealed credit.
-An absolute failure remains DISCARD. KEEP only means the supplied
+An absolute failure remains DISCARD; it also has no sealed comparison credit
+without a trusted incumbent. Metadata and malformed-row refusals count as query
+attempts and remain in the audit. KEEP only means the supplied
 predictions clear these gates; it does not prove native model execution,
 repeatability, safe tool behavior, measurement completeness or adoption approval.
 

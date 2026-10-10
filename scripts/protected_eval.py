@@ -186,6 +186,8 @@ def _read_jsonl_rows(path: Path, value_key: str) -> tuple[dict[str, dict[str, An
             if not raw.strip():
                 continue
             row = json.loads(raw)
+            if not isinstance(row, dict):
+                raise ProtectedEvalError("evaluation rows must be JSON objects")
             item_id = str(row.get("id") or "")
             if not item_id or value_key not in row:
                 raise ProtectedEvalError(f"{path.name}:{line_no} requires id and {value_key}")
@@ -201,8 +203,8 @@ def _lineage_group(row: dict[str, Any]) -> str:
     group = row.get("group")
     if not isinstance(group, str) or not group or group != group.strip():
         raise ProtectedEvalError("truth rows require normalized nonempty work-item lineage groups")
-    group = unicodedata.normalize("NFKC", group).casefold()
     group = "".join(c for c in group if unicodedata.category(c) != "Cf").strip()
+    group = unicodedata.normalize("NFKC", unicodedata.normalize("NFKC", group).casefold())
     if not group:
         raise ProtectedEvalError("truth rows require nonempty work-item lineage groups")
     return group
@@ -269,20 +271,6 @@ def score_predictions(
     baseline_predictions_path: Path | None = None,
     baseline_revision: str | None = None,
 ) -> dict[str, Any]:
-    if not PIN_RE.fullmatch(candidate_revision):
-        raise ProtectedEvalError("candidate_revision must be a full 40-character git SHA")
-    if (baseline_predictions_path is None) != (baseline_revision is None):
-        raise ProtectedEvalError("paired scoring requires baseline predictions and revision together")
-    if baseline_revision is not None and not PIN_RE.fullmatch(baseline_revision):
-        raise ProtectedEvalError("baseline_revision must be a full 40-character git SHA")
-    cohort = (manifest.get("cohorts") or {}).get(cohort_name)
-    if not cohort:
-        raise ProtectedEvalError(f"unknown cohort {cohort_name!r}")
-    if not cohort["optimizer_queryable"]:
-        raise ProtectedEvalError(f"cohort {cohort_name!r} is not optimizer-queryable")
-    if cohort["training_allowed"]:
-        raise ProtectedEvalError("protected scoring cohort cannot be training_allowed")
-
     with _locked_state(state_dir):
         state = load_state(state_dir, manifest)
         if state["status"] != "active":
@@ -297,9 +285,23 @@ def score_predictions(
         _atomic_json(_state_path(state_dir), state)
         score = None
         baseline = None
+        comparable = False
         verdict = "NOT_COMPARABLE"
         predictions_sha256 = None
         try:
+            if not isinstance(candidate_revision, str) or not PIN_RE.fullmatch(candidate_revision):
+                raise ProtectedEvalError("candidate_revision must be a full 40-character git SHA")
+            if (baseline_predictions_path is None) != (baseline_revision is None):
+                raise ProtectedEvalError("paired scoring requires baseline predictions and revision together")
+            if baseline_revision is not None and (not isinstance(baseline_revision, str) or not PIN_RE.fullmatch(baseline_revision)):
+                raise ProtectedEvalError("baseline_revision must be a full 40-character git SHA")
+            cohort = (manifest.get("cohorts") or {}).get(cohort_name)
+            if not cohort:
+                raise ProtectedEvalError(f"unknown cohort {cohort_name!r}")
+            if not cohort["optimizer_queryable"]:
+                raise ProtectedEvalError(f"cohort {cohort_name!r} is not optimizer-queryable")
+            if cohort["training_allowed"]:
+                raise ProtectedEvalError("protected scoring cohort cannot be training_allowed")
             if state.get("registered"):
                 truth_rows, digest = _read_jsonl_rows(_resolve_truth_ref(str(cohort["truth_ref"])), "expected")
                 if digest != (state.get("cohort_revisions") or {}).get(cohort_name):
@@ -343,7 +345,7 @@ def score_predictions(
             "score": float(score) if score is not None else None,
             "verdict": verdict,
             "query_index": query_index,
-            "sealed_credit": state.get("registered", False) and verdict != "NOT_COMPARABLE",
+            "sealed_credit": bool(state.get("registered") and comparable),
         }
         if baseline is not None:
             public_core["baseline"] = baseline

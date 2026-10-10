@@ -635,6 +635,70 @@ class PromotionTruthTests(ProtectedEvaluatorFixture):
             self.assertEqual(result["baseline"]["score_delta"], 0.5)
             self.assertEqual(result["verdict"], "DISCARD")
 
+    def test_absolute_discard_without_trusted_incumbent_has_no_sealed_credit(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            protected, development, predictions = self._fixture(root)
+            manifest = self._manifest()
+            with self._env(protected, development):
+                P.freeze_suite(manifest, root / "state")
+                result = P.score_predictions(manifest, cohort_name="confirm", predictions_path=predictions,
+                    candidate_id="negative", candidate_revision="a" * 40, state_dir=root / "state")
+            self.assertEqual(result["verdict"], "DISCARD")
+            self.assertFalse(result["sealed_credit"])
+
+    def test_nonobject_prediction_rows_are_audited_refusals(self):
+        for value in (None, [], "synthetic-private-value"):
+            for arm in ("candidate", "baseline"):
+                with self.subTest(value=value, arm=arm), tempfile.TemporaryDirectory() as td:
+                    root = Path(td)
+                    protected, development, predictions = self._fixture(root)
+                    manifest = self._manifest()
+                    baseline = root / "baseline.jsonl"
+                    self._write_jsonl(baseline, [{"id": "sealed-item-1", "prediction": "alpha"},
+                                                {"id": "sealed-item-2", "prediction": "wrong"}])
+                    target = predictions if arm == "candidate" else baseline
+                    target.write_text(json.dumps(value) + "\n")
+                    with self._env(protected, development):
+                        P.freeze_suite(manifest, root / "state")
+                        with self.assertRaises(P.ProtectedEvalError):
+                            P.score_predictions(manifest, cohort_name="confirm", predictions_path=predictions,
+                                candidate_id="malformed", candidate_revision="a" * 40, state_dir=root / "state",
+                                baseline_predictions_path=baseline, baseline_revision="b" * 40)
+                    self.assertEqual(P.load_state(root / "state", manifest)["query_count"], 1)
+                    audit = json.loads((root / "state/queries.jsonl").read_text())
+                    self.assertEqual(audit["verdict"], "NOT_COMPARABLE")
+                    self.assertNotIn("synthetic-private-value", json.dumps(audit))
+
+    def test_format_character_removal_cannot_hide_canonically_equal_lineage(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            protected, development, _ = self._fixture(root)
+            self._write_jsonl(protected / "confirm.jsonl", [{"id": "one", "expected": True, "group": "é"}])
+            self._write_jsonl(development / "development.jsonl", [{"id": "two", "expected": True, "group": "e\u200b\u0301"}])
+            with self._env(protected, development), self.assertRaisesRegex(P.ProtectedEvalError, "lineage"):
+                P.freeze_suite(self._manifest(), root / "state")
+
+    def test_metadata_refusals_are_bounded_and_audited(self):
+        for bad in ({"candidate_revision": "invalid"}, {"baseline_revision": "b" * 40}):
+            with self.subTest(bad=bad), tempfile.TemporaryDirectory() as td:
+                root = Path(td)
+                protected, development, predictions = self._fixture(root)
+                manifest = self._manifest()
+                manifest["scoring"]["max_queries"] = 1
+                args = dict(cohort_name="confirm", predictions_path=predictions,
+                            candidate_id="bad-metadata", candidate_revision="a" * 40, state_dir=root / "state")
+                args.update(bad)
+                with self._env(protected, development):
+                    P.freeze_suite(manifest, root / "state")
+                    with self.assertRaises(P.ProtectedEvalError):
+                        P.score_predictions(manifest, **args)
+                    self.assertEqual(P.load_state(root / "state", manifest)["query_count"], 1)
+                    audit = json.loads((root / "state/queries.jsonl").read_text())
+                    self.assertEqual(audit["verdict"], "NOT_COMPARABLE")
+                    with self.assertRaisesRegex(P.ProtectedEvalError, "budget"):
+                        P.score_predictions(manifest, **args)
+
 
 if __name__ == "__main__":
     unittest.main()
