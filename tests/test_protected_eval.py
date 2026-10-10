@@ -207,6 +207,59 @@ class ProtectedEvaluatorTests(unittest.TestCase):
             self.assertEqual((state_dir / "queries.jsonl").stat().st_mode & 0o777, 0o600)
             self.assertEqual((state_dir / "state.lock").stat().st_mode & 0o777, 0o600)
 
+    def test_work_item_lineage_cannot_cross_cohorts(self) -> None:
+        for other in ("development", "future"):
+            with self.subTest(other=other), tempfile.TemporaryDirectory() as td:
+                root = Path(td)
+                protected, development, predictions = self._fixture(root)
+                target = (development if other == "development" else protected) / f"{other}.jsonl"
+                self._write_jsonl(target, [{"id": "branch-item", "expected": "private-value", "group": "g1"}])
+                state_dir = root / "state"
+                with self._env(protected, development):
+                    with self.assertRaisesRegex(P.ProtectedEvalError, "lineage") as raised:
+                        P.score_predictions(
+                            self._manifest(), cohort_name="confirm", predictions_path=predictions,
+                            candidate_id="same-task-other-branch", candidate_revision="a" * 40,
+                            state_dir=state_dir,
+                        )
+                self.assertNotIn("g1", str(raised.exception))
+                self.assertNotIn("private-value", str(raised.exception))
+                self.assertEqual(P.load_state(state_dir, self._manifest())["query_count"], 0)
+                self.assertFalse((state_dir / "queries.jsonl").exists())
+
+    def test_every_truth_row_requires_explicit_lineage(self) -> None:
+        for cohort in ("confirm", "development", "future"):
+            with self.subTest(cohort=cohort), tempfile.TemporaryDirectory() as td:
+                root = Path(td)
+                protected, development, predictions = self._fixture(root)
+                target = (development if cohort == "development" else protected) / f"{cohort}.jsonl"
+                rows = [json.loads(line) for line in target.read_text().splitlines()]
+                rows[0].pop("group")
+                self._write_jsonl(target, rows)
+                with self._env(protected, development):
+                    with self.assertRaisesRegex(P.ProtectedEvalError, "lineage"):
+                        P.score_predictions(
+                            self._manifest(), cohort_name="confirm", predictions_path=predictions,
+                            candidate_id="missing-lineage", candidate_revision="a" * 40,
+                            state_dir=root / "state",
+                        )
+
+    def test_same_group_within_one_cohort_is_permitted(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            protected, development, predictions = self._fixture(root)
+            self._write_jsonl(protected / "confirm.jsonl", [
+                {"id": "sealed-item-1", "expected": "alpha", "group": "one-task"},
+                {"id": "sealed-item-2", "expected": "beta", "group": "one-task"},
+            ])
+            with self._env(protected, development):
+                result = P.score_predictions(
+                    self._manifest(), cohort_name="confirm", predictions_path=predictions,
+                    candidate_id="one-fold", candidate_revision="a" * 40,
+                    state_dir=root / "state",
+                )
+            self.assertEqual(result["score"], 0.5)
+
 
 if __name__ == "__main__":
     unittest.main()

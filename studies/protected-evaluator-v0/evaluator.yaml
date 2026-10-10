@@ -1,6 +1,6 @@
 schema: z0eval.protected.v1
 id: z0-training-protected-v0
-version: "2026-10-05.1"
+version: "2026-10-10.1"
 
 label_generator:
   id: training-fixture-author-v0

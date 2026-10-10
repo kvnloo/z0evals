@@ -175,7 +175,7 @@ def _resolve_truth_ref(ref: str) -> Path:
     return target
 
 
-def _read_jsonl(path: Path, value_key: str) -> dict[str, Any]:
+def _read_jsonl_rows(path: Path, value_key: str) -> dict[str, dict[str, Any]]:
     result: dict[str, Any] = {}
     with path.open(encoding="utf-8") as fh:
         for line_no, raw in enumerate(fh, 1):
@@ -187,10 +187,31 @@ def _read_jsonl(path: Path, value_key: str) -> dict[str, Any]:
                 raise ProtectedEvalError(f"{path.name}:{line_no} requires id and {value_key}")
             if item_id in result:
                 raise ProtectedEvalError(f"duplicate item id in {path.name}")
-            result[item_id] = row[value_key]
+            result[item_id] = row
     if not result:
         raise ProtectedEvalError(f"{path.name} is empty")
     return result
+
+
+def _read_jsonl(path: Path, value_key: str) -> dict[str, Any]:
+    return {item_id: row[value_key] for item_id, row in _read_jsonl_rows(path, value_key).items()}
+
+
+def _truth_cohorts(manifest: dict[str, Any]) -> dict[str, dict[str, dict[str, Any]]]:
+    """Validate trusted work-item groups before any cohort can earn sealed credit."""
+    cohorts = {}
+    owners: dict[str, str] = {}
+    for name, cohort in manifest["cohorts"].items():
+        rows = _read_jsonl_rows(_resolve_truth_ref(str(cohort["truth_ref"])), "expected")
+        for row in rows.values():
+            group = row.get("group")
+            if not isinstance(group, str) or not group or group != group.strip():
+                raise ProtectedEvalError("truth rows require normalized nonempty work-item lineage groups")
+            if group in owners and owners[group] != name:
+                raise ProtectedEvalError("work-item lineage overlaps across evaluator cohorts")
+            owners[group] = name
+        cohorts[name] = rows
+    return cohorts
 
 
 def score_predictions(
@@ -220,8 +241,8 @@ def score_predictions(
         if int(state["query_count"]) >= max_queries:
             raise ProtectedEvalError("protected evaluator query budget exhausted")
 
-        truth_path = _resolve_truth_ref(str(cohort["truth_ref"]))
-        truth = _read_jsonl(truth_path, "expected")
+        truth_rows = _truth_cohorts(manifest)[cohort_name]
+        truth = {item_id: row["expected"] for item_id, row in truth_rows.items()}
         predictions = _read_jsonl(predictions_path, "prediction")
         if predictions.keys() != truth.keys():
             raise ProtectedEvalError("prediction IDs must exactly match the protected cohort IDs")
