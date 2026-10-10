@@ -320,26 +320,41 @@
 -            "prepared task id is malformed")
 +    require(task_id == WORKSTREAM_ID and plan.get("memory_scope") == MEMORY_SCOPE, "prepared stable workstream or memory scope changed")
 +    require(isinstance(plan.get("attempt_id"), str) and re.fullmatch(r"omp-live-[0-9a-f]{32}", plan["attempt_id"]) is not None, "prepared attempt id is malformed")
-@@ -1790 +1774 @@
+@@ -1735,0 +1720,7 @@
++    return errors
++
++
++def transcript_tool_errors(rows: list[dict[str, Any]], secret: str | None) -> list[dict[str, Any]]:
++    errors: list[dict[str, Any]] = []
++    for row in rows:
++        message = row.get("message") if isinstance(row.get("message"), dict) else {}
+@@ -1790 +1781 @@
 -    state.update({"task_id": plan.get("task_id"), "main_input_sha256": plan.get("main_input_sha256"),
 +    state.update({"attempt_id": plan.get("attempt_id"), "memory_scope": plan.get("memory_scope"), "task_id": plan.get("task_id"), "main_input_sha256": plan.get("main_input_sha256"),
-@@ -1834,0 +1819,2 @@
+@@ -1834,0 +1826,2 @@
 +        "attempt_id": plan["attempt_id"],
 +        "memory_scope": plan["memory_scope"],
-@@ -1859,0 +1846 @@
+@@ -1847,0 +1841 @@
++    state["tool_errors"] = transcript_tool_errors(session_rows, secret)
+@@ -1857 +1851,3 @@
+-            f"native transcript contains {len(state['provider_errors']['transcript'])} provider or tool errors")
++            f"native transcript contains {len(state['provider_errors']['transcript'])} provider errors")
++    require(not state["tool_errors"],
++            f"native transcript contains {len(state['tool_errors'])} tool errors")
+@@ -1859,0 +1856 @@
 +        candidate_root=candidate,
-@@ -1862 +1849,5 @@
+@@ -1862 +1859,5 @@
 -    require(len(tool_decision["native_owning_verifiers"]) == 1, "OMP did not run its prebound owning verifier exactly once")
 +    require(OWNING_VERIFIER_EXECUTOR in {"native", "independent"}, "unknown owning-verifier executor")
 +    if OWNING_VERIFIER_EXECUTOR == "native":
 +        require(len(tool_decision["native_owning_verifiers"]) == 1, "OMP did not run its prebound owning verifier exactly once")
 +    else:
 +        require(not tool_decision["native_owning_verifiers"], "independent-only scenario executed a native verifier")
-@@ -1868 +1859,2 @@
+@@ -1868 +1869,2 @@
 -        trace = event_proof(plan["task_id"], session_id, candidate, partial_trace)
 +        trace = event_proof(plan["task_id"], session_id, candidate, partial_trace,
 +                            execution_cwd=Path(next(row for row in session_rows if row.get("type") == "session")["cwd"]))
-@@ -1896,0 +1889,8 @@
+@@ -1896,0 +1899,8 @@
 +    require_file(D2_ORACLE, D2_ORACLE_SHA, "independent D2 oracle")
 +    oracle_env, _ = python_env(candidate)
 +    oracle_env["Z0_QUALIFICATION_CANDIDATE"] = str(candidate)
@@ -348,10 +363,10 @@
 +    state["d2_oracle"] = {"argv": oracle_argv, "oracle_sha256": D2_ORACLE_SHA, "artifact_sha256": digest_file(candidate / OUTPUT_REL), "actual_exit_code": oracle_proc.returncode, "output_sha256": digest_bytes(oracle_proc.stdout.encode())}
 +    require(oracle_proc.returncode == 0, "independently held D2 oracle failed")
 +    state["incorrect_artifact_control"] = run_incorrect_artifact_control(candidate, run_dir)
-@@ -1899 +1899 @@
+@@ -1899 +1909 @@
 -    from z0int.receipt import Outcome, join_outcome
 +    from z0int.receipt import Outcome, DecisionReceipt, append_receipt, find_receipt, join_outcome
-@@ -1901,0 +1902,20 @@
+@@ -1901,0 +1912,20 @@
 +    verification = {"workstream": WORKSTREAM_ID, "attempt_id": plan["attempt_id"], "memory_scope": MEMORY_SCOPE,
 +                    "source_ref": Z0INT_REF, "registry_ref": REGISTRY_REF,
 +                    "artifact_sha256": state["d2_oracle"]["artifact_sha256"], "d2_oracle": state["d2_oracle"],
@@ -372,16 +387,16 @@
 +                   root=CANONICAL_Z0INT_HOME)
 +    require(control_join["outcome_tier"] == "negative", "incorrect artifact produced a positive outcome")
 +    state["incorrect_artifact_control"]["canonical_trace_id"] = control_trace
-@@ -1908 +1928 @@
+@@ -1908 +1938 @@
 -        verification_source="isolated-caller-and-pinned-owning-pytest",
 +        verification_source="pinned-d2-oracle-and-owning-pytest",
-@@ -1919,0 +1940,2 @@
+@@ -1919,0 +1950,2 @@
 +        "attempt_id": plan["attempt_id"],
 +        "memory_scope": plan["memory_scope"],
-@@ -1941,0 +1964,2 @@
+@@ -1941,0 +1974,2 @@
 +        "d2_oracle": state["d2_oracle"],
 +        "incorrect_artifact_control": state["incorrect_artifact_control"],
-@@ -1966 +1990,3 @@
+@@ -1966 +2000,3 @@
 -                              "task_id": plan["task_id"], "main_input_sha256": plan["main_input_sha256"]}, sort_keys=True))
 +                              "task_id": plan["task_id"],
 +        "attempt_id": plan["attempt_id"],
@@ -403,7 +418,7 @@
 +import types as _types
 +_FROZEN_BASE = Path(_SELF).with_name("qualify-base.py")
 +_BASE_BYTES = _FROZEN_BASE.read_bytes()
-+if _hashlib.sha256(_BASE_BYTES).hexdigest() != "5fefe126c00c551770dcb8510a9bb4002a26878bb3ca7b9e635dfcdee11c2ac1":
++if _hashlib.sha256(_BASE_BYTES).hexdigest() != "8939e547f21d280db125ca4f38667d65b9857267911a701a10dfeebc87bebc86":
 +    raise RuntimeError("Frozen launcher dependency changed")
 +_HELPER = Path(_SELF).with_name("omp_qualification_paths.py")
 +_HELPER_BYTES = _HELPER.read_bytes()
@@ -502,7 +517,7 @@
 -QUALIFY = WORK / "omp_live_qualification/qualify.py"
 +WORK = Path("/home/kvn/Documents/ChatGPT/z0/.work/critical-path")
 +QUALIFY = Path(__file__).with_name("qualify-r13.py")
-+QUALIFY_SHA = '41b51d6b41c0cb5374b343b0db298d81cb2ca40f5d43706cb937f6a84ddaf2be'
++QUALIFY_SHA = '70286f49e5232839a8a94aa6a32b75525c5c19e3e04bf2de68eef4c2a63d167b'
 @@ -22 +24 @@
 -def launch(run_dir: Path, allow_live: bool) -> int:
 +def launch(run_dir: Path, allow_live: bool, prepare: bool = False) -> int:

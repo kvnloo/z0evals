@@ -4,8 +4,8 @@
   "original_r15_wrapper_sha256": "2741d6f211696ff0d0eec8471fb708c88874782a881b4c786574ec020567b8e5",
   "dependency_snapshot_sha256": "63e5427f0cd7ca4442e580844056cd1ef76c0e7ce3eeaa151511ba4b0796939c",
   "dependency_historical_identity": "not pinned by original wrapper; current recovered snapshot only",
-  "corrected_dependency_sha256": "5fefe126c00c551770dcb8510a9bb4002a26878bb3ca7b9e635dfcdee11c2ac1",
-  "patch_sha256": "7f416cf1c3e49e528647dce968dc0df8dac94d6d71aead5e01785e8d3d2b2893",
+  "corrected_dependency_sha256": "8939e547f21d280db125ca4f38667d65b9857267911a701a10dfeebc87bebc86",
+  "patch_sha256": "812d32e74b3c7848fde13957e3c17416383e2966b5697c8ed9fcf3730765da79",
   "path_helper_sha256": "d372708a153dc6e3ac8ebbeb838774c0921d62349354b06f91a1dcfe92830323",
   "production_path_helper_owner": "kvnloo/z0intelligence",
   "production_path_helper_source_ref": "4c41fd5b148fb04e63b1f721ccf3ef564aa78330",
@@ -14,7 +14,7 @@
   "original_results_preserved": true,
   "native_and_independent_verifiers": "separate explicit per-run executors; native remains the default",
   "receipt_path_resolution": "uses recorded native execution cwd; caller must supply it explicitly",
-  "corrected_wrapper_sha256": "41b51d6b41c0cb5374b343b0db298d81cb2ca40f5d43706cb937f6a84ddaf2be",
+  "corrected_wrapper_sha256": "70286f49e5232839a8a94aa6a32b75525c5c19e3e04bf2de68eef4c2a63d167b",
   "patch_application": "git apply --unidiff-zero; place patched qualify.py beside wrapper as qualify-base.py, with registered path helper",
   "dependency_freeze": "wrapper hashes and executes the same retained byte strings; loads the verified helper explicitly",
   "validation_source_ref": "532a444ffaaa8de3623d4c97d77eaff8b5e34313",
@@ -23,7 +23,7 @@
   "caller_validation": "public resolver and direct exact-path helper accepted; independent behavioral oracle remains required; copied reads/hashes and dynamic calls rejected",
   "live_test_source_ref": "532a444ffaaa8de3623d4c97d77eaff8b5e34313",
   "live_test_registry_ref": "172e06830af7a3cea88e7390264433506fad0c77",
-  "handoff_template_difference": "none: registered wrapper and executed immutable release have identical bytes",
+  "handoff_template_difference": "none; registered bytes equal the sole launcher-work owner. Earlier immutable live release remains unchanged.",
   "dependency_import": "verified frozen z0int source selected before helper import; interpreter and shared dependency sites also supplied explicitly to sanitized child",
   "workstream_task": "z0-multiharness-20261009",
   "attempt_identity": "separate omp-live UUID; stable task must exactly match task memory scope",
@@ -39,10 +39,69 @@
   "readiness_is_not_quality": true,
   "historical_unresolved_results_preserved": true,
   "native_route_wrapper_original_sha256": "e683901e0a1aae14ea976c71b939ee4720f9f172afdee413e78fd066e9067502",
-  "native_route_wrapper_sha256": "4a51c6de5719e10f8007f8d98e080c259e38d741e2d9d1c50405db350992d77d",
+  "native_route_wrapper_sha256": "572aa64786f1a9354d94ab6f9219c7b8525447671b07e5183ab2cedd1c28d5be",
   "entrypoint": "run-native.py: derived frozen existing credential reader; --prepare invokes actual sanitized child without reading credentials; --allow-live retains TTY, sign-in route, per-run native approvals, and 600s TTL requirement",
   "scoped_correction_validation": "use actual reuse.scoped_memory_use, bound snapshot/source revision, and independent current projection; superseded inclusion is history, not active selection",
   "caller_getattr": "ordinary field serialization allowed; invoking a dynamic getattr result remains rejected",
   "task_clarification": "existing empty file has complete evidence with empty-string excerpt; held oracle unchanged",
-  "previous_fresh_result": "artifact failed empty-file behavior; original launcher unresolved result preserved, separately corrected projection adjudication is not historical PASS"
+  "previous_fresh_result": "artifact failed empty-file behavior; original launcher unresolved result preserved, separately corrected projection adjudication is not historical PASS",
+  "previous_corrected_dependency_sha256": "5fefe126c00c551770dcb8510a9bb4002a26878bb3ca7b9e635dfcdee11c2ac1",
+  "previous_corrected_wrapper_sha256": "41b51d6b41c0cb5374b343b0db298d81cb2ca40f5d43706cb937f6a84ddaf2be",
+  "previous_native_route_wrapper_sha256": "4a51c6de5719e10f8007f8d98e080c259e38d741e2d9d1c50405db350992d77d",
+  "reporting_correction": "provider errors and non-gate tool errors are separate; both still reject strict qualification. Reuse-gate policy rejections remain in tool_policy_rejections and the existing timing checks.",
+  "reporting_validation": "four offline controls and two existing native transcripts; no behavioral replay, fresh inference or new launch directory",
+  "historical_live_release_wrapper_sha256": "41b51d6b41c0cb5374b343b0db298d81cb2ca40f5d43706cb937f6a84ddaf2be",
+  "reporting_tested_wrapper_sha256": "70286f49e5232839a8a94aa6a32b75525c5c19e3e04bf2de68eef4c2a63d167b",
+  "registered_wrapper_live_qualification": "not rerun; existing live proof remains bound to historical release and source 532a444",
+  "reporting_test_results": {
+    "classification": "offline reporting regression; no behavioral replay or fresh agent run",
+    "controls": [
+      {
+        "case": "native-approval-denial",
+        "provider_errors": 0,
+        "tool_errors": 1,
+        "strict_rejection_preserved": true
+      },
+      {
+        "case": "provider-failure",
+        "provider_errors": 1,
+        "tool_errors": 0,
+        "strict_rejection_preserved": true
+      },
+      {
+        "case": "observe-block",
+        "provider_errors": 0,
+        "tool_errors": 0,
+        "strict_rejection_preserved": true
+      },
+      {
+        "case": "successful-tool",
+        "provider_errors": 0,
+        "tool_errors": 0,
+        "strict_rejection_preserved": true
+      }
+    ],
+    "archival_results": [
+      {
+        "session_id": "01a122dc-6725-7000-a672-b1410cc147db",
+        "original_status": "unresolved",
+        "original_result_sha256": "f3c840360781744043b07b4f4b24c31967544342d8bd891ac69ed6fb4a1c6564",
+        "old_combined_errors": 0,
+        "corrected_provider_errors": 0,
+        "retained_tool_errors": 0,
+        "historical_result_modified": false
+      },
+      {
+        "session_id": "01a122e4-d340-7000-85d0-e9b9def7c8f1",
+        "original_status": "unresolved",
+        "original_result_sha256": "610de4e197d155f5a0558941d20de717f2b357f66780f242c748cebb829088ab",
+        "old_combined_errors": 1,
+        "corrected_provider_errors": 0,
+        "retained_tool_errors": 1,
+        "historical_result_modified": false
+      }
+    ],
+    "strict_rejection_set_unchanged": true,
+    "historical_results_unchanged": true
+  }
 }
