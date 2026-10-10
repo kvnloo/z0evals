@@ -26,12 +26,18 @@ The `future` cohort is deliberately non-queryable by the optimizer. If protected
 examples or labels leak, mark the suite contaminated; it immediately stops minting
 sealed credit. Rotation uses the explicit supersession path.
 
-Every truth row carries a normalized, nonempty `group`: the trusted evaluator's
-originating work-item lineage. Retries, continuations and branches of one task
-use the same group and stay in one cohort. Before scoring, the evaluator checks
-all declared cohorts and refuses missing groups or any cross-cohort overlap.
-Missing cohort files also refuse scoring. Errors do not disclose group values,
-labels or source paths, and rejection consumes no scoring query.
+Before accepting optimizer queries, the evaluator owner runs `freeze` with the
+fixed manifest and private state directory. This existing evaluator command reads
+and validates all cohorts once, then records their exact byte digests. Scoring
+reads only the requested cohort and checks its frozen digest. It never opens
+development or future truth as a side effect of a confirmation query.
+
+Every truth row carries a nonempty `group` for the originating work item. Retries,
+continuations and branches stay in one cohort. Preparation refuses cross-cohort
+item-ID overlap even under renamed groups, and compares group aliases after
+Unicode normalization, case folding and removal of format characters. These
+checks catch inconsistent labels; they cannot authenticate native source lineage.
+The evaluator owner must independently verify source identity and fold membership.
 
 The group is supplied by the trusted cohort author, not inferred from arbitrary
 candidate text. Native extraction/source references must substantiate that
@@ -46,21 +52,35 @@ credit. `exact_match` remains available for explicitly item-weighted controls;
 the result names the selected metric. Historical item-weighted scores remain
 at their original manifest/version and are not recomputed as new outcomes.
 
-Adaptive query state binds the complete manifest and the exact bytes read for
-all cohorts at the first successful query. Later threshold/configuration or
-cohort edits under the same suite/version refuse credit. The prediction hash
+Adaptive state binds the complete manifest and cohort bytes during owner
+preparation, before the first query or refused attempt. Later configuration or
+requested-cohort edits refuse credit. Fresh unregistered state returns
+NOT_COMPARABLE with no score or sealed credit and does not read truth. Historical
+queried state cannot be registered retroactively; rotate the suite explicitly
+while preserving its audit. Registered input refusals consume the query budget
+and append a content-free refusal record. The prediction hash
 also describes the bytes actually scored, rather than a later file reread.
 Historical unbound state is not silently upgraded; rotate explicitly to a new
 suite/version with a new private state directory. Hashes remain in private
 state/audit, with no raw truth or filesystem paths added to public output.
 
-For no-skill/candidate comparisons, pass `score --baseline-predictions FILE
+For no-skill/candidate comparisons, the evaluator owner first pins
+`baseline_revision` and `baseline_predictions_sha256` in the comparison cohort's
+manifest. The baseline must come from an independently executed incumbent under
+comparable conditions. A digest binds supplied bytes; it does not prove execution
+or comparability. No real incumbent registration is added by this repair.
+
+Pass `score --baseline-predictions FILE
 --baseline-revision FULL_GIT_SHA` alongside the existing candidate arguments.
 Both vectors must cover exactly the same frozen cohort and use the same metric;
 one paired comparison consumes one adaptive query. The aggregate receipt binds
 the baseline revision and scored prediction hash and reports its score and
-candidate-minus-baseline delta. A tie or regression is DISCARD even when the
-absolute pass threshold is met. KEEP in this scorer only means the supplied
+candidate-minus-baseline delta. Promotion decisions and deltas use exact fractions;
+float conversion occurs only for aggregate output. A registered tie or regression
+is DISCARD, and positive lift cannot bypass the absolute threshold. A high score
+without the pinned incumbent, with altered baseline bytes/revision, or with the
+same candidate and baseline revision is NOT_COMPARABLE with no sealed credit.
+An absolute failure remains DISCARD. KEEP only means the supplied
 predictions clear these gates; it does not prove native model execution,
 repeatability, safe tool behavior, measurement completeness or adoption approval.
 
@@ -70,9 +90,11 @@ repeatability, safe tool behavior, measurement completeness or adoption approval
 and covers normal scoring, repeated adaptive queries, query-budget exhaustion,
 contamination, supersession, future-cohort refusal, and verifier independence.
 
-This is a contract drill, not a claim that filesystem secrecy alone protects an
-evaluator. Production deployment still needs an actual trust boundary (separate
-process/service/account or equivalent access control).
+This is a contract drill. Production needs the existing trusted runner to own the
+manifest/state and expose only scoring to optimizers. Owner commands such as
+`freeze`, contamination and rotation must not be available to the optimizer.
+Same-user access to owner files is not an independent evaluation boundary. The
+synthetic tests do not certify real cohort provenance or candidate behavior.
 
 ## First factory diagnostic
 

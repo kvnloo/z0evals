@@ -17,7 +17,7 @@ sys.path.insert(0, str(REPO / "scripts"))
 import protected_eval as P  # noqa: E402
 
 
-class ProtectedEvaluatorTests(unittest.TestCase):
+class ProtectedEvaluatorFixture(unittest.TestCase):
     def _manifest(self) -> dict:
         return P.load_manifest(REPO / "studies" / "protected-evaluator-v0" / "evaluator.yaml")
 
@@ -63,6 +63,13 @@ class ProtectedEvaluatorTests(unittest.TestCase):
             clear=False,
         )
 
+class ProtectedEvaluatorTests(ProtectedEvaluatorFixture):
+    def _score(self, manifest, **kwargs):
+        # The synthetic evaluator owner prepares the suite before optimizer queries.
+        if not (kwargs["state_dir"] / "state.json").exists():
+            P.freeze_suite(manifest, kwargs["state_dir"])
+        return P.score_predictions(manifest, **kwargs)
+
     def test_checked_in_manifest_is_valid_and_future_is_separate(self) -> None:
         manifest = self._manifest()
         self.assertEqual(manifest["schema"], "z0eval.protected.v1")
@@ -76,7 +83,7 @@ class ProtectedEvaluatorTests(unittest.TestCase):
             protected, development, predictions = self._fixture(root)
             state_dir = root / "state"
             with self._env(protected, development):
-                result = P.score_predictions(
+                result = self._score(
                     self._manifest(),
                     cohort_name="confirm",
                     predictions_path=predictions,
@@ -101,7 +108,7 @@ class ProtectedEvaluatorTests(unittest.TestCase):
             self._write_jsonl(predictions, [{"id": "sealed-item-1", "prediction": "alpha"}])
             with self._env(protected, development):
                 with self.assertRaisesRegex(P.ProtectedEvalError, "exactly match"):
-                    P.score_predictions(
+                    self._score(
                         self._manifest(), cohort_name="confirm", predictions_path=predictions,
                         candidate_id="candidate-short", candidate_revision="c" * 40,
                         state_dir=root / "state",
@@ -114,19 +121,19 @@ class ProtectedEvaluatorTests(unittest.TestCase):
             manifest = copy.deepcopy(self._manifest())
             manifest["scoring"]["max_queries"] = 2
             with self._env(protected, development):
-                first = P.score_predictions(
+                first = self._score(
                     manifest, cohort_name="confirm", predictions_path=predictions,
                     candidate_id="candidate-a", candidate_revision="d" * 40,
                     state_dir=root / "state",
                 )
-                second = P.score_predictions(
+                second = self._score(
                     manifest, cohort_name="confirm", predictions_path=predictions,
                     candidate_id="candidate-b", candidate_revision="e" * 40,
                     state_dir=root / "state",
                 )
                 self.assertEqual((first["query_index"], second["query_index"]), (1, 2))
                 with self.assertRaisesRegex(P.ProtectedEvalError, "budget exhausted"):
-                    P.score_predictions(
+                    self._score(
                         manifest, cohort_name="confirm", predictions_path=predictions,
                         candidate_id="candidate-c", candidate_revision="f" * 40,
                         state_dir=root / "state",
@@ -150,7 +157,7 @@ class ProtectedEvaluatorTests(unittest.TestCase):
             self.assertNotIn("sealed-item-1", state_raw)
             with self._env(protected, development):
                 with self.assertRaisesRegex(P.ProtectedEvalError, "status=contaminated"):
-                    P.score_predictions(
+                    self._score(
                         manifest, cohort_name="confirm", predictions_path=predictions,
                         candidate_id="candidate-after-leak", candidate_revision="1" * 40,
                         state_dir=state_dir,
@@ -169,7 +176,7 @@ class ProtectedEvaluatorTests(unittest.TestCase):
             self.assertEqual(status["superseded_by"], "z0-training-protected-v1")
             with self._env(protected, development):
                 with self.assertRaisesRegex(P.ProtectedEvalError, "status=superseded"):
-                    P.score_predictions(
+                    self._score(
                         manifest, cohort_name="confirm", predictions_path=predictions,
                         candidate_id="candidate-old-suite", candidate_revision="2" * 40,
                         state_dir=state_dir,
@@ -181,7 +188,7 @@ class ProtectedEvaluatorTests(unittest.TestCase):
             protected, development, predictions = self._fixture(root)
             with self._env(protected, development):
                 with self.assertRaisesRegex(P.ProtectedEvalError, "not optimizer-queryable"):
-                    P.score_predictions(
+                    self._score(
                         self._manifest(), cohort_name="future", predictions_path=predictions,
                         candidate_id="candidate-future", candidate_revision="3" * 40,
                         state_dir=root / "state",
@@ -199,7 +206,7 @@ class ProtectedEvaluatorTests(unittest.TestCase):
             protected, development, predictions = self._fixture(root)
             state_dir = root / "state"
             with self._env(protected, development):
-                P.score_predictions(
+                self._score(
                     self._manifest(), cohort_name="confirm", predictions_path=predictions,
                     candidate_id="candidate-private", candidate_revision="4" * 40,
                     state_dir=state_dir,
@@ -218,7 +225,7 @@ class ProtectedEvaluatorTests(unittest.TestCase):
                 state_dir = root / "state"
                 with self._env(protected, development):
                     with self.assertRaisesRegex(P.ProtectedEvalError, "lineage") as raised:
-                        P.score_predictions(
+                        self._score(
                             self._manifest(), cohort_name="confirm", predictions_path=predictions,
                             candidate_id="same-task-other-branch", candidate_revision="a" * 40,
                             state_dir=state_dir,
@@ -239,7 +246,7 @@ class ProtectedEvaluatorTests(unittest.TestCase):
                 self._write_jsonl(target, rows)
                 with self._env(protected, development):
                     with self.assertRaisesRegex(P.ProtectedEvalError, "lineage"):
-                        P.score_predictions(
+                        self._score(
                             self._manifest(), cohort_name="confirm", predictions_path=predictions,
                             candidate_id="missing-lineage", candidate_revision="a" * 40,
                             state_dir=root / "state",
@@ -254,7 +261,7 @@ class ProtectedEvaluatorTests(unittest.TestCase):
                 {"id": "sealed-item-2", "expected": "beta", "group": "one-task"},
             ])
             with self._env(protected, development):
-                result = P.score_predictions(
+                result = self._score(
                     self._manifest(), cohort_name="confirm", predictions_path=predictions,
                     candidate_id="one-fold", candidate_revision="a" * 40,
                     state_dir=root / "state",
@@ -274,7 +281,7 @@ class ProtectedEvaluatorTests(unittest.TestCase):
             manifest = self._manifest()
             manifest["scoring"]["metric"] = "group_macro_exact_match"
             with self._env(protected, development):
-                result = P.score_predictions(
+                result = self._score(
                     manifest, cohort_name="confirm", predictions_path=predictions,
                     candidate_id="branch-inflation", candidate_revision="a" * 40,
                     state_dir=root / "state",
@@ -299,7 +306,7 @@ class ProtectedEvaluatorTests(unittest.TestCase):
             manifest = self._manifest()
             manifest["scoring"]["metric"] = "group_macro_exact_match"
             with self._env(protected, development):
-                result = P.score_predictions(
+                result = self._score(
                     manifest, cohort_name="confirm", predictions_path=predictions,
                     candidate_id="group-balanced", candidate_revision="a" * 40,
                     state_dir=root / "state",
@@ -313,7 +320,7 @@ class ProtectedEvaluatorTests(unittest.TestCase):
             manifest = self._manifest()
             state_dir = root / "state"
             with self._env(protected, development):
-                first = P.score_predictions(
+                first = self._score(
                     manifest, cohort_name="confirm", predictions_path=predictions,
                     candidate_id="before-drift", candidate_revision="a" * 40, state_dir=state_dir,
                 )
@@ -321,7 +328,7 @@ class ProtectedEvaluatorTests(unittest.TestCase):
                 changed = copy.deepcopy(manifest)
                 changed["scoring"]["pass_threshold"] = 0.1
                 with self.assertRaisesRegex(P.ProtectedEvalError, "manifest"):
-                    P.score_predictions(
+                    self._score(
                         changed, cohort_name="confirm", predictions_path=predictions,
                         candidate_id="after-drift", candidate_revision="b" * 40, state_dir=state_dir,
                     )
@@ -334,7 +341,7 @@ class ProtectedEvaluatorTests(unittest.TestCase):
             manifest = self._manifest()
             state_dir = root / "state"
             with self._env(protected, development):
-                first = P.score_predictions(
+                first = self._score(
                     manifest, cohort_name="confirm", predictions_path=predictions,
                     candidate_id="before-label-edit", candidate_revision="a" * 40, state_dir=state_dir,
                 )
@@ -343,11 +350,11 @@ class ProtectedEvaluatorTests(unittest.TestCase):
                 rows[1]["expected"] = "wrong"
                 self._write_jsonl(protected / "confirm.jsonl", rows)
                 with self.assertRaisesRegex(P.ProtectedEvalError, "cohort revision"):
-                    P.score_predictions(
+                    self._score(
                         manifest, cohort_name="confirm", predictions_path=predictions,
                         candidate_id="after-label-edit", candidate_revision="b" * 40, state_dir=state_dir,
                     )
-            self.assertEqual(P.load_state(state_dir, manifest)["query_count"], 1)
+            self.assertEqual(P.load_state(state_dir, manifest)["query_count"], 2)
 
     def test_unbound_historical_state_cannot_be_silently_rebound(self) -> None:
         with tempfile.TemporaryDirectory() as td:
@@ -374,7 +381,7 @@ class ProtectedEvaluatorTests(unittest.TestCase):
 
             state_dir = root / "state"
             with self._env(protected, development), patch.object(P, "_read_jsonl_rows", side_effect=read_then_replace):
-                result = P.score_predictions(
+                result = self._score(
                     self._manifest(), cohort_name="confirm", predictions_path=predictions,
                     candidate_id="read-snapshot", candidate_revision="a" * 40, state_dir=state_dir,
                 )
@@ -398,9 +405,12 @@ class ProtectedEvaluatorTests(unittest.TestCase):
                         {"id": "sealed-item-1", "prediction": "alpha"},
                         {"id": "sealed-item-2", "prediction": "beta" if correct else "wrong"},
                     ])
+                manifest = self._manifest()
+                manifest["cohorts"]["confirm"]["baseline_revision"] = "b" * 40
+                manifest["cohorts"]["confirm"]["baseline_predictions_sha256"] = hashlib.sha256(baseline.read_bytes()).hexdigest()
                 with self._env(protected, development):
-                    result = P.score_predictions(
-                        self._manifest(), cohort_name="confirm", predictions_path=predictions,
+                    result = self._score(
+                        manifest, cohort_name="confirm", predictions_path=predictions,
                         candidate_id="candidate-skill", candidate_revision="a" * 40,
                         state_dir=root / "state", baseline_predictions_path=baseline,
                         baseline_revision="b" * 40,
@@ -423,11 +433,207 @@ class ProtectedEvaluatorTests(unittest.TestCase):
             self._write_jsonl(baseline, [{"id": "sealed-item-1", "prediction": "alpha"}])
             with self._env(protected, development):
                 with self.assertRaisesRegex(P.ProtectedEvalError, "baseline IDs"):
-                    P.score_predictions(
+                    self._score(
                         self._manifest(), cohort_name="confirm", predictions_path=predictions,
                         candidate_id="partial-baseline", candidate_revision="a" * 40,
                         state_dir=root / "state", baseline_predictions_path=baseline, baseline_revision="b" * 40,
                     )
+
+
+class PromotionTruthTests(ProtectedEvaluatorFixture):
+    def _registered_state(self, manifest, root, protected, development):
+        state = P._default_state(manifest)
+        state["registered"] = True
+        state["cohort_revisions"] = {
+            name: hashlib.sha256(path.read_bytes()).hexdigest()
+            for name, path in (("confirm", protected / "confirm.jsonl"),
+                               ("future", protected / "future.jsonl"),
+                               ("development", development / "development.jsonl"))
+        }
+        P._atomic_json(root / "state/state.json", state)
+
+    def _pin_baseline(self, manifest, baseline, revision="b" * 40):
+        manifest["cohorts"]["confirm"]["baseline_revision"] = revision
+        manifest["cohorts"]["confirm"]["baseline_predictions_sha256"] = hashlib.sha256(baseline.read_bytes()).hexdigest()
+
+    def test_mathematical_group_macro_tie_is_discard(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            protected, development, predictions = self._fixture(root)
+            baseline = root / "baseline.jsonl"
+            truth, candidate, incumbent = [], [], []
+            # Both group-macro accuracies are exactly 17/18, independent of float summation.
+            for group, size, correct, base_correct in (("a", 6, 5, 6), ("b", 7, 7, 6), ("c", 42, 42, 41)):
+                for i in range(size):
+                    item = f"{group}-{i}"
+                    truth.append({"id": item, "group": group, "expected": True})
+                    candidate.append({"id": item, "prediction": i < correct})
+                    incumbent.append({"id": item, "prediction": i < base_correct})
+            for path, rows in ((protected / "confirm.jsonl", truth), (predictions, candidate), (baseline, incumbent)):
+                self._write_jsonl(path, rows)
+            manifest = self._manifest()
+            self._pin_baseline(manifest, baseline)
+            self._registered_state(manifest, root, protected, development)
+            with self._env(protected, development):
+                result = P.score_predictions(manifest, cohort_name="confirm", predictions_path=predictions,
+                    candidate_id="exact-tie", candidate_revision="a" * 40, state_dir=root / "state",
+                    baseline_predictions_path=baseline, baseline_revision="b" * 40)
+            self.assertEqual(result["verdict"], "DISCARD")
+            self.assertEqual(result["baseline"]["score_delta"], 0.0)
+
+    def test_high_score_without_incumbent_is_not_comparable(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            protected, development, predictions = self._fixture(root)
+            self._write_jsonl(predictions, [{"id": "sealed-item-1", "prediction": "alpha"},
+                                            {"id": "sealed-item-2", "prediction": "beta"}])
+            manifest = self._manifest()
+            self._registered_state(manifest, root, protected, development)
+            with self._env(protected, development):
+                result = P.score_predictions(manifest, cohort_name="confirm", predictions_path=predictions,
+                    candidate_id="no-incumbent", candidate_revision="a" * 40, state_dir=root / "state")
+            self.assertEqual(result["verdict"], "NOT_COMPARABLE")
+            self.assertFalse(result["sealed_credit"])
+
+    def test_caller_cannot_replace_or_impersonate_the_frozen_incumbent(self):
+        for mismatch in ("digest", "revision", "unregistered", "same-candidate"):
+            with self.subTest(mismatch=mismatch), tempfile.TemporaryDirectory() as td:
+                root = Path(td)
+                protected, development, predictions = self._fixture(root)
+                baseline = root / "baseline.jsonl"
+                self._write_jsonl(predictions, [{"id": "sealed-item-1", "prediction": "alpha"},
+                                                {"id": "sealed-item-2", "prediction": "beta"}])
+                self._write_jsonl(baseline, [{"id": "sealed-item-1", "prediction": "wrong"},
+                                            {"id": "sealed-item-2", "prediction": "wrong"}])
+                manifest = self._manifest()
+                if mismatch != "unregistered":
+                    self._pin_baseline(manifest, baseline, "a" * 40 if mismatch == "same-candidate" else "b" * 40)
+                if mismatch == "digest":
+                    manifest["cohorts"]["confirm"]["baseline_predictions_sha256"] = "0" * 64
+                self._registered_state(manifest, root, protected, development)
+                baseline_revision = ("c" if mismatch == "revision" else "a" if mismatch == "same-candidate" else "b") * 40
+                with self._env(protected, development):
+                    result = P.score_predictions(manifest, cohort_name="confirm", predictions_path=predictions,
+                        candidate_id="false-lift", candidate_revision="a" * 40, state_dir=root / "state",
+                        baseline_predictions_path=baseline, baseline_revision=baseline_revision)
+                self.assertEqual(result["verdict"], "NOT_COMPARABLE")
+                self.assertFalse(result["sealed_credit"])
+
+    def test_fresh_unregistered_state_cannot_award_credit_or_read_truth(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            protected, development, predictions = self._fixture(root)
+            manifest = self._manifest()
+            manifest["scoring"]["pass_threshold"] = 0.1
+            with self._env(protected, development), patch.object(P, "_resolve_truth_ref", side_effect=AssertionError("truth read")):
+                result = P.score_predictions(manifest, cohort_name="confirm", predictions_path=predictions,
+                    candidate_id="unregistered", candidate_revision="a" * 40, state_dir=root / "state")
+            self.assertEqual(result["verdict"], "NOT_COMPARABLE")
+            self.assertIsNone(result["score"])
+            self.assertFalse(result["sealed_credit"])
+
+    def test_registered_query_does_not_open_future_or_development_truth(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            protected, development, predictions = self._fixture(root)
+            manifest = self._manifest()
+            self._registered_state(manifest, root, protected, development)
+            (protected / "future.jsonl").unlink()
+            (development / "development.jsonl").unlink()
+            with self._env(protected, development):
+                result = P.score_predictions(manifest, cohort_name="confirm", predictions_path=predictions,
+                    candidate_id="one-holdout", candidate_revision="a" * 40, state_dir=root / "state")
+            self.assertEqual(result["score"], 0.5)
+            self.assertEqual(result["verdict"], "DISCARD")
+
+    def test_item_identity_overlap_is_rejected_even_if_group_is_renamed(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            protected, development, _ = self._fixture(root)
+            self._write_jsonl(development / "development.jsonl", [
+                {"id": "sealed-item-1", "expected": "alpha", "group": "renamed-group"}])
+            with self._env(protected, development), self.assertRaisesRegex(P.ProtectedEvalError, "lineage"):
+                P._truth_cohorts(self._manifest())
+
+    def test_refused_prediction_attempt_consumes_a_query(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            protected, development, predictions = self._fixture(root)
+            manifest = self._manifest()
+            manifest["scoring"]["max_queries"] = 1
+            self._registered_state(manifest, root, protected, development)
+            self._write_jsonl(predictions, [{"id": "sealed-item-1", "prediction": "alpha"}])
+            with self._env(protected, development), self.assertRaisesRegex(P.ProtectedEvalError, "exactly match"):
+                P.score_predictions(manifest, cohort_name="confirm", predictions_path=predictions,
+                    candidate_id="incomplete", candidate_revision="a" * 40, state_dir=root / "state")
+            self.assertEqual(P.load_state(root / "state", manifest)["query_count"], 1)
+            audit = json.loads((root / "state/queries.jsonl").read_text())
+            self.assertEqual(audit["verdict"], "NOT_COMPARABLE")
+
+    def test_owner_freeze_binds_truth_before_the_first_refused_query(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            protected, development, predictions = self._fixture(root)
+            manifest = self._manifest()
+            with self._env(protected, development):
+                status = P.freeze_suite(manifest, root / "state")
+                self.assertTrue(status["registered"])
+                self.assertEqual(status["query_count"], 0)
+                self._write_jsonl(predictions, [{"id": "sealed-item-1", "prediction": "alpha"}])
+                with self.assertRaisesRegex(P.ProtectedEvalError, "exactly match"):
+                    P.score_predictions(manifest, cohort_name="confirm", predictions_path=predictions,
+                        candidate_id="refused", candidate_revision="a" * 40, state_dir=root / "state")
+                self._write_jsonl(protected / "confirm.jsonl", [
+                    {"id": "sealed-item-1", "expected": "alpha", "group": "g1"},
+                    {"id": "sealed-item-2", "expected": "wrong", "group": "g2"}])
+                with self.assertRaisesRegex(P.ProtectedEvalError, "cohort revision"):
+                    P.score_predictions(manifest, cohort_name="confirm", predictions_path=predictions,
+                        candidate_id="drift", candidate_revision="a" * 40, state_dir=root / "state")
+            self.assertEqual(P.load_state(root / "state", manifest)["query_count"], 2)
+
+    def test_unregistered_queries_cannot_be_upgraded_into_registered_history(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            protected, development, predictions = self._fixture(root)
+            manifest = self._manifest()
+            with self._env(protected, development):
+                result = P.score_predictions(manifest, cohort_name="confirm", predictions_path=predictions,
+                    candidate_id="unknown", candidate_revision="a" * 40, state_dir=root / "state")
+                self.assertEqual(result["verdict"], "NOT_COMPARABLE")
+                before = (root / "state/queries.jsonl").read_bytes()
+                with self.assertRaisesRegex(P.ProtectedEvalError, "rotation"):
+                    P.freeze_suite(manifest, root / "state")
+            self.assertEqual((root / "state/queries.jsonl").read_bytes(), before)
+
+    def test_normalized_lineage_aliases_cannot_cross_cohorts(self):
+        for alias in ("G1", "Ｇ１", "g\u200b1"):
+            with self.subTest(alias=alias), tempfile.TemporaryDirectory() as td:
+                root = Path(td)
+                protected, development, _ = self._fixture(root)
+                self._write_jsonl(development / "development.jsonl", [
+                    {"id": "different-id", "expected": "dev", "group": alias}])
+                with self._env(protected, development), self.assertRaisesRegex(P.ProtectedEvalError, "lineage"):
+                    P.freeze_suite(self._manifest(), root / "state")
+
+    def test_positive_lift_cannot_override_the_absolute_threshold(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            protected, development, predictions = self._fixture(root)
+            truth = [{"id": f"item-{i}", "expected": True, "group": "one-task"} for i in range(4)]
+            self._write_jsonl(protected / "confirm.jsonl", truth)
+            self._write_jsonl(predictions, [{"id": row["id"], "prediction": i < 3} for i, row in enumerate(truth)])
+            baseline = root / "baseline.jsonl"
+            self._write_jsonl(baseline, [{"id": row["id"], "prediction": i < 1} for i, row in enumerate(truth)])
+            manifest = self._manifest()
+            self._pin_baseline(manifest, baseline)
+            with self._env(protected, development):
+                P.freeze_suite(manifest, root / "state")
+                result = P.score_predictions(manifest, cohort_name="confirm", predictions_path=predictions,
+                    candidate_id="below-threshold", candidate_revision="a" * 40, state_dir=root / "state",
+                    baseline_predictions_path=baseline, baseline_revision="b" * 40)
+            self.assertEqual(result["score"], 0.75)
+            self.assertEqual(result["baseline"]["score_delta"], 0.5)
+            self.assertEqual(result["verdict"], "DISCARD")
 
 
 if __name__ == "__main__":
