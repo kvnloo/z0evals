@@ -41,14 +41,6 @@ def _sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
-def _sha256_file(path: Path) -> str:
-    h = hashlib.sha256()
-    with path.open("rb") as fh:
-        for chunk in iter(lambda: fh.read(1024 * 1024), b""):
-            h.update(chunk)
-    return h.hexdigest()
-
-
 def validate_evaluator_manifest(data: dict[str, Any]) -> None:
     schema = json.loads((ROOT / "schemas" / "protected-evaluator.schema.json").read_text(encoding="utf-8"))
     problems = sorted(Draft202012Validator(schema).iter_errors(data), key=lambda e: list(e.path))
@@ -109,6 +101,8 @@ def _default_state(manifest: dict[str, Any]) -> dict[str, Any]:
         "schema": STATE_SCHEMA,
         "suite_id": manifest["id"],
         "suite_version": manifest["version"],
+        "manifest_sha256": _sha256_bytes(json.dumps(manifest, sort_keys=True, separators=(",", ":")).encode()),
+        "cohort_revisions": None,
         "status": "active",
         "query_count": 0,
         "contamination": None,
@@ -142,6 +136,11 @@ def load_state(state_dir: Path, manifest: dict[str, Any]) -> dict[str, Any]:
     state = json.loads(path.read_text(encoding="utf-8"))
     if state.get("suite_id") != manifest["id"] or state.get("suite_version") != manifest["version"]:
         raise ProtectedEvalError("state belongs to a different suite/version")
+    if not state.get("manifest_sha256"):
+        raise ProtectedEvalError("historical evaluator state is unbound; use explicit suite rotation")
+    current_manifest = _sha256_bytes(json.dumps(manifest, sort_keys=True, separators=(",", ":")).encode())
+    if state["manifest_sha256"] != current_manifest:
+        raise ProtectedEvalError("evaluator manifest changed under the same suite/version")
     return state
 
 
@@ -175,10 +174,12 @@ def _resolve_truth_ref(ref: str) -> Path:
     return target
 
 
-def _read_jsonl_rows(path: Path, value_key: str) -> dict[str, dict[str, Any]]:
+def _read_jsonl_rows(path: Path, value_key: str) -> tuple[dict[str, dict[str, Any]], str]:
     result: dict[str, Any] = {}
-    with path.open(encoding="utf-8") as fh:
+    digest = hashlib.sha256()
+    with path.open("rb") as fh:
         for line_no, raw in enumerate(fh, 1):
+            digest.update(raw)
             if not raw.strip():
                 continue
             row = json.loads(raw)
@@ -190,19 +191,16 @@ def _read_jsonl_rows(path: Path, value_key: str) -> dict[str, dict[str, Any]]:
             result[item_id] = row
     if not result:
         raise ProtectedEvalError(f"{path.name} is empty")
-    return result
+    return result, digest.hexdigest()
 
 
-def _read_jsonl(path: Path, value_key: str) -> dict[str, Any]:
-    return {item_id: row[value_key] for item_id, row in _read_jsonl_rows(path, value_key).items()}
-
-
-def _truth_cohorts(manifest: dict[str, Any]) -> dict[str, dict[str, dict[str, Any]]]:
+def _truth_cohorts(manifest: dict[str, Any]) -> tuple[dict[str, dict[str, dict[str, Any]]], dict[str, str]]:
     """Validate trusted work-item groups before any cohort can earn sealed credit."""
     cohorts = {}
+    revisions = {}
     owners: dict[str, str] = {}
     for name, cohort in manifest["cohorts"].items():
-        rows = _read_jsonl_rows(_resolve_truth_ref(str(cohort["truth_ref"])), "expected")
+        rows, revisions[name] = _read_jsonl_rows(_resolve_truth_ref(str(cohort["truth_ref"])), "expected")
         for row in rows.values():
             group = row.get("group")
             if not isinstance(group, str) or not group or group != group.strip():
@@ -211,7 +209,7 @@ def _truth_cohorts(manifest: dict[str, Any]) -> dict[str, dict[str, dict[str, An
                 raise ProtectedEvalError("work-item lineage overlaps across evaluator cohorts")
             owners[group] = name
         cohorts[name] = rows
-    return cohorts
+    return cohorts, revisions
 
 
 def score_predictions(
@@ -241,9 +239,16 @@ def score_predictions(
         if int(state["query_count"]) >= max_queries:
             raise ProtectedEvalError("protected evaluator query budget exhausted")
 
-        truth_rows = _truth_cohorts(manifest)[cohort_name]
+        cohorts, revisions = _truth_cohorts(manifest)
+        if state["cohort_revisions"] is None:
+            if state["query_count"]:
+                raise ProtectedEvalError("queried evaluator state has unbound cohort revisions")
+        elif state["cohort_revisions"] != revisions:
+            raise ProtectedEvalError("protected cohort revision changed; use explicit suite rotation")
+        truth_rows = cohorts[cohort_name]
         truth = {item_id: row["expected"] for item_id, row in truth_rows.items()}
-        predictions = _read_jsonl(predictions_path, "prediction")
+        prediction_rows, predictions_sha256 = _read_jsonl_rows(predictions_path, "prediction")
+        predictions = {item_id: row["prediction"] for item_id, row in prediction_rows.items()}
         if predictions.keys() != truth.keys():
             raise ProtectedEvalError("prediction IDs must exactly match the protected cohort IDs")
 
@@ -286,13 +291,14 @@ def score_predictions(
             "candidate_id": candidate_id,
             "candidate_revision": candidate_revision,
             "query_index": query_index,
-            "predictions_sha256": _sha256_file(predictions_path),
+            "predictions_sha256": predictions_sha256,
             "result_sha256": public_core["result_sha256"],
             "score": score,
             "verdict": verdict,
         }
         _append_audit(state_dir, audit)
         state["query_count"] = query_index
+        state["cohort_revisions"] = revisions
         state["updated_at"] = audit["at"]
         _atomic_json(_state_path(state_dir), state)
         return public_core

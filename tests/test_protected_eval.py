@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 import os
 import sys
@@ -304,6 +305,86 @@ class ProtectedEvaluatorTests(unittest.TestCase):
                     state_dir=root / "state",
                 )
             self.assertEqual(result["score"], 0.75)
+
+    def test_manifest_cannot_drift_under_an_existing_suite_identity(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            protected, development, predictions = self._fixture(root)
+            manifest = self._manifest()
+            state_dir = root / "state"
+            with self._env(protected, development):
+                first = P.score_predictions(
+                    manifest, cohort_name="confirm", predictions_path=predictions,
+                    candidate_id="before-drift", candidate_revision="a" * 40, state_dir=state_dir,
+                )
+                self.assertEqual(first["verdict"], "DISCARD")
+                changed = copy.deepcopy(manifest)
+                changed["scoring"]["pass_threshold"] = 0.1
+                with self.assertRaisesRegex(P.ProtectedEvalError, "manifest"):
+                    P.score_predictions(
+                        changed, cohort_name="confirm", predictions_path=predictions,
+                        candidate_id="after-drift", candidate_revision="b" * 40, state_dir=state_dir,
+                    )
+            self.assertEqual(P.load_state(state_dir, manifest)["query_count"], 1)
+
+    def test_truth_revision_cannot_change_between_adaptive_queries(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            protected, development, predictions = self._fixture(root)
+            manifest = self._manifest()
+            state_dir = root / "state"
+            with self._env(protected, development):
+                first = P.score_predictions(
+                    manifest, cohort_name="confirm", predictions_path=predictions,
+                    candidate_id="before-label-edit", candidate_revision="a" * 40, state_dir=state_dir,
+                )
+                self.assertEqual(first["verdict"], "DISCARD")
+                rows = [json.loads(line) for line in (protected / "confirm.jsonl").read_text().splitlines()]
+                rows[1]["expected"] = "wrong"
+                self._write_jsonl(protected / "confirm.jsonl", rows)
+                with self.assertRaisesRegex(P.ProtectedEvalError, "cohort revision"):
+                    P.score_predictions(
+                        manifest, cohort_name="confirm", predictions_path=predictions,
+                        candidate_id="after-label-edit", candidate_revision="b" * 40, state_dir=state_dir,
+                    )
+            self.assertEqual(P.load_state(state_dir, manifest)["query_count"], 1)
+
+    def test_unbound_historical_state_cannot_be_silently_rebound(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            state_dir = Path(td)
+            manifest = self._manifest()
+            old = P._default_state(manifest)
+            old.pop("manifest_sha256", None)
+            P._atomic_json(state_dir / "state.json", old)
+            with self.assertRaisesRegex(P.ProtectedEvalError, "unbound"):
+                P.load_state(state_dir, manifest)
+
+    def test_audit_hash_describes_predictions_actually_scored(self) -> None:
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            protected, development, predictions = self._fixture(root)
+            original_digest = hashlib.sha256(predictions.read_bytes()).hexdigest()
+            original_reader = P._read_jsonl_rows
+
+            def read_then_replace(path, value_key):
+                result = original_reader(path, value_key)
+                if path == predictions:
+                    predictions.write_text("changed after the evaluator read it\n")
+                return result
+
+            state_dir = root / "state"
+            with self._env(protected, development), patch.object(P, "_read_jsonl_rows", side_effect=read_then_replace):
+                result = P.score_predictions(
+                    self._manifest(), cohort_name="confirm", predictions_path=predictions,
+                    candidate_id="read-snapshot", candidate_revision="a" * 40, state_dir=state_dir,
+                )
+            self.assertEqual(result["score"], 0.5)
+            audit = json.loads((state_dir / "queries.jsonl").read_text())
+            self.assertEqual(audit["predictions_sha256"], original_digest)
+            state = json.loads((state_dir / "state.json").read_text())
+            for name, path in (("confirm", protected / "confirm.jsonl"), ("future", protected / "future.jsonl"),
+                               ("development", development / "development.jsonl")):
+                self.assertEqual(state["cohort_revisions"][name], hashlib.sha256(path.read_bytes()).hexdigest())
 
 
 if __name__ == "__main__":

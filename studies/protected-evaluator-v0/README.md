@@ -46,6 +46,14 @@ credit. `exact_match` remains available for explicitly item-weighted controls;
 the result names the selected metric. Historical item-weighted scores remain
 at their original manifest/version and are not recomputed as new outcomes.
 
+Adaptive query state binds the complete manifest and the exact bytes read for
+all cohorts at the first successful query. Later threshold/configuration or
+cohort edits under the same suite/version refuse credit. The prediction hash
+also describes the bytes actually scored, rather than a later file reread.
+Historical unbound state is not silently upgraded; rotate explicitly to a new
+suite/version with a new private state directory. Hashes remain in private
+state/audit, with no raw truth or filesystem paths added to public output.
+
 ## Drill
 
 `tests/test_protected_eval.py` creates temporary protected truth outside the repository
