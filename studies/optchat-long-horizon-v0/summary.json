@@ -1,0 +1,14 @@
+{
+  "protocol": "long_horizon_recall",
+  "parent_task": "benchmarks/claude_code/tasks/backend-review",
+  "turns": 50,
+  "model": "qwen3-0.6b-q8",
+  "endpoint": "http://127.0.0.1:11520/v1/chat/completions",
+  "router_n_ctx": 2048,
+  "compactor_input_cap_chars": 1600,
+  "echo_cap_chars": 8000,
+  "final_raw_bytes": 270271,
+  "final_view_bytes": 16621,
+  "final_ratio": 0.0615,
+  "placeholders_at_end": 0
+}

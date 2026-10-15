@@ -77,7 +77,9 @@ export default function StoryShell({
             <div className="links">
               <a href="../">phase 1b</a>
               <a href="../z0intelligence-function-routing/">routing</a>
+              <a href="../researching-the-frontier/">research</a>
               <a href="../unified-memory-v0/">memory</a>
+              <a href="../optchat-long-horizon-v0/">optchat</a>
               <a href="https://github.com/kvnloo/z0evals">github</a>
             </div>
           </nav>

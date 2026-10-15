@@ -50,6 +50,16 @@ def main() -> int:
     require("@media (max-width: 1199px) {\n  .rail { display: none; }" not in css,
             "Desktop rail must not collapse to the mobile FAB at 1199px", errors)
 
+    phase1 = read("web/app/page.tsx")
+    require('className="shell story-grid"' in phase1,
+            "Phase 1B must use the same responsive story grid as newer posts", errors)
+    require('<main className="article">' in phase1 and 'article article-shell' not in phase1,
+            "Phase 1B must not nest its header inside the legacy article-shell", errors)
+    phase1_header = phase1.find('<header className="article-header">')
+    phase1_grid = phase1.find('<div className="shell story-grid">')
+    require(0 <= phase1_header < phase1_grid,
+            "Phase 1B article header must sit outside the padded article column", errors)
+
     reveal = read("web/components/charts/useReveal.ts")
     require("rootMargin" in reveal and "getClientRects" in reveal,
             "Reveal lifecycle must handle below-fold and hidden-tab elements", errors)

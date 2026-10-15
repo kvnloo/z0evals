@@ -23,6 +23,8 @@ SUMMARY = ROOT / "studies" / "slm-router-v0" / "data" / "phase1b-summary.json"
 MATRIX_OUT = ROOT / "studies" / "slm-router-v0" / "data" / "phase1b-matrix.json"
 COMPONENTS_OUT = ROOT / "studies" / "slm-router-v0" / "data" / "phase1b-components.json"
 SITE_OUT = ROOT / "web" / "data" / "study.json"
+OPTCHAT_SOURCE = ROOT / "studies" / "optchat-long-horizon-v0"
+OPTCHAT_SITE_OUT = ROOT / "web" / "data" / "optchat-long-horizon-v0.json"
 RUN = "p1b-20260921T1430Z"
 
 def _arm_label(arm: str) -> str:
@@ -364,7 +366,18 @@ def main() -> int:
     }
     SITE_OUT.parent.mkdir(parents=True, exist_ok=True)
     SITE_OUT.write_text(json.dumps(doc, indent=2) + "\n", encoding="utf-8")
+
+    # Keep the web project inside its own bundler root while deriving the article
+    # directly from the frozen study artifacts. This is an adapter, not a second
+    # transcription of the measurements.
+    optchat_doc = {
+        "summary": json.loads((OPTCHAT_SOURCE / "summary.json").read_text(encoding="utf-8")),
+        "turns": json.loads((OPTCHAT_SOURCE / "turns.json").read_text(encoding="utf-8")),
+    }
+    OPTCHAT_SITE_OUT.write_text(json.dumps(optchat_doc, indent=2) + "\n", encoding="utf-8")
+
     print(f"wrote {SITE_OUT.relative_to(ROOT)}   (matrix from {origin})")
+    print(f"wrote {OPTCHAT_SITE_OUT.relative_to(ROOT)}   (from frozen OptChat study)")
     if matrix:
         print(f"  arms={len(matrix['arms'])} states={len(matrix['states'])} families={len(matrix['families'])}")
     return 0
