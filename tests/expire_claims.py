@@ -36,6 +36,12 @@ COMMENTS = {
         + [{"body": f"ordinary discussion {i}", "created_at": "2026-10-13T00:00:00Z"} for i in range(30)]
         + [{"body": "claiming for worker-new\nexpires: 2999-01-01T00:00:00Z", "created_at": "2026-10-15T00:00:00Z"}]
     ),
+    # 102 comments: an actual second gh --paginate API page (100 per_page).
+    "6": (
+        [{"body": "claiming for worker-old\nexpires: 2020-01-01T00:00:00Z", "created_at": "2019-12-31T00:00:00Z"}]
+        + [{"body": f"ordinary discussion {i}", "created_at": "2026-10-13T00:00:00Z"} for i in range(100)]
+        + [{"body": "claiming for worker-new\nexpires: 2999-01-01T00:00:00Z", "created_at": "2026-10-15T00:00:00Z"}]
+    ),
 }
 
 FAKE_GH = r"""#!/usr/bin/env python3
@@ -47,16 +53,23 @@ if args[:2] == ["issue", "list"]:
     sys.exit(0)
 if args and args[0] == "api":
     num = args[1].split("/issues/")[1].split("/")[0]
-    # REST supplies only the first 30 comments by default. With --paginate,
-    # --slurp and the flattening jq expression, gh returns all pages together.
+    # Mirror CLI v2.102.0: --slurp and --jq are mutually exclusive.
+    if "--slurp" in args and "--jq" in args:
+        sys.stderr.write("the `--slurp` option is not supported with `--jq` or `--template`\n")
+        sys.exit(2)
     if "--paginate" in args:
-        if "--slurp" not in args or ".[][]" not in args[args.index("--jq") + 1]:
-            sys.stderr.write("paged arrays must be slurped and flattened\n")
-            sys.exit(4)
-        selected = data[num]
+        # gh's REST paginator increases per_page to 100, then flattens pages.
+        # With neither --slurp nor --jq, paginatedArrayReader yields one array.
+        if "--slurp" in args or "--jq" in args:
+            sys.stderr.write("This fixture requires raw --paginate, no other filter\n")
+            sys.exit(3)
+        pages = [data[num][i:i+100] for i in range(0, len(data[num]), 100)]
+        selected = [c for page in pages for c in page]
     else:
         selected = data[num][:30]
-    print(json.dumps([{"body": c["body"], "createdAt": c["created_at"]} for c in selected]))
+        if "--jq" in args:
+            selected = [{"body": c["body"], "createdAt": c["created_at"]} for c in selected]
+    print(json.dumps(selected))
     sys.exit(0)
 sys.stderr.write("fake gh: unexpected call %r\n" % (args,))
 sys.exit(3)
@@ -82,7 +95,7 @@ def main() -> int:
     failures = []
     if proc.returncode != 0:
         failures.append(f"exit {proc.returncode}: {proc.stderr.strip()}")
-    for want in ("expire #1 ", "keep #2 ", "expire #3 ", "keep #4 (no claim timestamp)", "keep #5 ", "released 2 lease(s)"):
+    for want in ("expire #1 ", "keep #2 ", "expire #3 ", "keep #4 (no claim timestamp)", "keep #5 ", "keep #6 ", "released 2 lease(s)"):
         if want not in out:
             failures.append(f"missing {want!r}")
     if failures:
@@ -91,7 +104,7 @@ def main() -> int:
             print(f"  - {f}")
         print(out)
         return 1
-    print("expire-claims: OK (5 fixture issues, 2 released in dry-run)")
+    print("expire-claims: OK (6 fixture issues, 2 released in dry-run)")
     return 0
 
 
