@@ -108,12 +108,27 @@ def quiet_onset(levels, t0, sustain=QUIET_SUSTAIN_MS):
     return None
 
 
+def bidi_channel(arm):
+    """Frameless Bidi wire format: OMP logs the sideband; z0live-bidi's client sees the data channel."""
+    return "sideband" if arm.startswith("omp") else ("datachannel" if arm.startswith("z0live-bidi") else None)
+
+
+def transcript_events(arm, events):
+    """z0live-bidi: the broker's sideband record (source=broker_db) is authoritative; the client's
+    data channel only sometimes carries turn.done, so never count both copies."""
+    if arm.startswith("z0live-bidi") and any(e.get("source") == "broker_db" for e in events):
+        return [e for e in events if e.get("type") != "turn.done" or e.get("source") == "broker_db"]
+    return events
+
+
 def assistant_texts(arm, events):
     """(t, text) per completed assistant turn, from the provider's own transcript of its audio."""
     out = []
+    ch = bidi_channel(arm)
+    events = transcript_events(arm, events)
     for e in events:
-        if arm.startswith("omp"):
-            if e.get("kind") == "wire" and e.get("channel") == "sideband" and e.get("type") == "turn.done" and e.get("turn", {}).get("role") == "assistant":
+        if ch:
+            if e.get("kind") == "wire" and e.get("channel") == ch and e.get("type") == "turn.done" and e.get("turn", {}).get("role") == "assistant":
                 out.append((e["t"], e["turn"]["transcript"].strip()))
         elif e.get("kind") == "wire" and e.get("type") == "response.output_audio_transcript.done":
             out.append((e["t"], (e.get("text") or "").strip()))
@@ -122,9 +137,11 @@ def assistant_texts(arm, events):
 
 def user_texts(arm, events):
     out = []
+    ch = bidi_channel(arm)
+    events = transcript_events(arm, events)
     for e in events:
-        if arm.startswith("omp"):
-            if e.get("kind") == "wire" and e.get("channel") == "sideband" and e.get("type") == "turn.done" and e.get("turn", {}).get("role") == "user":
+        if ch:
+            if e.get("kind") == "wire" and e.get("channel") == ch and e.get("type") == "turn.done" and e.get("turn", {}).get("role") == "user":
                 out.append((e["t"], e["turn"]["transcript"].strip()))
         elif e.get("kind") == "wire" and e.get("type") == "conversation.item.input_audio_transcription.completed":
             out.append((e["t"], (e.get("text") or "").strip()))
@@ -132,9 +149,10 @@ def user_texts(arm, events):
 
 
 def delegation_info(arm, events):
-    if arm.startswith("omp"):
-        created = [e for e in events if e.get("kind") == "wire" and e.get("channel") == "sideband" and e.get("type") == "delegation.created"]
-        done = [e["t"] for e in events if e.get("kind") == "agent" and e.get("type") == "agent_end" and e.get("terminal")]
+    ch = bidi_channel(arm)
+    if ch:
+        created = list({e["delegation"]["id"]: e for e in events if e.get("kind") == "wire" and e.get("channel") == ch and e.get("type") == "delegation.created" and e.get("delegation")}.values())
+        done = sorted(e["t"] for e in events if e.get("kind") == "agent" and e.get("type") == "agent_end" and e.get("terminal"))
         return {"used": bool(created), "count": len(created), "tools": [], "work_done_t": done[-1] if done else None}
     calls = [e for e in events if e.get("kind") == "tool_call" and e.get("name") not in WORK_TOOL_EXCLUDE]
     done = [e["t"] for e in events if e.get("kind") == "inbox" and e.get("event") in ("result", "clarification", "error", "failed", "cancelled", "blocked") and e.get("same_session")]
@@ -186,6 +204,7 @@ def score_run(d: Path, spec):
             lo, hi = m[mk]["start"], (fa if fa else m[mk]["end"])
             # Harness validity rule: OMP levels are stamped on the JS thread, so a measured
             # interval overlapping an event-loop stall (> 50 ms) is excluded, not scored.
+            row.setdefault("first_audible_incl_stalled_ms", {})[mk] = round(fa - m[mk]["end"], 1) if fa else None
             if any(s0 < hi and s0 + lag > lo for s0, lag in stalls):
                 row["stall_invalidated"].append(mk)
                 continue
@@ -231,10 +250,10 @@ def score_run(d: Path, spec):
         if speaking:
             q = quiet_onset(levels, n["start"], FALSE_INTERRUPT_GAP_MS)
             row["false_interruption"] = q is not None and q <= n["end"] + 500
-            if arm.startswith("z0live"):
+            if arm.startswith("z0live") and not bidi_channel(arm):
                 row["vad_triggered_by_noise"] = any(e.get("type") == "input_audio_buffer.speech_started" and n["start"] - 100 <= e["t"] <= n["end"] + 1000 for e in events)
             else:
-                row["vad_triggered_by_noise"] = any(e.get("channel") == "sideband" and e.get("type") in ("turn.created", "input_transcript.added") and (e.get("turn", {}).get("role", "user") == "user") and n["start"] - 100 <= e["t"] <= n["end"] + 1000 for e in events)
+                row["vad_triggered_by_noise"] = any(e.get("channel") == bidi_channel(arm) and e.get("type") in ("turn.created", "input_transcript.added") and (e.get("turn", {}).get("role", "user") == "user") and n["start"] - 100 <= e["t"] <= n["end"] + 1000 for e in events)
             row["noise_user_turns"] = sum(1 for ts, t in user_texts(arm, events) if n["start"] <= ts <= n["end"] + 4000 and t)
     if checks.get("silence_watch_mark") and checks["silence_watch_mark"] in m:
         w = m[checks["silence_watch_mark"]]
@@ -257,6 +276,7 @@ def aggregate(rows):
         ok = [r for r in rs if r.get("valid")]
         direct = [r["first_audible_ms"].get(mk) for r in ok for (s, mk) in DIRECT_POOL if r["scenario"] == s and mk in r.get("first_audible_ms", {})]
         direct_missing = sum(1 for x in direct if x is None)
+        direct_all = [r.get("first_audible_incl_stalled_ms", {}).get(mk) for r in ok for (s, mk) in DIRECT_POOL if r["scenario"] == s]
         acks = [r["first_audible_ms"].get("q1") for r in ok if r["scenario"] in DELEGATION]
         dele = [r for r in ok if r["scenario"] in DELEGATION]
         barge = [r for r in ok if r["scenario"] == "barge_in"]
@@ -274,6 +294,7 @@ def aggregate(rows):
             "errors": [r["error"] for r in rs if r.get("error")],
             "ready_ms_p50": pct([r.get("ready_ms") for r in ok], 50),
             "direct_first_audible": {"n": len(direct), "missing": direct_missing, "p50": pct(direct, 50), "p95": pct(direct, 95), "max": pct(direct, 100)},
+            "direct_first_audible_incl_stalled": {"n": len([x for x in direct_all if x is not None]), "p50": pct(direct_all, 50), "p95": pct(direct_all, 95), "note": "sensitivity: OMP stalls only delay timestamps, so including them is conservative for the control"},
             "delegation_ack_first_audible": {"n": len(acks), "p50": pct(acks, 50), "p95": pct(acks, 95)},
             "delegation_used": f"{sum(1 for r in dele if r.get('delegation', {}).get('used'))}/{len(dele)}",
             "delegation_used_by_scenario": {s: f"{sum(1 for r in dele if r['scenario'] == s and r.get('delegation', {}).get('used'))}/{sum(1 for r in dele if r['scenario'] == s)}" for s in DELEGATION},
@@ -353,6 +374,8 @@ def scoreboard(agg, verdicts, meta):
         ("Session ready (p50)", lambda a: fmt(a["ready_ms_p50"])),
         ("EOS → first audible, direct turns p50", lambda a: fmt(a["direct_first_audible"]["p50"])),
         ("EOS → first audible, direct turns p95", lambda a: fmt(a["direct_first_audible"]["p95"])),
+        ("… incl. stall-affected OMP turns p50 / p95", lambda a: f"{fmt(a['direct_first_audible_incl_stalled']['p50'])} / {fmt(a['direct_first_audible_incl_stalled']['p95'])}"),
+        ("OMP turns excluded for harness stalls", lambda a: str(a["stall_invalidated_measurements"])),
         ("Direct turns with no audible reply", lambda a: f"{a['direct_first_audible']['missing']}/{a['direct_first_audible']['n']}"),
         ("EOS → first audible, delegation turns p50", lambda a: fmt(a["delegation_ack_first_audible"]["p50"])),
         ("Delegation used (work / repo)", lambda a: " / ".join(a["delegation_used_by_scenario"].values())),

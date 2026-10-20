@@ -4,9 +4,25 @@
   "arms": {
     "omp-live": {
       "enabled": true,
-      "cmd": ["bun", "harness/omp_arm.ts", "--scenario", "{scenario}", "--run-dir", "{run_dir}", "--assets", "{assets}", "--cwd", "{z0live_worktree}"],
-      "env": {"ALSA_CONFIG_PATH": "{asound_null}"},
-      "source": {"package": "@oh-my-pi/pi-coding-agent", "version_from": "~/.bun/install/global/node_modules/@oh-my-pi/pi-coding-agent/package.json"},
+      "cmd": [
+        "bun",
+        "harness/omp_arm.ts",
+        "--scenario",
+        "{scenario}",
+        "--run-dir",
+        "{run_dir}",
+        "--assets",
+        "{assets}",
+        "--cwd",
+        "{z0live_worktree}"
+      ],
+      "env": {
+        "ALSA_CONFIG_PATH": "{asound_null}"
+      },
+      "source": {
+        "package": "@oh-my-pi/pi-coding-agent",
+        "version_from": "~/.bun/install/global/node_modules/@oh-my-pi/pi-coding-agent/package.json"
+      },
       "model": "gpt-live-1-codex",
       "voice": "sol (OMP default; live.voice unset)",
       "transport": "Codex quicksilver signaling + native webrtc-rs peer + api.openai.com sideband WS",
@@ -14,9 +30,29 @@
     },
     "z0live-realtime": {
       "enabled": true,
-      "cmd": ["node", "harness/z0live_arm.mjs", "--scenario", "{scenario}", "--run-dir", "{run_dir}", "--assets", "{assets}", "--z0live", "{z0live_worktree}", "--data", "{z0live_data}", "--base", "{z0live_base}", "--arm", "z0live-realtime"],
+      "cmd": [
+        "node",
+        "harness/z0live_arm.mjs",
+        "--scenario",
+        "{scenario}",
+        "--run-dir",
+        "{run_dir}",
+        "--assets",
+        "{assets}",
+        "--z0live",
+        "{z0live_worktree}",
+        "--data",
+        "{z0live_data}",
+        "--base",
+        "{z0live_base}",
+        "--arm",
+        "z0live-realtime"
+      ],
       "env": {},
-      "source": {"repo": "kvnloo/z0live", "ref": "deployed broker checkout HEAD (pinned per run in run.json)"},
+      "source": {
+        "repo": "kvnloo/z0live",
+        "ref": "deployed broker checkout HEAD (pinned per run in run.json)"
+      },
       "model": "gpt-realtime",
       "voice": "marin",
       "transport": "OpenAI Realtime WebRTC from headless Chromium; ephemeral secret minted by an ISOLATED z0live broker (loopback, private data dir)",
@@ -24,10 +60,34 @@
     },
     "z0live-bidi": {
       "enabled": false,
-      "requires": {"repo": "kvnloo/z0live", "branch": "feat/frameless-bidi"},
-      "cmd": ["node", "harness/z0live_arm.mjs", "--scenario", "{scenario}", "--run-dir", "{run_dir}", "--assets", "{assets}", "--z0live", "{bidi_worktree}", "--data", "{bidi_data}", "--base", "{bidi_base}", "--arm", "z0live-bidi"],
+      "requires": {
+        "repo": "kvnloo/z0live",
+        "branch": "feat/frameless-bidi"
+      },
+      "cmd": [
+        "node",
+        "harness/z0live_arm.mjs",
+        "--scenario",
+        "{scenario}",
+        "--run-dir",
+        "{run_dir}",
+        "--assets",
+        "{assets}",
+        "--z0live",
+        "{bidi_worktree}",
+        "--data",
+        "{bidi_data}",
+        "--base",
+        "{bidi_base}",
+        "--arm",
+        "z0live-bidi"
+      ],
       "env": {},
-      "note": "Placeholder: enable once the branch exists and exposes a client path. If the bidi client is not the Realtime WebRTC protocol, add a driver that implements the same runner adapter (now/play/playAsync/workPending/log + level(rms,t))."
+      "note": "Runnable at kvnloo/z0live feat/frameless-bidi 86a9e0c: same driver with --arm z0live-bidi (mints transports:[bidi,realtime], SDP via broker POST /v1/live/calls, captions only, delegation owned by the broker sideband; transcripts imported read-only from the isolated broker DB). Run as a separate block after the main interleaved block.",
+      "model": "gpt-live-1-codex",
+      "voice": "sol",
+      "transport": "Codex Frameless Bidi WebRTC from headless Chromium; broker relays SDP and owns the sideband",
+      "delegation": "broker client delegation into a persistent Hermes session (z0live-voice); missed-delegation recovery"
     }
   }
 }

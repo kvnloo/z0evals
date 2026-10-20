@@ -4,7 +4,7 @@
 // tool/inbox paths. Microphone = scripted AudioWorklet PCM; speaker = RMS meter (muted).
 import { createRunner, WINDOW_MS } from "./runner.mjs";
 
-export async function runZ0live({ base, token, scenario, clipIds, mintBody, inboxPollMs = 1500 }) {
+export async function runZ0live({ base, token, scenario, clipIds, mintBody, inboxPollMs = 1500, transport = "realtime" }) {
   const T0 = performance.now();
   const now = () => performance.now() - T0;
   const events = [];
@@ -73,7 +73,9 @@ export async function runZ0live({ base, token, scenario, clipIds, mintBody, inbo
   const firstInbox = await api("/v1/inbox?after=0");
   let cursor = firstInbox.after;
   const tMint = now();
-  const session = await api("/v1/realtime/session", mintBody);
+  const session = await api("/v1/realtime/session", transport === "bidi" ? { ...mintBody, transports: ["bidi", "realtime"] } : mintBody);
+  const bidi = session.transport === "bidi";
+  if (transport === "bidi" && !bidi) throw new Error("broker did not grant the bidi transport");
   const sid = session.session_id;
   log({ kind: "harness", msg: "minted", ms: +(now() - tMint).toFixed(1), model: session.model, voice: session.voice });
   let seq = 0;
@@ -192,10 +194,43 @@ export async function runZ0live({ base, token, scenario, clipIds, mintBody, inbo
   };
   const KEEP = new Set(["session.created", "session.updated", "input_audio_buffer.speech_started", "input_audio_buffer.speech_stopped", "input_audio_buffer.committed", "response.created", "response.done", "output_audio_buffer.started", "output_audio_buffer.stopped", "output_audio_buffer.cleared", "conversation.item.input_audio_transcription.completed", "response.output_audio_transcript.done", "response.function_call_arguments.done", "error"]);
   const wireTypes = {};
+  // Frameless Bidi (z0live-bidi): the client only renders media and captions; the broker owns the
+  // sideband and delegation. Log the same fields the OMP arm logs, on channel "datachannel".
+  const bidiDelegations = new Map(); // id -> null | final local time
+  const bidiMessage = m => {
+    const type = m.type;
+    const rec = { kind: "wire", channel: "datachannel", type };
+    if (m.item?.text) rec.text = m.item.text;
+    if (m.turn) rec.turn = { role: m.turn.role, transcript: m.turn.transcript };
+    if (type === "delegation.created") {
+      rec.delegation = { id: m.item?.id, text: (m.item?.content ?? []).map(c => c.text).join("\n") };
+      if (m.item?.id && !bidiDelegations.has(m.item.id)) bidiDelegations.set(m.item.id, null);
+    }
+    if (type === "error") rec.error = m.error ?? m.message;
+    if (["turn.done", "turn.created", "delegation.created", "error", "session.started"].includes(type) || type.startsWith("input_transcript") || type.startsWith("output_transcript")) log(rec);
+  };
+  const clockOffset = () => Date.now() - (performance.now() - T0); // epoch ms at t=0
+  const pollTrace = async () => {
+    if (![...bidiDelegations.values()].some(v => v === null)) return;
+    try {
+      const tr = await api("/v1/live/trace?session_id=" + encodeURIComponent(sid));
+      for (const d of tr.delegations ?? []) {
+        const final = d.marks?.final;
+        if (final && bidiDelegations.has(d.id) && bidiDelegations.get(d.id) === null) {
+          const t = +(final * 1000 - clockOffset()).toFixed(1);
+          bidiDelegations.set(d.id, t);
+          events.push({ t, kind: "agent", type: "agent_end", terminal: true, id: d.id, route: d.route, status: d.status, marks: d.marks });
+        }
+      }
+    } catch (e) {
+      log({ kind: "broker_error", msg: String(e) });
+    }
+  };
   dc.onmessage = ({ data }) => {
     const m = JSON.parse(data);
     const type = m.type;
     wireTypes[type] = (wireTypes[type] ?? 0) + 1;
+    if (bidi) return bidiMessage(m);
     if (KEEP.has(type)) {
       const rec = { kind: "wire", type };
       if (m.response) rec.response = { id: m.response.id, status: m.response.status, status_details: m.response.status_details ?? null, outputs: (m.response.output ?? []).map(o => o.type) };
@@ -259,15 +294,22 @@ export async function runZ0live({ base, token, scenario, clipIds, mintBody, inbo
   const tConnect = now();
   const offer = await pc.createOffer();
   await pc.setLocalDescription(offer);
-  const sdp = await fetch("https://api.openai.com/v1/realtime/calls", { method: "POST", headers: { Authorization: "Bearer " + session.value, "Content-Type": "application/sdp" }, body: offer.sdp });
-  if (sdp.status !== 201) throw new Error("SDP HTTP " + sdp.status);
-  await pc.setRemoteDescription({ type: "answer", sdp: await sdp.text() });
-  await opened;
-  send({ type: "session.update", session: { type: "realtime", audio: { input: { turn_detection: { type: "server_vad", silence_duration_ms: 450, interrupt_response: true, create_response: true } } } } });
+  if (bidi) {
+    const answer = await api("/v1/live/calls", { session_id: sid, sdp: offer.sdp });
+    await pc.setRemoteDescription({ type: "answer", sdp: answer.sdp });
+    await opened;
+    log({ kind: "harness", msg: "bidi_call", model: answer.model, voice: answer.voice, instructions_version: answer.instructions_version });
+  } else {
+    const sdp = await fetch("https://api.openai.com/v1/realtime/calls", { method: "POST", headers: { Authorization: "Bearer " + session.value, "Content-Type": "application/sdp" }, body: offer.sdp });
+    if (sdp.status !== 201) throw new Error("SDP HTTP " + sdp.status);
+    await pc.setRemoteDescription({ type: "answer", sdp: await sdp.text() });
+    await opened;
+    send({ type: "session.update", session: { type: "realtime", audio: { input: { turn_detection: { type: "server_vad", silence_duration_ms: 450, interrupt_response: true, create_response: true } } } } });
+  }
   const connectMs = +(now() - tConnect).toFixed(1);
   log({ kind: "harness", msg: "connected", ms: connectMs });
   const heartbeat = setInterval(() => brokerEvent("app_state", "", { test: true }), 20000);
-  const inboxTimer = setInterval(pollInbox, inboxPollMs);
+  const inboxTimer = bidi ? setInterval(pollTrace, 1000) : setInterval(pollInbox, inboxPollMs);
 
   const play = (id, mark) =>
     new Promise(resolve => {
@@ -279,7 +321,7 @@ export async function runZ0live({ base, token, scenario, clipIds, mintBody, inbo
     play,
     playAsync: (id, mark) => void play(id, mark),
     // Silent inbox items (say == "") are data-only and never spoken, so they are not pending work.
-    workPending: () => st.pendingTools > 0 || !!st.inboxItem?.say || !!st.pendingInbox?.say || [...st.askTurns.values()].some(v => v !== "done"),
+    workPending: () => bidi ? [...bidiDelegations.values()].some(v => v === null) : st.pendingTools > 0 || !!st.inboxItem?.say || !!st.pendingInbox?.say || [...st.askTurns.values()].some(v => v !== "done"),
     log,
   });
   let result;
@@ -288,6 +330,12 @@ export async function runZ0live({ base, token, scenario, clipIds, mintBody, inbo
     result = await runner.run(scenario);
   } catch (e) {
     error = String(e?.message ?? e);
+  }
+  if (bidi) {
+    // Post-timeline drain (not scored acoustically): Frameless Bidi assistant turn.done can land
+    // after the audio ends; the broker records it from its sideband. Keep the call up briefly.
+    await new Promise(r => setTimeout(r, 4000));
+    await pollTrace();
   }
   clearInterval(heartbeat);
   clearInterval(inboxTimer);
@@ -316,5 +364,5 @@ export async function runZ0live({ base, token, scenario, clipIds, mintBody, inbo
   let bin = "";
   const bytes = new Uint8Array(pcm.buffer);
   for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
-  return { error, result, events, levels, connect_ms: connectMs, session: { id: sid, model: session.model, voice: session.voice, instructions_version: session.instructions_version, plan_digest: session.voice_plan?.digest ?? null }, wire_types: wireTypes, stats, raw_b64: btoa(bin), window_ms: WINDOW_MS };
+  return { epoch0: Date.now() - now(), error, result, events, levels, connect_ms: connectMs, session: { id: sid, transport: session.transport ?? "realtime", model: session.model, voice: session.voice, instructions_version: session.instructions_version, plan_digest: session.voice_plan?.digest ?? null }, wire_types: wireTypes, stats, raw_b64: btoa(bin), window_ms: WINDOW_MS };
 }

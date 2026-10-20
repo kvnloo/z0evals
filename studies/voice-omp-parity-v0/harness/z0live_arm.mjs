@@ -60,12 +60,23 @@ try {
     scenario,
     clipIds,
     mintBody: { client: "web", context: { app: "voice-eval", screen: "headless", test: true }, tools: [] },
+    transport: args.arm === "z0live-bidi" ? "bidi" : "realtime",
   });
 } catch (e) {
   meta.error = String(e?.message ?? e);
 } finally {
   await browser.close();
   revoke();
+}
+if (out && out.session?.transport === "bidi") {
+  // The bidi client sees no assistant turn.done on its data channel; import the broker's own
+  // sideband transcript record (read-only) on the same local clock.
+  const rows = JSON.parse(execFileSync("python3", ["-c", `import json,sqlite3,sys,pathlib; db=sqlite3.connect((pathlib.Path(sys.argv[1])/'broker.db').as_uri()+'?mode=ro',uri=True); print(json.dumps([[r[0], json.loads(r[1])] for r in db.execute("SELECT ts, body FROM events WHERE session_id=? ORDER BY id", (sys.argv[2],))]))`, args.data, out.session.id], { encoding: "utf8" }));
+  for (const [ts, body] of rows) {
+    const role = body.type === "user_transcript" ? "user" : body.type === "assistant_transcript" ? "assistant" : null;
+    if (role && body.text) out.events.push({ t: +(ts * 1000 - out.epoch0).toFixed(1), kind: "wire", channel: "datachannel", type: "turn.done", source: "broker_db", turn: { role, transcript: body.text } });
+  }
+  out.events.sort((a, b) => a.t - b.t);
 }
 if (out) {
   fs.writeFileSync(path.join(runDir, "events.jsonl"), out.events.map(e => JSON.stringify(e)).join("\n") + "\n");
@@ -74,7 +85,7 @@ if (out) {
   const h = Buffer.alloc(44);
   h.write("RIFF", 0); h.writeUInt32LE(36 + pcm.length, 4); h.write("WAVE", 8); h.write("fmt ", 12); h.writeUInt32LE(16, 16); h.writeUInt16LE(1, 20); h.writeUInt16LE(1, 22); h.writeUInt32LE(16000, 24); h.writeUInt32LE(32000, 28); h.writeUInt16LE(2, 32); h.writeUInt16LE(16, 34); h.write("data", 36); h.writeUInt32LE(pcm.length, 40);
   fs.writeFileSync(path.join(runDir, "output.16k.wav"), Buffer.concat([h, pcm]));
-  Object.assign(meta, { error: meta.error ?? out.error, connect_ms: out.connect_ms, model: out.session.model, voice: out.session.voice, instructions_version: out.session.instructions_version, voice_plan_digest: out.session.plan_digest, transport: "OpenAI Realtime WebRTC (Chromium, Opus), ephemeral client secret minted by isolated z0live broker", wire_types: out.wire_types, webrtc_stats: out.stats, result: out.result, output_windows: out.levels.length });
+  Object.assign(meta, { error: meta.error ?? out.error, connect_ms: out.connect_ms, model: out.session.model, voice: out.session.voice, live_transport: out.session.transport, instructions_version: out.session.instructions_version, voice_plan_digest: out.session.plan_digest, transport: out.session.transport === "bidi" ? "Codex Frameless Bidi WebRTC (Chromium, Opus), SDP relayed by isolated z0live broker which owns the sideband + delegation" : "OpenAI Realtime WebRTC (Chromium, Opus), ephemeral client secret minted by isolated z0live broker", wire_types: out.wire_types, webrtc_stats: out.stats, result: out.result, output_windows: out.levels.length });
 }
 meta.loadavg_end = fs.readFileSync("/proc/loadavg", "utf8").trim();
 fs.writeFileSync(path.join(runDir, "meta.json"), JSON.stringify(meta, null, 2));
