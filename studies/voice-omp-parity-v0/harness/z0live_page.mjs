@@ -266,7 +266,7 @@ export async function runZ0live({ base, token, scenario, clipIds, mintBody, inbo
   // playback at once, including audio still in the jitter buffer; playback returns with the
   // model's next turn. Noise never ducks: only isSpeech() text does.
   const TAIL_MS = 1500; // buffered audio can keep playing this long after an assistant turn ends
-  const barge = { heard: "", assistant: "", ducked: false, open: false, endedAt: -Infinity };
+  const barge = { heard: "", assistant: "", ducked: false, duckedTurnEnded: false, open: false, endedAt: -Infinity };
   const setDuck = on => {
     barge.ducked = on;
     playback.gain.setValueAtTime(on ? 0 : 1, ctx.currentTime);
@@ -278,7 +278,13 @@ export async function runZ0live({ base, token, scenario, clipIds, mintBody, inbo
     if (type === "input_transcript.added") {
       barge.heard += m.item?.text ?? "";
       const talking = barge.open || now() - barge.endedAt < TAIL_MS;
-      if (talking && !barge.ducked && isSpeech(barge.heard)) setDuck(true);
+      if (talking && !barge.ducked && isSpeech(barge.heard)) {
+        barge.duckedTurnEnded = !barge.open;
+        setDuck(true);
+      }
+    } else if (type === "output_transcript.added") {
+      // New speech after the interrupted turn ended (a full-duplex answer) restores playback.
+      if (barge.ducked && barge.duckedTurnEnded) setDuck(false);
     } else if (type === "turn.created" && m.turn?.role === "assistant") {
       barge.assistant = m.turn.id ?? "";
       barge.open = true;
@@ -287,6 +293,7 @@ export async function runZ0live({ base, token, scenario, clipIds, mintBody, inbo
       if (m.turn?.role === "assistant") {
         barge.open = false;
         barge.endedAt = now();
+        if (barge.ducked) barge.duckedTurnEnded = true;
       } else barge.heard = "";
     }
   };
