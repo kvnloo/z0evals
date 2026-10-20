@@ -3,7 +3,8 @@
 
 python harness/run.py --run-id <id> --reps 5 [--arms omp-live,z0live-realtime] [--scenarios a,b]
 Raw per-run artifacts go to $VOICE_EVAL_ROOT/<run-id>/ (private, mode 0700). Each run is a
-separate subprocess under `flock <heavy.lock> nice -n 10`, gated on >= 4 GiB available memory,
+separate subprocess under `nice -n 10` (live sessions are network/IO-bound, so they do not take the host heavy.lock;
+pass --heavy-lock to serialize anyway), gated on >= 4 GiB available memory,
 with --gap-s seconds between runs to respect provider limits.
 """
 import argparse
@@ -52,6 +53,7 @@ def main():
     ap.add_argument("--bidi-data", default="")
     ap.add_argument("--bidi-base", default="")
     ap.add_argument("--seed", type=int, default=20261020)
+    ap.add_argument("--heavy-lock", action="store_true")
     a = ap.parse_args()
     os.umask(0o077)
     arms_cfg = json.loads((STUDY / "arms.json").read_text())
@@ -101,7 +103,8 @@ def main():
                 env = dict(os.environ, **{k: v.format(**fmt) for k, v in cfg.get("env", {}).items()})
                 t = time.time()
                 try:
-                    p = subprocess.run(["flock", str(LOCK), "nice", "-n", "10", *cmd], cwd=STUDY, env=env, capture_output=True, text=True, timeout=a.timeout_s)
+                    prefix = ["flock", str(LOCK)] if a.heavy_lock else []
+                    p = subprocess.run([*prefix, "nice", "-n", "10", *cmd], cwd=STUDY, env=env, capture_output=True, text=True, timeout=a.timeout_s)
                     rc, tail = p.returncode, (p.stdout.strip().splitlines() or [""])[-1]
                     err_tail = p.stderr.strip()[-600:]
                 except subprocess.TimeoutExpired:

@@ -97,7 +97,14 @@ G7) block release regardless of aggregate latency. OMP's own absolute results on
 reported too: the control is not assumed perfect.
 
 A one-run-per-cell pilot was used only to debug the harness; its data are excluded and the
-thresholds above were committed before it ran.
+thresholds above were committed before it ran. The pilot exposed three harness faults, fixed
+before the scored run without touching any threshold: (1) OMP delegation events arrive on both
+the data channel and the sideband and were double counted, (2) `await_result` could end before
+the spoken result, (3) OMP's JS event loop stalled for seconds while LSP/MCP started, delaying
+level timestamps. The OMP arm now disables LSP/MCP/Python preflight, logs event-loop stalls
+(> 50 ms), and the analysis **excludes** (does not score) any OMP latency whose interval overlaps
+a stall, reporting the count. Keyword checks also match with spaces removed, because provider
+ASR of the assistant audio can split words ("Can berra").
 
 ## Not comparable (always reported with results)
 

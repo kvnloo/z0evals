@@ -80,6 +80,7 @@ Bun.plugin({
 
 const audioDeltaOut = fs.openSync(path.join(runDir, "sideband-audio.b64.jsonl"), "w");
 const wireTypes: Record<string, number> = {};
+const delegationIds = new Set<string>(); // the same event arrives on data channel AND sideband
 function logWire(channel: string, payload: unknown) {
 	if (typeof payload !== "string") return;
 	let ev: Record<string, any>;
@@ -98,6 +99,7 @@ function logWire(channel: string, payload: unknown) {
 	const keep: Record<string, unknown> = { kind: "wire", channel, type };
 	if (ev.item?.text) keep.text = ev.item.text;
 	if (ev.turn) keep.turn = { role: ev.turn.role, transcript: ev.turn.transcript };
+	if (type === "delegation.created" && ev.item?.id) delegationIds.add(String(ev.item.id));
 	if (type === "delegation.created") keep.delegation = { id: ev.item?.id, text: (ev.item?.content ?? []).map((c: any) => c.text).join("\n") };
 	if (type === "error") keep.error = ev.error ?? ev.message;
 	if (!["output_transcript.added", "input_transcript.added", "turn.done", "delegation.created", "error"].includes(type)) keep.keys = Object.keys(ev).slice(0, 12);
@@ -122,7 +124,31 @@ const { DEFAULT_LIVE_VOICE } = await import(path.join(pkgDir, "src/live/voices.t
 const { extractVisibleAssistantText } = await import(path.join(pkgDir, "src/modes/rpc/rpc-live.ts"));
 
 const cwd = args.cwd ?? process.cwd();
-const created = await createAgentSession({ cwd, sessionManager: SessionManager.inMemory(cwd), disableExtensionDiscovery: true, hasUI: false });
+const tSession = now();
+const created = await createAgentSession({
+	cwd,
+	sessionManager: SessionManager.inMemory(cwd),
+	disableExtensionDiscovery: true,
+	hasUI: false,
+	enableLsp: false,
+	enableMCP: false,
+	skipPythonPreflight: true,
+});
+const sessionCreateMs = +(now() - tSession).toFixed(1);
+// Event-loop lag monitor: level callbacks are timestamped on the JS thread, so any stall
+// would delay (not change) what the native speaker path plays. Stalls are logged and the
+// analysis invalidates measurements that overlap one.
+let lagLast = performance.now();
+const stalls: Array<[number, number]> = [];
+const lagTimer = setInterval(() => {
+	const t = performance.now();
+	const lag = t - lagLast - 10;
+	if (lag > 50) {
+		stalls.push([+(t - T0 - lag).toFixed(1), +lag.toFixed(1)]);
+		log({ kind: "stall", lag_ms: +lag.toFixed(1) });
+	}
+	lagLast = t;
+}, 10);
 const session = created.session;
 const voice = args.voice || DEFAULT_LIVE_VOICE;
 let terminalAgentEnds = 0;
@@ -209,7 +235,7 @@ runner = createRunner({
 	workPending: () => delegationsCreated() > terminalAgentEnds,
 	log,
 });
-const delegationsCreated = () => (wireTypes["delegation.created"] ?? 0);
+const delegationsCreated = () => delegationIds.size;
 
 const meta: Record<string, unknown> = {
 	arm: "omp-live",
@@ -241,6 +267,9 @@ try {
 	try {
 		await session.abort?.();
 	} catch {}
+	clearInterval(lagTimer);
+	meta.session_create_ms = sessionCreateMs;
+	meta.stalls = stalls;
 	meta.terminal_error = terminalError ?? null;
 	meta.wire_types = wireTypes;
 	meta.output_windows = outputWindows;

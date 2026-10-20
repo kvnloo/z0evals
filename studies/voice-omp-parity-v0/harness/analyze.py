@@ -178,9 +178,17 @@ def score_run(d: Path, spec):
     row["assistant_turns"] = len(texts)
     row["repeats"] = repeats(texts)
     lat = {}
+    stalls = meta.get("stalls") or []
+    row["stall_invalidated"] = []
     for mk in checks.get("direct_turns", []) + checks.get("ack_turns", []):
         if mk in m and "end" in m[mk]:
             fa = first_audible_after(levels, m[mk]["end"])
+            lo, hi = m[mk]["start"], (fa if fa else m[mk]["end"])
+            # Harness validity rule: OMP levels are stamped on the JS thread, so a measured
+            # interval overlapping an event-loop stall (> 50 ms) is excluded, not scored.
+            if any(s0 < hi and s0 + lag > lo for s0, lag in stalls):
+                row["stall_invalidated"].append(mk)
+                continue
             lat[mk] = round(fa - m[mk]["end"], 1) if fa else None
             # talk-over: assistant audible while this user utterance was still being spoken
             row.setdefault("talk_over_ms", 0)
@@ -192,7 +200,8 @@ def score_run(d: Path, spec):
             nxt = sorted(v["start"] for k, v in m.items() if "start" in v and v["start"] > m[mk]["end"])
             upto = nxt[0] if nxt else math.inf
             said = " ".join(t for ts, t in texts if m[mk]["end"] < ts <= upto + 15000).lower()
-            row.setdefault("correct", {})[mk] = any(w in said for w in words)
+            squashed = said.replace(" ", "")  # provider ASR may split words ("Can berra")
+            row.setdefault("correct", {})[mk] = any(w in said or w.replace(" ", "") in squashed for w in words)
     if checks.get("expect_delegation") or checks.get("expect_no_delegation"):
         info = delegation_info(arm, events)
         row["delegation"] = info
@@ -285,6 +294,7 @@ def aggregate(rows):
             "delegated_on_direct_scenarios": sum(1 for r in ok if r["scenario"] not in DELEGATION and r.get("delegation", {}).get("used")),
             "unwanted_speech_runs": sum(1 for r in close if (r.get("unwanted_speech_ms") or 0) > 0),
             "repeat_runs": sum(1 for r in ok if r.get("repeats")),
+            "stall_invalidated_measurements": sum(len(r.get("stall_invalidated", [])) for r in ok),
             "talk_over_runs": sum(1 for r in ok if (r.get("talk_over_ms") or 0) > 0),
             "per_scenario": per_scen,
         }

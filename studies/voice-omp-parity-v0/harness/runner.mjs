@@ -58,13 +58,20 @@ export function createRunner(adapter) {
         } else if (step.op === "await_reply_end" || step.op === "await_result") {
           const since = t;
           const needWork = step.op === "await_result";
-          const ok = await waitUntil(
-            () =>
-              lastAudible >= since &&
-              adapter.now() - lastAudible >= step.silence_ms &&
-              (!needWork || !adapter.workPending()),
-            step.timeout_ms,
-          );
+          // await_result: once work was seen pending, require speech AFTER it settled
+          // (the spoken result), then silence; without any work it degrades to reply_end.
+          let workSeen = false;
+          let lastPending = -Infinity;
+          const ok = await waitUntil(() => {
+            const pending = needWork && adapter.workPending();
+            if (pending) {
+              workSeen = true;
+              lastPending = adapter.now();
+              return false;
+            }
+            const anchor = workSeen ? lastPending : since;
+            return lastAudible > anchor && adapter.now() - lastAudible >= step.silence_ms;
+          }, step.timeout_ms);
           adapter.log({ kind: "await", op: step.op, ok, t: adapter.now(), work_pending: adapter.workPending() });
         } else {
           throw new Error(`unknown step op ${step.op}`);
