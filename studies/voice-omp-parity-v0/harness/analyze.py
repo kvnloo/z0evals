@@ -418,9 +418,10 @@ def main():
     ap.add_argument("--private-rows")
     a = ap.parse_args()
     spec = json.loads(Path(a.scenarios).read_text())
-    root = Path(a.runs)
-    run_meta = json.loads((root / "run.json").read_text()) if (root / "run.json").exists() else {"run_id": root.name}
-    rows = [score_run(d, spec) for d in sorted(p for p in root.iterdir() if (p / "meta.json").exists())]
+    roots = [Path(x) for x in a.runs.split(",")]  # several blocks may be scored together
+    blocks = [json.loads((r / "run.json").read_text()) if (r / "run.json").exists() else {"run_id": r.name} for r in roots]
+    run_meta = {"run_id": "+".join(b["run_id"] for b in blocks), "reps": blocks[0].get("reps"), "blocks": blocks}
+    rows = [score_run(d, spec) for root in roots for d in sorted(p for p in root.iterdir() if (p / "meta.json").exists())]
     agg = aggregate(rows)
     verdicts = gates(agg)
     public_rows = [{k: v for k, v in r.items() if k not in ("error",)} | {"error": bool(r.get("error"))} for r in rows]

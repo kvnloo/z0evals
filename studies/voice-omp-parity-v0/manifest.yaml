@@ -18,6 +18,10 @@ sources:
     commit: 6db52cb92d42503c43203e3b02887f0779fcfd9b
     branch: feat/z0live-gesture-standby
     role: reference z0live client loop ported into the headless Chromium driver
+  - repo: kvnloo/z0live
+    commit: 86a9e0c2df6b2ba223e371249d139229c4a2caed
+    branch: feat/frameless-bidi
+    role: z0live-bidi arm broker (isolated instance)
   - repo: can1357/oh-my-pi
     commit: 10b867cb2eeb7809b883a88dfebe1919ff0c2764
     branch: main
@@ -39,6 +43,10 @@ artifacts:
     kind: fixture
   - path: harness/analyze.py
     kind: analysis
+  - path: results/voice-parity-20261020.json
+    kind: result
+  - path: results/voice-parity-20261020.md
+    kind: result
 
 limitations:
   - Arms differ in realtime model, voice, WebRTC stack and delegation backend; results compare products, not layers.

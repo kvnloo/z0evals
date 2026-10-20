@@ -77,6 +77,7 @@ def main():
         "cpu_count": os.cpu_count(),
         "omp_version": json.loads(omp_pkg.read_text())["version"] if omp_pkg.exists() else None,
         "z0live_broker_sha": git_head(a.z0live_worktree),
+        "z0live_bidi_broker_sha": git_head(a.bidi_worktree) if a.bidi_worktree else None,
         "eval_sha": git_head(STUDY),
         "assets": json.loads((Path(a.assets) / "assets.json").read_text()),
         "scenario_version": spec["version"],

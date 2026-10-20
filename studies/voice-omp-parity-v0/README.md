@@ -13,7 +13,7 @@ filler, stale speech).
 |---|---|---|---|
 | `omp-live` (control) | `gpt-live-1-codex` / `sol` | Installed OMP `LiveSessionController` + `CodexLiveTransport` (Codex quicksilver signaling, native webrtc-rs peer, api.openai.com sideband) | Client delegation into an in-memory OMP `AgentSession` (default role model) |
 | `z0live-realtime` | `gpt-realtime` / `marin` | Headless Chromium WebRTC client porting the Lawnchair z0live client loop; ephemeral secret minted by an **isolated** z0live broker | Broker tools (`ask_z0` → liaison → Hermes meta agent → workers, legacy work tools, `tell_hermes`), results via broker inbox |
-| `z0live-bidi` | (pending) | `feat/frameless-bidi` branch — enabled in `arms.json` once it exists | — |
+| `z0live-bidi` | `gpt-live-1-codex` / `sol` | Same headless Chromium driver (`--arm z0live-bidi`): mints `transports:["bidi","realtime"]`, posts the SDP offer to the isolated broker's `POST /v1/live/calls` (kvnloo/z0live `feat/frameless-bidi` @ 86a9e0c); captions only | Broker-owned sideband delegation into a persistent Hermes session |
 
 The arms differ in model, voice, transport and delegation stack. The scoreboard compares
 **the products as shipped**; it does not attribute differences to any single layer. See
@@ -119,6 +119,29 @@ ASR of the assistant audio can split words ("Can berra").
 6. Shared, loaded host (load average recorded per run); both arms run on the same host and network.
 7. Not measured: physical mic/speaker, Bluetooth/route changes, Android background policy,
    human-perceived naturalness, cost.
+
+## Results (baseline 2026-10-20)
+
+`results/voice-parity-20261020.{json,md}` — 40 runs per arm (8 scenarios × 5). `omp-live` and
+`z0live-realtime` were interleaved in one block (03:50–04:47 CDT); `z0live-bidi` ran as a
+second block (04:54–05:20 CDT) once its branch existed, so it is **not interleaved** with the
+control. Verdicts: `z0live-realtime` **FAIL** (G1, G2, G3c); `z0live-bidi` **FAIL** (G2, G4a, G4b, G5).
+
+Reading notes, decided after seeing the data and therefore *not* applied to the verdicts:
+
+- G1/G2 for `z0live-realtime` depend on stall handling. When the 19 stall-affected OMP turns are
+  included (they can only make OMP look slower), OMP is 1,212 / 1,995 ms and the gap shrinks
+  to +102 / −12 ms. G3c (repo answers 0/5 vs 5/5) does not depend on it.
+- G4b is absolute and the control fails it too (OMP barge p95 1,220 ms): the full-duplex
+  `gpt-live-1-codex` model keeps talking about a second after barge-in, in both OMP and z0live-bidi.
+- The two flagged noise "false interruptions" (OMP 1/5, bidi 1/5) are 738/750 ms pauses
+  next to the noise window, with transcripts showing an uninterrupted answer, and `sol` has
+  ~700 ms pauses between sentences elsewhere. For v1, require transcript truncation or a VAD
+  event as well as the acoustic gap.
+- z0live-bidi's Chromium jitter buffer averaged ~145 ms vs ~33 ms on the gpt-realtime path;
+  OMP's meter has no jitter buffer, so part of bidi's p95 gap is where it is measured.
+- The z0live page's "silent inbox items are not pending work" fix (cf2bd00) landed partway
+  through the first block. It changes only when a run stops waiting, not any metric.
 
 ## Reproduce
 
