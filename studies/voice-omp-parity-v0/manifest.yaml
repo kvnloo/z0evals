@@ -1,0 +1,58 @@
+schema_version: z0eval.study.v1
+id: voice-omp-parity-v0
+title: Desktop voice parity — OMP /live control vs z0live, scored on output audio
+status: draft
+created: "2026-10-20"
+updated: "2026-10-20"
+
+hardware:
+  host: groot (shared desktop, Linux, 20 logical CPUs, 23 GB RAM)
+  note: Headless; no physical microphone or speaker. Load average is recorded per run.
+
+sources:
+  - repo: kvnloo/z0live
+    commit: d1130f96cf632e84f0f594aa634b26d64beea25a
+    branch: feat/quiet-accessibility-bridge
+    role: deployed desktop broker checkout (isolated instance under test)
+  - repo: kvnloo/lawnchair
+    commit: 6db52cb92d42503c43203e3b02887f0779fcfd9b
+    branch: feat/z0live-gesture-standby
+    role: reference z0live client loop ported into the headless Chromium driver
+  - repo: kvnloo/z0live
+    commit: 86a9e0c2df6b2ba223e371249d139229c4a2caed
+    branch: feat/frameless-bidi
+    role: z0live-bidi arm broker (isolated instance)
+  - repo: can1357/oh-my-pi
+    commit: 10b867cb2eeb7809b883a88dfebe1919ff0c2764
+    branch: main
+    role: OMP /live source reference; the arm runs the installed npm package @oh-my-pi/pi-coding-agent 18.9.2
+
+questions:
+  - Is z0live non-inferior to OMP /live on end-of-speech to first audible response (p50/p95)?
+  - Does barge-in silence the assistant as fast as OMP, without stale resumption?
+  - Does non-speech noise falsely interrupt either system?
+  - Does either system speak unprompted after a closing remark, repeat itself, or stall with filler?
+  - Do delegation/tool turns get delegated and answered correctly?
+
+artifacts:
+  - path: README.md
+    kind: other
+  - path: scenarios.json
+    kind: fixture
+  - path: arms.json
+    kind: fixture
+  - path: harness/analyze.py
+    kind: analysis
+  - path: results/voice-parity-20261020.json
+    kind: result
+  - path: results/voice-parity-20261020.md
+    kind: result
+
+limitations:
+  - Arms differ in realtime model, voice, WebRTC stack and delegation backend; results compare products, not layers.
+  - OMP output level is measured before speaker buffering without a jitter buffer; z0live after Chromium NetEq.
+  - The z0live client is a headless port of the Lawnchair loop, not the Android APK.
+  - Headphone condition only; no acoustic echo, room noise, or physical audio devices.
+  - Synthetic TTS user voice; one procedurally generated noise clip.
+
+claims: []

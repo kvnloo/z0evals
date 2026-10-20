@@ -1,0 +1,1909 @@
+{
+  "schema": "z0eval.voice_parity_result.v1",
+  "run": {
+    "run_id": "voice-parity-20261020-r1+voice-parity-20261020-r2c",
+    "reps": 5,
+    "blocks": [
+      {
+        "run_id": "voice-parity-20261020-r1",
+        "reps": 5,
+        "arms": [
+          "omp-live",
+          "z0live-realtime"
+        ],
+        "scenarios": [
+          "greeting",
+          "quick_fact",
+          "work_status",
+          "repo_question",
+          "barge_in",
+          "noise_during_answer",
+          "closing_silence",
+          "rapid_followup"
+        ],
+        "started": "2026-10-20T03:50:24-0500",
+        "host": "groot",
+        "kernel": "7.2.9-1-cachyos",
+        "cpu_count": 20,
+        "omp_version": "18.9.2",
+        "z0live_broker_sha": "d1130f96cf632e84f0f594aa634b26d64beea25a",
+        "eval_sha": "e3854a6f69499a90f71403d0dbe0a544667f647b",
+        "assets": {
+          "target_speech_dbfs": -20.0,
+          "noise_peak_dbfs": -6.0,
+          "tts": {
+            "engine": "kokoro-js@1.2.1",
+            "model": "onnx-community/Kokoro-82M-v1.0-ONNX",
+            "dtype": "q8",
+            "voice": "am_michael",
+            "sample_rate": 24000
+          },
+          "clips": {
+            "greet": {
+              "kind": "speech",
+              "duration_ms": 1100.0,
+              "gain_db": 1.16,
+              "peak_dbfs": -3.4,
+              "active_rms_dbfs": -20.05,
+              "files": {
+                "16000": "greet.16k.f32",
+                "24000": "greet.24k.f32",
+                "48000": "greet.48k.f32"
+              }
+            },
+            "fact": {
+              "kind": "speech",
+              "duration_ms": 1910.0,
+              "gain_db": 2.28,
+              "peak_dbfs": -2.02,
+              "active_rms_dbfs": -20.05,
+              "files": {
+                "16000": "fact.16k.f32",
+                "24000": "fact.24k.f32",
+                "48000": "fact.48k.f32"
+              }
+            },
+            "work": {
+              "kind": "speech",
+              "duration_ms": 2500.0,
+              "gain_db": 1.91,
+              "peak_dbfs": -1.61,
+              "active_rms_dbfs": -20.06,
+              "files": {
+                "16000": "work.16k.f32",
+                "24000": "work.24k.f32",
+                "48000": "work.48k.f32"
+              }
+            },
+            "repo": {
+              "kind": "speech",
+              "duration_ms": 4860.0,
+              "gain_db": 2.8,
+              "peak_dbfs": -1.0,
+              "active_rms_dbfs": -20.98,
+              "files": {
+                "16000": "repo.16k.f32",
+                "24000": "repo.24k.f32",
+                "48000": "repo.48k.f32"
+              }
+            },
+            "story": {
+              "kind": "speech",
+              "duration_ms": 3300.0,
+              "gain_db": 3.0,
+              "peak_dbfs": -3.33,
+              "active_rms_dbfs": -20.17,
+              "files": {
+                "16000": "story.16k.f32",
+                "24000": "story.24k.f32",
+                "48000": "story.48k.f32"
+              }
+            },
+            "barge": {
+              "kind": "speech",
+              "duration_ms": 3510.0,
+              "gain_db": 2.21,
+              "peak_dbfs": -1.15,
+              "active_rms_dbfs": -20.13,
+              "files": {
+                "16000": "barge.16k.f32",
+                "24000": "barge.24k.f32",
+                "48000": "barge.48k.f32"
+              }
+            },
+            "explain": {
+              "kind": "speech",
+              "duration_ms": 3920.0,
+              "gain_db": 2.87,
+              "peak_dbfs": -2.35,
+              "active_rms_dbfs": -20.15,
+              "files": {
+                "16000": "explain.16k.f32",
+                "24000": "explain.24k.f32",
+                "48000": "explain.48k.f32"
+              }
+            },
+            "closing": {
+              "kind": "speech",
+              "duration_ms": 1360.0,
+              "gain_db": 1.39,
+              "peak_dbfs": -1.74,
+              "active_rms_dbfs": -20.18,
+              "files": {
+                "16000": "closing.16k.f32",
+                "24000": "closing.24k.f32",
+                "48000": "closing.48k.f32"
+              }
+            },
+            "math1": {
+              "kind": "speech",
+              "duration_ms": 1220.0,
+              "gain_db": 0.19,
+              "peak_dbfs": -1.0,
+              "active_rms_dbfs": -20.06,
+              "files": {
+                "16000": "math1.16k.f32",
+                "24000": "math1.24k.f32",
+                "48000": "math1.48k.f32"
+              }
+            },
+            "math2": {
+              "kind": "speech",
+              "duration_ms": 1010.0,
+              "gain_db": 1.45,
+              "peak_dbfs": -5.67,
+              "active_rms_dbfs": -20.27,
+              "files": {
+                "16000": "math2.16k.f32",
+                "24000": "math2.24k.f32",
+                "48000": "math2.48k.f32"
+              }
+            },
+            "footsteps_door_keyboard": {
+              "kind": "noise",
+              "duration_ms": 4404.5,
+              "gain_db": 0.02,
+              "peak_dbfs": -6.0,
+              "active_rms_dbfs": -20.68,
+              "files": {
+                "16000": "footsteps_door_keyboard.16k.f32",
+                "24000": "footsteps_door_keyboard.24k.f32",
+                "48000": "footsteps_door_keyboard.48k.f32"
+              }
+            }
+          }
+        },
+        "scenario_version": "2026-10-20.1",
+        "gap_s": 4.0,
+        "finished": "2026-10-20T04:47:33-0500"
+      },
+      {
+        "run_id": "voice-parity-20261020-r2c",
+        "reps": 5,
+        "arms": [
+          "z0live-bidi"
+        ],
+        "scenarios": [
+          "rapid_followup",
+          "barge_in"
+        ],
+        "started": "2026-10-20T07:25:47-0500",
+        "host": "groot",
+        "kernel": "7.2.9-1-cachyos",
+        "cpu_count": 20,
+        "omp_version": "18.9.2",
+        "z0live_broker_sha": null,
+        "z0live_bidi_broker_sha": "b9c6b3f2ef72e369bbcd5862874a3dacd2d84a72",
+        "eval_sha": "8bc763912a074e0848082e06fa12a8ccc3f7f882",
+        "assets": {
+          "target_speech_dbfs": -20.0,
+          "noise_peak_dbfs": -6.0,
+          "tts": {
+            "engine": "kokoro-js@1.2.1",
+            "model": "onnx-community/Kokoro-82M-v1.0-ONNX",
+            "dtype": "q8",
+            "voice": "am_michael",
+            "sample_rate": 24000
+          },
+          "clips": {
+            "greet": {
+              "kind": "speech",
+              "duration_ms": 1100.0,
+              "gain_db": 1.16,
+              "peak_dbfs": -3.4,
+              "active_rms_dbfs": -20.05,
+              "files": {
+                "16000": "greet.16k.f32",
+                "24000": "greet.24k.f32",
+                "48000": "greet.48k.f32"
+              }
+            },
+            "fact": {
+              "kind": "speech",
+              "duration_ms": 1910.0,
+              "gain_db": 2.28,
+              "peak_dbfs": -2.02,
+              "active_rms_dbfs": -20.05,
+              "files": {
+                "16000": "fact.16k.f32",
+                "24000": "fact.24k.f32",
+                "48000": "fact.48k.f32"
+              }
+            },
+            "work": {
+              "kind": "speech",
+              "duration_ms": 2500.0,
+              "gain_db": 1.91,
+              "peak_dbfs": -1.61,
+              "active_rms_dbfs": -20.06,
+              "files": {
+                "16000": "work.16k.f32",
+                "24000": "work.24k.f32",
+                "48000": "work.48k.f32"
+              }
+            },
+            "repo": {
+              "kind": "speech",
+              "duration_ms": 4860.0,
+              "gain_db": 2.8,
+              "peak_dbfs": -1.0,
+              "active_rms_dbfs": -20.98,
+              "files": {
+                "16000": "repo.16k.f32",
+                "24000": "repo.24k.f32",
+                "48000": "repo.48k.f32"
+              }
+            },
+            "story": {
+              "kind": "speech",
+              "duration_ms": 3300.0,
+              "gain_db": 3.0,
+              "peak_dbfs": -3.33,
+              "active_rms_dbfs": -20.17,
+              "files": {
+                "16000": "story.16k.f32",
+                "24000": "story.24k.f32",
+                "48000": "story.48k.f32"
+              }
+            },
+            "barge": {
+              "kind": "speech",
+              "duration_ms": 3510.0,
+              "gain_db": 2.21,
+              "peak_dbfs": -1.15,
+              "active_rms_dbfs": -20.13,
+              "files": {
+                "16000": "barge.16k.f32",
+                "24000": "barge.24k.f32",
+                "48000": "barge.48k.f32"
+              }
+            },
+            "explain": {
+              "kind": "speech",
+              "duration_ms": 3920.0,
+              "gain_db": 2.87,
+              "peak_dbfs": -2.35,
+              "active_rms_dbfs": -20.15,
+              "files": {
+                "16000": "explain.16k.f32",
+                "24000": "explain.24k.f32",
+                "48000": "explain.48k.f32"
+              }
+            },
+            "closing": {
+              "kind": "speech",
+              "duration_ms": 1360.0,
+              "gain_db": 1.39,
+              "peak_dbfs": -1.74,
+              "active_rms_dbfs": -20.18,
+              "files": {
+                "16000": "closing.16k.f32",
+                "24000": "closing.24k.f32",
+                "48000": "closing.48k.f32"
+              }
+            },
+            "math1": {
+              "kind": "speech",
+              "duration_ms": 1220.0,
+              "gain_db": 0.19,
+              "peak_dbfs": -1.0,
+              "active_rms_dbfs": -20.06,
+              "files": {
+                "16000": "math1.16k.f32",
+                "24000": "math1.24k.f32",
+                "48000": "math1.48k.f32"
+              }
+            },
+            "math2": {
+              "kind": "speech",
+              "duration_ms": 1010.0,
+              "gain_db": 1.45,
+              "peak_dbfs": -5.67,
+              "active_rms_dbfs": -20.27,
+              "files": {
+                "16000": "math2.16k.f32",
+                "24000": "math2.24k.f32",
+                "48000": "math2.48k.f32"
+              }
+            },
+            "footsteps_door_keyboard": {
+              "kind": "noise",
+              "duration_ms": 4404.5,
+              "gain_db": 0.02,
+              "peak_dbfs": -6.0,
+              "active_rms_dbfs": -20.68,
+              "files": {
+                "16000": "footsteps_door_keyboard.16k.f32",
+                "24000": "footsteps_door_keyboard.24k.f32",
+                "48000": "footsteps_door_keyboard.48k.f32"
+              }
+            }
+          }
+        },
+        "scenario_version": "2026-10-20.1",
+        "gap_s": 4.0,
+        "finished": "2026-10-20T07:30:21-0500"
+      }
+    ]
+  },
+  "aggregate": {
+    "omp-live": {
+      "runs": 40,
+      "valid_runs": 39,
+      "errors": [
+        "Live WebRTC peer connection disconnected"
+      ],
+      "ready_ms_p50": 1207.1,
+      "direct_first_audible": {
+        "n": 22,
+        "missing": 0,
+        "p50": 1112.2,
+        "p95": 1538.8,
+        "max": 1545.2
+      },
+      "direct_first_audible_incl_stalled": {
+        "n": 34,
+        "p50": 1211.9,
+        "p95": 1995.4,
+        "note": "sensitivity: OMP stalls only delay timestamps, so including them is conservative for the control"
+      },
+      "delegation_ack_first_audible": {
+        "n": 10,
+        "p50": 1701.6,
+        "p95": 2888.2
+      },
+      "delegation_used": "10/10",
+      "delegation_used_by_scenario": {
+        "work_status": "5/5",
+        "repo_question": "5/5"
+      },
+      "delegation_tools": [],
+      "result_audible_ms_p50": 36499.0,
+      "result_delivered": "10/10",
+      "repo_correct": "5/5",
+      "filler_per_delegation_run": 0.5,
+      "longest_dead_air_ms_p50": 33032.7,
+      "barge_applicable": "5/5",
+      "barge_to_silence": {
+        "p50": 973.5,
+        "p95": 1220.0,
+        "not_stopped": 0
+      },
+      "barge_answer_correct": "5/5",
+      "stale_resume_runs": 0,
+      "noise_applicable": "5/5",
+      "false_interruptions": 1,
+      "noise_vad_triggers": 0,
+      "noise_transcribed_as_user": 0,
+      "delegated_on_direct_scenarios": 0,
+      "unwanted_speech_runs": 0,
+      "repeat_runs": 0,
+      "stall_invalidated_measurements": 19,
+      "talk_over_runs": 0,
+      "per_scenario": {
+        "barge_in": {
+          "runs": 5,
+          "valid": 5,
+          "first_audible_p50": 1104.6,
+          "first_audible_p95": 1226.6,
+          "correct": "5/5"
+        },
+        "closing_silence": {
+          "runs": 5,
+          "valid": 5,
+          "first_audible_p50": 1285.2,
+          "first_audible_p95": 1519.2,
+          "correct": null
+        },
+        "greeting": {
+          "runs": 5,
+          "valid": 5,
+          "first_audible_p50": 1063.1,
+          "first_audible_p95": 1148.5,
+          "correct": null
+        },
+        "noise_during_answer": {
+          "runs": 5,
+          "valid": 5,
+          "first_audible_p50": 1144.8,
+          "first_audible_p95": 1296.1,
+          "correct": null
+        },
+        "quick_fact": {
+          "runs": 5,
+          "valid": 4,
+          "first_audible_p50": 1040.3,
+          "first_audible_p95": 1205.3,
+          "correct": "4/4"
+        },
+        "rapid_followup": {
+          "runs": 5,
+          "valid": 5,
+          "first_audible_p50": 1326.7,
+          "first_audible_p95": 1511.0,
+          "correct": "10/10"
+        },
+        "repo_question": {
+          "runs": 5,
+          "valid": 5,
+          "first_audible_p50": 2360.8,
+          "first_audible_p95": 2954.2,
+          "correct": "5/5"
+        },
+        "work_status": {
+          "runs": 5,
+          "valid": 5,
+          "first_audible_p50": 1348.2,
+          "first_audible_p95": 1348.2,
+          "correct": null
+        }
+      }
+    },
+    "z0live-bidi": {
+      "runs": 10,
+      "valid_runs": 10,
+      "errors": [],
+      "ready_ms_p50": 854.5,
+      "direct_first_audible": {
+        "n": 15,
+        "missing": 0,
+        "p50": 1262.7,
+        "p95": 1638.3,
+        "max": 1716.7
+      },
+      "direct_first_audible_incl_stalled": {
+        "n": 15,
+        "p50": 1262.7,
+        "p95": 1638.3,
+        "note": "sensitivity: OMP stalls only delay timestamps, so including them is conservative for the control"
+      },
+      "delegation_ack_first_audible": {
+        "n": 0,
+        "p50": null,
+        "p95": null
+      },
+      "delegation_used": "0/0",
+      "delegation_used_by_scenario": {
+        "work_status": "0/0",
+        "repo_question": "0/0"
+      },
+      "delegation_tools": [],
+      "result_audible_ms_p50": null,
+      "result_delivered": "0/0",
+      "repo_correct": "0/0",
+      "filler_per_delegation_run": null,
+      "longest_dead_air_ms_p50": null,
+      "barge_applicable": "4/5",
+      "barge_to_silence": {
+        "p50": 884.9,
+        "p95": 1166.9,
+        "not_stopped": 0
+      },
+      "barge_answer_correct": "5/5",
+      "stale_resume_runs": 1,
+      "noise_applicable": "0/0",
+      "false_interruptions": 0,
+      "noise_vad_triggers": 0,
+      "noise_transcribed_as_user": 0,
+      "delegated_on_direct_scenarios": 0,
+      "unwanted_speech_runs": 0,
+      "repeat_runs": 0,
+      "stall_invalidated_measurements": 0,
+      "talk_over_runs": 0,
+      "per_scenario": {
+        "barge_in": {
+          "runs": 5,
+          "valid": 5,
+          "first_audible_p50": 1448.7,
+          "first_audible_p95": 1694.3,
+          "correct": "5/5"
+        },
+        "rapid_followup": {
+          "runs": 5,
+          "valid": 5,
+          "first_audible_p50": 1206.3,
+          "first_audible_p95": 1365.8,
+          "correct": "10/10"
+        }
+      }
+    }
+  },
+  "verdicts": {
+    "z0live-bidi": {
+      "gates": {
+        "G1_direct_first_audible_p50": {
+          "value": 1262.7,
+          "control": 1112.2,
+          "tolerance": 150,
+          "pass": false
+        },
+        "G2_direct_first_audible_p95": {
+          "value": 1638.3,
+          "control": 1538.8,
+          "tolerance": 300,
+          "pass": true
+        },
+        "G3a_delegation_ack_p50": {
+          "value": null,
+          "control": 1701.6,
+          "tolerance": 150,
+          "pass": null
+        },
+        "G3b_delegation_used_ge_4of5_each": {
+          "value": {
+            "work_status": "0/0",
+            "repo_question": "0/0"
+          },
+          "pass": null
+        },
+        "G3c_repo_correct_ge_control": {
+          "value": "0/0",
+          "control": "5/5",
+          "pass": false
+        },
+        "G4a_barge_to_silence_p50": {
+          "value": 884.9,
+          "control": 973.5,
+          "tolerance": 100,
+          "pass": true
+        },
+        "G4b_barge_stops_within_1000ms": {
+          "value": {
+            "not_stopped": 0,
+            "p95": 1166.9
+          },
+          "pass": false
+        },
+        "G4c_barge_answer_ge_4of5": {
+          "value": "5/5",
+          "pass": true
+        },
+        "G4d_no_stale_resume": {
+          "value": 1,
+          "pass": false
+        },
+        "G5_zero_false_interruptions": {
+          "value": 0,
+          "control": 1,
+          "pass": true
+        },
+        "G6_zero_unwanted_speech_after_close": {
+          "value": 0,
+          "control": 0,
+          "pass": true
+        },
+        "G7_zero_repeated_speech": {
+          "value": 0,
+          "control": 0,
+          "pass": true
+        },
+        "G8_filler_le_control_plus_1": {
+          "value": null,
+          "control": 0.5,
+          "pass": null
+        },
+        "G9_no_extra_run_failures": {
+          "value": 0,
+          "control": 1,
+          "pass": true
+        }
+      },
+      "verdict": "FAIL",
+      "failing": [
+        "G1_direct_first_audible_p50",
+        "G3c_repo_correct_ge_control",
+        "G4b_barge_stops_within_1000ms",
+        "G4d_no_stale_resume"
+      ],
+      "unknown": [
+        "G3a_delegation_ack_p50",
+        "G3b_delegation_used_ge_4of5_each",
+        "G8_filler_le_control_plus_1"
+      ]
+    }
+  },
+  "runs": [
+    {
+      "arm": "omp-live",
+      "scenario": "barge_in",
+      "run": "omp-live__barge_in__r1",
+      "connect_ms": 1126.4,
+      "ready_ms": 1126.4,
+      "valid": true,
+      "assistant_turns": 2,
+      "repeats": 0,
+      "stall_invalidated": [
+        "q1"
+      ],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1197.7
+      },
+      "first_audible_ms": {},
+      "correct": {
+        "barge": true
+      },
+      "barge_applicable": true,
+      "barge_to_silence_ms": 973.5,
+      "barge_stopped": true,
+      "stale_resume": 0,
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "barge_in",
+      "run": "omp-live__barge_in__r2",
+      "connect_ms": 1203.5,
+      "ready_ms": 1203.5,
+      "valid": true,
+      "assistant_turns": 2,
+      "repeats": 0,
+      "stall_invalidated": [],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1088.8
+      },
+      "talk_over_ms": 0,
+      "first_audible_ms": {
+        "q1": 1088.8
+      },
+      "correct": {
+        "barge": true
+      },
+      "barge_applicable": true,
+      "barge_to_silence_ms": 941.5,
+      "barge_stopped": true,
+      "stale_resume": 0,
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "barge_in",
+      "run": "omp-live__barge_in__r3",
+      "connect_ms": 1175.3,
+      "ready_ms": 1175.3,
+      "valid": true,
+      "assistant_turns": 2,
+      "repeats": 0,
+      "stall_invalidated": [],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1104.6
+      },
+      "talk_over_ms": 0,
+      "first_audible_ms": {
+        "q1": 1104.6
+      },
+      "correct": {
+        "barge": true
+      },
+      "barge_applicable": true,
+      "barge_to_silence_ms": 1207.0,
+      "barge_stopped": true,
+      "stale_resume": 0,
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "barge_in",
+      "run": "omp-live__barge_in__r4",
+      "connect_ms": 1333.2,
+      "ready_ms": 1333.2,
+      "valid": true,
+      "assistant_turns": 2,
+      "repeats": 0,
+      "stall_invalidated": [],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1240.2
+      },
+      "talk_over_ms": 0,
+      "first_audible_ms": {
+        "q1": 1240.2
+      },
+      "correct": {
+        "barge": true
+      },
+      "barge_applicable": true,
+      "barge_to_silence_ms": 1223.3,
+      "barge_stopped": true,
+      "stale_resume": 0,
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "barge_in",
+      "run": "omp-live__barge_in__r5",
+      "connect_ms": 1309.8,
+      "ready_ms": 1309.8,
+      "valid": true,
+      "assistant_turns": 2,
+      "repeats": 0,
+      "stall_invalidated": [
+        "q1"
+      ],
+      "first_audible_incl_stalled_ms": {
+        "q1": 2486.6
+      },
+      "first_audible_ms": {},
+      "correct": {
+        "barge": true
+      },
+      "barge_applicable": true,
+      "barge_to_silence_ms": 35.1,
+      "barge_stopped": true,
+      "stale_resume": 0,
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "closing_silence",
+      "run": "omp-live__closing_silence__r1",
+      "connect_ms": 7305.9,
+      "ready_ms": 7305.9,
+      "valid": true,
+      "assistant_turns": 1,
+      "repeats": 0,
+      "stall_invalidated": [
+        "q1"
+      ],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1203.9
+      },
+      "first_audible_ms": {},
+      "unwanted_speech_ms": 0,
+      "reply_segments_after_close": 2,
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "closing_silence",
+      "run": "omp-live__closing_silence__r2",
+      "connect_ms": 1671,
+      "ready_ms": 1671,
+      "valid": true,
+      "assistant_turns": 1,
+      "repeats": 0,
+      "stall_invalidated": [],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1545.2
+      },
+      "talk_over_ms": 0,
+      "first_audible_ms": {
+        "q1": 1545.2
+      },
+      "unwanted_speech_ms": 0,
+      "reply_segments_after_close": 2,
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "closing_silence",
+      "run": "omp-live__closing_silence__r3",
+      "connect_ms": 1531.6,
+      "ready_ms": 1531.6,
+      "valid": true,
+      "assistant_turns": 1,
+      "repeats": 0,
+      "stall_invalidated": [],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1025.2
+      },
+      "talk_over_ms": 0,
+      "first_audible_ms": {
+        "q1": 1025.2
+      },
+      "unwanted_speech_ms": 0,
+      "reply_segments_after_close": 1,
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "closing_silence",
+      "run": "omp-live__closing_silence__r4",
+      "connect_ms": 1158.2,
+      "ready_ms": 1158.2,
+      "valid": true,
+      "assistant_turns": 1,
+      "repeats": 0,
+      "stall_invalidated": [
+        "q1"
+      ],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1319.1
+      },
+      "first_audible_ms": {},
+      "unwanted_speech_ms": 0,
+      "reply_segments_after_close": 1,
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "closing_silence",
+      "run": "omp-live__closing_silence__r5",
+      "connect_ms": 1284.6,
+      "ready_ms": 1284.6,
+      "valid": true,
+      "assistant_turns": 1,
+      "repeats": 0,
+      "stall_invalidated": [
+        "q1"
+      ],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1454.2
+      },
+      "first_audible_ms": {},
+      "unwanted_speech_ms": 0,
+      "reply_segments_after_close": 1,
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "greeting",
+      "run": "omp-live__greeting__r1",
+      "connect_ms": 1499.9,
+      "ready_ms": 1499.9,
+      "valid": true,
+      "assistant_turns": 1,
+      "repeats": 0,
+      "stall_invalidated": [],
+      "first_audible_incl_stalled_ms": {
+        "q1": 935.7
+      },
+      "talk_over_ms": 0,
+      "first_audible_ms": {
+        "q1": 935.7
+      },
+      "delegation": {
+        "used": false,
+        "count": 0,
+        "tools": [],
+        "work_done_t": null
+      },
+      "filler": 0,
+      "longest_dead_air_ms": null,
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "greeting",
+      "run": "omp-live__greeting__r2",
+      "connect_ms": 1158.8,
+      "ready_ms": 1158.8,
+      "valid": true,
+      "assistant_turns": 1,
+      "repeats": 0,
+      "stall_invalidated": [
+        "q1"
+      ],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1767.6
+      },
+      "first_audible_ms": {},
+      "delegation": {
+        "used": false,
+        "count": 0,
+        "tools": [],
+        "work_done_t": null
+      },
+      "filler": 0,
+      "longest_dead_air_ms": null,
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "greeting",
+      "run": "omp-live__greeting__r3",
+      "connect_ms": 1285.4,
+      "ready_ms": 1285.4,
+      "valid": true,
+      "assistant_turns": 1,
+      "repeats": 0,
+      "stall_invalidated": [],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1158.0
+      },
+      "talk_over_ms": 0,
+      "first_audible_ms": {
+        "q1": 1158.0
+      },
+      "delegation": {
+        "used": false,
+        "count": 0,
+        "tools": [],
+        "work_done_t": null
+      },
+      "filler": 0,
+      "longest_dead_air_ms": 502.5,
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "greeting",
+      "run": "omp-live__greeting__r4",
+      "connect_ms": 1453.3,
+      "ready_ms": 1453.3,
+      "valid": true,
+      "assistant_turns": 1,
+      "repeats": 0,
+      "stall_invalidated": [],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1063.1
+      },
+      "talk_over_ms": 0,
+      "first_audible_ms": {
+        "q1": 1063.1
+      },
+      "delegation": {
+        "used": false,
+        "count": 0,
+        "tools": [],
+        "work_done_t": null
+      },
+      "filler": 0,
+      "longest_dead_air_ms": 410.0,
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "greeting",
+      "run": "omp-live__greeting__r5",
+      "connect_ms": 1095.4,
+      "ready_ms": 1095.4,
+      "valid": true,
+      "assistant_turns": 1,
+      "repeats": 0,
+      "stall_invalidated": [
+        "q1"
+      ],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1109.3
+      },
+      "first_audible_ms": {},
+      "delegation": {
+        "used": false,
+        "count": 0,
+        "tools": [],
+        "work_done_t": null
+      },
+      "filler": 0,
+      "longest_dead_air_ms": null,
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "noise_during_answer",
+      "run": "omp-live__noise_during_answer__r1",
+      "connect_ms": 1136.8,
+      "ready_ms": 1136.8,
+      "valid": true,
+      "assistant_turns": 1,
+      "repeats": 0,
+      "stall_invalidated": [
+        "q1"
+      ],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1233.8
+      },
+      "first_audible_ms": {},
+      "noise_applicable": true,
+      "false_interruption": false,
+      "vad_triggered_by_noise": false,
+      "noise_user_turns": 0,
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "noise_during_answer",
+      "run": "omp-live__noise_during_answer__r2",
+      "connect_ms": 1422.8,
+      "ready_ms": 1422.8,
+      "valid": true,
+      "assistant_turns": 1,
+      "repeats": 0,
+      "stall_invalidated": [
+        "q1"
+      ],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1058.8
+      },
+      "first_audible_ms": {},
+      "noise_applicable": true,
+      "false_interruption": false,
+      "vad_triggered_by_noise": false,
+      "noise_user_turns": 0,
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "noise_during_answer",
+      "run": "omp-live__noise_during_answer__r3",
+      "connect_ms": 1113.1,
+      "ready_ms": 1113.1,
+      "valid": true,
+      "assistant_turns": 1,
+      "repeats": 0,
+      "stall_invalidated": [
+        "q1"
+      ],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1219.9
+      },
+      "first_audible_ms": {},
+      "noise_applicable": true,
+      "false_interruption": false,
+      "vad_triggered_by_noise": false,
+      "noise_user_turns": 0,
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "noise_during_answer",
+      "run": "omp-live__noise_during_answer__r4",
+      "connect_ms": 1154.6,
+      "ready_ms": 1154.6,
+      "valid": true,
+      "assistant_turns": 1,
+      "repeats": 0,
+      "stall_invalidated": [],
+      "first_audible_incl_stalled_ms": {
+        "q1": 976.6
+      },
+      "talk_over_ms": 0,
+      "first_audible_ms": {
+        "q1": 976.6
+      },
+      "noise_applicable": true,
+      "false_interruption": true,
+      "vad_triggered_by_noise": false,
+      "noise_user_turns": 0,
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "noise_during_answer",
+      "run": "omp-live__noise_during_answer__r5",
+      "connect_ms": 1320.7,
+      "ready_ms": 1320.7,
+      "valid": true,
+      "assistant_turns": 1,
+      "repeats": 0,
+      "stall_invalidated": [],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1312.9
+      },
+      "talk_over_ms": 0,
+      "first_audible_ms": {
+        "q1": 1312.9
+      },
+      "noise_applicable": true,
+      "false_interruption": false,
+      "vad_triggered_by_noise": false,
+      "noise_user_turns": 0,
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "quick_fact",
+      "run": "omp-live__quick_fact__r1",
+      "connect_ms": 1187.6,
+      "ready_ms": 1187.6,
+      "valid": true,
+      "assistant_turns": 1,
+      "repeats": 0,
+      "stall_invalidated": [],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1220.4
+      },
+      "talk_over_ms": 0,
+      "first_audible_ms": {
+        "q1": 1220.4
+      },
+      "correct": {
+        "q1": true
+      },
+      "delegation": {
+        "used": false,
+        "count": 0,
+        "tools": [],
+        "work_done_t": null
+      },
+      "filler": 0,
+      "longest_dead_air_ms": null,
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "quick_fact",
+      "run": "omp-live__quick_fact__r2",
+      "connect_ms": 111380.5,
+      "ready_ms": 111380.5,
+      "valid": false,
+      "error": true
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "quick_fact",
+      "run": "omp-live__quick_fact__r3",
+      "connect_ms": 1141.9,
+      "ready_ms": 1141.9,
+      "valid": true,
+      "assistant_turns": 1,
+      "repeats": 0,
+      "stall_invalidated": [],
+      "first_audible_incl_stalled_ms": {
+        "q1": 900.1
+      },
+      "talk_over_ms": 0,
+      "first_audible_ms": {
+        "q1": 900.1
+      },
+      "correct": {
+        "q1": true
+      },
+      "delegation": {
+        "used": false,
+        "count": 0,
+        "tools": [],
+        "work_done_t": null
+      },
+      "filler": 0,
+      "longest_dead_air_ms": null,
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "quick_fact",
+      "run": "omp-live__quick_fact__r4",
+      "connect_ms": 1021.9,
+      "ready_ms": 1021.9,
+      "valid": true,
+      "assistant_turns": 1,
+      "repeats": 0,
+      "stall_invalidated": [],
+      "first_audible_incl_stalled_ms": {
+        "q1": 961.0
+      },
+      "talk_over_ms": 0,
+      "first_audible_ms": {
+        "q1": 961.0
+      },
+      "correct": {
+        "q1": true
+      },
+      "delegation": {
+        "used": false,
+        "count": 0,
+        "tools": [],
+        "work_done_t": null
+      },
+      "filler": 0,
+      "longest_dead_air_ms": null,
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "quick_fact",
+      "run": "omp-live__quick_fact__r5",
+      "connect_ms": 1155.1,
+      "ready_ms": 1155.1,
+      "valid": true,
+      "assistant_turns": 1,
+      "repeats": 0,
+      "stall_invalidated": [],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1119.7
+      },
+      "talk_over_ms": 0,
+      "first_audible_ms": {
+        "q1": 1119.7
+      },
+      "correct": {
+        "q1": true
+      },
+      "delegation": {
+        "used": false,
+        "count": 0,
+        "tools": [],
+        "work_done_t": null
+      },
+      "filler": 0,
+      "longest_dead_air_ms": null,
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "rapid_followup",
+      "run": "omp-live__rapid_followup__r1",
+      "connect_ms": 3342,
+      "ready_ms": 3342,
+      "valid": true,
+      "assistant_turns": 2,
+      "repeats": 0,
+      "stall_invalidated": [],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1435.6,
+        "q2": 1073.4
+      },
+      "talk_over_ms": 0,
+      "first_audible_ms": {
+        "q1": 1435.6,
+        "q2": 1073.4
+      },
+      "correct": {
+        "q1": true,
+        "q2": true
+      },
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "rapid_followup",
+      "run": "omp-live__rapid_followup__r2",
+      "connect_ms": 1285.4,
+      "ready_ms": 1285.4,
+      "valid": true,
+      "assistant_turns": 2,
+      "repeats": 0,
+      "stall_invalidated": [],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1450.7,
+        "q2": 1228.0
+      },
+      "talk_over_ms": 0,
+      "first_audible_ms": {
+        "q1": 1450.7,
+        "q2": 1228.0
+      },
+      "correct": {
+        "q1": true,
+        "q2": true
+      },
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "rapid_followup",
+      "run": "omp-live__rapid_followup__r3",
+      "connect_ms": 1140.3,
+      "ready_ms": 1140.3,
+      "valid": true,
+      "assistant_turns": 2,
+      "repeats": 0,
+      "stall_invalidated": [
+        "q2"
+      ],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1425.3,
+        "q2": 1474.1
+      },
+      "talk_over_ms": 0,
+      "first_audible_ms": {
+        "q1": 1425.3
+      },
+      "correct": {
+        "q1": true,
+        "q2": true
+      },
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "rapid_followup",
+      "run": "omp-live__rapid_followup__r4",
+      "connect_ms": 1207.1,
+      "ready_ms": 1207.1,
+      "valid": true,
+      "assistant_turns": 2,
+      "repeats": 0,
+      "stall_invalidated": [],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1028.8,
+        "q2": 1047.3
+      },
+      "talk_over_ms": 0,
+      "first_audible_ms": {
+        "q1": 1028.8,
+        "q2": 1047.3
+      },
+      "correct": {
+        "q1": true,
+        "q2": true
+      },
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "rapid_followup",
+      "run": "omp-live__rapid_followup__r5",
+      "connect_ms": 1172.9,
+      "ready_ms": 1172.9,
+      "valid": true,
+      "assistant_turns": 2,
+      "repeats": 0,
+      "stall_invalidated": [
+        "q2"
+      ],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1543.4,
+        "q2": 2418.5
+      },
+      "talk_over_ms": 0,
+      "first_audible_ms": {
+        "q1": 1543.4
+      },
+      "correct": {
+        "q1": true,
+        "q2": true
+      },
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "repo_question",
+      "run": "omp-live__repo_question__r1",
+      "connect_ms": 2183.3,
+      "ready_ms": 2183.3,
+      "valid": true,
+      "assistant_turns": 2,
+      "repeats": 0,
+      "stall_invalidated": [],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1701.6
+      },
+      "talk_over_ms": 0,
+      "first_audible_ms": {
+        "q1": 1701.6
+      },
+      "correct": {
+        "q1": true
+      },
+      "delegation": {
+        "used": true,
+        "count": 1,
+        "tools": [],
+        "work_done_t": 53846.4
+      },
+      "result_audible_ms": 42672.4,
+      "filler": 1,
+      "longest_dead_air_ms": 39500.5,
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "repo_question",
+      "run": "omp-live__repo_question__r2",
+      "connect_ms": 1386.1,
+      "ready_ms": 1386.1,
+      "valid": true,
+      "assistant_turns": 2,
+      "repeats": 0,
+      "stall_invalidated": [
+        "q1"
+      ],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1520.2
+      },
+      "first_audible_ms": {},
+      "correct": {
+        "q1": true
+      },
+      "delegation": {
+        "used": true,
+        "count": 1,
+        "tools": [],
+        "work_done_t": 30444.4
+      },
+      "result_audible_ms": 20180.3,
+      "filler": 0,
+      "longest_dead_air_ms": 17879.6,
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "repo_question",
+      "run": "omp-live__repo_question__r3",
+      "connect_ms": 1065.6,
+      "ready_ms": 1065.6,
+      "valid": true,
+      "assistant_turns": 2,
+      "repeats": 0,
+      "stall_invalidated": [],
+      "first_audible_incl_stalled_ms": {
+        "q1": 3020.1
+      },
+      "talk_over_ms": 0,
+      "first_audible_ms": {
+        "q1": 3020.1
+      },
+      "correct": {
+        "q1": true
+      },
+      "delegation": {
+        "used": true,
+        "count": 1,
+        "tools": [],
+        "work_done_t": 29793
+      },
+      "result_audible_ms": 20982.1,
+      "filler": 0,
+      "longest_dead_air_ms": 17105.7,
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "repo_question",
+      "run": "omp-live__repo_question__r4",
+      "connect_ms": 1745.8,
+      "ready_ms": 1745.8,
+      "valid": true,
+      "assistant_turns": 2,
+      "repeats": 0,
+      "stall_invalidated": [
+        "q1"
+      ],
+      "first_audible_incl_stalled_ms": {
+        "q1": 3812.9
+      },
+      "first_audible_ms": {},
+      "correct": {
+        "q1": true
+      },
+      "delegation": {
+        "used": true,
+        "count": 1,
+        "tools": [],
+        "work_done_t": 44852.6
+      },
+      "result_audible_ms": 18749.1,
+      "filler": 1,
+      "longest_dead_air_ms": 12997.8,
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "repo_question",
+      "run": "omp-live__repo_question__r5",
+      "connect_ms": 1714,
+      "ready_ms": 1714,
+      "valid": true,
+      "assistant_turns": 2,
+      "repeats": 0,
+      "stall_invalidated": [
+        "q1"
+      ],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1723.9
+      },
+      "first_audible_ms": {},
+      "correct": {
+        "q1": true
+      },
+      "delegation": {
+        "used": true,
+        "count": 1,
+        "tools": [],
+        "work_done_t": 47780.6
+      },
+      "result_audible_ms": 30197.9,
+      "filler": 1,
+      "longest_dead_air_ms": 26956.7,
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "work_status",
+      "run": "omp-live__work_status__r1",
+      "connect_ms": 1092.3,
+      "ready_ms": 1092.3,
+      "valid": true,
+      "assistant_turns": 2,
+      "repeats": 0,
+      "stall_invalidated": [
+        "q1"
+      ],
+      "first_audible_incl_stalled_ms": {
+        "q1": 2620.6
+      },
+      "first_audible_ms": {},
+      "delegation": {
+        "used": true,
+        "count": 1,
+        "tools": [],
+        "work_done_t": 46589.1
+      },
+      "result_audible_ms": 39113.8,
+      "filler": 0,
+      "longest_dead_air_ms": 35682.9,
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "work_status",
+      "run": "omp-live__work_status__r2",
+      "connect_ms": 1279.3,
+      "ready_ms": 1279.3,
+      "valid": true,
+      "assistant_turns": 2,
+      "repeats": 0,
+      "stall_invalidated": [
+        "q1"
+      ],
+      "first_audible_incl_stalled_ms": {
+        "q1": 2083.3
+      },
+      "first_audible_ms": {},
+      "delegation": {
+        "used": true,
+        "count": 1,
+        "tools": [],
+        "work_done_t": 49848
+      },
+      "result_audible_ms": 41170.0,
+      "filler": 1,
+      "longest_dead_air_ms": 38537.3,
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "work_status",
+      "run": "omp-live__work_status__r3",
+      "connect_ms": 1315.9,
+      "ready_ms": 1315.9,
+      "valid": true,
+      "assistant_turns": 2,
+      "repeats": 0,
+      "stall_invalidated": [
+        "q1"
+      ],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1481.2
+      },
+      "first_audible_ms": {},
+      "delegation": {
+        "used": true,
+        "count": 1,
+        "tools": [],
+        "work_done_t": 47140.2
+      },
+      "result_audible_ms": 36897.0,
+      "filler": 0,
+      "longest_dead_air_ms": 34624.3,
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "work_status",
+      "run": "omp-live__work_status__r4",
+      "connect_ms": 1135.3,
+      "ready_ms": 1135.3,
+      "valid": true,
+      "assistant_turns": 2,
+      "repeats": 0,
+      "stall_invalidated": [
+        "q1"
+      ],
+      "first_audible_incl_stalled_ms": {
+        "q1": 2312.7
+      },
+      "first_audible_ms": {},
+      "delegation": {
+        "used": true,
+        "count": 1,
+        "tools": [],
+        "work_done_t": 49746.7
+      },
+      "result_audible_ms": 41394.4,
+      "filler": 1,
+      "longest_dead_air_ms": 39031.6,
+      "error": false
+    },
+    {
+      "arm": "omp-live",
+      "scenario": "work_status",
+      "run": "omp-live__work_status__r5",
+      "connect_ms": 1143.1,
+      "ready_ms": 1143.1,
+      "valid": true,
+      "assistant_turns": 2,
+      "repeats": 0,
+      "stall_invalidated": [],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1348.2
+      },
+      "talk_over_ms": 0,
+      "first_audible_ms": {
+        "q1": 1348.2
+      },
+      "delegation": {
+        "used": true,
+        "count": 1,
+        "tools": [],
+        "work_done_t": 43218.3
+      },
+      "result_audible_ms": 36101.0,
+      "filler": 0,
+      "longest_dead_air_ms": 31441.0,
+      "error": false
+    },
+    {
+      "arm": "z0live-bidi",
+      "scenario": "barge_in",
+      "run": "z0live-bidi__barge_in__r1",
+      "connect_ms": 694.1,
+      "ready_ms": 729.5,
+      "jitter_buffer_ms": 236.6,
+      "valid": true,
+      "assistant_turns": 2,
+      "repeats": 0,
+      "stall_invalidated": [],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1374.7
+      },
+      "talk_over_ms": 0,
+      "first_audible_ms": {
+        "q1": 1374.7
+      },
+      "correct": {
+        "barge": true
+      },
+      "barge_applicable": true,
+      "barge_to_silence_ms": 1180.0,
+      "barge_stopped": true,
+      "stale_resume": 0,
+      "error": false
+    },
+    {
+      "arm": "z0live-bidi",
+      "scenario": "barge_in",
+      "run": "z0live-bidi__barge_in__r2",
+      "connect_ms": 744,
+      "ready_ms": 1275.5,
+      "jitter_buffer_ms": 97.4,
+      "valid": true,
+      "assistant_turns": 2,
+      "repeats": 0,
+      "stall_invalidated": [],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1604.7
+      },
+      "talk_over_ms": 0,
+      "first_audible_ms": {
+        "q1": 1604.7
+      },
+      "correct": {
+        "barge": true
+      },
+      "barge_applicable": false,
+      "stale_resume": 0,
+      "error": false
+    },
+    {
+      "arm": "z0live-bidi",
+      "scenario": "barge_in",
+      "run": "z0live-bidi__barge_in__r3",
+      "connect_ms": 769,
+      "ready_ms": 3762.1,
+      "jitter_buffer_ms": 156.1,
+      "valid": true,
+      "assistant_turns": 2,
+      "repeats": 0,
+      "stall_invalidated": [],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1448.7
+      },
+      "talk_over_ms": 0,
+      "first_audible_ms": {
+        "q1": 1448.7
+      },
+      "correct": {
+        "barge": true
+      },
+      "barge_applicable": true,
+      "barge_to_silence_ms": 1092.6,
+      "barge_stopped": true,
+      "stale_resume": 1,
+      "error": false
+    },
+    {
+      "arm": "z0live-bidi",
+      "scenario": "barge_in",
+      "run": "z0live-bidi__barge_in__r4",
+      "connect_ms": 704.2,
+      "ready_ms": 743.6,
+      "jitter_buffer_ms": 145.7,
+      "valid": true,
+      "assistant_turns": 2,
+      "repeats": 0,
+      "stall_invalidated": [],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1716.7
+      },
+      "talk_over_ms": 0,
+      "first_audible_ms": {
+        "q1": 1716.7
+      },
+      "correct": {
+        "barge": true
+      },
+      "barge_applicable": true,
+      "barge_to_silence_ms": 402.0,
+      "barge_stopped": true,
+      "stale_resume": 0,
+      "error": false
+    },
+    {
+      "arm": "z0live-bidi",
+      "scenario": "barge_in",
+      "run": "z0live-bidi__barge_in__r5",
+      "connect_ms": 738.4,
+      "ready_ms": 3091.0,
+      "jitter_buffer_ms": 190.9,
+      "valid": true,
+      "assistant_turns": 2,
+      "repeats": 0,
+      "stall_invalidated": [],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1430.7
+      },
+      "talk_over_ms": 0,
+      "first_audible_ms": {
+        "q1": 1430.7
+      },
+      "correct": {
+        "barge": true
+      },
+      "barge_applicable": true,
+      "barge_to_silence_ms": 677.3,
+      "barge_stopped": true,
+      "stale_resume": 0,
+      "error": false
+    },
+    {
+      "arm": "z0live-bidi",
+      "scenario": "rapid_followup",
+      "run": "z0live-bidi__rapid_followup__r1",
+      "connect_ms": 784.4,
+      "ready_ms": 850.6,
+      "jitter_buffer_ms": 90.8,
+      "valid": true,
+      "assistant_turns": 2,
+      "repeats": 0,
+      "stall_invalidated": [],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1416.1,
+        "q2": 1229.3
+      },
+      "talk_over_ms": 0,
+      "first_audible_ms": {
+        "q1": 1416.1,
+        "q2": 1229.3
+      },
+      "correct": {
+        "q1": true,
+        "q2": true
+      },
+      "error": false
+    },
+    {
+      "arm": "z0live-bidi",
+      "scenario": "rapid_followup",
+      "run": "z0live-bidi__rapid_followup__r2",
+      "connect_ms": 673.1,
+      "ready_ms": 1585.8,
+      "jitter_buffer_ms": 121.5,
+      "valid": true,
+      "assistant_turns": 2,
+      "repeats": 0,
+      "stall_invalidated": [],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1262.7,
+        "q2": 1225.3
+      },
+      "talk_over_ms": 0,
+      "first_audible_ms": {
+        "q1": 1262.7,
+        "q2": 1225.3
+      },
+      "correct": {
+        "q1": true,
+        "q2": true
+      },
+      "error": false
+    },
+    {
+      "arm": "z0live-bidi",
+      "scenario": "rapid_followup",
+      "run": "z0live-bidi__rapid_followup__r3",
+      "connect_ms": 752.8,
+      "ready_ms": 800.0,
+      "jitter_buffer_ms": 106.3,
+      "valid": true,
+      "assistant_turns": 2,
+      "repeats": 0,
+      "stall_invalidated": [],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1065.8,
+        "q2": 998.7
+      },
+      "talk_over_ms": 0,
+      "first_audible_ms": {
+        "q1": 1065.8,
+        "q2": 998.7
+      },
+      "correct": {
+        "q1": true,
+        "q2": true
+      },
+      "error": false
+    },
+    {
+      "arm": "z0live-bidi",
+      "scenario": "rapid_followup",
+      "run": "z0live-bidi__rapid_followup__r4",
+      "connect_ms": 803.5,
+      "ready_ms": 858.5,
+      "jitter_buffer_ms": 145.1,
+      "valid": true,
+      "assistant_turns": 2,
+      "repeats": 0,
+      "stall_invalidated": [],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1304.4,
+        "q2": 1078.0
+      },
+      "talk_over_ms": 0,
+      "first_audible_ms": {
+        "q1": 1304.4,
+        "q2": 1078.0
+      },
+      "correct": {
+        "q1": true,
+        "q2": true
+      },
+      "error": false
+    },
+    {
+      "arm": "z0live-bidi",
+      "scenario": "rapid_followup",
+      "run": "z0live-bidi__rapid_followup__r5",
+      "connect_ms": 722.6,
+      "ready_ms": 801.7,
+      "jitter_buffer_ms": 125.5,
+      "valid": true,
+      "assistant_turns": 2,
+      "repeats": 0,
+      "stall_invalidated": [],
+      "first_audible_incl_stalled_ms": {
+        "q1": 1091.9,
+        "q2": 1187.3
+      },
+      "talk_over_ms": 0,
+      "first_audible_ms": {
+        "q1": 1091.9,
+        "q2": 1187.3
+      },
+      "correct": {
+        "q1": true,
+        "q2": true
+      },
+      "error": false
+    }
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "schema": "z0eval.voice_scenarios.v1",
+  "version": "2026-10-20.1",
+  "notes": "Each scenario is a timeline executed by the arm driver against a live session. All user audio is offline TTS (see utterances). Times are milliseconds. 'after_audible' anchors are measured on the arm's own output audio (first 50 ms window with RMS >= threshold), never on transcript text.",
+  "utterances": {
+    "greet": "Hey, are you there?",
+    "fact": "What is the capital of Australia?",
+    "work": "What work is happening on my machine right now?",
+    "repo": "In the z0live repo, which file sets the realtime model and voice?",
+    "story": "Tell me a long story about the history of the printing press.",
+    "barge": "Wait, stop. Actually, what time zone is Chicago in?",
+    "explain": "Explain how bicycle gears work, in about six sentences.",
+    "closing": "Thanks, that's all for now.",
+    "math1": "What's two plus two?",
+    "math2": "And times three?"
+  },
+  "noise_clips": {
+    "footsteps_door_keyboard": "synthesized by harness/noise.py: 4 footsteps, a door slam, then 1.2 s of keyboard clicks; peak -6 dBFS; generated procedurally (no third-party samples)"
+  },
+  "scenarios": [
+    {
+      "id": "greeting",
+      "steps": [
+        {"op": "idle", "ms": 1500},
+        {"op": "say", "utt": "greet", "mark": "q1"},
+        {"op": "await_reply_end", "silence_ms": 2000, "timeout_ms": 20000},
+        {"op": "idle", "ms": 1000}
+      ],
+      "checks": {"direct_turns": ["q1"], "expect_no_delegation": true}
+    },
+    {
+      "id": "quick_fact",
+      "steps": [
+        {"op": "idle", "ms": 1500},
+        {"op": "say", "utt": "fact", "mark": "q1"},
+        {"op": "await_reply_end", "silence_ms": 2000, "timeout_ms": 20000},
+        {"op": "idle", "ms": 1000}
+      ],
+      "checks": {"direct_turns": ["q1"], "expect_no_delegation": true, "answer_keywords": {"q1": ["canberra"]}}
+    },
+    {
+      "id": "work_status",
+      "steps": [
+        {"op": "idle", "ms": 1500},
+        {"op": "say", "utt": "work", "mark": "q1"},
+        {"op": "await_result", "silence_ms": 6000, "timeout_ms": 150000},
+        {"op": "idle", "ms": 1000}
+      ],
+      "checks": {"ack_turns": ["q1"], "expect_delegation": true}
+    },
+    {
+      "id": "repo_question",
+      "steps": [
+        {"op": "idle", "ms": 1500},
+        {"op": "say", "utt": "repo", "mark": "q1"},
+        {"op": "await_result", "silence_ms": 6000, "timeout_ms": 150000},
+        {"op": "idle", "ms": 1000}
+      ],
+      "checks": {"ack_turns": ["q1"], "expect_delegation": true, "answer_keywords": {"q1": ["core.py", "core dot py", "core py"]}}
+    },
+    {
+      "id": "barge_in",
+      "steps": [
+        {"op": "idle", "ms": 1500},
+        {"op": "say", "utt": "story", "mark": "q1"},
+        {"op": "await_audible", "timeout_ms": 20000},
+        {"op": "idle", "ms": 2500},
+        {"op": "say", "utt": "barge", "mark": "barge"},
+        {"op": "await_reply_end", "silence_ms": 2500, "timeout_ms": 30000},
+        {"op": "idle", "ms": 1000}
+      ],
+      "checks": {"direct_turns": ["q1"], "barge_mark": "barge", "answer_keywords": {"barge": ["central"]}, "stale_keywords": ["print", "gutenberg", "press"]}
+    },
+    {
+      "id": "noise_during_answer",
+      "steps": [
+        {"op": "idle", "ms": 1500},
+        {"op": "say", "utt": "explain", "mark": "q1"},
+        {"op": "await_audible", "timeout_ms": 20000},
+        {"op": "idle", "ms": 1500},
+        {"op": "noise", "clip": "footsteps_door_keyboard", "mark": "noise"},
+        {"op": "await_reply_end", "silence_ms": 3000, "timeout_ms": 45000},
+        {"op": "idle", "ms": 4000}
+      ],
+      "checks": {"direct_turns": ["q1"], "noise_mark": "noise"}
+    },
+    {
+      "id": "closing_silence",
+      "steps": [
+        {"op": "idle", "ms": 1500},
+        {"op": "say", "utt": "closing", "mark": "q1"},
+        {"op": "await_reply_end", "silence_ms": 1500, "timeout_ms": 20000},
+        {"op": "idle", "ms": 20000, "mark": "watch"}
+      ],
+      "checks": {"direct_turns": ["q1"], "silence_watch_mark": "watch", "max_replies": 1}
+    },
+    {
+      "id": "rapid_followup",
+      "steps": [
+        {"op": "idle", "ms": 1500},
+        {"op": "say", "utt": "math1", "mark": "q1"},
+        {"op": "await_reply_end", "silence_ms": 600, "timeout_ms": 20000},
+        {"op": "say", "utt": "math2", "mark": "q2"},
+        {"op": "await_reply_end", "silence_ms": 2000, "timeout_ms": 20000},
+        {"op": "idle", "ms": 1000}
+      ],
+      "checks": {"direct_turns": ["q1", "q2"], "answer_keywords": {"q1": ["four", "4"], "q2": ["twelve", "12"]}}
+    }
+  ]
+}
