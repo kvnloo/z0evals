@@ -18,6 +18,11 @@ const { values: args } = parseArgs({
     scenarios: { type: "string", default: path.join(import.meta.dirname, "../scenarios.json") },
     chromium: { type: "string", default: process.env.CHROMIUM_PATH || "/usr/bin/chromium" },
     arm: { type: "string", default: "z0live-realtime" },
+    client: { type: "string", default: process.env.Z0EVAL_CLIENT || "apk" },
+    "barge-probe-ms": { type: "string", default: process.env.Z0EVAL_BARGE_PROBE_MS || "250" },
+    eagerness: { type: "string", default: process.env.Z0EVAL_EAGERNESS || "high" },
+    "early-reply": { type: "string", default: process.env.Z0EVAL_EARLY_REPLY || "1" },
+    "jitter-target-ms": { type: "string", default: process.env.Z0EVAL_JITTER_TARGET_MS || "" },
     "playwright-from": { type: "string", default: "/mnt/zer0models/workspace/zer0/products/z0live/desktop/tests/package.json" },
   },
 });
@@ -39,7 +44,7 @@ const browser = await chromium.launch({
   executablePath: args.chromium,
   args: ["--no-sandbox", "--autoplay-policy=no-user-gesture-required", "--disable-audio-output", "--mute-audio", "--use-angle=swiftshader", "--enable-unsafe-swiftshader"],
 });
-const meta = { arm: args.arm, scenario: scenario.id, loadavg_start: fs.readFileSync("/proc/loadavg", "utf8").trim(), chromium: browser.version(), level_window_ms: 50, level_point: "Chromium WebAudio on remote track (after NetEq jitter buffer/decoder), before output device" };
+const meta = { arm: args.arm, client: args.client, barge_probe_ms: Number(args["barge-probe-ms"]), eagerness: args.eagerness, early_reply: args["early-reply"] === "1", jitter_target_ms: args["jitter-target-ms"] || null, scenario: scenario.id, loadavg_start: fs.readFileSync("/proc/loadavg", "utf8").trim(), chromium: browser.version(), level_window_ms: 50, level_point: "Chromium WebAudio on remote track (after NetEq jitter buffer/decoder), before output device" };
 let out;
 try {
   const page = await browser.newPage();
@@ -61,6 +66,11 @@ try {
     clipIds,
     mintBody: { client: "web", context: { app: "voice-eval", screen: "headless", test: true }, tools: [] },
     transport: args.arm === "z0live-bidi" ? "bidi" : "realtime",
+    client: args.client,
+    bargeProbeMs: Number(args["barge-probe-ms"]),
+    eagerness: args.eagerness,
+    earlyReply: args["early-reply"] === "1",
+    jitterTargetMs: args["jitter-target-ms"] === "" ? null : Number(args["jitter-target-ms"]),
   });
 } catch (e) {
   meta.error = String(e?.message ?? e);
