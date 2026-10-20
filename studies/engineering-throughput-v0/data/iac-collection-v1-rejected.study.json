@@ -1,0 +1,225 @@
+{
+  "schema": "tokenomics.paired_cost_study.v1",
+  "study_id": "native-iac-all-probe-v1-rejected",
+  "evidence_origin": "replay",
+  "baseline_arm": "baseline",
+  "treatment_arm": "candidate",
+  "work_items": [
+    {
+      "work_item_id": "native-read-only-collection",
+      "task_snapshot_id": "970531fce1b23fd42aa1a4a4cd415b47cd0d567c38725d372d0f6ecc31a02786"
+    }
+  ],
+  "runs": [
+    {
+      "work_item_id": "native-read-only-collection",
+      "task_snapshot_id": "970531fce1b23fd42aa1a4a4cd415b47cd0d567c38725d372d0f6ecc31a02786",
+      "arm_id": "baseline",
+      "revision": "adac7040b25cc37d35e9253d4418174e594e3399",
+      "token_measurement_state": "complete",
+      "frontier_event_ids": [],
+      "events": [
+        {
+          "schema": "tokenomics.event.v0",
+          "event_id": "741809cd3e6fb79ca76646825834f21f343d7c323d32092a9696f830e23dcf4f-verification",
+          "trace_id": "741809cd3e6fb79ca76646825834f21f",
+          "span_id": "741809cd3e6fb79c",
+          "ts": 1792513175.5653338,
+          "kind": "verification",
+          "name": "native-observation-contract",
+          "measurement_source": {
+            "measurement_state": "complete"
+          },
+          "outcome": {
+            "execution_completed": true,
+            "verified_success": true,
+            "verification_source": "original-schema-contract-v1"
+          }
+        }
+      ],
+      "cost_observations": {
+        "wall_time_ms": {
+          "value": 33167.489570972975,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "public:engineering-throughput-v0/native-facts.json#native-iac-all-probe-v1-rejected/baseline"
+        },
+        "frontier_calls": {
+          "value": 0,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "public:engineering-throughput-v0/native-facts.json#native-iac-all-probe-v1-rejected/baseline"
+        },
+        "network_calls": {
+          "value": 0,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "public:engineering-throughput-v0/native-facts.json#native-iac-all-probe-v1-rejected/baseline"
+        },
+        "tool_calls": {
+          "value": 16,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "public:engineering-throughput-v0/native-facts.json#native-iac-all-probe-v1-rejected/baseline"
+        },
+        "retries": {
+          "value": 0,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "public:engineering-throughput-v0/native-facts.json#native-iac-all-probe-v1-rejected/baseline"
+        },
+        "replans": {
+          "value": 0,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "public:engineering-throughput-v0/native-facts.json#native-iac-all-probe-v1-rejected/baseline"
+        },
+        "human_interventions": {
+          "value": 0,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "public:engineering-throughput-v0/native-facts.json#native-iac-all-probe-v1-rejected/baseline"
+        }
+      }
+    },
+    {
+      "work_item_id": "native-read-only-collection",
+      "task_snapshot_id": "970531fce1b23fd42aa1a4a4cd415b47cd0d567c38725d372d0f6ecc31a02786",
+      "arm_id": "candidate",
+      "revision": "8774eebe66c2eedbf6bf37e8f2ac11e51dea952535528086c1341fac0651319b",
+      "token_measurement_state": "complete",
+      "frontier_event_ids": [],
+      "events": [
+        {
+          "schema": "tokenomics.event.v0",
+          "event_id": "8ddeb930dba0938b5c4b24ea08db49b6c12512cb998df25391486cf0e513abfe-verification",
+          "trace_id": "8ddeb930dba0938b5c4b24ea08db49b6",
+          "span_id": "8ddeb930dba0938b",
+          "ts": 1792513209.2485847,
+          "kind": "verification",
+          "name": "native-observation-contract",
+          "measurement_source": {
+            "measurement_state": "complete"
+          },
+          "outcome": {
+            "execution_completed": true,
+            "verified_success": true,
+            "verification_source": "original-schema-contract-v1"
+          }
+        },
+        {
+          "schema": "tokenomics.event.v0",
+          "event_id": "8ddeb930dba0938b5c4b24ea08db49b6c12512cb998df25391486cf0e513abfe-useful-fact-negative",
+          "trace_id": "8ddeb930dba0938b5c4b24ea08db49b6",
+          "span_id": "4f946cc23ce47d3c",
+          "ts": 1792513209.2485847,
+          "kind": "verification",
+          "name": "native-observation-contract",
+          "measurement_source": {
+            "measurement_state": "complete"
+          },
+          "outcome": {
+            "verified_success": false,
+            "verification_source": "independent-useful-observation-contract-v2"
+          },
+          "extra": {
+            "failure": "previously observed explicit-package inventory timed out; original schema-valid result retained"
+          }
+        }
+      ],
+      "cost_observations": {
+        "wall_time_ms": {
+          "value": 12531.234265945386,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "public:engineering-throughput-v0/native-facts.json#native-iac-all-probe-v1-rejected/candidate"
+        },
+        "frontier_calls": {
+          "value": 0,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "public:engineering-throughput-v0/native-facts.json#native-iac-all-probe-v1-rejected/candidate"
+        },
+        "network_calls": {
+          "value": 0,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "public:engineering-throughput-v0/native-facts.json#native-iac-all-probe-v1-rejected/candidate"
+        },
+        "tool_calls": {
+          "value": 16,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "public:engineering-throughput-v0/native-facts.json#native-iac-all-probe-v1-rejected/candidate"
+        },
+        "retries": {
+          "value": 0,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "public:engineering-throughput-v0/native-facts.json#native-iac-all-probe-v1-rejected/candidate"
+        },
+        "replans": {
+          "value": 0,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "public:engineering-throughput-v0/native-facts.json#native-iac-all-probe-v1-rejected/candidate"
+        },
+        "human_interventions": {
+          "value": 0,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "public:engineering-throughput-v0/native-facts.json#native-iac-all-probe-v1-rejected/candidate"
+        }
+      }
+    }
+  ],
+  "engineering": {
+    "wall_time_scope": "collection_execution_plus_original_gate_not_verified_latency",
+    "arms": {
+      "baseline": {
+        "setup_wall_ms": {
+          "value": 63.83380200713873,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "public:engineering-throughput-v0/native-facts.json#native-iac-all-probe-v1-rejected/baseline"
+        },
+        "optimization_wall_ms": {
+          "value": 0,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "public:engineering-throughput-v0/native-facts.json#native-iac-all-probe-v1-rejected/baseline"
+        },
+        "cohort_elapsed_ms": {
+          "value": 33231.323372980114,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "public:engineering-throughput-v0/native-facts.json#native-iac-all-probe-v1-rejected/baseline"
+        },
+        "cohort_time_scope": "setup_through_last_verification"
+      },
+      "candidate": {
+        "setup_wall_ms": {
+          "value": 63.83380200713873,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "public:engineering-throughput-v0/native-facts.json#native-iac-all-probe-v1-rejected/candidate"
+        },
+        "optimization_wall_ms": {
+          "value": 0,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "public:engineering-throughput-v0/native-facts.json#native-iac-all-probe-v1-rejected/candidate"
+        },
+        "cohort_elapsed_ms": {
+          "value": 12595.068067952525,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "public:engineering-throughput-v0/native-facts.json#native-iac-all-probe-v1-rejected/candidate"
+        },
+        "cohort_time_scope": "setup_through_last_verification"
+      }
+    }
+  },
+  "qualification_scope": "Preserve all16probes plus the baseline-successful package, stable CPU and mount facts. Not full machine inventory/convergence.",
+  "timing_scope": "Recorded local CLI plus original validator; current functional equivalence was established retrospectively. Independently verified-result latency, assistant reasoning, outer tool/UI latency and human engineering time are UNKNOWN."
+}

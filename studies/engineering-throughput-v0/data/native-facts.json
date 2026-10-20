@@ -1,0 +1,224 @@
+{
+  "scope": "sanitized native collection contract and timing only; no hostname, IP, package names, mount data or raw stdout",
+  "v1": [
+    {
+      "arm": "baseline",
+      "ts": 1792513175.5653338,
+      "revision": "adac7040b25cc37d35e9253d4418174e594e3399",
+      "task_snapshot_id": "80869d2c1aebd87af8e4deb2ca2995701acd86a46250792e4b98e172a3012837",
+      "exit": 0,
+      "verified": true,
+      "verification_error": null,
+      "execution_ms": 33166.58030002145,
+      "verification_ms": 0.904687971342355,
+      "wall_ms": 33167.489570972975,
+      "setup_wall_ms": 63.83380200713873,
+      "cohort_elapsed_ms": 33231.323372980114,
+      "cohort_time_scope": "setup_through_last_verification",
+      "optimization_wall_ms": 0.0,
+      "observation_count": 16,
+      "available_count": 14,
+      "successful_commands": [
+        "findmnt",
+        "lscpu",
+        "pacman_explicit"
+      ],
+      "timeout_commands": [
+        "system_services_enabled",
+        "system_sockets_enabled",
+        "system_timers_enabled"
+      ],
+      "secret_marker_leaked": false,
+      "source_sha256": "71b8e1e6056bea4dd74925f03e5c9456c461a152bd42e60c0cc2e577d828bfc3"
+    },
+    {
+      "arm": "candidate",
+      "ts": 1792513209.2485847,
+      "revision": "8774eebe66c2eedbf6bf37e8f2ac11e51dea952535528086c1341fac0651319b",
+      "task_snapshot_id": "80869d2c1aebd87af8e4deb2ca2995701acd86a46250792e4b98e172a3012837",
+      "exit": 0,
+      "verified": true,
+      "verification_error": null,
+      "execution_ms": 12530.135358974803,
+      "verification_ms": 1.0950519936159253,
+      "wall_ms": 12531.234265945386,
+      "setup_wall_ms": 63.83380200713873,
+      "cohort_elapsed_ms": 12595.068067952525,
+      "cohort_time_scope": "setup_through_last_verification",
+      "optimization_wall_ms": 0.0,
+      "observation_count": 16,
+      "available_count": 14,
+      "successful_commands": [
+        "findmnt",
+        "lscpu"
+      ],
+      "timeout_commands": [
+        "pacman_explicit",
+        "system_services_enabled",
+        "system_sockets_enabled",
+        "system_timers_enabled"
+      ],
+      "secret_marker_leaked": false,
+      "source_sha256": "8774eebe66c2eedbf6bf37e8f2ac11e51dea952535528086c1341fac0651319b"
+    }
+  ],
+  "v1_adjudication": {
+    "rejected": true,
+    "reason": "lost required successful inventory: pacman_explicit",
+    "retains_original_schema_valid_receipt": true
+  },
+  "v2_original_failed_gates": [
+    {
+      "arm": "candidate",
+      "ts": 1792513704.6380012,
+      "revision": "7d9a11076d6c304383f50dbb510ead23d09c2481697c8d3f081d26d1b84e45af",
+      "task_snapshot_id": "970531fce1b23fd42aa1a4a4cd415b47cd0d567c38725d372d0f6ecc31a02786",
+      "exit": 0,
+      "verified": false,
+      "verification_error": "AssertionError",
+      "execution_ms": 14507.702337985393,
+      "verification_ms": 0.9078129660338163,
+      "wall_ms": 14508.614056976512,
+      "setup_wall_ms": 57.64838500181213,
+      "cohort_elapsed_ms": 14566.262441978324,
+      "cohort_time_scope": "setup_through_last_verification",
+      "optimization_wall_ms": 0.0,
+      "observation_count": 16,
+      "available_count": 14,
+      "successful_commands": [
+        "findmnt",
+        "lscpu",
+        "pacman_explicit"
+      ],
+      "timeout_commands": [
+        "system_services_enabled",
+        "system_sockets_enabled",
+        "system_timers_enabled"
+      ],
+      "secret_marker_leaked": false,
+      "source_sha256": "7d9a11076d6c304383f50dbb510ead23d09c2481697c8d3f081d26d1b84e45af"
+    },
+    {
+      "arm": "baseline",
+      "ts": 1792513719.14851,
+      "revision": "adac7040b25cc37d35e9253d4418174e594e3399",
+      "task_snapshot_id": "970531fce1b23fd42aa1a4a4cd415b47cd0d567c38725d372d0f6ecc31a02786",
+      "exit": 0,
+      "verified": false,
+      "verification_error": "AssertionError",
+      "execution_ms": 32273.330821015406,
+      "verification_ms": 2.123905986081809,
+      "wall_ms": 32275.459726981353,
+      "setup_wall_ms": 57.64838500181213,
+      "cohort_elapsed_ms": 32333.108111983165,
+      "cohort_time_scope": "setup_through_last_verification",
+      "optimization_wall_ms": 0.0,
+      "observation_count": 16,
+      "available_count": 14,
+      "successful_commands": [
+        "findmnt",
+        "lscpu",
+        "pacman_explicit"
+      ],
+      "timeout_commands": [
+        "system_services_enabled",
+        "system_sockets_enabled",
+        "system_timers_enabled"
+      ],
+      "secret_marker_leaked": false,
+      "source_sha256": "71b8e1e6056bea4dd74925f03e5c9456c461a152bd42e60c0cc2e577d828bfc3"
+    }
+  ],
+  "v2_retrospective_equivalence": {
+    "checks": {
+      "same_all16_observation_keys": true,
+      "same_successful_commands": true,
+      "same_all_current_mount_facts": true,
+      "same_all60_explicit_packages": true,
+      "same_readonly_safety": true,
+      "same_available_and_returncodes": true,
+      "no_secret_marker": true
+    },
+    "adjudication_ms": 16.361249960027635,
+    "records": [
+      {
+        "arm": "candidate",
+        "ts": 1792513704.6380012,
+        "revision": "7d9a11076d6c304383f50dbb510ead23d09c2481697c8d3f081d26d1b84e45af",
+        "task_snapshot_id": "970531fce1b23fd42aa1a4a4cd415b47cd0d567c38725d372d0f6ecc31a02786",
+        "exit": 0,
+        "verified": true,
+        "verification_error": "AssertionError",
+        "execution_ms": 14507.702337985393,
+        "verification_ms": 0.9078129660338163,
+        "wall_ms": 14508.614056976512,
+        "setup_wall_ms": 57.64838500181213,
+        "cohort_elapsed_ms": 14566.262441978324,
+        "cohort_time_scope": "setup_through_last_verification",
+        "optimization_wall_ms": 0.0,
+        "observation_count": 16,
+        "available_count": 14,
+        "successful_commands": [
+          "findmnt",
+          "lscpu",
+          "pacman_explicit"
+        ],
+        "timeout_commands": [
+          "system_services_enabled",
+          "system_sockets_enabled",
+          "system_timers_enabled"
+        ],
+        "secret_marker_leaked": false,
+        "source_sha256": "7d9a11076d6c304383f50dbb510ead23d09c2481697c8d3f081d26d1b84e45af",
+        "original_v2_gate_passed": false,
+        "verification_phase": "retrospective paired-packet equivalence, not predeclared confirmation",
+        "time_to_verified_result_ms": null,
+        "adjudication_ms": 16.361249960027635,
+        "timing_scope": "CLI execution plus original v2 gate, which failed on stale97-mount reference; NOT time to v3 independent verification"
+      },
+      {
+        "arm": "baseline",
+        "ts": 1792513719.14851,
+        "revision": "adac7040b25cc37d35e9253d4418174e594e3399",
+        "task_snapshot_id": "970531fce1b23fd42aa1a4a4cd415b47cd0d567c38725d372d0f6ecc31a02786",
+        "exit": 0,
+        "verified": true,
+        "verification_error": "AssertionError",
+        "execution_ms": 32273.330821015406,
+        "verification_ms": 2.123905986081809,
+        "wall_ms": 32275.459726981353,
+        "setup_wall_ms": 57.64838500181213,
+        "cohort_elapsed_ms": 32333.108111983165,
+        "cohort_time_scope": "setup_through_last_verification",
+        "optimization_wall_ms": 0.0,
+        "observation_count": 16,
+        "available_count": 14,
+        "successful_commands": [
+          "findmnt",
+          "lscpu",
+          "pacman_explicit"
+        ],
+        "timeout_commands": [
+          "system_services_enabled",
+          "system_sockets_enabled",
+          "system_timers_enabled"
+        ],
+        "secret_marker_leaked": false,
+        "source_sha256": "71b8e1e6056bea4dd74925f03e5c9456c461a152bd42e60c0cc2e577d828bfc3",
+        "original_v2_gate_passed": false,
+        "verification_phase": "retrospective paired-packet equivalence, not predeclared confirmation",
+        "time_to_verified_result_ms": null,
+        "adjudication_ms": 16.361249960027635,
+        "timing_scope": "CLI execution plus original v2 gate, which failed on stale97-mount reference; NOT time to v3 independent verification"
+      }
+    ],
+    "preserved_failures": "Original records.json remains unchanged: both v2 primary gates FAILED because an archived97-mount reference drifted to110mounts. Both fresh arm packets contain exactly the same110mount facts; candidate package loss in v1 remains an actual regression, not excused.",
+    "causal_claim": false,
+    "promotion_eligible": false
+  },
+  "limits": [
+    "One matched workflow/host, not independent population samples.",
+    "Unknown/failed service probes remain unknown.",
+    "No fleet-plan, K3s executor, learned inference, training, deployment, monetary ROI or global engineering speed claim."
+  ]
+}

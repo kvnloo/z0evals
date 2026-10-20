@@ -170,3 +170,54 @@ different thing, and the external reference link and the J1 pilot comparison
   in the `jev_uncertain` state id, in external links and in the J1 pilot sentence
   is explicitly allowed, with each exclusion documented in the script rather than
   silently ignored.
+
+---
+
+## 2026-10-20 — engineering efficiency dogfood, negatives retained
+
+The owner requested immediately usable `.files`, z0intelligence, Kerdoios and
+SLM-shadow work, measured by z0evals rather than activity or token-savings claims.
+The relevant current issue bodies/comments were read before implementation:
+
+- [z0intelligence #139](https://github.com/kvnloo/z0intelligence/issues/139):
+  cumulative model wait, gratuitous serial turns, missing interpreters and
+  retry/correction overhead; a fast hook alone does not explain whole-task latency.
+- [z0intelligence #143](https://github.com/kvnloo/z0intelligence/issues/143),
+  including its GEPA / RSI-Anything / SFT proposal, and
+  [Evolution Lab #23](https://github.com/kvnloo/evolution-lab/issues/23):
+  compare deterministic/manual and non-trained controls before training;
+  shape-valid generated skills and training loss do not prove useful learning.
+- [Kerdoios #51](https://github.com/kvnloo/kerdoios/issues/51) and
+  [z0evals #58](https://github.com/kvnloo/z0evals/issues/58):
+  catalog, free eligibility, placement, execution and useful verified work
+  remain different facts. No paid spill or invisible quota assumptions.
+- [z0evals #92](https://github.com/kvnloo/z0evals/issues/92),
+  [#93](https://github.com/kvnloo/z0evals/issues/93),
+  [#75](https://github.com/kvnloo/z0evals/issues/75) and
+  [Tokenomics #19](https://github.com/kvnloo/tokenomics/issues/19):
+  lineage-safe comparisons, independent outcomes, full displaced cost and
+  protected evaluation stay outside the optimizer.
+
+The implementation is one read-only consumer of the original pinned
+Tokenomics paired report, not another ledger, profiler, trainer or judge.
+[The complete study](../studies/engineering-throughput-v0/manifest.yaml) and its
+create-only CLI preserve the useful counterexamples: a fast collector that
+lost package facts, an archived host snapshot that became stale in **both**
+arms, incomplete first-use costs, and a strict output-shape failure that was
+not a factual error. Retrospective corrections are separate artifacts and do
+not overwrite the original failed gates.
+
+The resulting decision is deliberately bounded: the read-only collector can be
+dogfooded; global engineering throughput, independent confirmation and model
+routing adoption remain unproved. Missing local serving/dependencies were not
+replaced by fake SLM results. No private source histories or protected truth
+were imported, and PR95's scorer/custody work was not modified. GEPA, RSI and
+SFT remain candidate experiments, not claimed runs or automatic deployments.
+
+A separate prospective v3 stable-fact contract was then frozen before two new
+native runs. It supported a lower observed latency finding for the fixed local
+collection workflow only. It did not reuse the failed v2 gate as confirmation:
+the original failures and retrospective timing unknowns remain unchanged.
+The fresh gate's scope, remaining component-probe failures and incomplete
+first-use costs stay explicit in separate artifacts.
+
