@@ -1,0 +1,33 @@
+{
+  "schema": "z0eval.voice_arms.v1",
+  "control": "omp-live",
+  "arms": {
+    "omp-live": {
+      "enabled": true,
+      "cmd": ["bun", "harness/omp_arm.ts", "--scenario", "{scenario}", "--run-dir", "{run_dir}", "--assets", "{assets}", "--cwd", "{z0live_worktree}"],
+      "env": {"ALSA_CONFIG_PATH": "{asound_null}"},
+      "source": {"package": "@oh-my-pi/pi-coding-agent", "version_from": "~/.bun/install/global/node_modules/@oh-my-pi/pi-coding-agent/package.json"},
+      "model": "gpt-live-1-codex",
+      "voice": "sol (OMP default; live.voice unset)",
+      "transport": "Codex quicksilver signaling + native webrtc-rs peer + api.openai.com sideband WS",
+      "delegation": "client delegation into an in-memory OMP AgentSession (default model role), extensions disabled"
+    },
+    "z0live-realtime": {
+      "enabled": true,
+      "cmd": ["node", "harness/z0live_arm.mjs", "--scenario", "{scenario}", "--run-dir", "{run_dir}", "--assets", "{assets}", "--z0live", "{z0live_worktree}", "--data", "{z0live_data}", "--base", "{z0live_base}", "--arm", "z0live-realtime"],
+      "env": {},
+      "source": {"repo": "kvnloo/z0live", "ref": "deployed broker checkout HEAD (pinned per run in run.json)"},
+      "model": "gpt-realtime",
+      "voice": "marin",
+      "transport": "OpenAI Realtime WebRTC from headless Chromium; ephemeral secret minted by an ISOLATED z0live broker (loopback, private data dir)",
+      "delegation": "broker tools (ask_z0 -> liaison -> Hermes meta agent -> workers; legacy work tools; tell_hermes), results via broker inbox"
+    },
+    "z0live-bidi": {
+      "enabled": false,
+      "requires": {"repo": "kvnloo/z0live", "branch": "feat/frameless-bidi"},
+      "cmd": ["node", "harness/z0live_arm.mjs", "--scenario", "{scenario}", "--run-dir", "{run_dir}", "--assets", "{assets}", "--z0live", "{bidi_worktree}", "--data", "{bidi_data}", "--base", "{bidi_base}", "--arm", "z0live-bidi"],
+      "env": {},
+      "note": "Placeholder: enable once the branch exists and exposes a client path. If the bidi client is not the Realtime WebRTC protocol, add a driver that implements the same runner adapter (now/play/playAsync/workPending/log + level(rms,t))."
+    }
+  }
+}
