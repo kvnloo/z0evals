@@ -58,6 +58,61 @@ python scripts/validate.py
 
 See `imports/slm-router-v0.example.yaml`.
 
+## Engineering efficiency, not activity counts
+
+`scripts/engineering_eval.py` evaluates an existing
+`tokenomics.paired_cost_study.v1` document. It reuses the original pinned
+[Tokenomics cost-displacement report](https://github.com/kvnloo/tokenomics/pull/21);
+it does not add routing, a replay store, a trainer, or another protected judge.
+
+```bash
+python -m pip install -r requirements.txt
+python scripts/engineering_eval.py \
+  studies/engineering-throughput-v0/data/iac-collection-v2.study.json
+```
+
+The report separates verified-result rate, all work per verified result,
+setup/search/training time, p50/p95/p99 workflow latency, tokens, retries,
+tool/network calls, human interventions, and measurement coverage. Failed work
+stays in the cost numerator. Missing telemetry stays unknown. Additive trace
+work is not parallel elapsed time.
+
+For measured end-to-end inputs, set `engineering.wall_time_scope` to
+`request_through_verification`. Each named arm supplies `setup_wall_ms`,
+`optimization_wall_ms`, and optionally `cohort_elapsed_ms` as explicit
+`value`/`measurement_state`/`attribution: trace_total`/`evidence_ref` observations.
+Zero must be observed, not inferred. Throughput additionally requires
+`cohort_time_scope: setup_through_last_verification` and a coherent elapsed
+clock. Unknown optimization costs prevent a first-use efficiency claim.
+`--out PATH` creates a new aggregate file and refuses to overwrite it.
+
+The [dogfood study](studies/engineering-throughput-v0/manifest.yaml) retains:
+
+- A faster but rejected all-probe IaC candidate that lost package inventory.
+- A repaired service-only concurrent collector with all sixteen probes and
+  equivalent fresh package/CPU/mount facts. The original confirmation failed
+  against stale host state; retrospective equivalence is not a preregistered
+  success. Recorded CLI timing is not independently verified-result latency.
+- A distinct prospective v3 confirmation, registered before new observations,
+  that preserves the bounded package/CPU/root-mount contract and measures
+  request-through-that-verifier latency. Remaining failed component probes
+  stay visible; this is not full-host or general engineering non-inferiority.
+- A six-call, zero-reported-cost public-code diagnostic across Beam, Laguna XS,
+  Solar Mini4 and Step 3.7. Exact-object compliance and factual usefulness are
+  distinct; post-hoc checks cannot replace the original result.
+
+The evaluator emits `quality_regression` for the rejected collector,
+`insufficient_measurement` for the incomplete/replayed and first-use comparisons,
+and `lower_observed_work_time` for the fresh, bounded v3 workflow only.
+It does **not** manufacture a KEEP decision, global speedup or adoption approval.
+
+This implements the measurement direction in [#93](https://github.com/kvnloo/z0evals/issues/93),
+[the GEPA/RSI/SFT proposal](https://github.com/kvnloo/z0intelligence/issues/143#issuecomment-6139105175),
+and [the recurring latency investigation](https://github.com/kvnloo/z0intelligence/issues/139).
+Compare deterministic/manual controls before spending on search or training.
+Those optimizers remain Evolution Lab's responsibility; protected truth and
+PR95's independent custody/lineage gates remain unchanged.
+
 ## Rules
 
 1. Every claim in a post should resolve to a frozen study artifact.

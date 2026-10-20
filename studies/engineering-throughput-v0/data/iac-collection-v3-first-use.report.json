@@ -1,0 +1,244 @@
+{
+  "schema": "z0eval.engineering_efficiency.v1",
+  "study_id": "native-iac-v3-first-use-cost-incomplete",
+  "study_sha256": "c9d1cdadd6ff5bc8c4cb6496c7dd4f0335e9027972a4e0e8f4fbf39faa4e1b03",
+  "evidence_origin": "observed",
+  "evidence_level": "paired_observational",
+  "causal_claim": false,
+  "promotion_decision": "not_computed",
+  "unit_of_analysis": "one frozen work item per arm, including recovery costs",
+  "wall_time_scope": "request_through_verification",
+  "arms": {
+    "baseline": {
+      "expected_work_items": 1,
+      "observed_work_items": 1,
+      "verified_results": 1,
+      "verification_rate": 1.0,
+      "not_verified_work_items": 0,
+      "trace_work_ms": {
+        "total": 31054.76217600517,
+        "observed_total": 31054.76217600517,
+        "n_complete": 1,
+        "coverage": 1.0,
+        "per_verified_success": 31054.76217600517
+      },
+      "setup_wall_ms": {
+        "value": 65.92010403983295,
+        "observed_value": 65.92010403983295,
+        "measurement_state": "complete"
+      },
+      "optimization_wall_ms": {
+        "value": 0,
+        "observed_value": 0,
+        "measurement_state": "complete"
+      },
+      "total_work_ms": 31120.682280045003,
+      "work_ms_per_verified_result": 31120.682280045003,
+      "workflow_latency_ms": {
+        "method": "nearest_rank",
+        "n_observed": 1,
+        "n_expected": 1,
+        "p50": 31054.76217600517,
+        "p95": 31054.76217600517,
+        "p99": 31054.76217600517
+      },
+      "cohort_elapsed_ms": {
+        "value": 31120.682280045003,
+        "observed_value": 31120.682280045003,
+        "measurement_state": "complete"
+      },
+      "cohort_clock_consistent": true,
+      "observed_verified_results_per_hour": 115.6786977741927,
+      "costs": {
+        "frontier_tokens": {
+          "total": 0,
+          "observed_total": 0,
+          "n_complete": 1,
+          "coverage": 1.0,
+          "per_verified_success": 0.0
+        },
+        "total_model_tokens": {
+          "total": 0,
+          "observed_total": 0,
+          "n_complete": 1,
+          "coverage": 1.0,
+          "per_verified_success": 0.0
+        },
+        "frontier_calls": {
+          "total": 0,
+          "observed_total": 0,
+          "n_complete": 1,
+          "coverage": 1.0,
+          "per_verified_success": 0.0
+        },
+        "local_compute_ms": {
+          "total": null,
+          "observed_total": null,
+          "n_complete": 0,
+          "coverage": 0.0,
+          "per_verified_success": null
+        },
+        "tool_calls": {
+          "total": 16,
+          "observed_total": 16,
+          "n_complete": 1,
+          "coverage": 1.0,
+          "per_verified_success": 16.0
+        },
+        "network_calls": {
+          "total": 0,
+          "observed_total": 0,
+          "n_complete": 1,
+          "coverage": 1.0,
+          "per_verified_success": 0.0
+        },
+        "retries": {
+          "total": 0,
+          "observed_total": 0,
+          "n_complete": 1,
+          "coverage": 1.0,
+          "per_verified_success": 0.0
+        },
+        "replans": {
+          "total": 0,
+          "observed_total": 0,
+          "n_complete": 1,
+          "coverage": 1.0,
+          "per_verified_success": 0.0
+        },
+        "human_interventions": {
+          "total": 0,
+          "observed_total": 0,
+          "n_complete": 1,
+          "coverage": 1.0,
+          "per_verified_success": 0.0
+        }
+      }
+    },
+    "candidate": {
+      "expected_work_items": 1,
+      "observed_work_items": 1,
+      "verified_results": 1,
+      "verification_rate": 1.0,
+      "not_verified_work_items": 0,
+      "trace_work_ms": {
+        "total": 11213.832183042541,
+        "observed_total": 11213.832183042541,
+        "n_complete": 1,
+        "coverage": 1.0,
+        "per_verified_success": 11213.832183042541
+      },
+      "setup_wall_ms": {
+        "value": 65.92010403983295,
+        "observed_value": 65.92010403983295,
+        "measurement_state": "complete"
+      },
+      "optimization_wall_ms": {
+        "value": null,
+        "observed_value": 92482.79762087623,
+        "measurement_state": "partial"
+      },
+      "total_work_ms": null,
+      "work_ms_per_verified_result": null,
+      "workflow_latency_ms": {
+        "method": "nearest_rank",
+        "n_observed": 1,
+        "n_expected": 1,
+        "p50": 11213.832183042541,
+        "p95": 11213.832183042541,
+        "p99": 11213.832183042541
+      },
+      "cohort_elapsed_ms": {
+        "value": 11279.752287082374,
+        "observed_value": 11279.752287082374,
+        "measurement_state": "complete"
+      },
+      "cohort_clock_consistent": true,
+      "observed_verified_results_per_hour": null,
+      "costs": {
+        "frontier_tokens": {
+          "total": 0,
+          "observed_total": 0,
+          "n_complete": 1,
+          "coverage": 1.0,
+          "per_verified_success": 0.0
+        },
+        "total_model_tokens": {
+          "total": 0,
+          "observed_total": 0,
+          "n_complete": 1,
+          "coverage": 1.0,
+          "per_verified_success": 0.0
+        },
+        "frontier_calls": {
+          "total": 0,
+          "observed_total": 0,
+          "n_complete": 1,
+          "coverage": 1.0,
+          "per_verified_success": 0.0
+        },
+        "local_compute_ms": {
+          "total": null,
+          "observed_total": null,
+          "n_complete": 0,
+          "coverage": 0.0,
+          "per_verified_success": null
+        },
+        "tool_calls": {
+          "total": 16,
+          "observed_total": 16,
+          "n_complete": 1,
+          "coverage": 1.0,
+          "per_verified_success": 16.0
+        },
+        "network_calls": {
+          "total": 0,
+          "observed_total": 0,
+          "n_complete": 1,
+          "coverage": 1.0,
+          "per_verified_success": 0.0
+        },
+        "retries": {
+          "total": 0,
+          "observed_total": 0,
+          "n_complete": 1,
+          "coverage": 1.0,
+          "per_verified_success": 0.0
+        },
+        "replans": {
+          "total": 0,
+          "observed_total": 0,
+          "n_complete": 1,
+          "coverage": 1.0,
+          "per_verified_success": 0.0
+        },
+        "human_interventions": {
+          "total": 0,
+          "observed_total": 0,
+          "n_complete": 1,
+          "coverage": 1.0,
+          "per_verified_success": 0.0
+        }
+      }
+    }
+  },
+  "comparison": {
+    "baseline": "baseline",
+    "treatment": "candidate",
+    "verification_rate_delta": 0.0,
+    "work_time_reduction_fraction": null,
+    "finding": "insufficient_measurement",
+    "canonical_cost_findings": {
+      "inconclusive": 1
+    }
+  },
+  "limitations": [
+    "Observed clocks and verifier identities are supplied by the producer, not authenticated by this reducer.",
+    "All failed attempts and recovery belong in their work-item trace; do not split retries into independent items.",
+    "Trace work is additive resource demand, not parallel cohort makespan; throughput uses a separately measured whole-arm clock.",
+    "Setup/search/training time is charged in full for this cohort; no assumed future amortization.",
+    "Small-cohort quantiles and observed results/hour are not sustained-throughput or population-tail estimates.",
+    "No monetary, energy, human-attention, safety non-inferiority, or protected-holdout claim follows from a time comparison.",
+    "Raw traces and private evidence references are deliberately omitted; retain canonical source artifacts privately."
+  ]
+}

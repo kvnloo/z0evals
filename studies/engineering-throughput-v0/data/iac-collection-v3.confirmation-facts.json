@@ -1,0 +1,102 @@
+{
+  "protocol": {
+    "scope": "one actual phone collection with all sixteen unchanged read-only probes, same source-independent output verifier",
+    "source_pins": {
+      "baseline": "adac7040b25cc37d35e9253d4418174e594e3399",
+      "candidate": "7d9a11076d6c304383f50dbb510ead23d09c2481697c8d3f081d26d1b84e45af"
+    },
+    "snapshot": "f98425c3ae429cf6de4cb3eda9000becc3abb6fb64d95f046bb0df556ef724bf",
+    "candidate_revision_kind": "sha256 of exact executed collector bytes",
+    "order": [
+      "candidate",
+      "baseline"
+    ],
+    "commands_changed": false,
+    "n": 1,
+    "required_fact_commands": [
+      "findmnt",
+      "lscpu",
+      "pacman_explicit"
+    ],
+    "oracle": "prospective-stable-fact-contract-v3",
+    "mount_contract": "Complete parsed inventory is retained; the root-mount record must match. Live descendant mounts may change and are not stale gold labels.",
+    "limitations": [
+      "Single host/workflow pilot; not a population-tail or fleet-wide causal estimate.",
+      "Collection validity does not assert complete host inventory, convergence, model readiness or fleet planning.",
+      "Human code/research effort and local energy are unmeasured; no monetary ROI claim.",
+      "A shared measured protocol-preparation cost is charged once to each standalone counterfactual arm."
+    ]
+  },
+  "records": [
+    {
+      "arm": "candidate",
+      "ts": 1792515052.2197611,
+      "revision": "7d9a11076d6c304383f50dbb510ead23d09c2481697c8d3f081d26d1b84e45af",
+      "task_snapshot_id": "f98425c3ae429cf6de4cb3eda9000becc3abb6fb64d95f046bb0df556ef724bf",
+      "exit": 0,
+      "verified": true,
+      "verification_error": null,
+      "execution_ms": 11212.388276995625,
+      "verification_ms": 1.438228995539248,
+      "wall_ms": 11213.832183042541,
+      "setup_wall_ms": 65.92010403983295,
+      "cohort_elapsed_ms": 11279.752287082374,
+      "cohort_time_scope": "setup_through_last_verification",
+      "optimization_wall_ms": 0.0,
+      "observation_count": 16,
+      "available_count": 14,
+      "successful_commands": [
+        "findmnt",
+        "lscpu",
+        "pacman_explicit"
+      ],
+      "timeout_commands": [
+        "system_services_enabled",
+        "system_sockets_enabled",
+        "system_timers_enabled",
+        "user_services_enabled"
+      ],
+      "secret_marker_leaked": false,
+      "source_sha256": "7d9a11076d6c304383f50dbb510ead23d09c2481697c8d3f081d26d1b84e45af"
+    },
+    {
+      "arm": "baseline",
+      "ts": 1792515063.4354773,
+      "revision": "adac7040b25cc37d35e9253d4418174e594e3399",
+      "task_snapshot_id": "f98425c3ae429cf6de4cb3eda9000becc3abb6fb64d95f046bb0df556ef724bf",
+      "exit": 0,
+      "verified": true,
+      "verification_error": null,
+      "execution_ms": 31053.91811300069,
+      "verification_ms": 0.8401049999520183,
+      "wall_ms": 31054.76217600517,
+      "setup_wall_ms": 65.92010403983295,
+      "cohort_elapsed_ms": 31120.682280045003,
+      "cohort_time_scope": "setup_through_last_verification",
+      "optimization_wall_ms": 0.0,
+      "observation_count": 16,
+      "available_count": 14,
+      "successful_commands": [
+        "findmnt",
+        "lscpu",
+        "pacman_explicit"
+      ],
+      "timeout_commands": [
+        "system_services_enabled",
+        "system_sockets_enabled",
+        "system_timers_enabled"
+      ],
+      "secret_marker_leaked": false,
+      "source_sha256": "71b8e1e6056bea4dd74925f03e5c9456c461a152bd42e60c0cc2e577d828bfc3"
+    }
+  ],
+  "timing_scope": "Fresh local CLI request through the prospective bounded stable-fact verifier. This is not whole-assistant/tool/UI time, full machine truth, independent custody or sustained throughput.",
+  "lineage": "All v1/v2/v3 attempts are one related collection workflow family, not three independent efficacy samples.",
+  "limits": [
+    "One host/work item per arm; quantiles are singleton order statistics.",
+    "The explicit package set, stable CPU facts, root mount and complete parsed16probe output are the prespecified useful facts; transient child mounts are observations, not frozen labels.",
+    "First-use research, rejected experiments, human implementation effort, local energy and full optimization cost are not erased or priced as zero.",
+    "The fixed-implementation invocation performs no search/training; its observed zero optimization-in-invocation is not zero development cost.",
+    "No runtime adoption or population-causal conclusion follows."
+  ]
+}

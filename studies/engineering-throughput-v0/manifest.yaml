@@ -1,0 +1,96 @@
+schema_version: z0eval.study.v1
+id: engineering-throughput-v0
+title: Useful engineering work versus activity, displaced cost, and incomplete clocks
+status: draft
+created: "2026-10-20"
+updated: "2026-10-20"
+evidence_status: native-observation-pilot-and-retrospective-replay; no protected-holdout or promotion credit
+
+sources:
+  - repo: kvnloo/tokenomics
+    commit: 8c832cbc6645dbc246ff7f6bf3e1f9ca49618ad4
+    role: Original read-only paired cost-displacement implementation, reused directly; unmerged PR21, not a vendored copy
+  - repo: kvnloo/.files
+    commit: adac7040b25cc37d35e9253d4418174e594e3399
+    role: Exact native serial control and public systemd-unit inspection source
+  - repo: kvnloo/.files
+    commit: ee6b097f2aa818012db34b6361143315e7bf2174
+    role: Current dev integration base; its collector is byte-identical to the native control
+  - repo: kvnloo/.files
+    commit: f2803066badeda88dd94e19aec66f4b9f6d4bad3
+    role: Clean dev-based service-only concurrency candidate; exact executed collector source SHA256 7d9a11076d6c304383f50dbb510ead23d09c2481697c8d3f081d26d1b84e45af
+  - repo: kvnloo/z0intelligence
+    commit: 6cae99254bbb2f38329c081c15c2ce81c74a4be2
+    role: Public source-inspection cohort and actual nonmutating shadow/quota operation qualification
+  - repo: kvnloo/z0evals
+    commit: 3f2f91ccc2c657082369ecf956d69e363cb3fb19
+    role: Configured nightly worker base; original study/publication conventions unchanged
+
+questions:
+  - Does a faster collection retain the useful facts obtained by the serial control, not merely the same row count?
+  - Does the evaluation refuse a throughput claim when independent verification, elapsed-time scope, or first-use optimization cost is incomplete?
+  - Does a bounded zero-priced model portfolio improve the current public-code inspection workflow enough to justify replacing the working baseline?
+
+analysis:
+  entrypoint: scripts/engineering_eval.py
+  input_schema: tokenomics.paired_cost_study.v1
+  output_schema: z0eval.engineering_efficiency.v1
+  independent_protected_judge: not used or altered
+  causal_claim: false
+  promotion_decision: not_computed
+
+artifacts:
+  - path: data/iac-collection-v2.study.json
+    kind: fixture
+    provenance: Allowlisted native timing and retrospective paired-packet equivalence; replay, not new confirmation
+  - path: data/iac-collection-v2.report.json
+    kind: result
+  - path: data/iac-collection-v1-rejected.study.json
+    kind: fixture
+    provenance: Original shape-valid capture plus independent negative for lost explicit-package facts
+  - path: data/iac-collection-v1-rejected.report.json
+    kind: result
+  - path: data/iac-collection-v2-first-use.study.json
+    kind: fixture
+    provenance: Known rejected-pilot work is a partial lower bound, not complete development/optimization cost
+  - path: data/iac-collection-v2-first-use.report.json
+    kind: result
+  - path: data/native-facts.json
+    kind: receipt
+    provenance: Safe counters, source hashes, retained failures and retrospective checks only; no raw host observation packets
+  - path: data/free-provider-diagnostic.json
+    kind: result
+    provenance: Six physical public-source inference calls with response-reported cost0, plus a deterministic diagnostic; no account/quota audit
+  - path: data/iac-collection-v3.confirmation-facts.json
+    kind: receipt
+    provenance: Separate prospective stable-fact protocol, frozen before both fresh native runs; original v1/v2 receipts unchanged
+  - path: data/iac-collection-v3-confirmation.study.json
+    kind: fixture
+  - path: data/iac-collection-v3-confirmation.report.json
+    kind: result
+  - path: data/iac-collection-v3-first-use.study.json
+    kind: fixture
+  - path: data/iac-collection-v3-first-use.report.json
+    kind: result
+
+limitations:
+  - One phone and one collection workflow are not independent population samples or a fleet-wide speed estimate.
+  - The first concurrent candidate was faster but lost package inventory; it is rejected, not counted as savings.
+  - Both original v2 primary gates failed against stale97-mount host state. Both fresh arm packets contained identical110-mount data and60packages, verified only retrospectively. Original failures remain unchanged.
+  - Execution-plus-original-gate clocks are not independently verified-result latency. The evaluator withholds work-per-verified-result, throughput, quantiles and a positive adoption finding for these imported replay inputs.
+  - Code/research effort, full optimization/first-use cost, local energy, and outer assistant/tool/UI latency are incomplete. No monetary ROI or global engineering speedup is claimed.
+  - The fresh v3 predicate verifies only its prespecified useful package/CPU/root-mount/privacy/output contract. It does not verify complete host state or establish population non-inferiority.
+  - In v3 the candidate user_services_enabled probe timed out whereas the control returned a nonzero error. Both remain unknown and neither supplied a successful fact; this diagnostic difference is retained, not claimed equivalent reliability.
+  - Free-provider primary exact-object compliance was2/3 in both model arms. Required facts matched3/3 only as a secondary post-hoc check; extra fields were not factual errors. No thresholds were retroactively promoted to confirmation.
+  - Deterministic source extraction initially shared its AST oracle, so it is not independent efficacy evidence. Separate actual shadow/quota operations later matched the required facts without model calls or tool execution.
+  - All external inputs were immutable public-code packets. No private histories, evaluator truth, credentials, images or access inventory were sent to free models or imported here.
+  - Gateway-reported cost0 is not an independent invoice, remaining-quota or unlimited-capacity guarantee. The portfolio was slower than Beam in this tiny diagnostic; no runtime routing switch follows.
+  - No local SLM server was ready on this phone. No model download, training, GEPA/RSI run, SFT gain, learned shadow-network acceptance, production setup, fleet plan, K3s executor or merge is claimed.
+
+claims:
+  - id: bounded-native-collection-v3
+    text: In one fresh same-host comparison, the fixed collector plus its bounded prospective verifier and measured preparation took11.280s versus31.121s,63.75percent lower observed work time, preserving its prespecified useful facts. This is not whole-assistant acceleration, full-host truth, independent custody, sustained throughput or complete first-use ROI.
+    evidence:
+      - data/iac-collection-v3.confirmation-facts.json
+      - data/iac-collection-v3-confirmation.study.json
+      - data/iac-collection-v3-confirmation.report.json

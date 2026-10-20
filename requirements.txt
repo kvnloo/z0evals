@@ -1,3 +1,4 @@
 PyYAML>=6.0,<7
 jsonschema>=4.23,<5
 Markdown>=3.7,<4
+agent-tokenomics @ git+https://github.com/kvnloo/tokenomics.git@8c832cbc6645dbc246ff7f6bf3e1f9ca49618ad4

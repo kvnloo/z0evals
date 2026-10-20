@@ -1,0 +1,206 @@
+{
+  "schema": "tokenomics.paired_cost_study.v1",
+  "study_id": "native-iac-stable-facts-v3-confirmation",
+  "evidence_origin": "observed",
+  "baseline_arm": "baseline",
+  "treatment_arm": "candidate",
+  "work_items": [
+    {
+      "work_item_id": "native-read-only-collection",
+      "task_snapshot_id": "f98425c3ae429cf6de4cb3eda9000becc3abb6fb64d95f046bb0df556ef724bf"
+    }
+  ],
+  "runs": [
+    {
+      "work_item_id": "native-read-only-collection",
+      "task_snapshot_id": "f98425c3ae429cf6de4cb3eda9000becc3abb6fb64d95f046bb0df556ef724bf",
+      "arm_id": "candidate",
+      "revision": "7d9a11076d6c304383f50dbb510ead23d09c2481697c8d3f081d26d1b84e45af",
+      "token_measurement_state": "complete",
+      "frontier_event_ids": [],
+      "events": [
+        {
+          "schema": "tokenomics.event.v0",
+          "event_id": "7f12108f20bbfa1a45e17e9dcfc6e31b32f308e71ef0833365d07db35c1de733-verification",
+          "trace_id": "7f12108f20bbfa1a45e17e9dcfc6e31b",
+          "span_id": "7f12108f20bbfa1a",
+          "ts": 1792515052.2197611,
+          "kind": "verification",
+          "name": "prospective-stable-fact-contract-v3",
+          "measurement_source": {
+            "measurement_state": "complete"
+          },
+          "outcome": {
+            "execution_completed": true,
+            "verified_success": true,
+            "verification_source": "prospective-stable-fact-contract-v3"
+          }
+        }
+      ],
+      "cost_observations": {
+        "wall_time_ms": {
+          "value": 11213.832183042541,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "studies/engineering-throughput-v0/data/iac-collection-v3.confirmation-facts.json#/records/0"
+        },
+        "frontier_calls": {
+          "value": 0,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "studies/engineering-throughput-v0/data/iac-collection-v3.confirmation-facts.json#/records/0"
+        },
+        "network_calls": {
+          "value": 0,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "studies/engineering-throughput-v0/data/iac-collection-v3.confirmation-facts.json#/records/0"
+        },
+        "tool_calls": {
+          "value": 16,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "studies/engineering-throughput-v0/data/iac-collection-v3.confirmation-facts.json#/records/0"
+        },
+        "retries": {
+          "value": 0,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "studies/engineering-throughput-v0/data/iac-collection-v3.confirmation-facts.json#/records/0"
+        },
+        "replans": {
+          "value": 0,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "studies/engineering-throughput-v0/data/iac-collection-v3.confirmation-facts.json#/records/0"
+        },
+        "human_interventions": {
+          "value": 0,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "studies/engineering-throughput-v0/data/iac-collection-v3.confirmation-facts.json#/records/0"
+        }
+      }
+    },
+    {
+      "work_item_id": "native-read-only-collection",
+      "task_snapshot_id": "f98425c3ae429cf6de4cb3eda9000becc3abb6fb64d95f046bb0df556ef724bf",
+      "arm_id": "baseline",
+      "revision": "adac7040b25cc37d35e9253d4418174e594e3399",
+      "token_measurement_state": "complete",
+      "frontier_event_ids": [],
+      "events": [
+        {
+          "schema": "tokenomics.event.v0",
+          "event_id": "2a76e7ae5f9cc24b4a12e045bb435ca43e2aa64245b924920cb17bcf69c74a8d-verification",
+          "trace_id": "2a76e7ae5f9cc24b4a12e045bb435ca4",
+          "span_id": "2a76e7ae5f9cc24b",
+          "ts": 1792515063.4354773,
+          "kind": "verification",
+          "name": "prospective-stable-fact-contract-v3",
+          "measurement_source": {
+            "measurement_state": "complete"
+          },
+          "outcome": {
+            "execution_completed": true,
+            "verified_success": true,
+            "verification_source": "prospective-stable-fact-contract-v3"
+          }
+        }
+      ],
+      "cost_observations": {
+        "wall_time_ms": {
+          "value": 31054.76217600517,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "studies/engineering-throughput-v0/data/iac-collection-v3.confirmation-facts.json#/records/1"
+        },
+        "frontier_calls": {
+          "value": 0,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "studies/engineering-throughput-v0/data/iac-collection-v3.confirmation-facts.json#/records/1"
+        },
+        "network_calls": {
+          "value": 0,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "studies/engineering-throughput-v0/data/iac-collection-v3.confirmation-facts.json#/records/1"
+        },
+        "tool_calls": {
+          "value": 16,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "studies/engineering-throughput-v0/data/iac-collection-v3.confirmation-facts.json#/records/1"
+        },
+        "retries": {
+          "value": 0,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "studies/engineering-throughput-v0/data/iac-collection-v3.confirmation-facts.json#/records/1"
+        },
+        "replans": {
+          "value": 0,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "studies/engineering-throughput-v0/data/iac-collection-v3.confirmation-facts.json#/records/1"
+        },
+        "human_interventions": {
+          "value": 0,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "studies/engineering-throughput-v0/data/iac-collection-v3.confirmation-facts.json#/records/1"
+        }
+      }
+    }
+  ],
+  "engineering": {
+    "wall_time_scope": "request_through_verification",
+    "arms": {
+      "candidate": {
+        "setup_wall_ms": {
+          "value": 65.92010403983295,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "studies/engineering-throughput-v0/data/iac-collection-v3.confirmation-facts.json#/records/0"
+        },
+        "optimization_wall_ms": {
+          "value": 0,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "studies/engineering-throughput-v0/data/iac-collection-v3.confirmation-facts.json#/records/0"
+        },
+        "cohort_elapsed_ms": {
+          "value": 11279.752287082374,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "studies/engineering-throughput-v0/data/iac-collection-v3.confirmation-facts.json#/records/0"
+        },
+        "cohort_time_scope": "setup_through_last_verification"
+      },
+      "baseline": {
+        "setup_wall_ms": {
+          "value": 65.92010403983295,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "studies/engineering-throughput-v0/data/iac-collection-v3.confirmation-facts.json#/records/1"
+        },
+        "optimization_wall_ms": {
+          "value": 0,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "studies/engineering-throughput-v0/data/iac-collection-v3.confirmation-facts.json#/records/1"
+        },
+        "cohort_elapsed_ms": {
+          "value": 31120.682280045003,
+          "measurement_state": "complete",
+          "attribution": "trace_total",
+          "evidence_ref": "studies/engineering-throughput-v0/data/iac-collection-v3.confirmation-facts.json#/records/1"
+        },
+        "cohort_time_scope": "setup_through_last_verification"
+      }
+    }
+  },
+  "qualification_scope": "Prospective v3 stable-fact contract frozen before both new arm runs: all16probes, privacy, exact60packages, stable CPU and root-mount facts. Not complete host truth.",
+  "timing_scope": "Local CLI invocation through its frozen bounded verifier, plus separately measured shared preparation charged to each standalone arm. Search/training is zero within invocation; development and outer assistant latency are not included."
+}

@@ -1,0 +1,123 @@
+{
+  "scope": "bounded read-only public-source contract-inspection diagnostic, not general engineering efficacy, governed dispatch or a routing promotion",
+  "protocol": {
+    "schema": "z0eval.public_engineering_trial.v1",
+    "frozen_before_inference": 1792512476.6188152,
+    "purpose": "Actual source-contract inspection for the current .files/z0/shadow integration work; not a patch-generation or general engineering benchmark.",
+    "source_visibility": "public-only",
+    "tasks": [
+      {
+        "id": "shadow-safety-contract",
+        "repo": "kvnloo/z0intelligence",
+        "revision": "6cae99254bbb2f38329c081c15c2ce81c74a4be2",
+        "path": "src/z0int/cognition/shadow.py",
+        "question": "Extract the run_shadow result contract. Return exactly JSON with entrypoint, schema (resolved string), selected_action and executed_action. Report its top-level result fields, not the per-backend hypothetical selection. No explanation.",
+        "snapshot": "f17bb31179d14987556c280622f66c2ebc0163acd8b9201e74344fcc3a686fbc"
+      },
+      {
+        "id": "quota-fallback-contract",
+        "repo": "kvnloo/z0intelligence",
+        "revision": "6cae99254bbb2f38329c081c15c2ce81c74a4be2",
+        "path": "src/z0int/quota_budget.py",
+        "question": "Inspect project(). Return exactly JSON with entrypoint, missing_optional_parser_is_fatal (boolean), fallback_quota_source (the string returned when the optional Kerdoios parser is absent), paid_spill (boolean). No explanation.",
+        "snapshot": "59bd9d3bbf5e5323d05d917b5c2ff35e6acd08a66ce2080ddb0137b5efd053ca"
+      },
+      {
+        "id": "dotfiles-z0-entrypoint",
+        "repo": "kvnloo/.files",
+        "revision": "adac7040b25cc37d35e9253d4418174e594e3399",
+        "path": "config/systemd/user/z0int-loop-tick.service",
+        "question": "Extract the configured ExecStart invocation. Return exactly JSON with interpreter (first argv), module (after -m), command (all positional argv after module and before --lock). Do not expand %h. No explanation.",
+        "snapshot": "1280a61ae2c288344d380467d5ac5c97359ed6bcd63dd529cc6a3716ab1aa524"
+      }
+    ],
+    "arms": {
+      "deterministic-control": [
+        "stdlib",
+        "stdlib",
+        "stdlib"
+      ],
+      "beam-sequential": [
+        "reflection/beam-1.0-501b-a23b:free",
+        "reflection/beam-1.0-501b-a23b:free",
+        "reflection/beam-1.0-501b-a23b:free"
+      ],
+      "portfolio-sequential": [
+        "poolside/laguna-xs-2.1:free",
+        "upstage/solar-mini4:free",
+        "stepfun/step-3.7-flash:free"
+      ]
+    },
+    "protocol": {
+      "max_inflight_gateway_requests": 1,
+      "retries": 0,
+      "fallback": false,
+      "max_completion_tokens": 1536,
+      "request_deadline_seconds": 45,
+      "tools": false,
+      "prices": "fresh fully-zero catalog gate before every arm",
+      "quality": "exact parsed JSON vs a source-derived oracle, checked outside the model",
+      "authority": "isolated read-only experiment, NOT governed z0 dispatch or production routing",
+      "order": "deterministic, Beam, portfolio; order/cache/provider drift uncontrolled; descriptive pilot only",
+      "optimization": "No optimizer/trainer invoked in the measured trial; human experiment/implementation time is unmeasured, not amortized into an ROI claim",
+      "common_setup_accounting": "One observed source/auth/protocol preparation is charged in full to each standalone counterfactual arm; not summed as multiple physical charges."
+    }
+  },
+  "arms": {
+    "deterministic-control": {
+      "n_tasks": 3,
+      "models": [
+        "stdlib",
+        "stdlib",
+        "stdlib"
+      ],
+      "primary_exact_object_passes": 3,
+      "secondary_posthoc_required_fact_matches": 3,
+      "physical_model_calls": 0,
+      "retries": 0,
+      "fallbacks": 0,
+      "summed_task_wall_ms": 16.11922006122768,
+      "gateway_reported_cost_usd": 0,
+      "billing_scope": "gateway response only, not independent invoice/remaining quota/energy audit",
+      "input_tokens": 0,
+      "output_tokens": 0
+    },
+    "beam-sequential": {
+      "n_tasks": 3,
+      "models": [
+        "reflection/beam-1.0-501b-a23b:free",
+        "reflection/beam-1.0-501b-a23b:free",
+        "reflection/beam-1.0-501b-a23b:free"
+      ],
+      "primary_exact_object_passes": 2,
+      "secondary_posthoc_required_fact_matches": 3,
+      "physical_model_calls": 3,
+      "retries": 0,
+      "fallbacks": 0,
+      "summed_task_wall_ms": 8355.213850038126,
+      "gateway_reported_cost_usd": 0,
+      "billing_scope": "gateway response only, not independent invoice/remaining quota/energy audit",
+      "input_tokens": 8291,
+      "output_tokens": 777
+    },
+    "portfolio-sequential": {
+      "n_tasks": 3,
+      "models": [
+        "poolside/laguna-xs-2.1:free",
+        "upstage/solar-mini4:free",
+        "stepfun/step-3.7-flash:free"
+      ],
+      "primary_exact_object_passes": 2,
+      "secondary_posthoc_required_fact_matches": 3,
+      "physical_model_calls": 3,
+      "retries": 0,
+      "fallbacks": 0,
+      "summed_task_wall_ms": 9267.339268059004,
+      "gateway_reported_cost_usd": 0,
+      "billing_scope": "gateway response only, not independent invoice/remaining quota/energy audit",
+      "input_tokens": 8784,
+      "output_tokens": 735
+    }
+  },
+  "posthoc_disclosure": "The predeclared exact-object check rejected extra fields in two otherwise correct answers. Preserve primary schema2/3; required-field factual agreement is a SECONDARY POST-HOC observation, not new confirmatory success. The deterministic control originally shares its AST oracle and is excluded from independent efficacy claims; later separate native checks matched its factual output."
+}
