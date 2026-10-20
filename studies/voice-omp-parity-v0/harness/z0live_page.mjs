@@ -278,7 +278,8 @@ export async function runZ0live({ base, token, scenario, clipIds, mintBody, inbo
     now,
     play,
     playAsync: (id, mark) => void play(id, mark),
-    workPending: () => st.pendingTools > 0 || !!st.inboxItem || !!st.pendingInbox || [...st.askTurns.values()].some(v => v !== "done"),
+    // Silent inbox items (say == "") are data-only and never spoken, so they are not pending work.
+    workPending: () => st.pendingTools > 0 || !!st.inboxItem?.say || !!st.pendingInbox?.say || [...st.askTurns.values()].some(v => v !== "done"),
     log,
   });
   let result;
