@@ -471,7 +471,8 @@ export async function runZ0live({ base, token, scenario, clipIds, mintBody, inbo
     play,
     playAsync: (id, mark) => void play(id, mark),
     // Silent inbox items (say == "") are data-only and never spoken, so they are not pending work.
-    workPending: () => bidi ? [...bidiDelegations.values()].some(v => v === null) : st.pendingTools > 0 || !!st.inboxItem?.say || !!st.pendingInbox?.say || [...st.askTurns.values()].some(v => v !== "done"),
+    // The result being spoken is the result, not pending work (await_result waits for that speech).
+    workPending: () => bidi ? [...bidiDelegations.values()].some(v => v === null) : st.pendingTools > 0 || (!apk && !!st.inboxItem?.say) || !!st.pendingInbox?.say || [...st.askTurns.values()].some(v => v !== "done"),
     log,
   });
   let result;
