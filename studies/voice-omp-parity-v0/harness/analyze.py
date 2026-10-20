@@ -161,6 +161,13 @@ def delegation_info(arm, events):
     return {"used": bool(calls), "count": len(calls), "tools": sorted({e["name"] for e in calls}), "work_done_t": t}
 
 
+def keyword_hit(said, words):
+    """Case-insensitive keyword match that tolerates provider ASR splitting words ("Can berra")."""
+    said = said.lower()
+    squashed = said.replace(" ", "")
+    return any(w in said or w.replace(" ", "") in squashed for w in words)
+
+
 def norm(s):
     return re.sub(r"[^a-z0-9 ]+", "", s.lower()).strip()
 
@@ -219,8 +226,7 @@ def score_run(d: Path, spec):
             nxt = sorted(v["start"] for k, v in m.items() if "start" in v and v["start"] > m[mk]["end"])
             upto = nxt[0] if nxt else math.inf
             said = " ".join(t for ts, t in texts if m[mk]["end"] < ts <= upto + 15000).lower()
-            squashed = said.replace(" ", "")  # provider ASR may split words ("Can berra")
-            row.setdefault("correct", {})[mk] = any(w in said or w.replace(" ", "") in squashed for w in words)
+            row.setdefault("correct", {})[mk] = keyword_hit(said, words)
     if checks.get("expect_delegation") or checks.get("expect_no_delegation"):
         info = delegation_info(arm, events)
         row["delegation"] = info
