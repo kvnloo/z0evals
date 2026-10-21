@@ -1,0 +1,170 @@
+{
+ "kind": "reproduced-measurement (synthetic inputs only)",
+ "source": "kvnloo/noop@e12cd056822a39438b8dc065b79803e29381fea1",
+ "command": "cd android && ./gradlew testFullDebugUnitTest --tests 'com.noop.breathcam.*'",
+ "host": "groot (x86_64, JDK 21)",
+ "full_suite": {
+  "tests": 6755,
+  "failures": 0,
+  "skipped": 7
+ },
+ "breathcam_tests": [
+  {
+   "class": "BreathClipEvalTest",
+   "test": "evaluateRecordedClips",
+   "status": "skipped",
+   "time_s": 0.0
+  },
+  {
+   "class": "BreathClipEvalTest",
+   "test": "evaluator scores a synthetic clip end to end",
+   "status": "passed",
+   "time_s": 2.447
+  },
+  {
+   "class": "BreathCoachSessionTest",
+   "test": "adaptive pacer finds two different simulated resonance paces",
+   "status": "passed",
+   "time_s": 1.859
+  },
+  {
+   "class": "BreathHeartCouplingTest",
+   "test": "seeker settles on different injected resonance paces",
+   "status": "passed",
+   "time_s": 0.001
+  },
+  {
+   "class": "BreathHeartCouplingTest",
+   "test": "within the margin the pace nearer 0 degrees wins",
+   "status": "passed",
+   "time_s": 0.0
+  },
+  {
+   "class": "BreathHeartCouplingTest",
+   "test": "beat times backdate a packet from its arrival",
+   "status": "passed",
+   "time_s": 0.0
+  },
+  {
+   "class": "BreathHeartCouplingTest",
+   "test": "no rate means no lag, but RSA can still be scored",
+   "status": "passed",
+   "time_s": 0.001
+  },
+  {
+   "class": "BreathHeartCouplingTest",
+   "test": "measures RSA amplitude for two injected swings at two rates",
+   "status": "passed",
+   "time_s": 0.218
+  },
+  {
+   "class": "BreathHeartCouplingTest",
+   "test": "seeker ignores breaths that did not follow the pacer",
+   "status": "passed",
+   "time_s": 0.001
+  },
+  {
+   "class": "BreathHeartCouplingTest",
+   "test": "recovers the breath to heart-rate lag for several injected lags",
+   "status": "passed",
+   "time_s": 0.269
+  },
+  {
+   "class": "BreathMotionTest",
+   "test": "selector moves to the strip that carries the breathing",
+   "status": "passed",
+   "time_s": 0.001
+  },
+  {
+   "class": "BreathMotionTest",
+   "test": "tracker keeps accumulating past the search window by re-keying",
+   "status": "passed",
+   "time_s": 0.028
+  },
+  {
+   "class": "BreathMotionTest",
+   "test": "pipeline recovers breathing rate from rendered torso frames at two rates",
+   "status": "passed",
+   "time_s": 3.518
+  },
+  {
+   "class": "BreathMotionTest",
+   "test": "a flat region is not tracked",
+   "status": "passed",
+   "time_s": 0.0
+  },
+  {
+   "class": "BreathMotionTest",
+   "test": "tracker recovers several sub-pixel shifts, in both directions, at every rotation",
+   "status": "passed",
+   "time_s": 0.02
+  },
+  {
+   "class": "BreathMotionTest",
+   "test": "every rotation yields the same upright profile",
+   "status": "passed",
+   "time_s": 0.006
+  },
+  {
+   "class": "BreathPhaseEstimatorTest",
+   "test": "lost tracking frames go unknown",
+   "status": "passed",
+   "time_s": 0.012
+  },
+  {
+   "class": "BreathPhaseEstimatorTest",
+   "test": "a body movement goes unknown and recovers",
+   "status": "passed",
+   "time_s": 0.023
+  },
+  {
+   "class": "BreathPhaseEstimatorTest",
+   "test": "no motion at all is unknown with no rate",
+   "status": "passed",
+   "time_s": 0.003
+  },
+  {
+   "class": "BreathPhaseEstimatorTest",
+   "test": "stays usable with sensor noise and posture drift",
+   "status": "passed",
+   "time_s": 0.133
+  },
+  {
+   "class": "BreathPhaseEstimatorTest",
+   "test": "tracks asymmetric breaths and reports inhale and exhale durations",
+   "status": "passed",
+   "time_s": 0.072
+  },
+  {
+   "class": "BreathPhaseEstimatorTest",
+   "test": "detects holds after inhale and after exhale and tells them apart",
+   "status": "passed",
+   "time_s": 0.112
+  },
+  {
+   "class": "BreathPhaseEstimatorTest",
+   "test": "pacer polarity check votes from agreement",
+   "status": "passed",
+   "time_s": 0.0
+  },
+  {
+   "class": "BreathPhaseEstimatorTest",
+   "test": "a slow continuous breath is never called a hold",
+   "status": "passed",
+   "time_s": 0.102
+  },
+  {
+   "class": "BreathPhaseEstimatorTest",
+   "test": "recovers several injected breathing rates and their phases",
+   "status": "passed",
+   "time_s": 0.197
+  },
+  {
+   "class": "BreathPhaseEstimatorTest",
+   "test": "inverted motion is recovered with polarity -1",
+   "status": "passed",
+   "time_s": 0.043
+  }
+ ],
+ "note": "Synthetic signals and rendered frames only. Not evidence about real video; the recorded-clip gate is pending."
+}

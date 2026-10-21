@@ -1,0 +1,557 @@
+{
+ "protocol": "noop-breathcam-v1",
+ "schedule": [
+  {
+   "block": "settle",
+   "phase": "free",
+   "start_s": 0.0,
+   "end_s": 30.0,
+   "nominal_bpm": null,
+   "cycle": 0
+  },
+  {
+   "block": "pace10",
+   "phase": "inhale",
+   "start_s": 30.0,
+   "end_s": 33.0,
+   "nominal_bpm": 10.0,
+   "cycle": 0
+  },
+  {
+   "block": "pace10",
+   "phase": "exhale",
+   "start_s": 33.0,
+   "end_s": 36.0,
+   "nominal_bpm": 10.0,
+   "cycle": 0
+  },
+  {
+   "block": "pace10",
+   "phase": "inhale",
+   "start_s": 36.0,
+   "end_s": 39.0,
+   "nominal_bpm": 10.0,
+   "cycle": 1
+  },
+  {
+   "block": "pace10",
+   "phase": "exhale",
+   "start_s": 39.0,
+   "end_s": 42.0,
+   "nominal_bpm": 10.0,
+   "cycle": 1
+  },
+  {
+   "block": "pace10",
+   "phase": "inhale",
+   "start_s": 42.0,
+   "end_s": 45.0,
+   "nominal_bpm": 10.0,
+   "cycle": 2
+  },
+  {
+   "block": "pace10",
+   "phase": "exhale",
+   "start_s": 45.0,
+   "end_s": 48.0,
+   "nominal_bpm": 10.0,
+   "cycle": 2
+  },
+  {
+   "block": "pace10",
+   "phase": "inhale",
+   "start_s": 48.0,
+   "end_s": 51.0,
+   "nominal_bpm": 10.0,
+   "cycle": 3
+  },
+  {
+   "block": "pace10",
+   "phase": "exhale",
+   "start_s": 51.0,
+   "end_s": 54.0,
+   "nominal_bpm": 10.0,
+   "cycle": 3
+  },
+  {
+   "block": "pace10",
+   "phase": "inhale",
+   "start_s": 54.0,
+   "end_s": 57.0,
+   "nominal_bpm": 10.0,
+   "cycle": 4
+  },
+  {
+   "block": "pace10",
+   "phase": "exhale",
+   "start_s": 57.0,
+   "end_s": 60.0,
+   "nominal_bpm": 10.0,
+   "cycle": 4
+  },
+  {
+   "block": "pace10",
+   "phase": "inhale",
+   "start_s": 60.0,
+   "end_s": 63.0,
+   "nominal_bpm": 10.0,
+   "cycle": 5
+  },
+  {
+   "block": "pace10",
+   "phase": "exhale",
+   "start_s": 63.0,
+   "end_s": 66.0,
+   "nominal_bpm": 10.0,
+   "cycle": 5
+  },
+  {
+   "block": "pace10",
+   "phase": "inhale",
+   "start_s": 66.0,
+   "end_s": 69.0,
+   "nominal_bpm": 10.0,
+   "cycle": 6
+  },
+  {
+   "block": "pace10",
+   "phase": "exhale",
+   "start_s": 69.0,
+   "end_s": 72.0,
+   "nominal_bpm": 10.0,
+   "cycle": 6
+  },
+  {
+   "block": "pace10",
+   "phase": "inhale",
+   "start_s": 72.0,
+   "end_s": 75.0,
+   "nominal_bpm": 10.0,
+   "cycle": 7
+  },
+  {
+   "block": "pace10",
+   "phase": "exhale",
+   "start_s": 75.0,
+   "end_s": 78.0,
+   "nominal_bpm": 10.0,
+   "cycle": 7
+  },
+  {
+   "block": "pace10",
+   "phase": "inhale",
+   "start_s": 78.0,
+   "end_s": 81.0,
+   "nominal_bpm": 10.0,
+   "cycle": 8
+  },
+  {
+   "block": "pace10",
+   "phase": "exhale",
+   "start_s": 81.0,
+   "end_s": 84.0,
+   "nominal_bpm": 10.0,
+   "cycle": 8
+  },
+  {
+   "block": "pace6",
+   "phase": "inhale",
+   "start_s": 84.0,
+   "end_s": 88.0,
+   "nominal_bpm": 6.0,
+   "cycle": 0
+  },
+  {
+   "block": "pace6",
+   "phase": "exhale",
+   "start_s": 88.0,
+   "end_s": 94.0,
+   "nominal_bpm": 6.0,
+   "cycle": 0
+  },
+  {
+   "block": "pace6",
+   "phase": "inhale",
+   "start_s": 94.0,
+   "end_s": 98.0,
+   "nominal_bpm": 6.0,
+   "cycle": 1
+  },
+  {
+   "block": "pace6",
+   "phase": "exhale",
+   "start_s": 98.0,
+   "end_s": 104.0,
+   "nominal_bpm": 6.0,
+   "cycle": 1
+  },
+  {
+   "block": "pace6",
+   "phase": "inhale",
+   "start_s": 104.0,
+   "end_s": 108.0,
+   "nominal_bpm": 6.0,
+   "cycle": 2
+  },
+  {
+   "block": "pace6",
+   "phase": "exhale",
+   "start_s": 108.0,
+   "end_s": 114.0,
+   "nominal_bpm": 6.0,
+   "cycle": 2
+  },
+  {
+   "block": "pace6",
+   "phase": "inhale",
+   "start_s": 114.0,
+   "end_s": 118.0,
+   "nominal_bpm": 6.0,
+   "cycle": 3
+  },
+  {
+   "block": "pace6",
+   "phase": "exhale",
+   "start_s": 118.0,
+   "end_s": 124.0,
+   "nominal_bpm": 6.0,
+   "cycle": 3
+  },
+  {
+   "block": "pace6",
+   "phase": "inhale",
+   "start_s": 124.0,
+   "end_s": 128.0,
+   "nominal_bpm": 6.0,
+   "cycle": 4
+  },
+  {
+   "block": "pace6",
+   "phase": "exhale",
+   "start_s": 128.0,
+   "end_s": 134.0,
+   "nominal_bpm": 6.0,
+   "cycle": 4
+  },
+  {
+   "block": "pace6",
+   "phase": "inhale",
+   "start_s": 134.0,
+   "end_s": 138.0,
+   "nominal_bpm": 6.0,
+   "cycle": 5
+  },
+  {
+   "block": "pace6",
+   "phase": "exhale",
+   "start_s": 138.0,
+   "end_s": 144.0,
+   "nominal_bpm": 6.0,
+   "cycle": 5
+  },
+  {
+   "block": "pace6",
+   "phase": "inhale",
+   "start_s": 144.0,
+   "end_s": 148.0,
+   "nominal_bpm": 6.0,
+   "cycle": 6
+  },
+  {
+   "block": "pace6",
+   "phase": "exhale",
+   "start_s": 148.0,
+   "end_s": 154.0,
+   "nominal_bpm": 6.0,
+   "cycle": 6
+  },
+  {
+   "block": "pace6",
+   "phase": "inhale",
+   "start_s": 154.0,
+   "end_s": 158.0,
+   "nominal_bpm": 6.0,
+   "cycle": 7
+  },
+  {
+   "block": "pace6",
+   "phase": "exhale",
+   "start_s": 158.0,
+   "end_s": 164.0,
+   "nominal_bpm": 6.0,
+   "cycle": 7
+  },
+  {
+   "block": "pace6",
+   "phase": "inhale",
+   "start_s": 164.0,
+   "end_s": 168.0,
+   "nominal_bpm": 6.0,
+   "cycle": 8
+  },
+  {
+   "block": "pace6",
+   "phase": "exhale",
+   "start_s": 168.0,
+   "end_s": 174.0,
+   "nominal_bpm": 6.0,
+   "cycle": 8
+  },
+  {
+   "block": "pace4",
+   "phase": "inhale",
+   "start_s": 174.0,
+   "end_s": 180.0,
+   "nominal_bpm": 4.0,
+   "cycle": 0
+  },
+  {
+   "block": "pace4",
+   "phase": "exhale",
+   "start_s": 180.0,
+   "end_s": 189.0,
+   "nominal_bpm": 4.0,
+   "cycle": 0
+  },
+  {
+   "block": "pace4",
+   "phase": "inhale",
+   "start_s": 189.0,
+   "end_s": 195.0,
+   "nominal_bpm": 4.0,
+   "cycle": 1
+  },
+  {
+   "block": "pace4",
+   "phase": "exhale",
+   "start_s": 195.0,
+   "end_s": 204.0,
+   "nominal_bpm": 4.0,
+   "cycle": 1
+  },
+  {
+   "block": "pace4",
+   "phase": "inhale",
+   "start_s": 204.0,
+   "end_s": 210.0,
+   "nominal_bpm": 4.0,
+   "cycle": 2
+  },
+  {
+   "block": "pace4",
+   "phase": "exhale",
+   "start_s": 210.0,
+   "end_s": 219.0,
+   "nominal_bpm": 4.0,
+   "cycle": 2
+  },
+  {
+   "block": "pace4",
+   "phase": "inhale",
+   "start_s": 219.0,
+   "end_s": 225.0,
+   "nominal_bpm": 4.0,
+   "cycle": 3
+  },
+  {
+   "block": "pace4",
+   "phase": "exhale",
+   "start_s": 225.0,
+   "end_s": 234.0,
+   "nominal_bpm": 4.0,
+   "cycle": 3
+  },
+  {
+   "block": "pace4",
+   "phase": "inhale",
+   "start_s": 234.0,
+   "end_s": 240.0,
+   "nominal_bpm": 4.0,
+   "cycle": 4
+  },
+  {
+   "block": "pace4",
+   "phase": "exhale",
+   "start_s": 240.0,
+   "end_s": 249.0,
+   "nominal_bpm": 4.0,
+   "cycle": 4
+  },
+  {
+   "block": "pace4",
+   "phase": "inhale",
+   "start_s": 249.0,
+   "end_s": 255.0,
+   "nominal_bpm": 4.0,
+   "cycle": 5
+  },
+  {
+   "block": "pace4",
+   "phase": "exhale",
+   "start_s": 255.0,
+   "end_s": 264.0,
+   "nominal_bpm": 4.0,
+   "cycle": 5
+  },
+  {
+   "block": "box4",
+   "phase": "inhale",
+   "start_s": 264.0,
+   "end_s": 268.0,
+   "nominal_bpm": 3.75,
+   "cycle": 0
+  },
+  {
+   "block": "box4",
+   "phase": "hold",
+   "start_s": 268.0,
+   "end_s": 272.0,
+   "nominal_bpm": 3.75,
+   "cycle": 0
+  },
+  {
+   "block": "box4",
+   "phase": "exhale",
+   "start_s": 272.0,
+   "end_s": 276.0,
+   "nominal_bpm": 3.75,
+   "cycle": 0
+  },
+  {
+   "block": "box4",
+   "phase": "hold",
+   "start_s": 276.0,
+   "end_s": 280.0,
+   "nominal_bpm": 3.75,
+   "cycle": 0
+  },
+  {
+   "block": "box4",
+   "phase": "inhale",
+   "start_s": 280.0,
+   "end_s": 284.0,
+   "nominal_bpm": 3.75,
+   "cycle": 1
+  },
+  {
+   "block": "box4",
+   "phase": "hold",
+   "start_s": 284.0,
+   "end_s": 288.0,
+   "nominal_bpm": 3.75,
+   "cycle": 1
+  },
+  {
+   "block": "box4",
+   "phase": "exhale",
+   "start_s": 288.0,
+   "end_s": 292.0,
+   "nominal_bpm": 3.75,
+   "cycle": 1
+  },
+  {
+   "block": "box4",
+   "phase": "hold",
+   "start_s": 292.0,
+   "end_s": 296.0,
+   "nominal_bpm": 3.75,
+   "cycle": 1
+  },
+  {
+   "block": "box4",
+   "phase": "inhale",
+   "start_s": 296.0,
+   "end_s": 300.0,
+   "nominal_bpm": 3.75,
+   "cycle": 2
+  },
+  {
+   "block": "box4",
+   "phase": "hold",
+   "start_s": 300.0,
+   "end_s": 304.0,
+   "nominal_bpm": 3.75,
+   "cycle": 2
+  },
+  {
+   "block": "box4",
+   "phase": "exhale",
+   "start_s": 304.0,
+   "end_s": 308.0,
+   "nominal_bpm": 3.75,
+   "cycle": 2
+  },
+  {
+   "block": "box4",
+   "phase": "hold",
+   "start_s": 308.0,
+   "end_s": 312.0,
+   "nominal_bpm": 3.75,
+   "cycle": 2
+  },
+  {
+   "block": "box4",
+   "phase": "inhale",
+   "start_s": 312.0,
+   "end_s": 316.0,
+   "nominal_bpm": 3.75,
+   "cycle": 3
+  },
+  {
+   "block": "box4",
+   "phase": "hold",
+   "start_s": 316.0,
+   "end_s": 320.0,
+   "nominal_bpm": 3.75,
+   "cycle": 3
+  },
+  {
+   "block": "box4",
+   "phase": "exhale",
+   "start_s": 320.0,
+   "end_s": 324.0,
+   "nominal_bpm": 3.75,
+   "cycle": 3
+  },
+  {
+   "block": "box4",
+   "phase": "hold",
+   "start_s": 324.0,
+   "end_s": 328.0,
+   "nominal_bpm": 3.75,
+   "cycle": 3
+  },
+  {
+   "block": "box4",
+   "phase": "inhale",
+   "start_s": 328.0,
+   "end_s": 332.0,
+   "nominal_bpm": 3.75,
+   "cycle": 4
+  },
+  {
+   "block": "box4",
+   "phase": "hold",
+   "start_s": 332.0,
+   "end_s": 336.0,
+   "nominal_bpm": 3.75,
+   "cycle": 4
+  },
+  {
+   "block": "box4",
+   "phase": "exhale",
+   "start_s": 336.0,
+   "end_s": 340.0,
+   "nominal_bpm": 3.75,
+   "cycle": 4
+  },
+  {
+   "block": "box4",
+   "phase": "hold",
+   "start_s": 340.0,
+   "end_s": 344.0,
+   "nominal_bpm": 3.75,
+   "cycle": 4
+  }
+ ]
+}

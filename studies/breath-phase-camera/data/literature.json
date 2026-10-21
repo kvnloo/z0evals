@@ -1,0 +1,137 @@
+{
+ "kind": "source-reported results (not reproduced here)",
+ "rows": [
+  {
+   "method": "Profile-1D row-profile shift",
+   "source": "Boccignone et al. 2025, ACM Comput Surv 58(5), doi:10.1145/3771763, Table 5",
+   "dataset": {
+    "COHFACE": {
+     "mae_bpm": [
+      0.84,
+      1.29
+     ],
+     "pcc": [
+      0.58,
+      0.74
+     ]
+    },
+    "BP4D+": {
+     "mae_bpm": [
+      3.07,
+      3.92
+     ]
+    },
+    "MAHNOB-HCI": {
+     "mae_bpm": [
+      2.23,
+      3.24
+     ]
+    }
+   },
+   "sec_per_frame": 0.00012,
+   "phase_reported": false
+  },
+  {
+   "method": "Farneback optical flow (chest ROI)",
+   "source": "Boccignone 2025",
+   "dataset": {
+    "COHFACE": {
+     "mae_bpm": 1.02,
+     "pcc": 0.72
+    },
+    "BP4D+": {
+     "mae_bpm": 1.87
+    }
+   },
+   "sec_per_frame": 0.0042,
+   "phase_reported": false
+  },
+  {
+   "method": "RAFT optical flow (chest ROI)",
+   "source": "Boccignone 2025",
+   "dataset": {
+    "COHFACE": {
+     "mae_bpm": 0.64,
+     "pcc": 0.84
+    },
+    "BP4D+": {
+     "mae_bpm": 1.4
+    }
+   },
+   "phase_reported": false
+  },
+  {
+   "method": "MTTS-CAN",
+   "source": "Liu et al. 2020 arXiv:2006.03790 Table 1; Boccignone 2025",
+   "dataset": {
+    "AFRL": {
+     "mae_bpm": 2.3,
+     "pcc": 0.4
+    },
+    "BP4D+": {
+     "mae_bpm": 3.62
+    },
+    "COHFACE": {
+     "mae_bpm": 2.31
+    }
+   },
+   "ms_per_frame_rk3399": 6,
+   "phase_reported": false
+  },
+  {
+   "method": "BigSmall",
+   "source": "Narayanswamy et al. 2024 WACV; rPPG-Toolbox Table 5; Boccignone 2025",
+   "dataset": {
+    "BP4D+": {
+     "mae_bpm": [
+      3.17,
+      5.19
+     ],
+     "pcc": [
+      0.14,
+      0.3
+     ]
+    },
+    "COHFACE": {
+     "mae_bpm": 3.92
+    }
+   },
+   "phase_reported": false
+  },
+  {
+   "method": "Google front-camera vertical optical flow, 5 ROIs",
+   "source": "Bae et al. 2022 Commun Med 2:40 doi:10.1038/s43856-022-00102-x",
+   "dataset": {
+    "prospective n=50 seated": {
+     "mae_bpm": 0.78,
+     "sd": 0.61
+    }
+   },
+   "ms_per_frame_pixel": [
+    1,
+    4
+   ],
+   "phase_reported": false
+  },
+  {
+   "method": "rPPG-derived respiration (EMD/SSA/peaks/IMS)",
+   "source": "Boccignone 2025",
+   "dataset": {
+    "BP4D+": {
+     "mae_bpm": [
+      4.4,
+      6.36
+     ]
+    },
+    "COHFACE": {
+     "mae_bpm": [
+      2.53,
+      3.76
+     ]
+    }
+   },
+   "phase_reported": false
+  }
+ ],
+ "finding": "No public RGB benchmark reports inhale/exhale/hold phase accuracy; motion methods beat face rPPG/deep face models for respiration rate."
+}

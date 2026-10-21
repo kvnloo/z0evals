@@ -1,0 +1,62 @@
+schema_version: z0eval.study.v1
+id: breath-phase-camera
+title: On-device camera breath phase (inhale / exhale / hold) for NOOP's HRV meditation
+status: draft
+created: "2026-10-20"
+updated: "2026-10-20"
+
+evidence_status: literature-survey + synthetic-reproduction; recorded-clip gate pending (no real-video result yet)
+external_inference_spend_usd: 0.0
+
+hardware:
+  build_and_tests: groot (x86_64 Linux, JDK 21, Gradle 8.7)
+  target_device: Samsung Galaxy S25 (Snapdragon 8-class); on-device latency not yet measured (logged by the app under tag BreathCam)
+
+sources:
+  - repo: kvnloo/noop
+    commit: e12cd056822a39438b8dc065b79803e29381fea1
+    branch: feat/android-breath-camera
+    role: estimator (com.noop.breathcam), JVM tests, recording protocol (Tools/breathcam), clip evaluator, docs/experiments/BREATH_CAMERA.md
+    visibility: pushed
+
+questions:
+  - Which on-device camera method is most credible for live breath phase on Android?
+  - Do published benchmarks report breath PHASE accuracy, or only respiration rate?
+  - Does the chosen estimator recover multiple injected rates, holds and polarity on synthetic input?
+  - Does it pass the recorded-clip gate (rate error <= 1 br/min at 4/6/10 br/min, phase accuracy >= 85%, hold recall/precision >= 80%, >= 6 clips)?
+  - What does the HRV-biofeedback evidence support as the feedback the camera should drive?
+
+artifacts:
+  - path: data/literature.json
+    kind: result
+    provenance: source-reported results transcribed from cited papers; not reproduced here
+    sha256: bf2df33e87531f4b8ff7416259d15963f016d4479e9986418e16b76cbf1605e5
+  - path: data/synthetic-tests.json
+    kind: result
+    provenance: reproduced measurement; JUnit XML of com.noop.breathcam tests at the pinned commit (synthetic inputs only)
+    sha256: 6a5d822738975151b6c9fbe33d0154e51b0f1285e3d3002c17e204ea8976f3f7
+  - path: data/protocol.json
+    kind: fixture
+    provenance: Tools/breathcam/protocol.py schedule (noop-breathcam-v1)
+    sha256: b1407ec0d074b10823bd00c3780075f80d3a4dd31f7d74f99ae768ff6398e59a
+  - path: data/clip-gate.json
+    kind: result
+    provenance: pending; to be replaced by aggregates of report.json from BreathClipEvalTest (no video, no frames)
+    sha256: ecb239c41d6f095ee64d69dd1bf5ebd007c900d4a84dc97fd4ea1999b9f10e49
+
+limitations:
+  - No real-video evaluation yet; every NOOP number is from synthetic signals or rendered frames.
+  - Literature rows are source-reported on public datasets (COHFACE, BP4D+, MAHNOB-HCI, AFRL) and one prospective phone study; none reports inhale/exhale/hold phase accuracy.
+  - The breath-to-HR lag includes an unmeasured Bluetooth R-R delivery delay.
+  - Single subject planned for the first clip set; AGENTS.md asks for varying subjects/sessions before the method drives anything.
+  - On-device latency on the S25 not yet captured.
+
+claims:
+  - id: motion-beats-rppg
+    text: Chest/shoulder motion methods outperform face rPPG and face deep models for camera respiration rate on the cited benchmark.
+    evidence: [data/literature.json]
+    type: source-reported
+  - id: synthetic-recovery
+    text: The NOOP estimator recovers several injected rates (4-15 br/min), holds, lags and resonance peaks on synthetic input.
+    evidence: [data/synthetic-tests.json]
+    type: reproduced-measurement-synthetic

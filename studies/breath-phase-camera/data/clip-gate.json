@@ -1,0 +1,12 @@
+{
+ "kind": "pending",
+ "status": "no clips recorded yet",
+ "gate": {
+  "min_clips": 6,
+  "rate_abs_err_bpm_max": 1.0,
+  "phase_accuracy_min": 0.85,
+  "coverage_min": 0.8,
+  "hold_recall_precision_min": 0.8
+ },
+ "result": null
+}
