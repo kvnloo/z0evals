@@ -1,0 +1,118 @@
+{
+  "schema_version": "z0eval.study.v1",
+  "id": "fsm-integration-v0",
+  "title": "Integration owner: Bend safety gates and a read-only integration debt inventory (Loop 3)",
+  "status": "draft",
+  "created": "2026-10-21",
+  "updated": "2026-10-21",
+  "hardware": {
+    "proof": "groot; Bend/Lean toolchain exception",
+    "tests": "Python 3.13.13, pytest 8.4.2",
+    "browser": "isolated headless Chromium at 412x915",
+    "full_upstream_gate": "fleet-build MBP; blocked by absent vitest"
+  },
+  "sources": [
+    {
+      "repo": "kvnloo/z0intelligence",
+      "commit": "1ef432f91223e74dcfb756c590aae82a950999ed",
+      "branch": "exp/fsm-integration-owner",
+      "role": "Bend model, Python twin, read-only inventory",
+      "pr": "https://github.com/kvnloo/z0intelligence/pull/188"
+    },
+    {
+      "repo": "kvnloo/.files",
+      "commit": "0cd01e271a913a964f6684c7b8d7340f67f0174b",
+      "branch": "docs/fsm-hapsland-layers-20261021",
+      "role": "receipt-bound producer, integration tapes and complete Hapsland patch",
+      "pr": "https://github.com/kvnloo/.files/pull/34"
+    }
+  ],
+  "questions": [
+    "Can integration safety/deadline monitoring be expressed as a small Bend statechart with load-bearing laws?",
+    "Does the Python twin agree on all single transitions and seeded tape prefixes?",
+    "Which open drafts, stacks and service/build checkouts violate the integration policy, and which facts remain unknown?"
+  ],
+  "artifacts": [
+    {
+      "path": "data/bend-receipt-public.json",
+      "kind": "receipt",
+      "sha256": "a6ae1e2155c9adfb658b8e6a2d11b0b0c954aa763c04d92c4762477c82819a04",
+      "provenance": "Explicit allowlist from the pinned source/run; private paths, commands and personal traces omitted."
+    },
+    {
+      "path": "data/bend-mutations.json",
+      "kind": "result",
+      "sha256": "1c7046681a1bbf99bf2ef8ce7823c845ac14144a01835ecf373f2085c893c8cd",
+      "provenance": "Explicit allowlist from the pinned source/run; private paths, commands and personal traces omitted."
+    },
+    {
+      "path": "data/parity-seed3.json",
+      "kind": "result",
+      "sha256": "dab48017fd7b0e0a8f97ee730655aa38e81b3d484584a3bf28359e86a6308069",
+      "provenance": "Explicit allowlist from the pinned source/run; private paths, commands and personal traces omitted."
+    },
+    {
+      "path": "data/integration-public-20261021.json",
+      "kind": "result",
+      "sha256": "01cd4a5f59b0e4e3fe279a2300bf12247ef430768aa5a9ba8e85e85df6e5508d",
+      "provenance": "Explicit allowlist from the pinned source/run; private paths, commands and personal traces omitted."
+    },
+    {
+      "path": "data/browser-public.json",
+      "kind": "result",
+      "sha256": "f3207ca45a1ed72706ded35e2e19545edec7f099964b42e4de8068ff4b216acf",
+      "provenance": "Explicit allowlist from the pinned source/run; private paths, commands and personal traces omitted."
+    }
+  ],
+  "limitations": [
+    "No designated canonical integration branch for five repos; non-containment there is unknown, not proven.",
+    "Six running/build source SHAs are unattested. Checkout equality alone is not deployment health.",
+    "Zero supplied lease records is an evidence gap, not proof of no informal owner.",
+    "Snapshot states are not evidence of historical review, lease or acceptance.",
+    "Open-draft inventory does not audit historical merges or measure integration latency distributions.",
+    "A kernel verdict checks Bend's emitted book, not source/compiler equivalence or whether the laws capture the user's intended behavior.",
+    "Bend 2.0.32\u20132.0.34 have a documented translation limitation: https://github.com/bendlang/bend/issues/1212",
+    "I1 is a deadline monitor, not a fairness/liveness proof that agents will act.",
+    "Python/Bend agreement is finite measured evidence, not a source-equivalence theorem.",
+    "Five view tapes start from observed snapshots; every subsequent event is labelled WHAT-IF, not invented history.",
+    "Agents did not independently review their own work; owner acceptance and merges remain pending.",
+    "The full upstream Hapsland check:fast could not execute because remote vitest is absent."
+  ],
+  "claims": [
+    {
+      "id": "kernel-safety",
+      "text": "Bend kernel verdict passes for the Loop 3 model, including all-event I5 merge entry safety; emitted-book scope only.",
+      "evidence": [
+        "data/bend-receipt-public.json"
+      ]
+    },
+    {
+      "id": "mutations",
+      "text": "11/11 compiling semantic mutations are rejected by PROOF.bend --verdict.",
+      "evidence": [
+        "data/bend-mutations.json"
+      ]
+    },
+    {
+      "id": "twin-parity",
+      "text": "Seed 3: 625 tapes / 16,225 prefix comparisons, plus 20 deadline and 300 lease cases, equal compiled Bend. A test-only merge-bypass sabotage diverges.",
+      "evidence": [
+        "data/parity-seed3.json"
+      ]
+    },
+    {
+      "id": "inventory",
+      "text": "Snapshot: 90 open drafts in 8 repositories, 6 service/build targets, 79 findings including unknowns. Only 21 are definite uncontained-overdue drafts; 27 more have unknown branch designation. One NOOP checkout drifts from its remote integration head; installed build source SHA is unknown.",
+      "evidence": [
+        "data/integration-public-20261021.json"
+      ]
+    },
+    {
+      "id": "browser",
+      "text": "All five new snapshot-probe tapes finish in isolated headless Chromium and match producer replay at 412x915, without console/page errors.",
+      "evidence": [
+        "data/browser-public.json"
+      ]
+    }
+  ]
+}

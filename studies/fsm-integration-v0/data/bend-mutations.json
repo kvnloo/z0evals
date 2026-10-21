@@ -1,0 +1,63 @@
+{
+  "reference_passes": true,
+  "verdict_mode": true,
+  "rejected": 11,
+  "total": 11,
+  "mutations": [
+    {
+      "law": "I1",
+      "implementation_compiles": true,
+      "rejected": true
+    },
+    {
+      "law": "I2",
+      "implementation_compiles": true,
+      "rejected": true
+    },
+    {
+      "law": "I2 drift",
+      "implementation_compiles": true,
+      "rejected": true
+    },
+    {
+      "law": "I3 guard",
+      "implementation_compiles": true,
+      "rejected": true
+    },
+    {
+      "law": "I3 lease",
+      "implementation_compiles": true,
+      "rejected": true
+    },
+    {
+      "law": "I4",
+      "implementation_compiles": true,
+      "rejected": true
+    },
+    {
+      "law": "independent",
+      "implementation_compiles": true,
+      "rejected": true
+    },
+    {
+      "law": "I5 accept",
+      "implementation_compiles": true,
+      "rejected": true
+    },
+    {
+      "law": "I5 merge",
+      "implementation_compiles": true,
+      "rejected": true
+    },
+    {
+      "law": "parking reason",
+      "implementation_compiles": true,
+      "rejected": true
+    },
+    {
+      "law": "parking expiry",
+      "implementation_compiles": true,
+      "rejected": true
+    }
+  ]
+}

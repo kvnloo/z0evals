@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "runtime_identity": {
+    "bend": "66e5faf92d75d6e10a11427c8e4f3df72a4c14b1263a04431fdc015a5aa21317",
+    "base.bend": "c742fae9c49b14f0cc9128429a2c6109364c8a933a142f2c90b9f2e5fd976661",
+    "bendtt.lean": "61e0d2d9f4ddd7dd8bb1497fa612fb49a7274fcac647bf70702ba22321d7c292"
+  },
+  "verification_scope": "bend-emitted-book",
+  "source_semantics_attested": false,
+  "limitations": [
+    "A kernel verdict checks Bend's emitted book, not source/compiler equivalence or whether the laws capture the user's intended behavior.",
+    "Bend 2.0.32\u20132.0.34 have a documented translation limitation: https://github.com/bendlang/bend/issues/1212"
+  ],
+  "success": true,
+  "verdict": "pass",
+  "execution_verdict": "pass",
+  "exit_code": 0,
+  "proof_sha256": "59eaf79c1566acaaca28f3c302af1f9705b2e249e0896030e6b0fc004bb53954",
+  "input_manifest_sha256": "c5f05bc9f4023f17302d91d0b5d0e08140aace913e824230132198056f50d765",
+  "input_file_count": 3,
+  "input_byte_count": 20956,
+  "receipt_id": "97179bd2ba9545b89f937c435b41549f",
+  "verified_at": "2026-10-21T07:40:49.968160+00:00",
+  "stdout": "ALL PROOFS CHECK\n",
+  "bend_version": "2.0.34",
+  "bend_sha256": "66e5faf92d75d6e10a11427c8e4f3df72a4c14b1263a04431fdc015a5aa21317"
+}
