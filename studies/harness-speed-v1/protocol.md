@@ -94,6 +94,14 @@ semantics differ per harness and are normalized in `bench.py` (`input_total` inc
   session. The session id is stored on every row.
 - n is small for tasks (16 runs per arm); success-rate CIs will be wide.
 
+## Amendments before the counted session (2026-10-21 03:15 UTC)
+
+- A first session `s0` (five non-pi arms) was stopped after 10 latency blocks because the owner
+  signed pi in. It is kept as `data/s0-aborted/` and is not analysed. The counted session `s1` runs
+  all eight arms in the same interleaved blocks, so the pi bridging rule above is not needed.
+- pi arms now pass `--` before the prompt: the extension flag `--rlm` swallowed the next argument
+  (pi exited with no turn). Found in diagnostic smoke; no counted data existed.
+
 ## Not claimed
 
 No claim about other models, long tasks, large repos, multi-turn chats, concurrency, or any host
