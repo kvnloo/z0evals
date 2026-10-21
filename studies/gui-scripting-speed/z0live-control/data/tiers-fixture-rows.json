@@ -1,0 +1,1170 @@
+{
+ "groot:qwen3-0.6b-q8": [
+  {
+   "goal": "Can you click on the menu button",
+   "screen": "chatgpt_home",
+   "expect": "Open sidebar",
+   "picked": "Dictate",
+   "confidence": 0.342,
+   "ms": 90.9,
+   "verdict": "abstained",
+   "top1_right": false
+  },
+  {
+   "goal": "open the sidebar",
+   "screen": "chatgpt_home",
+   "expect": "Open sidebar",
+   "picked": "Open sidebar",
+   "confidence": 0.564,
+   "ms": 52.7,
+   "verdict": "abstained",
+   "top1_right": true
+  },
+  {
+   "goal": "start a new chat",
+   "screen": "chatgpt_home",
+   "expect": "New chat",
+   "picked": "Start voice mode",
+   "confidence": 0.319,
+   "ms": 48.9,
+   "verdict": "abstained",
+   "top1_right": false
+  },
+  {
+   "goal": "tap voice mode",
+   "screen": "chatgpt_home",
+   "expect": "Start voice mode",
+   "picked": "Dictate",
+   "confidence": 0.456,
+   "ms": 85.6,
+   "verdict": "abstained",
+   "top1_right": false
+  },
+  {
+   "goal": "attach a photo",
+   "screen": "chatgpt_home",
+   "expect": "Add photos and files",
+   "picked": "Dictate",
+   "confidence": 0.355,
+   "ms": 27.9,
+   "verdict": "abstained",
+   "top1_right": false
+  },
+  {
+   "goal": "tap the message box",
+   "screen": "chatgpt_home",
+   "expect": "Ask anything",
+   "picked": "Dictate",
+   "confidence": 0.302,
+   "ms": 64.0,
+   "verdict": "abstained",
+   "top1_right": false
+  },
+  {
+   "goal": "click on the menu button",
+   "screen": "chatgpt_chat",
+   "expect": null,
+   "picked": "Good response",
+   "confidence": 0.56,
+   "ms": 119.5,
+   "verdict": "abstain_ok",
+   "top1_right": false
+  },
+  {
+   "goal": "open the side menu",
+   "screen": "chatgpt_chat",
+   "expect": "Open sidebar",
+   "picked": "Good response",
+   "confidence": 0.385,
+   "ms": 40.9,
+   "verdict": "abstained",
+   "top1_right": false
+  },
+  {
+   "goal": "copy that answer",
+   "screen": "chatgpt_chat",
+   "expect": "Copy",
+   "picked": "Good response",
+   "confidence": 0.536,
+   "ms": 34.9,
+   "verdict": "abstained",
+   "top1_right": false
+  },
+  {
+   "goal": "read it out loud",
+   "screen": "chatgpt_chat",
+   "expect": "Read aloud",
+   "picked": "Good response",
+   "confidence": 0.529,
+   "ms": 30.9,
+   "verdict": "abstained",
+   "top1_right": false
+  },
+  {
+   "goal": "thumbs up",
+   "screen": "chatgpt_chat",
+   "expect": "Good response",
+   "picked": "Good response",
+   "confidence": 0.581,
+   "ms": 36.5,
+   "verdict": "abstained",
+   "top1_right": true
+  },
+  {
+   "goal": "switch the model",
+   "screen": "chatgpt_chat",
+   "expect": "ChatGPT 5",
+   "picked": "Good response",
+   "confidence": 0.566,
+   "ms": 37.3,
+   "verdict": "abstained",
+   "top1_right": false
+  },
+  {
+   "goal": "send it",
+   "screen": "chatgpt_chat",
+   "expect": "Send prompt",
+   "picked": "Good response",
+   "confidence": 0.557,
+   "ms": 20.6,
+   "verdict": "abstained",
+   "top1_right": false
+  },
+  {
+   "goal": "tap the menu button",
+   "screen": "chrome_page",
+   "expect": "Customize and control Google Chrome",
+   "picked": "Customize and control Google Chrome [menu button]",
+   "confidence": 0.913,
+   "ms": 50.9,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "show my tabs",
+   "screen": "chrome_page",
+   "expect": "Switch or close tabs",
+   "picked": "Customize and control Google Chrome [menu button]",
+   "confidence": 0.82,
+   "ms": 19.7,
+   "verdict": "ACTED_WRONG",
+   "top1_right": false
+  },
+  {
+   "goal": "go to the address bar",
+   "screen": "chrome_page",
+   "expect": "Search or type web address",
+   "picked": "Customize and control Google Chrome [menu button]",
+   "confidence": 0.757,
+   "ms": 29.1,
+   "verdict": "abstained",
+   "top1_right": false
+  },
+  {
+   "goal": "click more information",
+   "screen": "chrome_page",
+   "expect": "More information...",
+   "picked": "Customize and control Google Chrome [menu button]",
+   "confidence": 0.768,
+   "ms": 20.6,
+   "verdict": "abstained",
+   "top1_right": false
+  },
+  {
+   "goal": "open the menu",
+   "screen": "gmail_inbox",
+   "expect": "Open navigation drawer",
+   "picked": "Compose [compose button]",
+   "confidence": 0.413,
+   "ms": 34.1,
+   "verdict": "abstained",
+   "top1_right": false
+  },
+  {
+   "goal": "write a new email",
+   "screen": "gmail_inbox",
+   "expect": "Compose",
+   "picked": "Compose [compose button]",
+   "confidence": 0.41,
+   "ms": 33.2,
+   "verdict": "abstained",
+   "top1_right": true
+  },
+  {
+   "goal": "search my mail",
+   "screen": "gmail_inbox",
+   "expect": "Search in mail",
+   "picked": "Search in mail [open search]",
+   "confidence": 0.588,
+   "ms": 16.2,
+   "verdict": "abstained",
+   "top1_right": true
+  },
+  {
+   "goal": "open my account",
+   "screen": "gmail_inbox",
+   "expect": "Account and settings.",
+   "picked": "Account and settings. [og apd ring view]",
+   "confidence": 0.427,
+   "ms": 18.6,
+   "verdict": "abstained",
+   "top1_right": true
+  },
+  {
+   "goal": "open the email from the team",
+   "screen": "gmail_inbox",
+   "expect": "Weekly update from the team",
+   "picked": "Account and settings. [og apd ring view]",
+   "confidence": 0.458,
+   "ms": 16.3,
+   "verdict": "abstained",
+   "top1_right": false
+  },
+  {
+   "goal": "tap connections",
+   "screen": "settings_main",
+   "expect": "Connections",
+   "picked": "Display",
+   "confidence": 0.632,
+   "ms": 20.3,
+   "verdict": "abstained",
+   "top1_right": false
+  },
+  {
+   "goal": "open battery",
+   "screen": "settings_main",
+   "expect": "Battery",
+   "picked": "Display",
+   "confidence": 0.536,
+   "ms": 37.0,
+   "verdict": "abstained",
+   "top1_right": false
+  },
+  {
+   "goal": "search settings",
+   "screen": "settings_main",
+   "expect": "Search",
+   "picked": "Display",
+   "confidence": 0.625,
+   "ms": 18.0,
+   "verdict": "abstained",
+   "top1_right": false
+  },
+  {
+   "goal": "go back",
+   "screen": "messages_compose",
+   "expect": "Navigate up",
+   "picked": "Pin note",
+   "confidence": 0.609,
+   "ms": 22.0,
+   "verdict": "abstained",
+   "top1_right": false
+  },
+  {
+   "goal": "delete this note",
+   "screen": "messages_compose",
+   "expect": "Delete",
+   "picked": "Pin note",
+   "confidence": 0.787,
+   "ms": 15.1,
+   "verdict": "abstained",
+   "top1_right": false
+  },
+  {
+   "goal": "share it",
+   "screen": "messages_compose",
+   "expect": "Share",
+   "picked": "Pin note",
+   "confidence": 0.808,
+   "ms": 17.9,
+   "verdict": "ACTED_WRONG",
+   "top1_right": false
+  },
+  {
+   "goal": "pin the note",
+   "screen": "messages_compose",
+   "expect": "Pin note",
+   "picked": "Pin note",
+   "confidence": 0.898,
+   "ms": 14.6,
+   "verdict": "acted_right",
+   "top1_right": true
+  }
+ ],
+ "groot:qwen3-1.7b-q4km": [
+  {
+   "goal": "Can you click on the menu button",
+   "screen": "chatgpt_home",
+   "expect": "Open sidebar",
+   "picked": "Dictate",
+   "confidence": 0.672,
+   "ms": 53.2,
+   "verdict": "abstained",
+   "top1_right": false
+  },
+  {
+   "goal": "open the sidebar",
+   "screen": "chatgpt_home",
+   "expect": "Open sidebar",
+   "picked": "Open sidebar",
+   "confidence": 1.0,
+   "ms": 74.9,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "start a new chat",
+   "screen": "chatgpt_home",
+   "expect": "New chat",
+   "picked": "New chat",
+   "confidence": 0.986,
+   "ms": 44.1,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "tap voice mode",
+   "screen": "chatgpt_home",
+   "expect": "Start voice mode",
+   "picked": "Start voice mode",
+   "confidence": 1.0,
+   "ms": 18.3,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "attach a photo",
+   "screen": "chatgpt_home",
+   "expect": "Add photos and files",
+   "picked": "Add photos and files",
+   "confidence": 0.947,
+   "ms": 21.9,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "tap the message box",
+   "screen": "chatgpt_home",
+   "expect": "Ask anything",
+   "picked": "Dictate",
+   "confidence": 0.549,
+   "ms": 47.9,
+   "verdict": "abstained",
+   "top1_right": false
+  },
+  {
+   "goal": "click on the menu button",
+   "screen": "chatgpt_chat",
+   "expect": null,
+   "picked": "More options",
+   "confidence": 1.0,
+   "ms": 31.4,
+   "verdict": "acted_on_ambiguous",
+   "top1_right": false
+  },
+  {
+   "goal": "open the side menu",
+   "screen": "chatgpt_chat",
+   "expect": "Open sidebar",
+   "picked": "Open sidebar",
+   "confidence": 1.0,
+   "ms": 16.8,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "copy that answer",
+   "screen": "chatgpt_chat",
+   "expect": "Copy",
+   "picked": "Copy",
+   "confidence": 1.0,
+   "ms": 16.5,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "read it out loud",
+   "screen": "chatgpt_chat",
+   "expect": "Read aloud",
+   "picked": "Read aloud",
+   "confidence": 1.0,
+   "ms": 16.8,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "thumbs up",
+   "screen": "chatgpt_chat",
+   "expect": "Good response",
+   "picked": "Good response",
+   "confidence": 0.944,
+   "ms": 16.6,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "switch the model",
+   "screen": "chatgpt_chat",
+   "expect": "ChatGPT 5",
+   "picked": "Good response",
+   "confidence": 0.997,
+   "ms": 16.7,
+   "verdict": "ACTED_WRONG",
+   "top1_right": false
+  },
+  {
+   "goal": "send it",
+   "screen": "chatgpt_chat",
+   "expect": "Send prompt",
+   "picked": "Good response",
+   "confidence": 0.935,
+   "ms": 16.9,
+   "verdict": "ACTED_WRONG",
+   "top1_right": false
+  },
+  {
+   "goal": "tap the menu button",
+   "screen": "chrome_page",
+   "expect": "Customize and control Google Chrome",
+   "picked": "Customize and control Google Chrome [menu button]",
+   "confidence": 0.962,
+   "ms": 30.5,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "show my tabs",
+   "screen": "chrome_page",
+   "expect": "Switch or close tabs",
+   "picked": "Switch or close tabs [tab switcher button]",
+   "confidence": 0.997,
+   "ms": 41.9,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "go to the address bar",
+   "screen": "chrome_page",
+   "expect": "Search or type web address",
+   "picked": "More information...",
+   "confidence": 0.787,
+   "ms": 17.5,
+   "verdict": "abstained",
+   "top1_right": false
+  },
+  {
+   "goal": "click more information",
+   "screen": "chrome_page",
+   "expect": "More information...",
+   "picked": "More information...",
+   "confidence": 0.999,
+   "ms": 16.7,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "open the menu",
+   "screen": "gmail_inbox",
+   "expect": "Open navigation drawer",
+   "picked": "Account and settings. [og apd ring view]",
+   "confidence": 0.636,
+   "ms": 28.2,
+   "verdict": "abstained",
+   "top1_right": false
+  },
+  {
+   "goal": "write a new email",
+   "screen": "gmail_inbox",
+   "expect": "Compose",
+   "picked": "Compose [compose button]",
+   "confidence": 1.0,
+   "ms": 16.2,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "search my mail",
+   "screen": "gmail_inbox",
+   "expect": "Search in mail",
+   "picked": "Search in mail [open search]",
+   "confidence": 1.0,
+   "ms": 16.0,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "open my account",
+   "screen": "gmail_inbox",
+   "expect": "Account and settings.",
+   "picked": "Account and settings. [og apd ring view]",
+   "confidence": 1.0,
+   "ms": 16.6,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "open the email from the team",
+   "screen": "gmail_inbox",
+   "expect": "Weekly update from the team",
+   "picked": "Compose [compose button]",
+   "confidence": 0.973,
+   "ms": 16.6,
+   "verdict": "ACTED_WRONG",
+   "top1_right": false
+  },
+  {
+   "goal": "tap connections",
+   "screen": "settings_main",
+   "expect": "Connections",
+   "picked": "Connections",
+   "confidence": 0.504,
+   "ms": 24.5,
+   "verdict": "abstained",
+   "top1_right": true
+  },
+  {
+   "goal": "open battery",
+   "screen": "settings_main",
+   "expect": "Battery",
+   "picked": "Battery",
+   "confidence": 0.838,
+   "ms": 16.3,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "search settings",
+   "screen": "settings_main",
+   "expect": "Search",
+   "picked": "Search [search button]",
+   "confidence": 0.981,
+   "ms": 17.7,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "go back",
+   "screen": "messages_compose",
+   "expect": "Navigate up",
+   "picked": "Share",
+   "confidence": 0.348,
+   "ms": 21.0,
+   "verdict": "abstained",
+   "top1_right": false
+  },
+  {
+   "goal": "delete this note",
+   "screen": "messages_compose",
+   "expect": "Delete",
+   "picked": "Delete",
+   "confidence": 0.937,
+   "ms": 16.1,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "share it",
+   "screen": "messages_compose",
+   "expect": "Share",
+   "picked": "Share",
+   "confidence": 1.0,
+   "ms": 17.4,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "pin the note",
+   "screen": "messages_compose",
+   "expect": "Pin note",
+   "picked": "Pin note",
+   "confidence": 1.0,
+   "ms": 16.5,
+   "verdict": "acted_right",
+   "top1_right": true
+  }
+ ],
+ "groot:qwen3-4b-q4km": [
+  {
+   "goal": "Can you click on the menu button",
+   "screen": "chatgpt_home",
+   "expect": "Open sidebar",
+   "picked": "Open sidebar",
+   "confidence": 1.0,
+   "ms": 43.5,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "open the sidebar",
+   "screen": "chatgpt_home",
+   "expect": "Open sidebar",
+   "picked": "Open sidebar",
+   "confidence": 1.0,
+   "ms": 27.1,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "start a new chat",
+   "screen": "chatgpt_home",
+   "expect": "New chat",
+   "picked": "New chat",
+   "confidence": 1.0,
+   "ms": 25.0,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "tap voice mode",
+   "screen": "chatgpt_home",
+   "expect": "Start voice mode",
+   "picked": "Start voice mode",
+   "confidence": 1.0,
+   "ms": 23.7,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "attach a photo",
+   "screen": "chatgpt_home",
+   "expect": "Add photos and files",
+   "picked": "Add photos and files",
+   "confidence": 1.0,
+   "ms": 33.5,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "tap the message box",
+   "screen": "chatgpt_home",
+   "expect": "Ask anything",
+   "picked": "Ask anything",
+   "confidence": 1.0,
+   "ms": 23.1,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "click on the menu button",
+   "screen": "chatgpt_chat",
+   "expect": null,
+   "picked": "More options",
+   "confidence": 1.0,
+   "ms": 44.5,
+   "verdict": "acted_on_ambiguous",
+   "top1_right": false
+  },
+  {
+   "goal": "open the side menu",
+   "screen": "chatgpt_chat",
+   "expect": "Open sidebar",
+   "picked": "Open sidebar",
+   "confidence": 1.0,
+   "ms": 23.2,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "copy that answer",
+   "screen": "chatgpt_chat",
+   "expect": "Copy",
+   "picked": "Copy",
+   "confidence": 1.0,
+   "ms": 23.9,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "read it out loud",
+   "screen": "chatgpt_chat",
+   "expect": "Read aloud",
+   "picked": "Read aloud",
+   "confidence": 1.0,
+   "ms": 21.6,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "thumbs up",
+   "screen": "chatgpt_chat",
+   "expect": "Good response",
+   "picked": "Ask anything",
+   "confidence": 0.887,
+   "ms": 22.7,
+   "verdict": "ACTED_WRONG",
+   "top1_right": false
+  },
+  {
+   "goal": "switch the model",
+   "screen": "chatgpt_chat",
+   "expect": "ChatGPT 5",
+   "picked": "ChatGPT 5",
+   "confidence": 1.0,
+   "ms": 22.4,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "send it",
+   "screen": "chatgpt_chat",
+   "expect": "Send prompt",
+   "picked": "Send prompt",
+   "confidence": 1.0,
+   "ms": 27.6,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "tap the menu button",
+   "screen": "chrome_page",
+   "expect": "Customize and control Google Chrome",
+   "picked": "Customize and control Google Chrome [menu button]",
+   "confidence": 1.0,
+   "ms": 47.3,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "show my tabs",
+   "screen": "chrome_page",
+   "expect": "Switch or close tabs",
+   "picked": "Switch or close tabs [tab switcher button]",
+   "confidence": 1.0,
+   "ms": 27.1,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "go to the address bar",
+   "screen": "chrome_page",
+   "expect": "Search or type web address",
+   "picked": "Search or type web address [url bar]",
+   "confidence": 1.0,
+   "ms": 22.0,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "click more information",
+   "screen": "chrome_page",
+   "expect": "More information...",
+   "picked": "More information...",
+   "confidence": 1.0,
+   "ms": 26.3,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "open the menu",
+   "screen": "gmail_inbox",
+   "expect": "Open navigation drawer",
+   "picked": "Open navigation drawer",
+   "confidence": 1.0,
+   "ms": 46.8,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "write a new email",
+   "screen": "gmail_inbox",
+   "expect": "Compose",
+   "picked": "Compose [compose button]",
+   "confidence": 1.0,
+   "ms": 26.9,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "search my mail",
+   "screen": "gmail_inbox",
+   "expect": "Search in mail",
+   "picked": "Search in mail [open search]",
+   "confidence": 1.0,
+   "ms": 24.9,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "open my account",
+   "screen": "gmail_inbox",
+   "expect": "Account and settings.",
+   "picked": "Account and settings. [og apd ring view]",
+   "confidence": 1.0,
+   "ms": 25.6,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "open the email from the team",
+   "screen": "gmail_inbox",
+   "expect": "Weekly update from the team",
+   "picked": "Search in mail [open search]",
+   "confidence": 0.94,
+   "ms": 23.6,
+   "verdict": "ACTED_WRONG",
+   "top1_right": false
+  },
+  {
+   "goal": "tap connections",
+   "screen": "settings_main",
+   "expect": "Connections",
+   "picked": "Connections",
+   "confidence": 1.0,
+   "ms": 42.1,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "open battery",
+   "screen": "settings_main",
+   "expect": "Battery",
+   "picked": "Battery",
+   "confidence": 1.0,
+   "ms": 25.4,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "search settings",
+   "screen": "settings_main",
+   "expect": "Search",
+   "picked": "Search [search button]",
+   "confidence": 1.0,
+   "ms": 28.5,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "go back",
+   "screen": "messages_compose",
+   "expect": "Navigate up",
+   "picked": "Navigate up",
+   "confidence": 1.0,
+   "ms": 35.9,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "delete this note",
+   "screen": "messages_compose",
+   "expect": "Delete",
+   "picked": "Delete",
+   "confidence": 1.0,
+   "ms": 24.7,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "share it",
+   "screen": "messages_compose",
+   "expect": "Share",
+   "picked": "Share",
+   "confidence": 1.0,
+   "ms": 26.4,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "pin the note",
+   "screen": "messages_compose",
+   "expect": "Pin note",
+   "picked": "Pin note",
+   "confidence": 1.0,
+   "ms": 22.5,
+   "verdict": "acted_right",
+   "top1_right": true
+  }
+ ],
+ "jev": [
+  {
+   "goal": "Can you click on the menu button",
+   "screen": "chatgpt_home",
+   "expect": "Open sidebar",
+   "picked": "Open sidebar",
+   "confidence": 1.0,
+   "ms": 162.4,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "open the sidebar",
+   "screen": "chatgpt_home",
+   "expect": "Open sidebar",
+   "picked": "Open sidebar",
+   "confidence": 1.0,
+   "ms": 145.3,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "start a new chat",
+   "screen": "chatgpt_home",
+   "expect": "New chat",
+   "picked": "New chat",
+   "confidence": 1.0,
+   "ms": 152.9,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "tap voice mode",
+   "screen": "chatgpt_home",
+   "expect": "Start voice mode",
+   "picked": "Start voice mode",
+   "confidence": 1.0,
+   "ms": 149.9,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "attach a photo",
+   "screen": "chatgpt_home",
+   "expect": "Add photos and files",
+   "picked": "Add photos and files",
+   "confidence": 1.0,
+   "ms": 228.9,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "tap the message box",
+   "screen": "chatgpt_home",
+   "expect": "Ask anything",
+   "picked": "Ask anything",
+   "confidence": 1.0,
+   "ms": 156.3,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "click on the menu button",
+   "screen": "chatgpt_chat",
+   "expect": null,
+   "picked": "Open sidebar",
+   "confidence": 0.96,
+   "ms": 203.8,
+   "verdict": "acted_on_ambiguous",
+   "top1_right": false
+  },
+  {
+   "goal": "open the side menu",
+   "screen": "chatgpt_chat",
+   "expect": "Open sidebar",
+   "picked": "Open sidebar",
+   "confidence": 1.0,
+   "ms": 237.6,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "copy that answer",
+   "screen": "chatgpt_chat",
+   "expect": "Copy",
+   "picked": "Copy",
+   "confidence": 1.0,
+   "ms": 167.0,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "read it out loud",
+   "screen": "chatgpt_chat",
+   "expect": "Read aloud",
+   "picked": "Read aloud",
+   "confidence": 1.0,
+   "ms": 145.1,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "thumbs up",
+   "screen": "chatgpt_chat",
+   "expect": "Good response",
+   "picked": "Good response",
+   "confidence": 1.0,
+   "ms": 149.6,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "switch the model",
+   "screen": "chatgpt_chat",
+   "expect": "ChatGPT 5",
+   "picked": "ChatGPT 5",
+   "confidence": 0.77,
+   "ms": 152.9,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "send it",
+   "screen": "chatgpt_chat",
+   "expect": "Send prompt",
+   "picked": "Send prompt",
+   "confidence": 0.81,
+   "ms": 143.8,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "tap the menu button",
+   "screen": "chrome_page",
+   "expect": "Customize and control Google Chrome",
+   "picked": "Customize and control Google Chrome [menu button]",
+   "confidence": 1.0,
+   "ms": 142.4,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "show my tabs",
+   "screen": "chrome_page",
+   "expect": "Switch or close tabs",
+   "picked": "Switch or close tabs [tab switcher button]",
+   "confidence": 1.0,
+   "ms": 184.2,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "go to the address bar",
+   "screen": "chrome_page",
+   "expect": "Search or type web address",
+   "picked": "Search or type web address [url bar]",
+   "confidence": 1.0,
+   "ms": 148.3,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "click more information",
+   "screen": "chrome_page",
+   "expect": "More information...",
+   "picked": "More information...",
+   "confidence": 1.0,
+   "ms": 159.1,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "open the menu",
+   "screen": "gmail_inbox",
+   "expect": "Open navigation drawer",
+   "picked": "Open navigation drawer",
+   "confidence": 1.0,
+   "ms": 186.1,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "write a new email",
+   "screen": "gmail_inbox",
+   "expect": "Compose",
+   "picked": "Compose [compose button]",
+   "confidence": 1.0,
+   "ms": 157.1,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "search my mail",
+   "screen": "gmail_inbox",
+   "expect": "Search in mail",
+   "picked": "Search in mail [open search]",
+   "confidence": 1.0,
+   "ms": 159.3,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "open my account",
+   "screen": "gmail_inbox",
+   "expect": "Account and settings.",
+   "picked": "Account and settings. [og apd ring view]",
+   "confidence": 0.81,
+   "ms": 144.5,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "open the email from the team",
+   "screen": "gmail_inbox",
+   "expect": "Weekly update from the team",
+   "picked": "Weekly update from the team",
+   "confidence": 1.0,
+   "ms": 157.4,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "tap connections",
+   "screen": "settings_main",
+   "expect": "Connections",
+   "picked": "Connections",
+   "confidence": 1.0,
+   "ms": 139.8,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "open battery",
+   "screen": "settings_main",
+   "expect": "Battery",
+   "picked": "Battery",
+   "confidence": 1.0,
+   "ms": 172.1,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "search settings",
+   "screen": "settings_main",
+   "expect": "Search",
+   "picked": "Search [search button]",
+   "confidence": 0.82,
+   "ms": 132.7,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "go back",
+   "screen": "messages_compose",
+   "expect": "Navigate up",
+   "picked": "Navigate up",
+   "confidence": 1.0,
+   "ms": 154.6,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "delete this note",
+   "screen": "messages_compose",
+   "expect": "Delete",
+   "picked": "Delete",
+   "confidence": 1.0,
+   "ms": 143.3,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "share it",
+   "screen": "messages_compose",
+   "expect": "Share",
+   "picked": "Share",
+   "confidence": 1.0,
+   "ms": 144.4,
+   "verdict": "acted_right",
+   "top1_right": true
+  },
+  {
+   "goal": "pin the note",
+   "screen": "messages_compose",
+   "expect": "Pin note",
+   "picked": "Pin note",
+   "confidence": 1.0,
+   "ms": 160.0,
+   "verdict": "acted_right",
+   "top1_right": true
+  }
+ ]
+}
