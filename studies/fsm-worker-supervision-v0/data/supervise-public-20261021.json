@@ -1,0 +1,170 @@
+{
+ "schema": "z0.fsm.worker-supervision.public/v0",
+ "generated_at": "2026-10-21T05:31:00+00:00",
+ "limit_hours": 2.0,
+ "sources": {
+  "tasks": 468,
+  "tool_calls": 120353,
+  "delegate_task_lists": 54,
+  "repos": 287,
+  "worktrees": 1807,
+  "sessions_matched": 467
+ },
+ "phases": {
+  "Completed": 399,
+  "Interrupted": 3,
+  "Overdue": 26,
+  "Resumed": 37,
+  "Running": 3
+ },
+ "summary": {
+  "L1:branch_in_two_clones": {
+   "violation": 0,
+   "candidate": 2,
+   "info": 0
+  },
+  "L1:worktree_two_owners": {
+   "violation": 419,
+   "candidate": 0,
+   "info": 0
+  },
+  "L2:interrupted_past_limit": {
+   "violation": 26,
+   "candidate": 0,
+   "info": 0
+  },
+  "L2:resume_without_log": {
+   "violation": 10,
+   "candidate": 0,
+   "info": 0
+  },
+  "L3:child_left_background": {
+   "violation": 0,
+   "candidate": 0,
+   "info": 21
+  },
+  "L3:detached_background_process": {
+   "violation": 0,
+   "candidate": 0,
+   "info": 2
+  },
+  "L3:orphan_background_process": {
+   "violation": 1,
+   "candidate": 0,
+   "info": 0
+  },
+  "L4:heavy_on_groot": {
+   "violation": 1695,
+   "candidate": 0,
+   "info": 0
+  },
+  "L5:install_without_lock": {
+   "violation": 7,
+   "candidate": 0,
+   "info": 0
+  },
+  "L6:input_without_foreground_check": {
+   "violation": 11,
+   "candidate": 0,
+   "info": 0
+  }
+ },
+ "needs_kevin": {
+  "size": 26,
+  "recommended": {
+   "abandon": 6,
+   "resume": 16,
+   "already integrated": 4
+  },
+  "loop1_dropped": {
+   "count": 13,
+   "recommended": {
+    "abandon": 1,
+    "resume": 10,
+    "already integrated": 2
+   }
+  }
+ },
+ "groot_vs_fleet": {
+  "groot_heavy_jobs": 3005,
+  "groot_heavy_excepted": {
+   "gpu": 1291,
+   "toolchain": 19
+  },
+  "groot_heavy_violations": 1695,
+  "groot_heavy_violations_since_fleet": 97,
+  "groot_heavy_unlocked_violations": 1375,
+  "groot_all": {
+   "heavy_lock_jobs": 333,
+   "heavy_lock_finished": 294,
+   "jobs_that_waited": 118,
+   "wait_total_s": 77547,
+   "wait_median_s": 233,
+   "wait_max_s": 4442,
+   "run_total_s": 29601
+  },
+  "groot_since_fleet": {
+   "heavy_lock_jobs": 63,
+   "heavy_lock_finished": 59,
+   "jobs_that_waited": 20,
+   "wait_total_s": 5598,
+   "wait_median_s": 122,
+   "wait_max_s": 1112,
+   "run_total_s": 5569
+  },
+  "fleet_available_from": "2026-10-20T22:08:38+00:00",
+  "fleet_jobs": 36,
+  "fleet_run_s": 2065,
+  "fleet_by_node": {
+   "galaxy-s22plus": {
+    "jobs": 3,
+    "run_s": 1,
+    "failed": 2
+   },
+   "mbp": {
+    "jobs": 28,
+    "run_s": 1957,
+    "failed": 10
+   },
+   "omarchy-phone": {
+    "jobs": 5,
+    "run_s": 107,
+    "failed": 2
+   }
+  },
+  "fleet_routed_calls": 51,
+  "fleet_busy_retries_seen": 6,
+  "window": {
+   "groot_first": "2026-09-21T20:33:02+00:00",
+   "groot_last": "2026-10-21T05:20:16+00:00",
+   "fleet_last": "2026-10-21T05:27:52+00:00"
+  },
+  "note": "groot waits are lower-bound estimates from disjoint heavy.lock holds (estimate_waits); a fleet job starts its capped scope when admitted, and fleet-build's own retry queue (exit 75) is counted as busy retries, so fleet queue time is not in the run logs",
+  "lslocks_max_waiters_seen": 10
+ },
+ "background": {
+  "spawned": 1868,
+  "reaped_or_adopted": 1392,
+  "unobserved_end": 476,
+  "child_left_notices": 21,
+  "child_left_processes": 26
+ },
+ "phone": {
+  "s25_installs": 17,
+  "s25_installs_locked": 10,
+  "s25_inputs": 23,
+  "s25_inputs_with_fg_check": 12,
+  "phone_harness_calls": 83,
+  "note": "phone_exec/phone_goal calls are harness-mediated and not judged here"
+ },
+ "leases": {
+  "worktrees_written": 269,
+  "worktrees_with_two_owners": 19
+ },
+ "worktree_inventory": {
+  "total": 1807,
+  "prunable": 96,
+  "detached": 622
+ },
+ "note": "counts only: worker goals, logs, session ids, commands and local paths are personal traces and stay local"
+}

@@ -1,0 +1,24 @@
+{
+ "seed": 7,
+ "worker_tapes": 400,
+ "worker_events": 3370,
+ "lease_tapes": 100,
+ "device_tapes": 100,
+ "lim": 3,
+ "equal": true,
+ "worker_equal": true,
+ "lease_equal": true,
+ "device_equal": true,
+ "final_phases": {
+  "Running": 66,
+  "Abandoned": 186,
+  "Interrupted": 25,
+  "Completed": 29,
+  "Integrated": 37,
+  "Overdue": 9,
+  "Resumed": 41,
+  "Dispatched": 4,
+  "Stalled": 3
+ },
+ "first_mismatches": []
+}
