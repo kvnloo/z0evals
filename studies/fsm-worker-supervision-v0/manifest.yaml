@@ -18,6 +18,7 @@ sources:
     role: statechart (src/z0int/fsm/worker_supervision.py), Bend model and proofs (bend/worker_supervision_fsm), supervise CLI
     pr: https://github.com/kvnloo/z0intelligence/pull/184
   - repo: kvnloo/z0evals
+    commit: d8a9658dec11e08425ebdc204b75ab3acb526a43
     branch: study/fsm-work-item-v0
     role: loop 1 study (its 13 dropped workers are cross-checked here)
     pr: https://github.com/kvnloo/z0evals/pull/105
