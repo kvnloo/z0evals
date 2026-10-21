@@ -1,0 +1,78 @@
+schema_version: z0eval.study.v1
+id: fsm-worker-supervision-v0
+title: "Worker supervision statechart + Bend laws + read-only replay/supervise CLI (loop 2)"
+status: draft
+created: "2026-10-21"
+updated: "2026-10-21"
+
+hardware:
+  host: groot (orchestrator; Bend/Lean proof and Bend parity, the declared toolchain exception)
+  fleet: replay/twin tests ran on omarchy-phone through scripts/fleet run (mbp cordoned at the time)
+  bend: "2.0.34"
+  lean: "4.34.0"
+
+sources:
+  - repo: kvnloo/z0intelligence
+    commit: b4c06eefb1fb276e4b999f9e59bbf58bbd9a6f74
+    branch: exp/fsm-worker-supervision (stacked on exp/bend-work-item-fsm)
+    role: statechart (src/z0int/fsm/worker_supervision.py), Bend model and proofs (bend/worker_supervision_fsm), supervise CLI
+    pr: https://github.com/kvnloo/z0intelligence/pull/184
+  - repo: kvnloo/z0evals
+    commit: d8a9658dec11e08425ebdc204b75ab3acb526a43
+    branch: study/fsm-work-item-v0
+    role: loop 1 study (its 13 dropped workers are cross-checked here)
+    pr: https://github.com/kvnloo/z0evals/pull/105
+
+questions:
+  - Can worker supervision (dispatch, heartbeats, interruption, resume/abandon, background processes, worktree leases, placement off groot, phone install lock and S25 foreground) be stated as a statechart whose owner-facing laws are machine-proven in Bend?
+  - Are the laws load-bearing?
+  - What does a deterministic, read-only replay of the real delegation logs, Hermes state, worktrees and fleet runs say about dropped workers, lease clashes and groot-vs-fleet build waits?
+
+artifacts:
+  - path: data/bend-receipt.json
+    kind: receipt
+    sha256: 591ed2055b656991269062d457f62cb040c30808d83f0b01608926dcf61834f3
+    provenance: hermes bend verify on bend/worker_supervision_fsm at the source commit (hermes bend replay matches)
+  - path: data/bend-mutations.json
+    kind: result
+    sha256: ba6002eb639c59fac96f86d9b3a23091efac941abfd3c60a383ba97e883a2dfd
+    provenance: bend/worker_supervision_fsm/mutations.py --verdict
+  - path: data/parity-seed7.json
+    kind: result
+    sha256: 855f59044fa0afeabefd01a7a872a3b04f3b90bef407f9a42fa53b24d603a219
+    provenance: z0int.fsm.ws_parity.run_parity(seed=7, n_tapes=400)
+  - path: data/supervise-public-20261021.json
+    kind: result
+    sha256: b063bd6ec52a1ff8d82942f7b22e0213d47f9bc2e4973304ecd409b6617edea6
+    provenance: z0int.fsm.supervise --now 2026-10-21T05:31:00Z, reduced to counts (goals, logs, session ids, commands, paths removed)
+
+limitations:
+  - A Bend PASS covers fsm.bend's emitted book only (source_semantics_attested=false); it does not prove the Python twin or the event mapping.
+  - Python/Bend agreement is measured on 400 worker + 100 lease + 100 device seeded tapes, not proven.
+  - Heartbeats are the log's last write or the session's last activity; one long silent tool call looks like a stall.
+  - Successor detection is heuristic (delegation id, branch, worktree or a RESUME goal with >=35% shared words, started after the old worker's last write); from_log means the successor named or read the old log.
+  - heavy.lock waits are lower-bound estimates from disjoint lock holds and assume each command held the lock until it ended; background job ends come from process polls or the mtime of the log the command redirected into.
+  - Lease clashes are attributed by written path; writes through scripts or symlinked paths are missed, and parent/child edits during the child's life count as clashes.
+  - Heavy commands are classified by heavy.lock use or a build/test command pattern; GPU work and Bend/Lean count as the owner's standing exceptions.
+  - The S25 is matched by its adb address from the fleet registry; adb over mDNS names is not counted.
+  - Recommendations (resume / abandon / already integrated) are evidence for Kevin's decision; nothing was resumed, killed or deleted.
+
+claims:
+  - id: laws-proven
+    text: "19 Bend claims under laws W1-W6 check, including the kernel recheck (receipt c1de0af0..., verdict pass)."
+    evidence: [data/bend-receipt.json]
+  - id: laws-load-bearing
+    text: "17/17 mutants of fsm.bend that break a guarded behaviour make PROOF.bend fail under --verdict."
+    evidence: [data/bend-mutations.json]
+  - id: twin-parity
+    text: "The Python twin equals the Bend model on 400 worker tapes (3,370 events, all 9 phases), 100 lease and 100 device tapes."
+    evidence: [data/parity-seed7.json]
+  - id: dropped-workers
+    text: "26 workers are Overdue (interrupted or vanished, no resume from the log and no abandon within 2 h); all 13 of loop 1's dropped workers are among them, recommended 10 resume, 2 already integrated, 1 abandon."
+    evidence: [data/supervise-public-20261021.json]
+  - id: groot-waits
+    text: "118 of 333 heavy.lock jobs on groot waited, about 21.5 h in total (median 3.9 min, max 74 min); 1,695 heavy commands ran on groot outside fleet-build without a GPU or Bend exception, 97 of them after the fleet came up; the fleet ran 36 jobs with no queue wait."
+    evidence: [data/supervise-public-20261021.json]
+  - id: lease-clashes
+    text: "419 writes landed inside another session's worktree lease, across 19 worktrees."
+    evidence: [data/supervise-public-20261021.json]
