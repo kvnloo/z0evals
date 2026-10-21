@@ -1,0 +1,61 @@
+schema_version: z0eval.study.v1
+id: next-action-v0
+title: Next-action prediction Kevin actually uses (desktop + Android), pull-first with an accept/reject flywheel
+status: draft
+created: "2026-10-21"
+updated: "2026-10-21"
+evidence_status: proposal-preregistered; baseline audit frozen as aggregates
+external_inference_spend_usd: 0.0
+
+sources:
+  - repo: kvnloo/.files
+    commit: ee6b097f2aa818012db34b6361143315e7bf2174
+    branch: dev
+    role: workspace-copilot Flow engine (os.next_context.v0), bar chip, routine miner
+  - repo: kvnloo/.files
+    commit: c2e2d63daa9ce3d0e41319cbbf3d76dcdadc2460
+    branch: dev (local-only, not yet pushed)
+    role: rerank-v1 learned re-ranker whose holdout numbers appear in the baseline
+    visibility: local-only
+  - repo: kvnloo/noop
+    commit: 2ecc6e111d130e0b1f24518a287e064e58695020
+    branch: PR 65 head
+    role: ring tap detector facts used for the gesture allocation (no NOOP code changed)
+  - repo: kvnloo/z0intelligence
+    commit: 4de1aa962cf4c9a19b18a6120ea27309b908da65
+    role: shadow-network SLM tiers (T2), os-context import
+
+questions:
+  - Does a pull-only panel over high-manual-cost actions get used at least 3 times a day, where the push bar chip got 0 commits in 30 days?
+  - Do the new action families beat a plain recency list (the withhold arm) on accept rate and measured time saved?
+  - Does a calibrated accept-probability threshold (Cursor-style tau=0.25 in pull mode) keep reversals at or under 10% and abstentions at or under 50%?
+  - Which ring patterns (quad, quint) clear recall >= 90%, downward confusion <= 2% and <= 0.5 false fires per hour, so they can carry keyboard STT and a next-action peek?
+
+artifacts:
+  - path: README.md
+    kind: analysis
+  - path: data/baseline-desktop-shadow.json
+    kind: result
+    sha256: 00adc1c1910e58a429c24381b3c57d05488244b3d041d1d45dfc24292abb8f9b
+    provenance: read-only aggregate query over the local workspace-copilot SQLite, 2026-09-21..2026-10-21; no app names, titles, targets or paths
+  - path: data/baseline_query.py
+    kind: other
+  - path: data/mru_query.py
+    kind: other
+
+claims:
+  - id: c1-unused
+    text: The existing desktop predictor recorded 7,859 shadow predictions, 19 ready-tier surfaces, 0 explicit commits and 0 accept/reject decisions in 30 days.
+    evidence: [data/baseline-desktop-shadow.json]
+  - id: c2-recency-beats-engine
+    text: On app-switch outcomes a most-recently-used list gets top-1 0.771 / top-3 0.972, against the engine's 0.454 / 0.690.
+    evidence: [data/baseline-desktop-shadow.json, data/mru_query.py]
+  - id: c3-miscalibrated
+    text: Engine predictions with confidence >= 0.82 (the ready gate) were top-1 correct 22.7% of the time (n=76).
+    evidence: [data/baseline-desktop-shadow.json]
+
+limitations:
+  - The baseline is one person, one desktop, 30 days. The recency reconstruction uses prediction-time states, not every focus event.
+  - rerank-v1's holdout covers all outcomes including noop, so it is not on the same subset as the recency row.
+  - The new design has no data yet. E1 is pre-registered in README.md section 5.
+  - Ring facts come from PR 65's single-session recordings. Quad and quint are unrecorded at this head.

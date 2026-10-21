@@ -1,0 +1,77 @@
+{
+  "schema": "next-action-v0.baseline.v1",
+  "source": "workspace-copilot sqlite (read-only), os.next_context.v0 shadow_predictions",
+  "window_utc": [
+    "2026-09-21T06:54:03Z",
+    "2026-10-21T02:34:09Z"
+  ],
+  "predictions": 7859,
+  "matched": 7859,
+  "top1_hit_rate_60s": 0.389,
+  "top3_hit_rate_60s": 0.611,
+  "noop_rate_60s": 0.26,
+  "actual_family_counts": {
+    "noop": 2041,
+    "stay": 18,
+    "switch_app": 5442,
+    "switch_workspace": 358
+  },
+  "calibration_by_confidence": [
+    {
+      "confidence_lo": 0,
+      "confidence_hi": 0.35,
+      "n": 624,
+      "top1_hit_rate": 0.256
+    },
+    {
+      "confidence_lo": 0.35,
+      "confidence_hi": 0.6,
+      "n": 1469,
+      "top1_hit_rate": 0.409
+    },
+    {
+      "confidence_lo": 0.6,
+      "confidence_hi": 0.82,
+      "n": 5690,
+      "top1_hit_rate": 0.4
+    },
+    {
+      "confidence_lo": 0.82,
+      "confidence_hi": 1.0,
+      "n": 76,
+      "top1_hit_rate": 0.227
+    }
+  ],
+  "surfaced_ready_tier": 19,
+  "explicit_commits": 0,
+  "decisions_rows": 0,
+  "suggestions_pending": 225,
+  "suggestions_total": 225,
+  "predict_latency_ms": {
+    "mean": 556.8,
+    "p50": 40.6,
+    "p90": 385.3,
+    "p99": 9842.7
+  },
+  "rerank_v1_holdout": {
+    "n": 1242,
+    "model_top1": 0.599,
+    "model_top3": 0.872,
+    "engine_top1": 0.4436,
+    "engine_top3": 0.818
+  },
+  "privacy": "aggregates only; no app names, titles, targets, paths or timestamps finer than the window",
+  "mru_baseline_switch_app_subset": {
+    "subset": "actual_family=switch_app",
+    "n": 5442,
+    "mru_top1": 0.771,
+    "mru_top3": 0.972,
+    "engine_top1": 0.454,
+    "engine_top3": 0.69
+  },
+  "notes": [
+    "engine confidence is the shadow engine's top-1 p; the bar chip uses the top non-noop p",
+    "mru = most-recently-used distinct apps excluding the current one, reconstructed from the prediction-time state sequence (same ordering a window switcher shows)",
+    "rerank_v1 holdout is the model's own holdout over all outcomes incl. noop; it is not on the same subset as the mru row"
+  ]
+}
