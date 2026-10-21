@@ -1,0 +1,63 @@
+{
+  "http": 200,
+  "headless": true,
+  "ownerDesktop": false,
+  "viewport": {
+    "width": 412,
+    "height": 915
+  },
+  "horizontalOverflow": false,
+  "tapes": [
+    {
+      "index": 12,
+      "title": "Loop 3 \u00b7 kvnloo/dash#78",
+      "steps": 2,
+      "status": "Loop 3 \u00b7 integration owner \u00b7 now Queued. REFUSED \u00b7 I3 I4: A held lease, consistent stack and independent review are required.",
+      "progress": "2 / 2 events \u00b7 every step matches the receipt-bound producer replay",
+      "source": "WHAT-IF"
+    },
+    {
+      "index": 13,
+      "title": "Loop 3 \u00b7 kvnloo/noop#93",
+      "steps": 3,
+      "status": "Loop 3 \u00b7 integration owner \u00b7 now OnIntegrationBranch. REFUSED \u00b7 I5: Only OwnerAccepted can merge.",
+      "progress": "3 / 3 events \u00b7 every step matches the receipt-bound producer replay",
+      "source": "WHAT-IF"
+    },
+    {
+      "index": 14,
+      "title": "Loop 3 \u00b7 kvnloo/company-os#7",
+      "steps": 3,
+      "status": "Loop 3 \u00b7 integration owner \u00b7 now Queued. ACCEPTED \u00b7 checked I1",
+      "progress": "3 / 3 events \u00b7 every step matches the receipt-bound producer replay",
+      "source": "WHAT-IF"
+    },
+    {
+      "index": 15,
+      "title": "Loop 3 \u00b7 kvnloo/z0evals#105",
+      "steps": 3,
+      "status": "Loop 3 \u00b7 integration owner \u00b7 now Queued. REFUSED \u00b7 I3 I4: A held lease, consistent stack and independent review are required.",
+      "progress": "3 / 3 events \u00b7 every step matches the receipt-bound producer replay",
+      "source": "WHAT-IF"
+    },
+    {
+      "index": 16,
+      "title": "Loop 3 \u00b7 kvnloo/.files#34",
+      "steps": 7,
+      "status": "Loop 3 \u00b7 integration owner \u00b7 now Merged. ACCEPTED \u00b7 checked I5",
+      "progress": "7 / 7 events \u00b7 every step matches the receipt-bound producer replay",
+      "source": "WHAT-IF"
+    }
+  ],
+  "page_errors": [],
+  "console_errors": [],
+  "failed_http": [],
+  "producer": {
+    "tapes": 17,
+    "steps": 96,
+    "edges": 73,
+    "mermaid_missing": 0,
+    "mermaid_extra": 0
+  },
+  "full_upstream_check_fast": "blocked: fleet MBP source shipment lacks vitest; no whole-project qualification claimed"
+}
