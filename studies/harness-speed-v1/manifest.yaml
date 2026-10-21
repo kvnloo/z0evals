@@ -6,7 +6,7 @@ created: "2026-10-21"
 updated: "2026-10-21"
 
 run_id: s1-20261021
-evidence_status: local-measured
+evidence_status: local-measured-s1-s2
 external_inference_spend_usd: 0  # every arm ran on the owner's ChatGPT subscription; cost columns are list-price estimates
 preregistration: protocol.md (committed f879cff before any counted run; amendments listed in it)
 
@@ -51,12 +51,16 @@ harnesses:
     note: no RLM variant installed, so there is no omp-rlm arm
 
 sources:
+  - repo: NousResearch/hermes-agent
+    commit: ca069e12239a2c8d13887ac9f983557d00bdcfd2
+    role: Hermes harness as installed on the MBP (git install)
+  - repo: NVlabs/SoL-Pi
+    commit: 219568034fa54ed121ede80961655e33dfb9d0e3
+    role: pi efficiency extension (pi-solpi arm)
   - repo: kvnloo/z0bridge
     commit: 9d7ffc5
     branch: feat/fx-worker
-    role: prior fx-vs-Hermes bench (scripts/bench-fx-vs-hermes.ts), cited as prior result only
-  - path: zer0/data/operations/libfx-surface/20261020T2040Z-gpt56sol/summary.json
-    role: prior result (n=10, one prompt, gpt-5.6-sol, groot), cited not re-run
+    role: prior fx-vs-Hermes bench (scripts/bench-fx-vs-hermes.ts); its result (n=10, one prompt, gpt-5.6-sol, groot, zer0/data/operations/libfx-surface/20261020T2040Z-gpt56sol/summary.json) is cited, not re-run
 
 questions:
   - With the model fixed, how do Hermes, fx (libfx), pi and omp differ in first-token and full-request latency, cold and warm?
@@ -65,14 +69,47 @@ questions:
 
 artifacts:
   - path: protocol.md
-    kind: preregistered-protocol
+    kind: other
+    note: preregistered protocol
   - path: tasks/
-    kind: frozen-task-set
+    kind: fixture
     provenance: authored for this study; visible tests, hidden verifier tests and reference solutions (verifier checked fail-on-original, pass-on-reference)
   - path: harness/
-    kind: runner-and-analysis
+    kind: other
+    note: runners and analysis code
   - path: data/s1/
-    kind: raw-measurements
+    kind: dataset
     provenance: rows written by harness/bench.py and harness/warm.py on the MBP; reply text truncated to 400 chars; no prompts beyond the task prompts, no credentials
+  - path: data/s2/
+    kind: dataset
+    provenance: session s2 (C5 model arm and exploratory X1/X2), same writer
   - path: analysis/
-    kind: derived
+    kind: analysis
+
+limitations:
+  - One host (2014-era i7-4870HQ, Linux), one network, one provider account; no other hardware.
+  - Every arm passed every task (128/128 in s1, 16/16 in s2), so the task set does not separate harnesses on quality.
+  - The fx arm is the libfx engine with bench-authored tools and a three-sentence system prompt, not the fx CLI (not signed in on the host).
+  - Hermes warm latency was not measured; Hermes's CLI already reuses its resident gateway.
+  - "On the MBP, `hermes chat -q` without `-t` fails with `couldn't start the model connection: invalid_params`; passing the default toolsets explicitly works, so hermes-default is the explicit 19-toolset list. Cause not proven (linear MCP OAuth 401 in errors.log is a candidate)."
+  - Session s2 ran with higher host load (load average up to 7.2 at the end of its latency phase); s2 arms are compared only with s2 arms.
+  - Paired-by-block and paired-by-task CIs and the token/tool-call task contrasts were added to the analysis after the protocol; the preregistered test is the unpaired bootstrap CI of the difference in medians.
+  - Cost is a list-price estimate (subscription turns have no marginal cost); C5 uses omp's own per-message cost fields.
+  - The Hermes requests that failed (1 per Hermes arm in s1, exit 120) were not diagnosed.
+
+claims:
+  - id: cold-latency-order
+    text: "Cold, process-per-request, gpt-6.1-sol: median first token fx-base 2.13 s, pi-base 2.13 s, omp-base 3.70 s, hermes-default 7.19 s, hermes-base 11.06 s (n=31-32 each, interleaved)."
+    evidence: [analysis/summary.json, data/s1/latency.jsonl]
+  - id: warm-latency-close
+    text: "Warm (long-lived process, fresh conversation): fx-base, pi-base and omp-base are within 0.2 s of each other at 1.66-1.82 s median first token."
+    evidence: [analysis/summary.json, data/s1/warm.jsonl]
+  - id: task-wall-tokens
+    text: "On eight small tasks all arms passed 16/16; median wall time fx-base 15.1 s and pi-base 15.5 s vs omp-base 21.5 s and hermes-base 30.4 s; median input tokens fx 3.2k, pi 7.4k, hermes-base 32.7k, omp-base 35.6k."
+    evidence: [analysis/summary.json, data/s1/tasks.jsonl]
+  - id: config-overheads
+    text: "Within-harness: Hermes default config used 5.7x the input tokens of safe mode with no measurable wall-time change; omp user config added 0.8 s cold latency, 5.5 s per task and 3.2x input tokens; SoL-Pi cut about 900 input tokens and one tool call per task; pi-rlm cut 1.5 tool calls but added about 3.2k input tokens."
+    evidence: [analysis/summary.json]
+  - id: model-arm
+    text: "On omp-base, claude-opus-5-5 vs gpt-6.1-sol: cold latency not distinguishable; tasks 13.0 s vs 22.1 s median wall with half the tool calls, both 8/8, at about 2.9x omp's list-price cost (one run per task, s2)."
+    evidence: [analysis/summary.json, data/s2/tasks.jsonl]

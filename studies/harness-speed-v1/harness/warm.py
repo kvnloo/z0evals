@@ -89,8 +89,9 @@ class Proc:
             t0 = time.perf_counter()
             self.send({"id": rid, "type": "prompt", "message": LAT_PROMPT})
             ttft, text, usage, err = None, "", {}, None
+            deadline = t0 + timeout
             while True:
-                t, d = self.wait_for(lambda d: True, timeout)
+                t, d = self.wait_for(lambda d: True, max(0.01, deadline - time.perf_counter()))
                 if d is None:
                     err = "timeout"
                     break
