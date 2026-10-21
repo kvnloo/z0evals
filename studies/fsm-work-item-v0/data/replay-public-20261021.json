@@ -1,0 +1,1035 @@
+{
+ "schema": "z0.fsm.work-item.replay-public/v0",
+ "generated_at": "2026-10-21T03:57:03.352647+00:00",
+ "summary": {
+  "closed_outside_statechart": {
+   "violation": 0,
+   "indeterminate": 0,
+   "candidate": 0,
+   "info": 12
+  },
+  "law1:merged_without_owner_acceptance": {
+   "violation": 6,
+   "indeterminate": 0,
+   "candidate": 0,
+   "info": 0
+  },
+  "law2:self_integrated": {
+   "violation": 0,
+   "indeterminate": 5,
+   "candidate": 0,
+   "info": 0
+  },
+  "law3:integrated_without_head_receipt": {
+   "violation": 39,
+   "indeterminate": 0,
+   "candidate": 0,
+   "info": 0
+  },
+  "law4:service_diverged": {
+   "violation": 1,
+   "indeterminate": 0,
+   "candidate": 0,
+   "info": 0
+  },
+  "law4:service_missing_line": {
+   "violation": 4,
+   "indeterminate": 0,
+   "candidate": 0,
+   "info": 0
+  },
+  "law4:service_stale": {
+   "violation": 1,
+   "indeterminate": 0,
+   "candidate": 0,
+   "info": 0
+  },
+  "law5:integration_ref_local_only": {
+   "violation": 2,
+   "indeterminate": 0,
+   "candidate": 0,
+   "info": 0
+  },
+  "law5:interrupted_dropped": {
+   "violation": 13,
+   "indeterminate": 0,
+   "candidate": 0,
+   "info": 0
+  },
+  "law5:interrupted_pending": {
+   "violation": 0,
+   "indeterminate": 0,
+   "candidate": 0,
+   "info": 5
+  },
+  "stranded_integration": {
+   "violation": 0,
+   "indeterminate": 0,
+   "candidate": 32,
+   "info": 0
+  }
+ },
+ "items_by_kind": {
+  "pr": 111,
+  "service": 5,
+  "worker": 59
+ },
+ "services": [
+  {
+   "service": "service:dash-bridge",
+   "port": 4747,
+   "repo": "kvnloo/dash",
+   "integration_ref": "origin/integrate/dash-20261020",
+   "phase": "Deployed",
+   "served_branch": "integrate/dash-20261020",
+   "served_head": "effd9a283177ebe5fae1e2395070491af2d2d390",
+   "dirty_files": 0,
+   "integration_head": "effd9a283177ebe5fae1e2395070491af2d2d390",
+   "findings": [
+    {
+     "law": 4,
+     "code": "service_missing_line",
+     "behind": null,
+     "ahead": null,
+     "merged_prs_not_served": [
+      49
+     ]
+    }
+   ]
+  },
+  {
+   "service": "service:dash-metro",
+   "port": 8097,
+   "repo": "kvnloo/dash",
+   "integration_ref": "origin/integrate/dash-20261020",
+   "phase": "Deployed",
+   "served_branch": "integrate/dash-20261020",
+   "served_head": "effd9a283177ebe5fae1e2395070491af2d2d390",
+   "dirty_files": 0,
+   "integration_head": "effd9a283177ebe5fae1e2395070491af2d2d390",
+   "findings": [
+    {
+     "law": 4,
+     "code": "service_missing_line",
+     "behind": null,
+     "ahead": null,
+     "merged_prs_not_served": [
+      49
+     ]
+    }
+   ]
+  },
+  {
+   "service": "service:company-os-static",
+   "port": 8788,
+   "repo": "kvnloo/company-os",
+   "integration_ref": "parent/company-os-integrated",
+   "phase": "Integrated",
+   "served_branch": "main",
+   "served_head": "3d0f6eb3e2495bb46f232f4994a0902541fd0d5a",
+   "dirty_files": 0,
+   "integration_head": "248126ebc5004e6430d3ebe1cc4c9340770d8dfe",
+   "findings": [
+    {
+     "law": 4,
+     "code": "service_stale",
+     "behind": 31,
+     "ahead": 0,
+     "merged_prs_not_served": [
+      4
+     ]
+    },
+    {
+     "law": 4,
+     "code": "service_missing_line",
+     "behind": null,
+     "ahead": null,
+     "merged_prs_not_served": [
+      4
+     ]
+    },
+    {
+     "law": 5,
+     "code": "integration_ref_local_only",
+     "behind": null,
+     "ahead": null,
+     "merged_prs_not_served": []
+    }
+   ]
+  },
+  {
+   "service": "service:company-os-chooser",
+   "port": 8789,
+   "repo": "kvnloo/company-os",
+   "integration_ref": "parent/company-os-integrated",
+   "phase": "Deployed",
+   "served_branch": "parent/company-os-integrated",
+   "served_head": "248126ebc5004e6430d3ebe1cc4c9340770d8dfe",
+   "dirty_files": 0,
+   "integration_head": "248126ebc5004e6430d3ebe1cc4c9340770d8dfe",
+   "findings": [
+    {
+     "law": 4,
+     "code": "service_missing_line",
+     "behind": null,
+     "ahead": null,
+     "merged_prs_not_served": [
+      4
+     ]
+    },
+    {
+     "law": 5,
+     "code": "integration_ref_local_only",
+     "behind": null,
+     "ahead": null,
+     "merged_prs_not_served": []
+    }
+   ]
+  },
+  {
+   "service": "service:z0intelligence",
+   "port": 11501,
+   "repo": "kvnloo/z0intelligence",
+   "integration_ref": "origin/master",
+   "phase": "Integrated",
+   "served_branch": "master",
+   "served_head": "4de1aa962cf4c9a19b18a6120ea27309b908da65",
+   "dirty_files": 27,
+   "integration_head": "6cae99254bbb2f38329c081c15c2ce81c74a4be2",
+   "findings": [
+    {
+     "law": 4,
+     "code": "service_diverged",
+     "behind": 12,
+     "ahead": 3,
+     "merged_prs_not_served": []
+    }
+   ]
+  }
+ ],
+ "pr_findings": [
+  {
+   "pr": "kvnloo/company-os#4",
+   "law": 1,
+   "code": "merged_without_owner_acceptance",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/dash#73",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/dash#72",
+   "law": 2,
+   "code": "self_integrated",
+   "severity": "indeterminate"
+  },
+  {
+   "pr": "kvnloo/dash#71",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/dash#49",
+   "law": 1,
+   "code": "merged_without_owner_acceptance",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/dash#48",
+   "law": null,
+   "code": "closed_outside_statechart",
+   "severity": "info"
+  },
+  {
+   "pr": "kvnloo/dash#46",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/dash#45",
+   "law": null,
+   "code": "stranded_integration",
+   "severity": "candidate"
+  },
+  {
+   "pr": "kvnloo/dash#45",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/dash#42",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/dash#41",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/dash#40",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/dash#39",
+   "law": null,
+   "code": "stranded_integration",
+   "severity": "candidate"
+  },
+  {
+   "pr": "kvnloo/dash#39",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/dash#36",
+   "law": 2,
+   "code": "self_integrated",
+   "severity": "indeterminate"
+  },
+  {
+   "pr": "kvnloo/dash#35",
+   "law": 2,
+   "code": "self_integrated",
+   "severity": "indeterminate"
+  },
+  {
+   "pr": "kvnloo/dash#34",
+   "law": 2,
+   "code": "self_integrated",
+   "severity": "indeterminate"
+  },
+  {
+   "pr": "kvnloo/dash#33",
+   "law": null,
+   "code": "closed_outside_statechart",
+   "severity": "info"
+  },
+  {
+   "pr": "kvnloo/dash#32",
+   "law": null,
+   "code": "closed_outside_statechart",
+   "severity": "info"
+  },
+  {
+   "pr": "kvnloo/dash#31",
+   "law": null,
+   "code": "closed_outside_statechart",
+   "severity": "info"
+  },
+  {
+   "pr": "kvnloo/dash#30",
+   "law": null,
+   "code": "closed_outside_statechart",
+   "severity": "info"
+  },
+  {
+   "pr": "kvnloo/dash#25",
+   "law": null,
+   "code": "closed_outside_statechart",
+   "severity": "info"
+  },
+  {
+   "pr": "kvnloo/dash#24",
+   "law": null,
+   "code": "closed_outside_statechart",
+   "severity": "info"
+  },
+  {
+   "pr": "kvnloo/dash#23",
+   "law": null,
+   "code": "closed_outside_statechart",
+   "severity": "info"
+  },
+  {
+   "pr": "kvnloo/dash#22",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/dash#18",
+   "law": 1,
+   "code": "merged_without_owner_acceptance",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/dash#14",
+   "law": 1,
+   "code": "merged_without_owner_acceptance",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/dash#13",
+   "law": 2,
+   "code": "self_integrated",
+   "severity": "indeterminate"
+  },
+  {
+   "pr": "kvnloo/dash#2",
+   "law": 1,
+   "code": "merged_without_owner_acceptance",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/dash#1",
+   "law": 1,
+   "code": "merged_without_owner_acceptance",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/noop#61",
+   "law": null,
+   "code": "closed_outside_statechart",
+   "severity": "info"
+  },
+  {
+   "pr": "kvnloo/noop#56",
+   "law": null,
+   "code": "closed_outside_statechart",
+   "severity": "info"
+  },
+  {
+   "pr": "kvnloo/noop#41",
+   "law": null,
+   "code": "closed_outside_statechart",
+   "severity": "info"
+  },
+  {
+   "pr": "kvnloo/noop#40",
+   "law": null,
+   "code": "stranded_integration",
+   "severity": "candidate"
+  },
+  {
+   "pr": "kvnloo/noop#40",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/noop#39",
+   "law": null,
+   "code": "stranded_integration",
+   "severity": "candidate"
+  },
+  {
+   "pr": "kvnloo/noop#39",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/noop#38",
+   "law": null,
+   "code": "stranded_integration",
+   "severity": "candidate"
+  },
+  {
+   "pr": "kvnloo/noop#38",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/noop#37",
+   "law": null,
+   "code": "stranded_integration",
+   "severity": "candidate"
+  },
+  {
+   "pr": "kvnloo/noop#37",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/noop#35",
+   "law": null,
+   "code": "closed_outside_statechart",
+   "severity": "info"
+  },
+  {
+   "pr": "kvnloo/noop#33",
+   "law": null,
+   "code": "stranded_integration",
+   "severity": "candidate"
+  },
+  {
+   "pr": "kvnloo/noop#33",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/noop#32",
+   "law": null,
+   "code": "stranded_integration",
+   "severity": "candidate"
+  },
+  {
+   "pr": "kvnloo/noop#32",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/noop#31",
+   "law": null,
+   "code": "stranded_integration",
+   "severity": "candidate"
+  },
+  {
+   "pr": "kvnloo/noop#31",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/noop#30",
+   "law": null,
+   "code": "stranded_integration",
+   "severity": "candidate"
+  },
+  {
+   "pr": "kvnloo/noop#30",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/noop#29",
+   "law": null,
+   "code": "stranded_integration",
+   "severity": "candidate"
+  },
+  {
+   "pr": "kvnloo/noop#29",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/noop#28",
+   "law": null,
+   "code": "stranded_integration",
+   "severity": "candidate"
+  },
+  {
+   "pr": "kvnloo/noop#28",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/noop#27",
+   "law": null,
+   "code": "stranded_integration",
+   "severity": "candidate"
+  },
+  {
+   "pr": "kvnloo/noop#27",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/noop#26",
+   "law": null,
+   "code": "stranded_integration",
+   "severity": "candidate"
+  },
+  {
+   "pr": "kvnloo/noop#26",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/noop#25",
+   "law": null,
+   "code": "stranded_integration",
+   "severity": "candidate"
+  },
+  {
+   "pr": "kvnloo/noop#25",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/noop#24",
+   "law": null,
+   "code": "stranded_integration",
+   "severity": "candidate"
+  },
+  {
+   "pr": "kvnloo/noop#24",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/noop#23",
+   "law": null,
+   "code": "stranded_integration",
+   "severity": "candidate"
+  },
+  {
+   "pr": "kvnloo/noop#23",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/noop#22",
+   "law": null,
+   "code": "stranded_integration",
+   "severity": "candidate"
+  },
+  {
+   "pr": "kvnloo/noop#22",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/noop#21",
+   "law": null,
+   "code": "stranded_integration",
+   "severity": "candidate"
+  },
+  {
+   "pr": "kvnloo/noop#21",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/noop#20",
+   "law": null,
+   "code": "stranded_integration",
+   "severity": "candidate"
+  },
+  {
+   "pr": "kvnloo/noop#20",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/noop#19",
+   "law": null,
+   "code": "stranded_integration",
+   "severity": "candidate"
+  },
+  {
+   "pr": "kvnloo/noop#19",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/noop#18",
+   "law": null,
+   "code": "stranded_integration",
+   "severity": "candidate"
+  },
+  {
+   "pr": "kvnloo/noop#18",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/noop#17",
+   "law": null,
+   "code": "stranded_integration",
+   "severity": "candidate"
+  },
+  {
+   "pr": "kvnloo/noop#17",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/noop#16",
+   "law": null,
+   "code": "stranded_integration",
+   "severity": "candidate"
+  },
+  {
+   "pr": "kvnloo/noop#16",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/noop#15",
+   "law": null,
+   "code": "stranded_integration",
+   "severity": "candidate"
+  },
+  {
+   "pr": "kvnloo/noop#15",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/noop#14",
+   "law": null,
+   "code": "stranded_integration",
+   "severity": "candidate"
+  },
+  {
+   "pr": "kvnloo/noop#14",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/noop#13",
+   "law": null,
+   "code": "stranded_integration",
+   "severity": "candidate"
+  },
+  {
+   "pr": "kvnloo/noop#13",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/noop#12",
+   "law": null,
+   "code": "stranded_integration",
+   "severity": "candidate"
+  },
+  {
+   "pr": "kvnloo/noop#12",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/noop#11",
+   "law": null,
+   "code": "stranded_integration",
+   "severity": "candidate"
+  },
+  {
+   "pr": "kvnloo/noop#11",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/noop#10",
+   "law": null,
+   "code": "stranded_integration",
+   "severity": "candidate"
+  },
+  {
+   "pr": "kvnloo/noop#10",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/noop#9",
+   "law": null,
+   "code": "stranded_integration",
+   "severity": "candidate"
+  },
+  {
+   "pr": "kvnloo/noop#9",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  },
+  {
+   "pr": "kvnloo/noop#1",
+   "law": null,
+   "code": "stranded_integration",
+   "severity": "candidate"
+  },
+  {
+   "pr": "kvnloo/noop#1",
+   "law": 3,
+   "code": "integrated_without_head_receipt",
+   "severity": "violation"
+  }
+ ],
+ "workers": {
+  "interrupted_or_vanished_by_end": {
+   "interrupted": 26,
+   "vanished": 33
+  },
+  "findings": {
+   "interrupted_dropped": 13,
+   "interrupted_pending": 5
+  }
+ },
+ "checkout_sweep": [
+  {
+   "repo": "kvnloo/dash",
+   "branch": "integrate/dash-v2",
+   "head": "2fb3df011905b5f1dde287f3610a97ef63ea335c",
+   "would_miss_merged_prs": [
+    73,
+    72,
+    71,
+    49
+   ]
+  },
+  {
+   "repo": "kvnloo/dash",
+   "branch": "worker/dash-acp",
+   "head": "b6d48803e4166a6dc53faf51e67c1c144523086f",
+   "would_miss_merged_prs": [
+    73,
+    72,
+    71,
+    49
+   ]
+  },
+  {
+   "repo": "kvnloo/dash",
+   "branch": "worker/dash-pages",
+   "head": "5a127203607b463fc4b8ec912018d3234d566988",
+   "would_miss_merged_prs": [
+    73,
+    72,
+    71,
+    49
+   ]
+  },
+  {
+   "repo": "kvnloo/dash",
+   "branch": "feat/approvals-gate",
+   "head": "9827614107cb3070a49bfb6596832e49094cbd08",
+   "would_miss_merged_prs": [
+    73,
+    72,
+    71,
+    49
+   ]
+  },
+  {
+   "repo": "kvnloo/dash",
+   "branch": "feat/artifact-stage-viewer",
+   "head": "22c2d6f10698ead425f5550491a59426437c453f",
+   "would_miss_merged_prs": [
+    49
+   ]
+  },
+  {
+   "repo": "kvnloo/dash",
+   "branch": "integrate/dash-20261020",
+   "head": "effd9a283177ebe5fae1e2395070491af2d2d390",
+   "would_miss_merged_prs": [
+    49
+   ]
+  },
+  {
+   "repo": "kvnloo/dash",
+   "branch": "feat/hermes-sessions",
+   "head": "9909dd7ff62130381b1f078da1624a5a42f218cd",
+   "would_miss_merged_prs": [
+    73,
+    72,
+    71,
+    49
+   ]
+  },
+  {
+   "repo": "kvnloo/dash",
+   "branch": "feat/libfx-live-surface",
+   "head": "39015d8a813e65d64cea175d525f6be3c8141718",
+   "would_miss_merged_prs": [
+    49
+   ]
+  },
+  {
+   "repo": "kvnloo/dash",
+   "branch": "feat/phone-nav-attachments",
+   "head": "a47e5987a5353ee23232cf5b2bfdc896c2af931f",
+   "would_miss_merged_prs": [
+    49
+   ]
+  },
+  {
+   "repo": "kvnloo/dash",
+   "branch": "feat/phone-overnight",
+   "head": "3fc1caa04aaf5cb5b5c581c5f5559eb9967d517d",
+   "would_miss_merged_prs": [
+    73,
+    72,
+    49
+   ]
+  },
+  {
+   "repo": "kvnloo/dash",
+   "branch": "integrate/phone-20261020",
+   "head": "a47e5987a5353ee23232cf5b2bfdc896c2af931f",
+   "would_miss_merged_prs": [
+    49
+   ]
+  },
+  {
+   "repo": "kvnloo/dash",
+   "branch": "feat/z0bridge-hermes",
+   "head": "5dde418de2c871d7a6356e2db95160a382f372bf",
+   "would_miss_merged_prs": [
+    73,
+    72,
+    71,
+    49
+   ]
+  },
+  {
+   "repo": "kvnloo/dash",
+   "branch": "feat/zeros-ui",
+   "head": "648c425ac9cdebf70af871761ae8375f2b856bbc",
+   "would_miss_merged_prs": [
+    73,
+    72,
+    71,
+    49
+   ]
+  },
+  {
+   "repo": "kvnloo/dash",
+   "branch": "fix/composer-placeholder-clip-20261020",
+   "head": "751a8a6c3b575d4a47ba45803d14f8ef57740518",
+   "would_miss_merged_prs": [
+    73,
+    49
+   ]
+  },
+  {
+   "repo": "kvnloo/dash",
+   "branch": "(detached)",
+   "head": "3fc1caa04aaf5cb5b5c581c5f5559eb9967d517d",
+   "would_miss_merged_prs": [
+    73,
+    72,
+    49
+   ]
+  },
+  {
+   "repo": "kvnloo/dash",
+   "branch": "(detached)",
+   "head": "5dde418de2c871d7a6356e2db95160a382f372bf",
+   "would_miss_merged_prs": [
+    73,
+    72,
+    71,
+    49
+   ]
+  },
+  {
+   "repo": "kvnloo/company-os",
+   "branch": "main",
+   "head": "3d0f6eb3e2495bb46f232f4994a0902541fd0d5a",
+   "would_miss_merged_prs": [
+    4
+   ]
+  },
+  {
+   "repo": "kvnloo/company-os",
+   "branch": "parent/company-os-critical-path",
+   "head": "19d19528df0900e206a74441f2dbc8265ad71adc",
+   "would_miss_merged_prs": [
+    4
+   ]
+  },
+  {
+   "repo": "kvnloo/company-os",
+   "branch": "design/company-os-chooser",
+   "head": "fa6c99de795695e67e88fab99374241c253e1b7b",
+   "would_miss_merged_prs": [
+    4
+   ]
+  },
+  {
+   "repo": "kvnloo/company-os",
+   "branch": "parent/company-os-integrated",
+   "head": "248126ebc5004e6430d3ebe1cc4c9340770d8dfe",
+   "would_miss_merged_prs": [
+    4
+   ]
+  },
+  {
+   "repo": "kvnloo/company-os",
+   "branch": "feat/company-os-live-wiring",
+   "head": "2b575c4a8000dcebe8a3d1373d209cd6adc80dec",
+   "would_miss_merged_prs": [
+    4
+   ]
+  },
+  {
+   "repo": "kvnloo/company-os",
+   "branch": "design/company-os-motion-prototypes",
+   "head": "3961511c268213f3f8e16d9526ef643c5637ff5c",
+   "would_miss_merged_prs": [
+    4
+   ]
+  },
+  {
+   "repo": "kvnloo/company-os",
+   "branch": "design/company-os-motion-reference",
+   "head": "e4ea44a78b4f10943e2f8b73b2fd06b714b7c6dd",
+   "would_miss_merged_prs": [
+    4
+   ]
+  },
+  {
+   "repo": "kvnloo/company-os",
+   "branch": "style/company-os-v3-recovery",
+   "head": "7da554116d096cdfc7a7fb77658da5eca80bd6e4",
+   "would_miss_merged_prs": [
+    4
+   ]
+  },
+  {
+   "repo": "kvnloo/company-os",
+   "branch": "feat/tern-native-surface",
+   "head": "248126ebc5004e6430d3ebe1cc4c9340770d8dfe",
+   "would_miss_merged_prs": [
+    4
+   ]
+  },
+  {
+   "repo": "kvnloo/company-os",
+   "branch": "design/company-os-video-replica",
+   "head": "9478d88ba76a51c2f1f03c43c31bfac0f26fe9bf",
+   "would_miss_merged_prs": [
+    4
+   ]
+  }
+ ],
+ "needs_kevin": {
+  "owner_availability": "off",
+  "held_until_next_block": true,
+  "size": 3,
+  "items": [
+   "service:dash-bridge",
+   "service:dash-metro",
+   "service:company-os-chooser"
+  ]
+ }
+}

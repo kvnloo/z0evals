@@ -1,0 +1,22 @@
+{
+ "seed": 7,
+ "tapes": 400,
+ "events": 5077,
+ "equal": true,
+ "final_phases": {
+  "Implementing": 71,
+  "Abandoned": 167,
+  "Claimed": 23,
+  "Blocked": 18,
+  "Verifying": 44,
+  "DraftPR": 6,
+  "Merged": 18,
+  "Interrupted": 26,
+  "Proposed": 6,
+  "Integrated": 6,
+  "Deployed": 10,
+  "OwnerAccepted": 5
+ },
+ "first_mismatches": [],
+ "bend_exit": 0
+}

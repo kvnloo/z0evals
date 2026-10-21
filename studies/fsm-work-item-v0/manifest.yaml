@@ -1,0 +1,83 @@
+schema_version: z0eval.study.v1
+id: fsm-work-item-v0
+title: "Statechart + Bend laws + replay checker for the agent work-item lifecycle (loop 1)"
+status: draft
+created: "2026-10-21"
+updated: "2026-10-21"
+
+hardware:
+  host: groot (orchestrator; checks ran on CPU)
+  bend: "2.0.34"
+  lean: "4.34.0"
+
+sources:
+  - repo: kvnloo/z0intelligence
+    commit: eef21051b1910bcda14542fe5859414f629e4fad
+    branch: exp/bend-work-item-fsm
+    role: statechart (src/z0int/fsm/work_item.py), Bend model and proofs (bend/work_item_fsm), replay checker, export
+    pr: https://github.com/kvnloo/z0intelligence/pull/183
+  - repo: kvnloo/company-os
+    commit: 248126ebc5004e6430d3ebe1cc4c9340770d8dfe
+    branch: parent/company-os-integrated (local only at study time)
+    role: replayed (PRs and the two running services)
+  - repo: kvnloo/dash
+    commit: effd9a283177ebe5fae1e2395070491af2d2d390
+    branch: integrate/dash-20261020
+    role: replayed (PRs and the two running services)
+  - repo: kvnloo/noop
+    commit: 3a0b74b2da11617cc4d3ce6452c8c5b990a7798f
+    branch: main
+    role: replayed (PRs only; no running service declared)
+
+questions:
+  - Can the agent work-item lifecycle be stated as a statechart whose owner-facing laws are machine-proven in Bend?
+  - Are the laws load-bearing (does breaking the behaviour each law guards make the proof fail)?
+  - Does a deterministic replay of real PR, service and worker evidence through the same machine reproduce the stale-deploy and unintegrated-work failures seen on 2026-10-20?
+
+artifacts:
+  - path: data/bend-receipt.json
+    kind: receipt
+    sha256: a56228e290dcd07589f6f351e5b69a8eaeff9e10dd11152eb70a36615bf7dd18
+    provenance: hermes bend verify on bend/work_item_fsm at the source commit
+  - path: data/bend-mutations.json
+    kind: result
+    sha256: 6ae6d34dc06f7df0abc4e659293280da997ed1d0baba06f89e022f2c5db36bc1
+    provenance: bend/work_item_fsm/mutations.py --verdict
+  - path: data/parity-seed7.json
+    kind: result
+    sha256: d1b12e20ef6ab7fa6a4a7e40b6f9e55f0d1d1c5a5c5d1eb4923a13df841e3176
+    provenance: z0int.fsm.bend_parity.run_parity(seed=7, n=400, max_len=24)
+  - path: data/replay-public-20261021.json
+    kind: result
+    sha256: dfe46e7b36145461de23b3eb79dfbefed04131bb7d82cde997b9b18cff68ed9b
+    provenance: z0int.fsm.export --public over a z0int.fsm.replay run at 2026-10-21T03:57Z; worker goals, logs and local paths removed
+
+limitations:
+  - A Bend PASS covers fsm.bend's emitted book only (source_semantics_attested=false); it does not prove the Python checker or the event mapping.
+  - Python/Bend agreement is measured on 400 seeded tapes, not proven.
+  - The replay event mapping is heuristic (check-name filter for test receipts, goal/branch/worktree matching for resumes, 2 h TTL, 60 min vanish threshold).
+  - Agents push and merge under the owner's GitHub account, so author/merger identity (L2) and who pressed merge (L1) are not observable; those findings are reported as indeterminate or flagged in the message.
+  - GitHub keeps only the latest run per check; a re-run after merge can make a receipt look late.
+  - The pre-20:43 Dash deployment is not recorded anywhere; the Dash "missing features" state is shown counterfactually (checkouts that would miss merged PRs), not as an observed deployment.
+  - The in-process bend_verify tool failed with an adapter error (lean not on the Hermes process PATH); the passing evidence is the CLI receipt for the same input manifest.
+  - kvnloo/noop is pinned at its main head at study time; its PR data came from the GitHub API, not a served checkout.
+
+claims:
+  - id: laws-proven
+    text: "15 Bend claims under laws L1-L7 check, including the kernel recheck (receipt 9cebaacd..., verdict pass)."
+    evidence: [data/bend-receipt.json]
+  - id: laws-load-bearing
+    text: "10/10 mutants of fsm.bend that break a guarded behaviour make PROOF.bend fail under --verdict."
+    evidence: [data/bend-mutations.json]
+  - id: twin-parity
+    text: "The Python statechart equals the Bend model on 400 seeded tapes (5,077 events) reaching all 12 phases."
+    evidence: [data/parity-seed7.json]
+  - id: stale-deploy-reproduced
+    text: "The replay flags the Company OS static service as 31 commits behind the integrated line, and that line as local-only; the z0intelligence service as diverged from origin/master with 27 uncommitted files."
+    evidence: [data/replay-public-20261021.json]
+  - id: unintegrated-work
+    text: "13 interrupted or vanished workers had no resume, PR or abandon past the TTL; 32 merged PRs sit on branches that are on neither the default branch nor any running service."
+    evidence: [data/replay-public-20261021.json]
+  - id: receipts-missing
+    text: "39 integrations had no passing receipt on the head at merge time, 7 of them Dash PRs merged before their tests finished."
+    evidence: [data/replay-public-20261021.json]
