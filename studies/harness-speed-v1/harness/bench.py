@@ -208,16 +208,10 @@ def pin_profile_cwd(profile, cwd):
     multiplexed gateway runs its tools in that profile's `terminal.cwd` resolved against the gateway's own
     working directory ($HOME), ignoring the CLI launch directory and `--in`. Pin `terminal.cwd` in the
     bench-owned profile to this request's directory before spawning (outside the timed window)."""
-    import re
-    path = os.path.join(HOME, ".hermes", "profiles", profile, "config.yaml")
-    text = open(path).read()
-    new = re.sub(r"(?m)^(terminal:\n  cwd: ).*$", lambda m: m.group(1) + cwd, text)
-    if new == text and f"  cwd: {cwd}" not in text:
-        raise RuntimeError(f"{path}: no `terminal:` / `  cwd:` block to pin")
-    tmp = path + ".hsb-tmp"
-    with open(tmp, "w") as f:
-        f.write(new)
-    os.replace(tmp, path)
+    if profile not in HERMES_PROFILE_ARMS.values():
+        raise ValueError(f"not a benchmark-owned profile: {profile}")
+    subprocess.run(["hermes", "-p", profile, "config", "set", "terminal.cwd", os.path.abspath(cwd)],
+                   cwd=cwd, check=True, capture_output=True, text=True)
 
 
 def run_one(arm, prompt, cwd, timeout, kind="latency"):

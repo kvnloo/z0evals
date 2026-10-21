@@ -175,7 +175,9 @@ Hermes speed arms run through the resident multiplexed gateway like every other 
 
 ### s3 amendment (2026-10-21 ~06:50 UTC, after s3 latency and warm, before the counted s3 task rows)
 
-The first s3 task attempt was stopped after 18 rows and moved to `data/s3/aborted-tasks/` (not analysed).
+The first s3 task attempt was stopped after 18 observed rows; the final archived file contains 19 rows
+(one in-flight row landed during shutdown), all kept in `data/s3/aborted-tasks/` and not analysed.
+Three archived rows failed verification; sixteen passed, including potentially contaminated runs.
 Cause: in Hermes v0.22.1 a turn that the multiplexed gateway routes to a secondary profile (`speed`,
 `speed-guided`) runs its tools in that profile's `terminal.cwd` resolved against the gateway's own directory
 (`$HOME`); the CLI launch directory and `--in DIR` are ignored (checked with `pwd` through the CLI and through ACP).
@@ -189,6 +191,19 @@ Latency and warm s3 rows are kept: the speed arms answered without tools (`herme
 `python3 -c 'print(17 * 23)'` (`hermes-speed-guided`), which does not depend on the directory.
 Tasks rerun with the same arms, seeds and reps via `harness/run_s3t.sh`.
 The same routing gap is why `--yolo` did not reach the secondary profile (hence `approvals.single_query_mode`).
+
+### Post-run retrieval/validation note (2026-10-21, after 03:35 CDT completion)
+
+All 96 small-task and 72 harder-task rows were retrieved; the final aborted file has 19 rows, not the
+18 observed at stop time. No inference rerun was launched. `analysis/retrieval-sha256.json` records the
+111 source/artifact hashes compared with the MBP, with no mismatches. `harness/check_evidence.py`
+checks hashes, expected cells, duplicates, verifier fail-on-original/pass-on-reference and profile scope.
+For future reruns only, `pin_profile_cwd` now uses `hermes -p <profile> config set terminal.cwd DIR`
+with a strict allowlist of `speed` and `speed-guided`,
+instead of editing YAML directly; this remains outside the timed window. Both bench profiles' cwd were
+returned to `/home/kvn/.cache/harness-speed-v1` via scoped config commands and read back. No owner or clean
+profile configuration was changed during retrieval. These are post-run audit/maintenance changes,
+not preregistered new benchmark results.
 
 ## Not claimed
 

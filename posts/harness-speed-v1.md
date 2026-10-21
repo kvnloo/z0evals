@@ -9,8 +9,8 @@ date: "October 21, 2026"
 ---
 
 <div class="evidence-banner">
-Draft. Local measurements on one host (a 2014 MacBook Pro running Linux), one model, eight small
-tasks. Protocol committed before the runs; raw rows in <code>studies/harness-speed-v1/data/</code>.
+Draft. Local measurements on one host (a 2014 MacBook Pro running Linux), a main same-model comparison,
+eight small tasks and six harder tasks. An earlier, separate model contrast is retained. Protocol committed before the runs; raw rows in <code>studies/harness-speed-v1/data/</code>.
 </div>
 
 ## What we changed and what we held still
@@ -21,9 +21,9 @@ order, so network and provider drift hit all of them equally. The four harnesses
 minimal baseline: plugins, skills, rules and MCP off, and only file and shell tools. Then we
 changed one thing inside a harness at a time.
 
-The fx arm is the libfx 0.0.14 engine, the engine behind the fx CLI, with four tools and a
-three-sentence system prompt that we wrote. The fx CLI on this host was not signed in, so we did
-not measure the CLI itself. Keep that in mind when you read fx's token counts.
+The original `fx-base` arm is the libfx 0.0.14 engine with four tools and a three-sentence
+system prompt that we wrote. The follow-up session s3 also measures the signed-in fx CLI as
+`fx-cli`. These are different arms: the engine's small token counts are not the CLI's.
 
 ## Latency: a one-line arithmetic question
 
@@ -39,16 +39,14 @@ Each request started a new process (cold), 32 interleaved blocks. Medians, with 
 
 When the harness process is already running (warm, with a new conversation per request), fx, pi
 and omp are within about 0.2 s of each other, at 1.7 to 1.8 s to first token. Hermes was not
-measured warm. So most of the cold gap between fx, pi and omp is process startup and shutdown,
-not the agent loop.
+measured warm in s1; s3 below adds ACP. Much of the cold gap between fx, pi and omp is process
+startup and shutdown, not the agent loop.
 
-Hermes is slower, and the time is inside the turn Hermes itself reports (11.7 s median for the
-base arm, about 1.2 s more for the CLI). Hermes also chose to run a shell command to multiply 17 by
-23 in almost every request. When we took its shell and file tools away (exploratory arm, second
-session), first token fell by 3.4 s (paired median, CI [2.2, 4.3]), but the turn was still
-about 10 s. We did not find the cause of the rest. The safe-mode baseline was slower than Hermes's
-default configuration (11.1 s vs 7.2 s to first token). That is the opposite of what we expected,
-and we have no explanation for it yet.
+Hermes also ran a shell command to multiply 17 by 23 in almost every s1 request. Removing its
+shell and file tools in exploratory s2 reduced first token by 3.4 s (paired median, CI [2.2, 4.3]).
+The remaining safe-mode overhead was unexplained at that point. The follow-up below identifies
+managed-worker startup and instruction-driven tool use; the original baseline is not a minimal
+fast Hermes configuration.
 
 ## Eight small coding tasks
 
@@ -89,10 +87,77 @@ finish in about half the time Hermes takes, and with a tenth to a quarter of the
   omp's own list prices, Opus cost about 2.9 times as much ($0.41 vs $0.14 for the eight runs).
   That is one run per task, in a session where the host was busier.
 
+## Follow-up: fx CLI and a fast Hermes profile (s3)
+
+The s3 amendment was committed before its runs. No earlier rows were replaced. Each cold arm
+has 32/32 correct requests; each warm arm 30/30. Same-session cold medians:
+
+| arm | first token s [95% CI] | total s |
+| --- | --- | --- |
+| fx-base (custom libfx host) | 2.00 [1.94, 2.08] | 2.11 |
+| fx-cli | 2.22 [2.03, 2.38] | 2.22 |
+| pi-base | 2.09 [1.96, 2.15] | 5.17 |
+| omp-base | 4.07 [3.79, 4.25] | 4.22 |
+| hermes-base (safe mode) | 11.13 [10.79, 11.58] | 12.98 |
+| hermes-default-ft (same file/terminal toolsets, no safe mode) | 6.17 [5.91, 6.45] | 6.78 |
+| hermes-speed-guided | 5.61 [5.44, 5.96] | 6.03 |
+| hermes-speed | 3.18 [3.03, 3.30] | 3.67 |
+
+`speed` is an isolated Blank Slate profile: file/terminal only, no plugins, skills, MCP,
+memory, compression, fallback or auxiliary title upgrade; low reasoning, execution guidance
+and tool-use enforcement off. `speed-guided` differs only in retaining those two guidance settings.
+Turning guidance on adds 2.43 s to the median first token (unpaired CI [2.20, 2.79]): it induces
+a shell call for arithmetic. Dropping safe mode saves 4.96 s (CI [4.52, 5.50]) in C8.
+The whole speed configuration saves 7.95 s against the original safe-mode baseline (CI [7.60, 8.43]).
+These are separate contrasts, not an additive decomposition of medians.
+
+A diagnostic timeline (one request per configuration, not counted) shows safe mode starting a
+cold managed worker and attaching it before any model request. That example costs 8.4 s for
+worker startup/attach; the counted safe-mode contrast above is smaller. CLI startup still costs
+roughly 1.7–2.7 s in those diagnostic examples. With a long-lived ACP process, Hermes-speed
+reaches first token in 1.83 s [1.74, 1.93], versus pi 1.70, omp 1.74 and libfx 1.97 s. That
+warm result is for ACP, not an interactive TUI or an established multi-turn conversation.
+See `data/diag/hermes-stage-timeline.md` for the diagnostic timings.
+
+The `invalid_params` startup error was traced in the prior diagnostic run to forwarding the
+unavailable Linear MCP toolset into gateway session creation; explicit file/terminal toolsets
+worked. `hermes doctor` is not a clean bill of health: it still reports missing optional provider
+configuration and upstream dependency advisories, while Codex auth is logged in. This follow-up
+made no owner/default-profile changes and did not refresh or copy credentials again.
+
+### More task work, still no quality separation
+
+| arm | small tasks pass | small wall s [95% CI] | harder pass | harder wall s [95% CI] |
+| --- | --- | --- | --- | --- |
+| fx-base | 16/16 | 18.1 [16.6, 22.3] | 12/12 | 34.4 [29.8, 40.7] |
+| pi-base | 16/16 | 22.2 [18.2, 27.1] | 12/12 | 40.6 [37.6, 45.0] |
+| fx-cli | 16/16 | 29.5 [24.8, 32.1] | 12/12 | 54.7 [48.0, 58.5] |
+| hermes-speed | 16/16 | 31.7 [27.0, 34.8] | 12/12 | 51.4 [46.4, 59.5] |
+| hermes-speed-guided | 16/16 | 31.3 [29.3, 33.3] | 12/12 | 57.5 [53.2, 63.7] |
+| hermes-base | 16/16 | 45.0 [37.7, 48.0] | 12/12 | 67.7 [62.4, 76.8] |
+
+The six harder fixtures cover reservations, config includes/interpolation, wildcard events,
+money allocation, an expression parser and CLI word stats. All 168 counted task runs passed
+visible plus hidden tests without changing visible tests. That still does not establish quality
+equivalence: just two runs per task, short synthetic workloads and wide pass-rate intervals.
+Turning guidance off did not measurably improve small-task wall time (difference CI crosses zero).
+The actual fx CLI is slower and uses more input than the bench-authored libfx host; it is not
+valid to transfer the engine arm's token-efficiency claim to the CLI. fx CLI cache reads are
+unreported, so its computed list-price cost is an upper bound.
+
+The first s3 task attempt is preserved separately: 19 rows, three failed verifications and
+sixteen passes, excluded as a whole after a secondary-profile working-directory bug caused
+source contamination. The counted rerun pins the bench profiles' terminal directory per request;
+it starts from restored fixtures. Output work copies were deleted by the runner, so later checks
+can audit rows and verifier validity but cannot independently re-run each submitted patch.
+
 ## What this does not show
 
-One host, an old CPU, one model, small tasks that every harness solves. We did not test long
-tasks, big repos, multi-turn chats, concurrency, or the fx CLI. The fx arm's prompt and tools are
-ours, so its small token counts say more about our minimal setup than about fx. The second session
-ran with a busier host (load average up to 7). Its numbers are compared only with arms from the
-same session.
+One old CPU, short synthetic tasks, one shared provider account for the main comparison; the
+separate s2 model arm uses Anthropic. No claims about long tasks, big repos, multi-turn chats,
+concurrency or other hosts. Interleaving spreads drift; it does not guarantee equal interference.
+A concurrent Java build was observed at about 01:37 CDT (255% CPU, load 8.08) during the aborted
+attempt; counted tasks restarted at load 3.90, falling to 0.57 at small-task completion and 0.77
+at harder-task completion. There was no continuous temperature or throttling trace, so residual
+thermal interference is unknown. s2 also had load up to 7.2. Compare arms only within sessions.
+No inference reruns or heavy builds were launched during this retrieval/validation follow-up.
