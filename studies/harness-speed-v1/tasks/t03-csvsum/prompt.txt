@@ -1,0 +1,1 @@
+total_by_category() in report.py breaks on quoted CSV fields. Fix it so it handles standard CSV quoting and `python3 -m unittest` passes. Do not modify the tests.

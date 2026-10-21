@@ -1,0 +1,138 @@
+schema_version: z0eval.study.v1
+id: harness-speed-v1
+title: Same model, four coding-agent harnesses (Hermes, fx/libfx, pi, omp) - latency and small-task success, one variable at a time
+status: draft
+created: "2026-10-21"
+updated: "2026-10-21"
+
+run_id: s1-20261021
+evidence_status: local-measured-s1-s2-s3
+external_inference_spend_usd: 0  # subscription inference; s2 model arm used Anthropic, other arms ChatGPT; columns are list-price estimates
+preregistration: protocol.md (first committed as f879cff on branch study/harness-speed-v1-prereg before any counted run; rebased onto preview as 5cf2609; amendments listed in it)
+
+hardware:
+  host: mbp (MacBook Pro running CachyOS Linux, kernel 7.2.3-1-cachyos)
+  cpu: Intel Core i7-4870HQ @ 2.50GHz, 8 threads
+  memory: 15 GB
+  network: residential, same link for every arm
+
+control:
+  provider: OpenAI ChatGPT subscription via each harness's own Codex/OpenAI OAuth sign-in
+  model: gpt-6.1-sol
+  reasoning_effort: low
+  concurrency: one request at a time
+
+harnesses:
+  - name: hermes
+    version: Hermes Agent v0.22.1+33.gca069e1
+    repo: NousResearch/hermes-agent
+    commit: ca069e12239a2c8d13887ac9f983557d00bdcfd2
+    note: CLI routes turns through the resident Hermes gateway on the host
+  - name: fx
+    version: libfx 0.0.14 (engine behind the fx CLI, vercel-labs/fx)
+    integrity: sha512-8wIEkRlKuQnbueyt6NBwi4xEiEnoRpwvAocKolzzmyz/r14s4gXiE3XivGk4QJpNnMMGHAJRKlH0WhW//q7B5Q==
+    driver: harness/fx_run.ts under bun 1.4.0, four bench-owned tools (read, write, edit, bash)
+    note: fx CLI 0.0.8 (build_revision 43c11dcc34a9) signed in before s3 and measured separately as fx-cli; fx-base remains the custom libfx host
+    cli_sha256: 44019563a0b780bfc4211bd32a8720fa7c94277de8e7f5fdbd46cbcf49ad38fc
+  - name: pi
+    version: "@earendil-works/pi-coding-agent 1.3.0"
+    sha256_cli_bundle: e79626f2dd6f94aa45d30f3fa63cd84319a6eefcd150b353cfaf274366926774
+    runtime: node v26.8.1
+    plugins:
+      - name: SoL-Pi
+        repo: NVlabs/SoL-Pi
+        commit: 219568034fa54ed121ede80961655e33dfb9d0e3
+        config: {version: 1, actionFusion: true, observationPack: true, evidencePreservingReducer: false, onlineContextCompact: false, cacheWriteReadRatio: 12.5}
+      - name: "@shift-labs/pi-rlm"
+        version: 0.5.0
+        integrity: sha512-mf2a8pUbW0XPcui/dUMXHq1GcbWmhT7xzW2PW3UHYJWli62V7wu+CN5EqJHTqKSVQH+m1mQAYDyUl+lZt7fdJw==
+  - name: omp
+    version: omp/18.11.0
+    sha256_binary: c23a58ad8a92f4e738aa12dc904f3b0a1ac7035b953b9bf5d39b71a226179f6f
+    note: no RLM variant installed, so there is no omp-rlm arm
+
+sources:
+  - repo: NousResearch/hermes-agent
+    commit: ca069e12239a2c8d13887ac9f983557d00bdcfd2
+    role: Hermes harness as installed on the MBP (git install)
+  - repo: NVlabs/SoL-Pi
+    commit: 219568034fa54ed121ede80961655e33dfb9d0e3
+    role: pi efficiency extension (pi-solpi arm)
+  - repo: kvnloo/z0bridge
+    commit: 9d7ffc5
+    branch: feat/fx-worker
+    role: prior fx-vs-Hermes bench (scripts/bench-fx-vs-hermes.ts); its result (n=10, one prompt, gpt-5.6-sol, groot, zer0/data/operations/libfx-surface/20261020T2040Z-gpt56sol/summary.json) is cited, not re-run
+
+questions:
+  - With the model fixed, how do Hermes, fx (libfx), pi and omp differ in first-token and full-request latency, cold and warm?
+  - On eight small verified coding tasks, how do they differ in success, wall time, tokens and tool calls?
+  - Inside each harness, what does one plugin/tool configuration change do (Hermes default vs safe-mode minimal; omp user config vs off; pi + SoL-Pi; pi + pi-rlm)?
+
+artifacts:
+  - path: protocol.md
+    kind: other
+    note: preregistered protocol
+  - path: tasks/
+    kind: fixture
+    provenance: authored for this study; visible tests, hidden verifier tests and reference solutions (verifier checked fail-on-original, pass-on-reference)
+  - path: harness/
+    kind: other
+    note: runners and analysis code
+  - path: data/s1/
+    kind: dataset
+    provenance: rows written by harness/bench.py and harness/warm.py on the MBP; reply text truncated to 400 chars; no prompts beyond the task prompts, no credentials
+  - path: data/s2/
+    kind: dataset
+    provenance: session s2 (C5 model arm and exploratory X1/X2), same writer
+  - path: data/s3/
+    kind: dataset
+    provenance: completed s3 cold and ACP warm latency, small tasks s3 and harder tasks s3h; 19 aborted task rows retained in nested aborted-tasks and excluded from analysis
+  - path: data/diag/hermes-stage-timeline.md
+    kind: other
+    note: one-request diagnostic stage timings, not counted benchmark rows
+  - path: analysis/
+    kind: analysis
+
+limitations:
+  - One host (2014-era i7-4870HQ, Linux), one network, one provider account; no other hardware.
+  - All counted tasks passed (128/128 s1, 16/16 s2, 96/96 s3 and 72/72 s3h); even the six harder fixtures do not separate quality.
+  - fx-base is the libfx engine with bench-authored tools and prompt, not the fx CLI; s3 adds fx-cli as a distinct arm.
+  - Hermes warm latency is measured only through ACP on the isolated speed profile in s3, not the TUI.
+  - "Prior diagnosis traced invalid_params to the unavailable linear MCP toolset forwarded into gateway session.create; explicit terminal/file toolsets worked. Default-profile linear was disabled by the prior run; this retrieval follow-up changed only the bench-owned speed profile cwd through hermes config set."
+  - s3 first task attempt has 19 archived rows (3 failures, 16 passes), excluded as a whole after wrong-cwd source contamination; restored fixtures and pinned profile cwd precede the counted rerun.
+  - Counted runs used a direct YAML cwd pin outside timing; future reruns use the scoped Hermes config CLI setter, also outside timing.
+  - The runner deletes submitted work copies; verification is recorded at run time, not independently replayable patch-by-patch from published artifacts.
+  - A Java build was observed during the aborted attempt at about 01:37 CDT (255% CPU, load 8.08); counted rerun started at load 3.90 and ended at 0.77. No continuous thermal/throttle measurements were captured.
+  - Shared copied OAuth credentials can rotate out from under other harnesses; no further credential copying or refresh was needed during retrieval.
+  - fx CLI JSON usage has no cache-read split; its list-price estimate is an upper bound, and model requests are estimated from steps.
+  - The runner's stdout read can block beyond its intended deadline when a child is silent; no counted s3 timeout or nonzero exit was observed. Do not treat it as a hard external watchdog.
+  - Session s2 ran with higher host load (load average up to 7.2 at the end of its latency phase); s2 arms are compared only with s2 arms.
+  - Paired-by-block and paired-by-task CIs and the token/tool-call task contrasts were added to the analysis after the protocol; the preregistered test is the unpaired bootstrap CI of the difference in medians.
+  - Cost is a list-price estimate (subscription turns have no marginal cost); C5 uses omp's own per-message cost fields.
+  - The Hermes requests that failed (1 per Hermes arm in s1, exit 120) were not diagnosed.
+
+claims:
+  - id: cold-latency-order
+    text: "Cold, process-per-request, gpt-6.1-sol: median first token fx-base 2.13 s, pi-base 2.13 s, omp-base 3.70 s, hermes-default 7.19 s, hermes-base 11.06 s (n=31-32 each, interleaved)."
+    evidence: [analysis/summary.json, data/s1/latency.jsonl]
+  - id: warm-latency-close
+    text: "Warm (long-lived process, fresh conversation): fx-base, pi-base and omp-base are within 0.2 s of each other at 1.66-1.82 s median first token."
+    evidence: [analysis/summary.json, data/s1/warm.jsonl]
+  - id: task-wall-tokens
+    text: "On eight small tasks all arms passed 16/16; median wall time fx-base 15.1 s and pi-base 15.5 s vs omp-base 21.5 s and hermes-base 30.4 s; median input tokens fx 3.2k, pi 7.4k, hermes-base 32.7k, omp-base 35.6k."
+    evidence: [analysis/summary.json, data/s1/tasks.jsonl]
+  - id: config-overheads
+    text: "Within-harness: Hermes default config used 5.7x the input tokens of safe mode with no measurable wall-time change; omp user config added 0.8 s cold latency, 5.5 s per task and 3.2x input tokens; SoL-Pi cut about 900 input tokens and one tool call per task; pi-rlm cut 1.5 tool calls but added about 3.2k input tokens."
+    evidence: [analysis/summary.json]
+  - id: model-arm
+    text: "On omp-base, claude-opus-5-5 vs gpt-6.1-sol: cold latency not distinguishable; tasks 13.0 s vs 22.1 s median wall with half the tool calls, both 8/8, at about 2.9x omp's list-price cost (one run per task, s2)."
+    evidence: [analysis/summary.json, data/s2/tasks.jsonl]
+  - id: speed-profile-followup
+    text: "s3 cold TTFT: hermes-base safe mode 11.13 s, default file/terminal without safe mode 6.17 s, speed-guided 5.61 s, speed 3.18 s; all 32/32 correct. ACP warm speed TTFT 1.83 s, 30/30 correct."
+    evidence: [analysis/summary.json, data/s3/latency.jsonl, data/s3/warm.jsonl]
+  - id: fx-cli-followup
+    text: "s3 actual fx CLI TTFT 2.22 s (32/32); task median wall 29.5 s on small tasks and 54.7 s on harder tasks, versus custom libfx host 18.1 s and 34.4 s, all passing."
+    evidence: [analysis/summary.json, data/s3/tasks.jsonl]
+  - id: s3-task-validity
+    text: "All 168 counted s3/s3h task runs passed runtime verification without visible-test modifications; 19 aborted rows (3 failures) remain archived and excluded. Follow-up checks confirm 14 failing originals, 14 passing references and 111 matching MBP retrieval hashes."
+    evidence: [data/s3/tasks.jsonl, data/s3/aborted-tasks/tasks.jsonl, analysis/retrieval-sha256.json, harness/check_evidence.py]

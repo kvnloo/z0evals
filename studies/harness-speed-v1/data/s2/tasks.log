@@ -1,0 +1,16 @@
+{"rep": 0, "task": "t04-cliflag", "arm": "omp-base@claude-opus-5-5", "s": 12.6, "pass": true, "tools": 4}
+{"rep": 0, "task": "t04-cliflag", "arm": "omp-base", "s": 20.2, "pass": true, "tools": 5}
+{"rep": 0, "task": "t06-duration", "arm": "omp-base", "s": 28.4, "pass": true, "tools": 6}
+{"rep": 0, "task": "t06-duration", "arm": "omp-base@claude-opus-5-5", "s": 18.1, "pass": true, "tools": 3}
+{"rep": 0, "task": "t01-paginate", "arm": "omp-base@claude-opus-5-5", "s": 15.1, "pass": true, "tools": 3}
+{"rep": 0, "task": "t01-paginate", "arm": "omp-base", "s": 20.2, "pass": true, "tools": 5}
+{"rep": 0, "task": "t07-rename", "arm": "omp-base", "s": 22.3, "pass": true, "tools": 7}
+{"rep": 0, "task": "t07-rename", "arm": "omp-base@claude-opus-5-5", "s": 19.1, "pass": true, "tools": 7}
+{"rep": 0, "task": "t08-merge", "arm": "omp-base@claude-opus-5-5", "s": 13.0, "pass": true, "tools": 3}
+{"rep": 0, "task": "t08-merge", "arm": "omp-base", "s": 21.8, "pass": true, "tools": 6}
+{"rep": 0, "task": "t02-slugify", "arm": "omp-base", "s": 26.6, "pass": true, "tools": 5}
+{"rep": 0, "task": "t02-slugify", "arm": "omp-base@claude-opus-5-5", "s": 12.9, "pass": true, "tools": 3}
+{"rep": 0, "task": "t03-csvsum", "arm": "omp-base", "s": 20.3, "pass": true, "tools": 6}
+{"rep": 0, "task": "t03-csvsum", "arm": "omp-base@claude-opus-5-5", "s": 8.7, "pass": true, "tools": 3}
+{"rep": 0, "task": "t05-lru", "arm": "omp-base", "s": 29.9, "pass": true, "tools": 7}
+{"rep": 0, "task": "t05-lru", "arm": "omp-base@claude-opus-5-5", "s": 12.5, "pass": true, "tools": 4}
