@@ -98,6 +98,8 @@ def load(dirs):
 
 
 def arm_key(r):
+    if "@" in r["arm"]:
+        return r["arm"]
     m = r.get("model", "")
     tag = "" if m.endswith("gpt-6.1-sol") or not m else "@" + m.split("/")[-1]
     return r["arm"] + tag
@@ -109,6 +111,7 @@ CONTRASTS = [
     ("C2", "hermes-base", "hermes-default"), ("C3", "omp-base", "omp-default"),
     ("C4", "pi-base", "pi-solpi"), ("C4", "pi-base", "pi-rlm"),
     ("C5", "omp-base", "omp-base@claude-opus-5-5"),
+    ("X1", "pi-base", "pi-base-offline"), ("X2", "hermes-base", "hermes-base-clarify"),
 ]
 
 
