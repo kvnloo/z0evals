@@ -1,0 +1,36 @@
+schema_version: z0eval.study.v1
+id: noop-hermes-agent-api
+title: Hermes reads NOOP health summaries and drives safe in-app actions over the owner's tailnet (no adb)
+status: draft
+created: "2026-10-20"
+updated: "2026-10-21"
+
+run_id: s25-20261020T2347
+evidence_status: local-frozen-handset-run
+external_inference_spend_usd: unknown  # one Hermes coach turn on the owner's default provider
+
+hardware:
+  phone: Samsung Galaxy S25 Ultra (owner's daily phone, Android 15 / SDK 35)
+  host: groot (Linux, Tailscale peer, Hermes clean profile)
+  network: owner's Tailscale tailnet (WireGuard), phone and host direct LAN path
+
+sources:
+  - repo: kvnloo/noop
+    branch: feat/android-hermes-agent-api
+    commit: 84048f3b049b
+    pr: https://github.com/kvnloo/noop/pull/95
+    role: in-app agent API (Kotlin), Hermes-side MCP client, Presidio layer, e2e script, JVM tests
+    visibility: public-fork
+  - repo: kvnloo/noop
+    branch: local/s25-hermes-agent-integration (local only)
+    role: installed lineage = other workers' unpushed stack tip + the feature commits
+    visibility: local-only
+
+privacy:
+  published: structure, check pass/fail, latency, counts of audit entries by kind/tool/outcome
+  never_published: health values, dashboard content, coach advice text, tokens, device ids
+
+questions:
+  - Can the owner's Hermes read bounded NOOP data and perform an allow-listed in-app action with no adb, only the tailnet?
+  - Do the consent, scope, auth and audit gates hold on a real handset?
+  - Is per-call latency small enough for an interactive coach turn?
