@@ -55,9 +55,10 @@ def arm_cmd(arm, prompt):
         "fx-base": ["bun", os.path.join(BENCH, "fx", "fx_run.ts"), "--model", MODEL, "--effort", EFFORT, "--prompt", prompt],
         "omp-base": omp + ["--no-extensions", "--no-skills", "--no-rules", "--no-lsp", "--tools", "read,bash,edit,write", prompt],
         "omp-default": omp + [prompt],
-        "pi-base": pi + pi_base + ["--tools", "read,bash,edit,write", prompt],
-        "pi-solpi": pi + pi_base + ["-e", SOLPI, "--tools", "read,bash,edit,write", prompt],
-        "pi-rlm": pi + pi_base + ["-e", PIRLM, "--rlm", prompt],
+        # `--` before the prompt: extension flags such as --rlm otherwise swallow the next argument.
+        "pi-base": pi + pi_base + ["--tools", "read,bash,edit,write", "--", prompt],
+        "pi-solpi": pi + pi_base + ["-e", SOLPI, "--tools", "read,bash,edit,write", "--", prompt],
+        "pi-rlm": pi + pi_base + ["-e", PIRLM, "--rlm", "--", prompt],
     }
     return table[arm]
 

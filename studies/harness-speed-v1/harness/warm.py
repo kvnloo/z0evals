@@ -28,7 +28,7 @@ def argv_for(arm):
     if fam == "fx":
         i = cmd.index("--prompt")
         return cmd[:i] + ["--serve"]
-    cmd = [c for c in cmd if c != "__P__"]
+    cmd = [c for c in cmd if c not in ("__P__", "--")]
     for flag in ("-p",):
         cmd.remove(flag)
     i = cmd.index("--mode")
