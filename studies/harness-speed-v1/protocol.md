@@ -173,6 +173,23 @@ arm) but its JSON usage has no cache-read split, so its cost estimate is an uppe
 `model_requests` is `steps + 1` (estimated). fx-cli latency TTFT uses raw text mode, tasks use `--json`.
 Hermes speed arms run through the resident multiplexed gateway like every other non-safe-mode Hermes arm.
 
+### s3 amendment (2026-10-21 ~06:50 UTC, after s3 latency and warm, before the counted s3 task rows)
+
+The first s3 task attempt was stopped after 18 rows and moved to `data/s3/aborted-tasks/` (not analysed).
+Cause: in Hermes v0.22.1 a turn that the multiplexed gateway routes to a secondary profile (`speed`,
+`speed-guided`) runs its tools in that profile's `terminal.cwd` resolved against the gateway's own directory
+(`$HOME`); the CLI launch directory and `--in DIR` are ignored (checked with `pwd` through the CLI and through ACP).
+The `hermes-speed` agent searched `$HOME`, found the bench's source copy of t05 and edited it, so later t05 runs
+started from a solved repo. The only write outside a run's work copy was that file (audited from both profiles'
+`state.db`); the task sources were restored from git (`rsync --delete -c`), and checksums match.
+Fix (bench-side, no Hermes change): before each `hermes-speed*` request `bench.py` pins `terminal.cwd` in the
+bench-owned profile's `config.yaml` to that request's directory (`pin_profile_cwd`, outside the timed window).
+Smoke after the fix: `data/smoke-s3`, session `smoke-s3c` (t05 passes, source unchanged).
+Latency and warm s3 rows are kept: the speed arms answered without tools (`hermes-speed`) or ran only
+`python3 -c 'print(17 * 23)'` (`hermes-speed-guided`), which does not depend on the directory.
+Tasks rerun with the same arms, seeds and reps via `harness/run_s3t.sh`.
+The same routing gap is why `--yolo` did not reach the secondary profile (hence `approvals.single_query_mode`).
+
 ## Not claimed
 
 No claim about other models, long tasks, large repos, multi-turn chats, concurrency, or any host
