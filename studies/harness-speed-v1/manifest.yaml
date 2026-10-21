@@ -8,7 +8,7 @@ updated: "2026-10-21"
 run_id: s1-20261021
 evidence_status: local-measured-s1-s2
 external_inference_spend_usd: 0  # every arm ran on the owner's ChatGPT subscription; cost columns are list-price estimates
-preregistration: protocol.md (committed f879cff before any counted run; amendments listed in it)
+preregistration: protocol.md (first committed as f879cff on branch study/harness-speed-v1-prereg before any counted run; rebased onto preview as 5cf2609; amendments listed in it)
 
 hardware:
   host: mbp (MacBook Pro running CachyOS Linux, kernel 7.2.3-1-cachyos)
