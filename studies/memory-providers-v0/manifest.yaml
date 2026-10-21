@@ -1,0 +1,87 @@
+{
+  "schema_version": "z0eval.study.v1",
+  "id": "memory-providers-v0",
+  "title": "Incomplete native memory retrieval comparison on a synthetic fixture",
+  "status": "draft",
+  "created": "2026-10-21",
+  "sources": [
+    {
+      "repo": "NousResearch/hermes-agent",
+      "commit": "c9dce2c26f8dff6121845936bd6179e99cb3bd04",
+      "role": "native FTS5 session search; evaluated source files verified byte-identical to commit"
+    },
+    {
+      "repo": "supermemoryai/hermes-supermemory",
+      "commit": "91405dd00fdf2a0b3515b25c25557598f6793299",
+      "role": "downloaded disabled, no live API test"
+    },
+    {
+      "repo": "TencentCloud/TencentDB-Agent-Memory",
+      "commit": "0aff21a2d9f2b8a0354aaa80a2e586aab4054562",
+      "role": "client contract source; running gateway build revision not exposed"
+    }
+  ],
+  "questions": [
+    "What can native retrieval recover on an identical synthetic corpus?",
+    "Does the latest fact rank first after an update?"
+  ],
+  "artifacts": [
+    {
+      "path": "README.md",
+      "kind": "other",
+      "sha256": "2bf4071b1cd4a0580aba646e720fc3085c178c4f283dde7ac7f2e8876713cf9d"
+    },
+    {
+      "path": "run.py",
+      "kind": "other",
+      "sha256": "a543c13118e012a8b15cdb947352994640ee70cb5075f25311e31ec528d6cbc4"
+    },
+    {
+      "path": "score.py",
+      "kind": "other",
+      "sha256": "850cb01e850d496eb51975f703228cbbbb1e62a066cf451a0d50497260d9eca2"
+    },
+    {
+      "path": "test_score.py",
+      "kind": "other",
+      "sha256": "b932e5370d1420967372489d8b79dac1913bbc550d7129f05f1184a69bf8613d"
+    },
+    {
+      "path": "results.json",
+      "kind": "result",
+      "sha256": "3277078f5a77ebc6835f1cb645e9e9d8fa139287fa2a39ef2f4eb5c1ac7c4db7"
+    },
+    {
+      "path": "data/synthetic.json",
+      "kind": "dataset",
+      "sha256": "1d32cb1f76ad6a29517252d08923c721d2069e18106a882f78a7941afd23def0"
+    },
+    {
+      "path": "data/ctx.json",
+      "kind": "dataset",
+      "sha256": "5d87f344e437f7164c5bdedd496cdc5e628dc22bba58423690b9fae27a3e950f"
+    },
+    {
+      "path": "data/hermes.json",
+      "kind": "dataset",
+      "sha256": "a8281aacc5ae004df2d77086dd4e8447eba660f957ae2ec77ba75cbcb1c5abe7"
+    },
+    {
+      "path": "data/tencent.json",
+      "kind": "dataset",
+      "sha256": "a95f5f3f6ad574cc4de5bb9ae63334bede3e59e2e3fd5db16536a4f0559b7836"
+    }
+  ],
+  "limitations": [
+    "ctx CLI 2.2.8 binary SHA256 afcff832d2de1eedd8623097acd29ded17a5defe372e8e04f10b40fd45df7711; upstream source revision not exposed.",
+    "TencentDB running gateway build provenance not established by local checkout revision.",
+    "Supermemory credential unavailable; GraphRAG retrieval not run; no five-way comparison.",
+    "Historical public GraphRAG extraction benchmark is distinct from retrieval and is not republished."
+  ],
+  "hardware": {
+    "probe_host": "groot",
+    "analysis_node": "mbp",
+    "probe_scope": "tiny native local-provider calls; 50 calls per measured provider",
+    "fleet_scoring_job": "20261021-184753-9a2b"
+  }
+}

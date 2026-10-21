@@ -1,0 +1,55 @@
+{
+  "schema": "memory-provider-results.v1",
+  "status": "incomplete",
+  "results": [
+    {
+      "provider": "ctx",
+      "corpus": "synthetic-public",
+      "n_observations": 50,
+      "unique_queries": 10,
+      "recall_at_5": 1.0,
+      "mrr_at_5": 0.9444444444444444,
+      "abstention_retrieval_rate": 1,
+      "updated_document_top1_rate": 0,
+      "p50_ms": 17.89590500993654,
+      "p95_ms": 35.19014798803255,
+      "ingest_seconds": 0.6487030539719854,
+      "cost_per_1k_queries_usd": null,
+      "cost_note": "No per-call local API invoice; hardware, energy and background extraction unmetered."
+    },
+    {
+      "provider": "hermes",
+      "corpus": "synthetic-public",
+      "n_observations": 50,
+      "unique_queries": 10,
+      "recall_at_5": 1.0,
+      "mrr_at_5": 0.9444444444444444,
+      "abstention_retrieval_rate": 1,
+      "updated_document_top1_rate": 0,
+      "p50_ms": 0.6659970094915479,
+      "p95_ms": 2.0432449819054455,
+      "ingest_seconds": 3.376065299002221,
+      "cost_per_1k_queries_usd": null,
+      "cost_note": "No per-call local API invoice; hardware, energy and background extraction unmetered."
+    },
+    {
+      "provider": "tencent",
+      "corpus": "synthetic-public",
+      "n_observations": 50,
+      "unique_queries": 10,
+      "recall_at_5": 1.0,
+      "mrr_at_5": 0.9444444444444444,
+      "abstention_retrieval_rate": 1,
+      "updated_document_top1_rate": 0,
+      "p50_ms": 1.2667054979829118,
+      "p95_ms": 16.220587014686316,
+      "ingest_seconds": 0.9452712339989375,
+      "cost_per_1k_queries_usd": null,
+      "cost_note": "No per-call local API invoice; hardware, energy and background extraction unmetered."
+    }
+  ],
+  "not_run": {
+    "supermemory": "Hosted credential unavailable; no uploads attempted.",
+    "graphrag": "Existing extraction benchmark is not a labelled retrieval benchmark. No equivalent retrieval run."
+  }
+}

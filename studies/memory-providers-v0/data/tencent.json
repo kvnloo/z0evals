@@ -1,0 +1,409 @@
+{
+  "provider": "tencent",
+  "corpus": "synthetic-public",
+  "k": 5,
+  "ingest_seconds": 0.9452712339989375,
+  "rows": [
+    {
+      "query_id": "exact",
+      "repeat": 0,
+      "ids": [
+        "atlas-new",
+        "atlas-old"
+      ],
+      "latency_ms": 25.68039600737393
+    },
+    {
+      "query_id": "backup",
+      "repeat": 0,
+      "ids": [
+        "birch"
+      ],
+      "latency_ms": 16.220587014686316
+    },
+    {
+      "query_id": "owner",
+      "repeat": 0,
+      "ids": [
+        "cedar"
+      ],
+      "latency_ms": 1.2234349851496518
+    },
+    {
+      "query_id": "license",
+      "repeat": 0,
+      "ids": [
+        "delta"
+      ],
+      "latency_ms": 6.285495008341968
+    },
+    {
+      "query_id": "retention",
+      "repeat": 0,
+      "ids": [
+        "elm"
+      ],
+      "latency_ms": 2.030575997196138
+    },
+    {
+      "query_id": "health",
+      "repeat": 0,
+      "ids": [
+        "fir"
+      ],
+      "latency_ms": 1.3940899807494134
+    },
+    {
+      "query_id": "paraphrase",
+      "repeat": 0,
+      "ids": [
+        "cedar"
+      ],
+      "latency_ms": 6.276080006500706
+    },
+    {
+      "query_id": "updated",
+      "repeat": 0,
+      "ids": [
+        "atlas-old",
+        "atlas-new"
+      ],
+      "latency_ms": 2.1135989809408784
+    },
+    {
+      "query_id": "shortcut",
+      "repeat": 0,
+      "ids": [
+        "grove"
+      ],
+      "latency_ms": 23.165856022387743
+    },
+    {
+      "query_id": "absent",
+      "repeat": 0,
+      "ids": [],
+      "latency_ms": 0.9610870038159192
+    },
+    {
+      "query_id": "exact",
+      "repeat": 1,
+      "ids": [
+        "atlas-new",
+        "atlas-old"
+      ],
+      "latency_ms": 1.2418630067259073
+    },
+    {
+      "query_id": "backup",
+      "repeat": 1,
+      "ids": [
+        "birch"
+      ],
+      "latency_ms": 1.3788299984298646
+    },
+    {
+      "query_id": "owner",
+      "repeat": 1,
+      "ids": [
+        "cedar"
+      ],
+      "latency_ms": 0.8836840279400349
+    },
+    {
+      "query_id": "license",
+      "repeat": 1,
+      "ids": [
+        "delta"
+      ],
+      "latency_ms": 3.707593015860766
+    },
+    {
+      "query_id": "retention",
+      "repeat": 1,
+      "ids": [
+        "elm"
+      ],
+      "latency_ms": 1.4185119944158942
+    },
+    {
+      "query_id": "health",
+      "repeat": 1,
+      "ids": [
+        "fir"
+      ],
+      "latency_ms": 0.8272170089185238
+    },
+    {
+      "query_id": "paraphrase",
+      "repeat": 1,
+      "ids": [
+        "cedar"
+      ],
+      "latency_ms": 3.907699981937185
+    },
+    {
+      "query_id": "updated",
+      "repeat": 1,
+      "ids": [
+        "atlas-old",
+        "atlas-new"
+      ],
+      "latency_ms": 2.911742980359122
+    },
+    {
+      "query_id": "shortcut",
+      "repeat": 1,
+      "ids": [
+        "grove"
+      ],
+      "latency_ms": 0.9706080018077046
+    },
+    {
+      "query_id": "absent",
+      "repeat": 1,
+      "ids": [],
+      "latency_ms": 0.7877130119595677
+    },
+    {
+      "query_id": "exact",
+      "repeat": 2,
+      "ids": [
+        "atlas-new",
+        "atlas-old"
+      ],
+      "latency_ms": 0.764303986215964
+    },
+    {
+      "query_id": "backup",
+      "repeat": 2,
+      "ids": [
+        "birch"
+      ],
+      "latency_ms": 1.1805839894805104
+    },
+    {
+      "query_id": "owner",
+      "repeat": 2,
+      "ids": [
+        "cedar"
+      ],
+      "latency_ms": 1.1295099975541234
+    },
+    {
+      "query_id": "license",
+      "repeat": 2,
+      "ids": [
+        "delta"
+      ],
+      "latency_ms": 0.8520740084350109
+    },
+    {
+      "query_id": "retention",
+      "repeat": 2,
+      "ids": [
+        "elm"
+      ],
+      "latency_ms": 1.6794849943835288
+    },
+    {
+      "query_id": "health",
+      "repeat": 2,
+      "ids": [
+        "fir"
+      ],
+      "latency_ms": 0.7467070245184004
+    },
+    {
+      "query_id": "paraphrase",
+      "repeat": 2,
+      "ids": [
+        "cedar"
+      ],
+      "latency_ms": 3.556500014383346
+    },
+    {
+      "query_id": "updated",
+      "repeat": 2,
+      "ids": [
+        "atlas-old",
+        "atlas-new"
+      ],
+      "latency_ms": 0.9975670254789293
+    },
+    {
+      "query_id": "shortcut",
+      "repeat": 2,
+      "ids": [
+        "grove"
+      ],
+      "latency_ms": 1.1387100093998015
+    },
+    {
+      "query_id": "absent",
+      "repeat": 2,
+      "ids": [],
+      "latency_ms": 0.8137909753713757
+    },
+    {
+      "query_id": "exact",
+      "repeat": 3,
+      "ids": [
+        "atlas-new",
+        "atlas-old"
+      ],
+      "latency_ms": 0.8115609816741198
+    },
+    {
+      "query_id": "backup",
+      "repeat": 3,
+      "ids": [
+        "birch"
+      ],
+      "latency_ms": 4.48535502073355
+    },
+    {
+      "query_id": "owner",
+      "repeat": 3,
+      "ids": [
+        "cedar"
+      ],
+      "latency_ms": 0.9421499853488058
+    },
+    {
+      "query_id": "license",
+      "repeat": 3,
+      "ids": [
+        "delta"
+      ],
+      "latency_ms": 1.386176998494193
+    },
+    {
+      "query_id": "retention",
+      "repeat": 3,
+      "ids": [
+        "elm"
+      ],
+      "latency_ms": 0.7592140173073858
+    },
+    {
+      "query_id": "health",
+      "repeat": 3,
+      "ids": [
+        "fir"
+      ],
+      "latency_ms": 0.8876689826138318
+    },
+    {
+      "query_id": "paraphrase",
+      "repeat": 3,
+      "ids": [
+        "cedar"
+      ],
+      "latency_ms": 2.242265996756032
+    },
+    {
+      "query_id": "updated",
+      "repeat": 3,
+      "ids": [
+        "atlas-old",
+        "atlas-new"
+      ],
+      "latency_ms": 1.207828987389803
+    },
+    {
+      "query_id": "shortcut",
+      "repeat": 3,
+      "ids": [
+        "grove"
+      ],
+      "latency_ms": 1.0551459854468703
+    },
+    {
+      "query_id": "absent",
+      "repeat": 3,
+      "ids": [],
+      "latency_ms": 2.310177020262927
+    },
+    {
+      "query_id": "exact",
+      "repeat": 4,
+      "ids": [
+        "atlas-new",
+        "atlas-old"
+      ],
+      "latency_ms": 1.365705014904961
+    },
+    {
+      "query_id": "backup",
+      "repeat": 4,
+      "ids": [
+        "birch"
+      ],
+      "latency_ms": 1.7096349911298603
+    },
+    {
+      "query_id": "owner",
+      "repeat": 4,
+      "ids": [
+        "cedar"
+      ],
+      "latency_ms": 1.2922959867864847
+    },
+    {
+      "query_id": "license",
+      "repeat": 4,
+      "ids": [
+        "delta"
+      ],
+      "latency_ms": 6.848466000519693
+    },
+    {
+      "query_id": "retention",
+      "repeat": 4,
+      "ids": [
+        "elm"
+      ],
+      "latency_ms": 0.953531009145081
+    },
+    {
+      "query_id": "health",
+      "repeat": 4,
+      "ids": [
+        "fir"
+      ],
+      "latency_ms": 0.6701499805785716
+    },
+    {
+      "query_id": "paraphrase",
+      "repeat": 4,
+      "ids": [
+        "cedar"
+      ],
+      "latency_ms": 1.8571809923741966
+    },
+    {
+      "query_id": "updated",
+      "repeat": 4,
+      "ids": [
+        "atlas-old",
+        "atlas-new"
+      ],
+      "latency_ms": 0.8135840180329978
+    },
+    {
+      "query_id": "shortcut",
+      "repeat": 4,
+      "ids": [
+        "grove"
+      ],
+      "latency_ms": 0.6762050034012645
+    },
+    {
+      "query_id": "absent",
+      "repeat": 4,
+      "ids": [],
+      "latency_ms": 1.2915479892399162
+    }
+  ],
+  "scope": "retrieval only; no answer-generation or temporal resolver"
+}

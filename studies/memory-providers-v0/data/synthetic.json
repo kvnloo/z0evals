@@ -1,0 +1,26 @@
+{
+  "schema": "memory-provider-fixture.v1",
+  "privacy": "synthetic-public",
+  "documents": [
+    {"id":"atlas-old","at":"2026-10-01T12:00:00Z","text":"Atlas project deployment region is Dublin. Release identifier ATLAS-R17."},
+    {"id":"atlas-new","at":"2026-10-20T12:00:00Z","text":"Atlas project deployment region changed to Oslo, replacing Dublin. Release identifier ATLAS-R18."},
+    {"id":"birch","at":"2026-10-02T12:00:00Z","text":"Birch database backups run every six hours. Restore verification uses checksum BIRCH-91."},
+    {"id":"cedar","at":"2026-10-03T12:00:00Z","text":"Cedar incident owner is Mira. Escalation channel is cedar-ops."},
+    {"id":"delta","at":"2026-10-04T12:00:00Z","text":"Delta documentation is licensed under MIT. The docs build command is make docs."},
+    {"id":"elm","at":"2026-10-05T12:00:00Z","text":"Elm queue retention is seven days. Expired jobs are purged daily."},
+    {"id":"fir","at":"2026-10-06T12:00:00Z","text":"Fir service health endpoint is /ready. The service listens on port 9157."},
+    {"id":"grove","at":"2026-10-07T12:00:00Z","text":"Grove UI theme is amber. Its keyboard shortcut for search is Ctrl K."}
+  ],
+  "queries": [
+    {"id":"exact","kind":"exact-identifier","query":"ATLAS-R18","relevant":["atlas-new"],"answer":"Oslo"},
+    {"id":"backup","kind":"exact","query":"Birch backups","relevant":["birch"],"answer":"six hours"},
+    {"id":"owner","kind":"exact","query":"Cedar incident owner","relevant":["cedar"],"answer":"Mira"},
+    {"id":"license","kind":"exact","query":"Delta licensed","relevant":["delta"],"answer":"MIT"},
+    {"id":"retention","kind":"exact","query":"Elm retention","relevant":["elm"],"answer":"seven days"},
+    {"id":"health","kind":"exact","query":"Fir health","relevant":["fir"],"answer":"/ready"},
+    {"id":"paraphrase","kind":"semantic","query":"Who handles emergencies for the tree named Cedar?","relevant":["cedar"],"answer":"Mira"},
+    {"id":"updated","kind":"supersession","query":"Atlas deployment region","relevant":["atlas-new"],"answer":"Oslo","stale_answer":"Dublin"},
+    {"id":"shortcut","kind":"exact","query":"Grove keyboard shortcut","relevant":["grove"],"answer":"Ctrl K"},
+    {"id":"absent","kind":"abstention","query":"Juniper payroll contact","relevant":[],"answer":null}
+  ]
+}
