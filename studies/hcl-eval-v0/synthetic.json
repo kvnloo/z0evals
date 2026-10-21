@@ -1,0 +1,41 @@
+{
+  "schema_version": "hcl-conformance-v0",
+  "data_kind": "synthetic",
+  "claim": "contract_only",
+  "source_revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "evaluator_revision": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "registered_at": "2030-01-01T09:00:00Z",
+  "as_of": "2030-01-03T10:00:00Z",
+  "rows": [
+    {
+      "id": "fixture-1",
+      "group": "synthetic-session-1",
+      "split": "evaluation",
+      "arm": "control",
+      "assignment_probability": 0.5,
+      "exposure_at": "2030-01-01T10:00:00Z",
+      "outcome_due": "2030-01-02T10:00:00Z",
+      "choice": "YES",
+      "status": "OBSERVED",
+      "measurement": "objective_task",
+      "assistance": "none",
+      "value": 0.0,
+      "observed_at": "2030-01-02T11:00:00Z"
+    },
+    {
+      "id": "fixture-2",
+      "group": "synthetic-session-1",
+      "split": "evaluation",
+      "arm": "candidate",
+      "assignment_probability": 0.5,
+      "exposure_at": "2030-01-01T10:00:00Z",
+      "outcome_due": "2030-01-02T10:00:00Z",
+      "choice": "UNKNOWN",
+      "status": "MISSING",
+      "measurement": "objective_task",
+      "assistance": "none",
+      "value": null,
+      "observed_at": null
+    }
+  ]
+}

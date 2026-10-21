@@ -1,0 +1,25 @@
+name: HCL synthetic conformance
+
+on:
+  pull_request:
+    paths:
+      - 'studies/hcl-eval-v0/**'
+      - '.github/workflows/hcl-conformance.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Synthetic boundary tests
+        run: python -m unittest discover -s studies/hcl-eval-v0 -p 'test_*.py' -v
+      - name: Explicitly non-efficacy receipt
+        run: python studies/hcl-eval-v0/validate.py studies/hcl-eval-v0/synthetic.json
