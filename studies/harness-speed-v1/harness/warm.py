@@ -5,7 +5,9 @@ request, arms interleaved round-robin in seeded random order per round.
     python3 warm.py --arms omp-base,fx-base,pi-base --rounds 30 --warmup 1 --out DIR
 
 pi/omp: `--mode rpc` with `new_session` before each `prompt`. fx: `fx_run.ts --serve` (new engine
-per request in the same process). Time is measured from writing the prompt command to stdin.
+per request in the same process). Hermes (s3): `hermes -p <profile> acp` (ACP over stdio), `session/new`
+before each `session/prompt`; the model, provider and effort come from that profile's config.
+Time is measured from writing the prompt command to stdin.
 """
 import argparse
 import json
@@ -22,9 +24,14 @@ import bench
 LAT_PROMPT, EXPECT = bench.LATENCY_PROMPT, bench.LATENCY_EXPECT
 
 
+HERMES_ACP_PROFILES = {"hermes-speed": "speed", "hermes-speed-guided": "speed-guided"}
+
+
 def argv_for(arm):
-    cmd = bench.arm_cmd(arm, "__P__")
     fam = bench.family(arm)
+    if fam == "hermes":
+        return ["hermes", "-p", HERMES_ACP_PROFILES[arm], "acp"]
+    cmd = bench.arm_cmd(arm, "__P__")
     if fam == "fx":
         i = cmd.index("--prompt")
         return cmd[:i] + ["--serve"]
@@ -46,6 +53,29 @@ class Proc:
         self.q = queue.Queue()
         threading.Thread(target=self._pump, daemon=True).start()
         self.n = 0
+        self.cwd = cwd
+        if self.fam == "hermes":
+            _t, r = self.rpc("initialize", {"protocolVersion": 1, "clientCapabilities": {
+                "fs": {"readTextFile": False, "writeTextFile": False}, "terminal": False}}, 120)
+            self.acp_ok = bool(r and "result" in r)
+
+    def rpc(self, method, params, timeout, on_note=None):
+        """One ACP JSON-RPC call; agent->client requests (permissions) are answered allow-once."""
+        self.n += 1
+        rid = f"a{self.n}"
+        self.send({"jsonrpc": "2.0", "id": rid, "method": method, "params": params})
+        end = time.perf_counter() + timeout
+        while True:
+            t, d = self.wait_for(lambda d: True, max(0.01, end - time.perf_counter()))
+            if d is None or d.get("type") == "__eof__":
+                return t, None
+            if d.get("id") == rid and ("result" in d or "error" in d):
+                return t, d
+            if "method" in d and "id" in d:
+                res = {"outcome": {"outcome": "selected", "optionId": "allow_once"}} if "permission" in d["method"] else None
+                self.send({"jsonrpc": "2.0", "id": d["id"], "result": res})
+            elif on_note:
+                on_note(t, d)
 
     def _pump(self):
         for raw in iter(self.p.stdout.readline, b""):
@@ -77,6 +107,8 @@ class Proc:
                 return t, d
 
     def request(self, cwd, timeout=120):
+        if self.fam == "hermes":
+            return self.request_acp(cwd, timeout)
         self.n += 1
         rid = f"r{self.n}"
         if self.fam in ("pi", "omp"):
@@ -134,6 +166,36 @@ class Proc:
                 return {"ttft_ms": ttft, "total_ms": (t - t0) * 1000, "text": d.get("text", ""), "error": None,
                         "tokens": {"input_total": u.get("inputTokens") or 0, "output": u.get("outputTokens") or 0,
                                    "cache_read": u.get("cacheReadTokens") or 0}}
+
+    def request_acp(self, cwd, timeout):
+        self.drain()
+        _t, r = self.rpc("session/new", {"cwd": cwd, "mcpServers": []}, 60)
+        sid = ((r or {}).get("result") or {}).get("sessionId")
+        if not sid:
+            return {"ttft_ms": None, "total_ms": None, "text": "", "error": f"session/new failed: {str(r)[:200]}",
+                    "new_session_ok": False, "tokens": {}}
+        time.sleep(0.2)
+        self.drain()
+        first, text = [None], []
+
+        def note(t, d):
+            u = (d.get("params") or {}).get("update") or {}
+            if u.get("sessionUpdate") == "agent_message_chunk":
+                if first[0] is None:
+                    first[0] = t
+                text.append((u.get("content") or {}).get("text", ""))
+        t0 = time.perf_counter()
+        t, r = self.rpc("session/prompt", {"sessionId": sid, "prompt": [{"type": "text", "text": LAT_PROMPT}]}, timeout, note)
+        if r is None or "error" in r:
+            return {"ttft_ms": (first[0] - t0) * 1000 if first[0] else None, "total_ms": (time.perf_counter() - t0) * 1000,
+                    "text": "".join(text), "error": str((r or {}).get("error", "timeout/eof"))[:200], "new_session_ok": True,
+                    "tokens": {}}
+        u = (r.get("result") or {}).get("usage") or {}
+        return {"ttft_ms": (first[0] - t0) * 1000 if first[0] else None, "total_ms": (t - t0) * 1000, "text": "".join(text),
+                "error": None, "new_session_ok": True,
+                # ACP inputTokens excludes cached reads (checked in smoke: 3401 + 1920 cached = 5321)
+                "tokens": {"input_total": (u.get("inputTokens") or 0) + (u.get("cachedReadTokens") or 0),
+                           "output": u.get("outputTokens") or 0, "cache_read": u.get("cachedReadTokens") or 0}}
 
     def close(self):
         try:

@@ -117,6 +117,62 @@ original plan; they are reported as exploratory and only compared with controls 
   `hermes-base`, `hermes-base-clarify`) share the same interleaved blocks, seed 20261023. C5 cost
   uses omp's own per-message cost fields, since the gpt-6.1-sol price table does not apply.
 
+## Session s3 (declared 2026-10-21 ~05:55 UTC, before any s3 run)
+
+Follow-up asked by the owner: sign the fx CLI in, fix Hermes on the MBP, add a minimal fast Hermes profile,
+and find where Hermes's extra time goes. Smoke runs for the new arms are in `data/smoke-s3/` and are not analysed.
+
+Changes on the host before s3 (none touch another harness's arm or the earlier data):
+
+- **fx CLI sign-in.** fx 0.0.8 now reads `~/.fx/chatgpt-auth.json` (`{version:1, access_token, refresh_token,
+  expires_at_ms, account_id}`, mode 0600), written by a script from `~/.codex/auth.json`; `fx provider codex`;
+  `~/.fx/settings.json` `effort: low`. Hermes, pi and Codex already shared this one OAuth token family, so a refresh
+  by any one client rotates the refresh token for all of them (see Confounds).
+- **Hermes default profile.** `hermes chat` without `-t` failed with `invalid_params` because the CLI forwarded the
+  configured `linear` MCP toolset (OAuth expired, needs a browser) into `session.create`, and the gateway rejects an
+  unknown toolset. `mcp_servers.linear.enabled: false` was set in `~/.hermes/config.yaml` (backup kept). No arm
+  in s1/s2 depended on it (every Hermes arm passed `-t`).
+- **New Hermes profiles** `speed` and `speed-guided` (`hermes profile create <name> --no-skills --no-alias`;
+  OAuth is read from the root `auth.json`, nothing copied). Config = Hermes's own "Blank Slate" minimisation
+  (`hermes_cli/setup_quick.py`: compression, memory, user profile, checkpoints, smart routing off) with the toolset
+  narrowed to `file` + `terminal` (`platform_toolsets.cli` plus every other toolset in `agent.disabled_toolsets`),
+  no bundled skills, `plugins.enabled: []`, no MCP servers, no fallback providers, memory/skill nudges 0,
+  `auxiliary.title_generation.model_upgrade_enabled: false`, `terminal.cwd: .`,
+  `approvals.single_query_mode: approve` (in smoke, `--yolo` did not reach the multiplexed secondary profile and
+  `python3 -c` was blocked), model `openai-codex/gpt-6.1-sol`, `agent.reasoning_effort: low`.
+  `speed` additionally sets `agent.execution_guidance: false` and `agent.tool_use_enforcement: false`;
+  `speed-guided` keeps both at `auto` (on for gpt models). Prompt caching is unchanged (always on).
+
+New arms (exact argv in `bench.py` `arm_cmd()`):
+
+| arm | what |
+| --- | --- |
+| `fx-cli` | fx CLI 0.0.8: `fx --context-limit skill_catalog_bytes=0 ask --no-save --full-access --no-color`; latency reads the raw text stream (first stdout byte = TTFT); tasks add `--json` (usage, tool calls; no cache split, no streaming) |
+| `hermes-speed` | `hermes -p speed chat -q ...` with the same flags as `hermes-base` minus `--safe-mode`/`-t` |
+| `hermes-speed-guided` | same on profile `speed-guided` |
+| `hermes-default-ft` | default profile, no `--safe-mode`, `-t terminal,file` (latency only) |
+| warm `hermes-speed` | `hermes -p speed acp`; `session/new` then `session/prompt` per request (ACP over stdio) |
+
+Contrasts (analysis code `CONTRASTS`): C6 `hermes-base` vs `hermes-speed` (the whole speed profile);
+C7 `hermes-speed` vs `hermes-speed-guided` (execution/tool-use guidance only); C8 `hermes-base` vs
+`hermes-default-ft` (`--safe-mode` only, latency); C9 `hermes-default-ft` vs `hermes-speed-guided` (default profile
+config vs minimal profile, guidance on in both, latency); C10 fx CLI vs `fx-base`, `pi-base`, `hermes-speed`;
+C11 `hermes-speed` vs `pi-base`, `fx-base`, `omp-base`. Anchors `pi-base`, `hermes-base`, `fx-base`, `omp-base` are
+rerun in the same interleaved blocks; s3 rows are compared only with s3 rows.
+
+Workloads: cold latency 1 warm-up + 32 blocks, 8 arms, seed 20261024; warm 1 + 30 rounds (`hermes-speed` ACP,
+`fx-base`, `pi-base`, `omp-base`), seed 20261025; tasks t01-t08 x 2 reps (session `s3`) and six new harder tasks
+h01-h06 x 2 reps (session `s3h`), six arms (`pi-base`, `hermes-base`, `fx-base`, `fx-cli`, `hermes-speed`,
+`hermes-speed-guided`), seed 20261024. The harder tasks are multi-file feature work with visible and hidden tests
+(reservations, config interpolation + includes, event bus with wildcards, money rounding/allocation, expression
+parser, CLI word stats); verifier validity re-checked for all 14 tasks (originals fail, references pass).
+Runner: `harness/run_s3.sh`.
+
+Confounds added: fx-cli runs fx's own system prompt and tools (the confound noted for `fx-base` is gone for this
+arm) but its JSON usage has no cache-read split, so its cost estimate is an upper bound and its task
+`model_requests` is `steps + 1` (estimated). fx-cli latency TTFT uses raw text mode, tasks use `--json`.
+Hermes speed arms run through the resident multiplexed gateway like every other non-safe-mode Hermes arm.
+
 ## Not claimed
 
 No claim about other models, long tasks, large repos, multi-turn chats, concurrency, or any host

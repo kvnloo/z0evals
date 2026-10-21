@@ -1,0 +1,65 @@
+model:
+  provider: openai-codex
+  default: gpt-6.1-sol
+_config_version: 51
+agent:
+  max_turns: 60
+  disabled_toolsets:
+    - a2a
+    - bot_room
+    - browser
+    - catalog
+    - clarify
+    - code_execution
+    - computer_use
+    - connections
+    - context_engine
+    - cronjob
+    - delegation
+    - desktop_ui
+    - discord
+    - discord_admin
+    - feishu_doc
+    - feishu_drive
+    - image_gen
+    - kanban
+    - memory
+    - onboarding
+    - project
+    - search
+    - session_search
+    - skills
+    - stt
+    - todo
+    - tts
+    - video
+    - video_gen
+    - vision
+    - web
+    - x_search
+    - yuanbao
+  reasoning_effort: low
+compression:
+  enabled: false
+memory:
+  memory_enabled: false
+  user_profile_enabled: false
+  nudge_interval: 0
+skills:
+  creation_nudge_interval: 0
+plugins:
+  enabled: []
+  disabled: []
+platform_toolsets:
+  cli:
+    - file
+    - terminal
+smart_model_routing:
+  enabled: false
+auxiliary:
+  title_generation:
+    model_upgrade_enabled: false
+terminal:
+  cwd: .
+approvals:
+  single_query_mode: approve

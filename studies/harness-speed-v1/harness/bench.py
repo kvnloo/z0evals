@@ -49,7 +49,7 @@ def omp_model(arm=""):
     return OMP_MODELS[model] if model else f"openai-codex/{MODEL}"
 
 
-def arm_cmd(arm, prompt):
+def arm_cmd(arm, prompt, kind="latency"):
     """argv for one request. Model, provider and effort are identical across arms; only the
     harness and its plugin/tool configuration change. `@model` arms (C5) change only the model.
     `-offline` / `-clarify` arms are exploratory follow-ups (session s2), not preregistered."""
@@ -63,6 +63,11 @@ def arm_cmd(arm, prompt):
     pi = ["pi", "-p", "--mode", "json", "--no-session", "--provider", "openai-codex", "--model", MODEL,
           "--thinking", EFFORT]
     pi_base = ["-ne", "-ns", "-np", "-nc", "--no-mcp"]
+    # s3: Hermes profiles `speed` / `speed-guided` (new, isolated, minimal; see protocol s3). `-p` is a global flag.
+    hermes_prof = lambda prof: hermes[:1] + ["-p", prof] + hermes[1:]
+    # s3: fx CLI 0.0.8, signed in to the Codex subscription, effort low in ~/.fx/settings.json, skill catalog off.
+    # Latency streams raw text (first stdout byte = first text); tasks use --json for usage and tool calls.
+    fx_cli = ["fx", "--context-limit", "skill_catalog_bytes=0", "ask", "--no-save", "--full-access", "--no-color"]
     table = {
         "hermes-base": hermes + ["--safe-mode", "-t", "terminal,file"],
         "hermes-default": hermes + ["-t", HERMES_DEFAULT_TOOLSETS],
@@ -77,12 +82,24 @@ def arm_cmd(arm, prompt):
         "pi-base-offline": pi + pi_base + ["--offline", "--tools", "read,bash,edit,write", "--", prompt],
         # exploratory (s2): hermes-base with the clarify toolset only (no shell/file tool to compute with)
         "hermes-base-clarify": hermes + ["--safe-mode", "-t", "clarify"],
+        # s3 arms
+        "hermes-speed": hermes_prof("speed"),
+        "hermes-speed-guided": hermes_prof("speed-guided"),
+        "hermes-default-ft": hermes + ["-t", "terminal,file"],
+        "fx-cli": fx_cli + (["--json"] if kind == "task" else []) + ["--", prompt],
     }
     return table[base_arm]
 
 
 def family(arm):
     return arm.split("-")[0].split("@")[0]
+
+
+def parse_kind(arm, kind):
+    """Parser key: the fx CLI prints raw text (latency) or one final JSON object (tasks)."""
+    if arm.startswith("fx-cli"):
+        return "fxcli-json" if kind == "task" else "fxcli-raw"
+    return family(arm)
 
 
 class Parse:
@@ -155,6 +172,15 @@ class Parse:
                     parts = [c.get("text", "") for c in (m.get("content") or []) if c.get("type") == "text"]
                     if parts:
                         self.text = "".join(parts)
+        elif self.fam == "fxcli-json":
+            if "final_output" in d or "output" in d:
+                u = d.get("usage") or {}
+                self.tokens = {"input_total": u.get("input_tokens") or 0, "output": u.get("output_tokens") or 0, "cache_read": 0}
+                self.text = d.get("final_output") or d.get("output") or ""
+                self.tool_calls = len(d.get("tool_calls") or [])
+                self.reported = {"steps": d.get("steps"), "exit_code": d.get("exit_code")}
+                if d.get("error"):
+                    self.errors.append(str(d.get("error"))[:300])
         elif self.fam == "fx":
             if typ == "first_text" and self.first_text is None:
                 self.first_text = t
@@ -174,9 +200,9 @@ class Parse:
                 self.errors.append(d.get("message", "")[:300])
 
 
-def run_one(arm, prompt, cwd, timeout):
-    argv = arm_cmd(arm, prompt)
-    parser = Parse(family(arm))
+def run_one(arm, prompt, cwd, timeout, kind="latency"):
+    argv = arm_cmd(arm, prompt, kind)
+    parser = Parse(parse_kind(arm, kind))
     errf = tempfile.TemporaryFile()
     t0 = time.perf_counter()
     p = subprocess.Popen(argv, cwd=cwd, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=errf,
@@ -184,6 +210,20 @@ def run_one(arm, prompt, cwd, timeout):
     timed_out = False
     deadline = t0 + timeout
     try:
+        if parser.fam == "fxcli-raw":
+            # raw text stream: first non-whitespace stdout byte is the first assistant text
+            buf = b""
+            while True:
+                chunk = p.stdout.read1(4096)
+                if not chunk:
+                    break
+                if parser.first_text is None and chunk.strip():
+                    parser.first_text = (time.perf_counter() - t0) * 1000
+                buf += chunk
+                if time.perf_counter() > deadline:
+                    timed_out = True
+                    break
+            parser.text = buf.decode("utf-8", "replace")
         for raw in iter(p.stdout.readline, b""):
             parser.line((time.perf_counter() - t0) * 1000, raw.decode("utf-8", "replace"))
             if time.perf_counter() > deadline:
@@ -200,6 +240,9 @@ def run_one(arm, prompt, cwd, timeout):
             os.killpg(p.pid, signal.SIGKILL)
             p.wait()
     total = (time.perf_counter() - t0) * 1000
+    if parser.fam == "fxcli-json":
+        # Estimated: fx reports agent steps; one model request per step plus the final answer request.
+        parser.model_requests = (parser.reported.get("steps") or 0) + 1
     if parser.fam in ("hermes", "fx"):
         # Estimated: one model request per tool batch plus the final answer request.
         parser.model_requests = parser._batches + (1 if parser.text else 0)
@@ -260,7 +303,7 @@ def tasks(args):
                 subprocess.run(["git", "add", "-A"], cwd=repo)
                 subprocess.run(["git", "-c", "user.name=bench", "-c", "user.email=bench@localhost", "commit", "-qm", "task"], cwd=repo)
                 prompt = open(os.path.join(tdir, "prompt.txt")).read().strip()
-                row = run_one(arm, prompt, repo, TIMEOUT["tasks"])
+                row = run_one(arm, prompt, repo, TIMEOUT["tasks"], kind="task")
                 vr = subprocess.run([sys.executable, os.path.join(BENCH, "harness", "verify.py"), tdir, repo],
                                     capture_output=True, text=True)
                 try:

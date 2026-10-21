@@ -112,6 +112,13 @@ CONTRASTS = [
     ("C4", "pi-base", "pi-solpi"), ("C4", "pi-base", "pi-rlm"),
     ("C5", "omp-base", "omp-base@claude-opus-5-5"),
     ("X1", "pi-base", "pi-base-offline"), ("X2", "hermes-base", "hermes-base-clarify"),
+    # s3 (declared in protocol.md before s3 ran)
+    ("C6", "hermes-base", "hermes-speed"),
+    ("C7", "hermes-speed", "hermes-speed-guided"),
+    ("C8", "hermes-base", "hermes-default-ft"),
+    ("C9", "hermes-default-ft", "hermes-speed-guided"),
+    ("C10", "fx-base", "fx-cli"), ("C10", "pi-base", "fx-cli"), ("C10", "hermes-speed", "fx-cli"),
+    ("C11", "hermes-speed", "pi-base"), ("C11", "hermes-speed", "fx-base"), ("C11", "hermes-speed", "omp-base"),
 ]
 
 
