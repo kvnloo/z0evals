@@ -160,6 +160,8 @@ def summarize(rows):
             "per_task_pass": {t: sum(1 for r in rs if r["task"] == t and r["verified"].get("pass")) for t in sorted({r["task"] for r in rs})},
             "_wall": wall,
             "_bycell": {(r["task"], r["rep"]): r["total_ms"] / 1000 for r in rs},
+            "_cells": {(r["task"], r["rep"]): {"wall_s": r["total_ms"] / 1000, "input_tokens": r["tokens"]["input_total"],
+                                                "output_tokens": r["tokens"]["output"], "tool_calls": r["tool_calls"]} for r in rs},
         }
     # contrasts: only within one session (pi is compared inside its own session)
     for cid, a, b in CONTRASTS:
@@ -181,15 +183,17 @@ def summarize(rows):
             ka, kb = f"{a}|{sess}", f"{b}|{sess}"
             if ka in out["tasks"] and kb in out["tasks"]:
                 A, Bv = out["tasks"][ka], out["tasks"][kb]
-                common = sorted(set(A["_bycell"]) & set(Bv["_bycell"]))
-                pd = [Bv["_bycell"][k] - A["_bycell"][k] for k in common]
-                out["contrasts"].append({
-                    "paired_n": len(pd), "paired_median_diff": median(pd), "paired_ci95": boot_paired(pd, rng),
-                    "id": cid, "workload": "tasks", "session": sess, "metric": "wall_s", "a": a, "b": b,
-                    "median_a": A["wall_s"]["median"], "median_b": Bv["wall_s"]["median"],
-                    "diff_b_minus_a": Bv["wall_s"]["median"] - A["wall_s"]["median"],
-                    "diff_ci95": boot_diff(A["_wall"], Bv["_wall"], rng), "mw_p": mann_whitney(A["_wall"], Bv["_wall"]),
-                    "pass_a": f'{A["pass"]}/{A["n"]}', "pass_b": f'{Bv["pass"]}/{Bv["n"]}'})
+                common = sorted(set(A["_cells"]) & set(Bv["_cells"]))
+                for metric in ("wall_s", "input_tokens", "output_tokens", "tool_calls"):
+                    xa = [c[metric] for c in A["_cells"].values()]
+                    xb = [c[metric] for c in Bv["_cells"].values()]
+                    pd = [Bv["_cells"][k][metric] - A["_cells"][k][metric] for k in common]
+                    out["contrasts"].append({
+                        "paired_n": len(pd), "paired_median_diff": median(pd), "paired_ci95": boot_paired(pd, rng),
+                        "id": cid, "workload": "tasks", "session": sess, "metric": metric, "a": a, "b": b,
+                        "median_a": median(xa), "median_b": median(xb), "diff_b_minus_a": median(xb) - median(xa),
+                        "diff_ci95": boot_diff(xa, xb, rng), "mw_p": mann_whitney(xa, xb),
+                        "pass_a": f'{A["pass"]}/{A["n"]}', "pass_b": f'{Bv["pass"]}/{Bv["n"]}'})
     for v in list(out["latency"].values()) + list(out["tasks"].values()):
         for k in [k for k in v if k.startswith("_")]:
             del v[k]

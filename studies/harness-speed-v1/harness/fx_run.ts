@@ -78,9 +78,20 @@ async function runOne(prompt: string, cwd: string, id?: string) {
   if (!existsSync(cwd)) throw new Error(`cwd missing: ${cwd}`);
   const t0 = performance.now();
   emit({ type: "request_start", id });
+  // Usage audit (diagnostic): sum per-model-call usage from libfx hooks, to check what the turn
+  // result's `usage` covers. Off unless --audit-usage.
+  const audit = { modelCalls: 0, inputTokens: 0, outputTokens: 0, cacheReadTokens: 0 };
+  const hooks = argv.includes("--audit-usage") ? { onEvent(ev: { type: string; data: { usage?: Record<string, number | null> } }) {
+    if (ev.type === "model.end") {
+      audit.modelCalls++;
+      audit.inputTokens += ev.data.usage?.inputTokens ?? 0;
+      audit.outputTokens += ev.data.usage?.outputTokens ?? 0;
+      audit.cacheReadTokens += ev.data.usage?.cacheReadTokens ?? 0;
+    }
+  } } : undefined;
   const engine = await createFxEngine({
     provider: "codex", model: { id: model, effort }, credentials: () => codexCredentials(),
-    instructions: INSTRUCTIONS, tools: tools(cwd) as never,
+    instructions: INSTRUCTIONS, tools: tools(cwd) as never, ...(hooks ? { hooks } : {}),
   } as never);
   let first = true, toolCalls = 0, text = "";
   try {
@@ -91,7 +102,8 @@ async function runOne(prompt: string, cwd: string, id?: string) {
       else if (ev.type === "tool_end") emit({ type: "tool_end", id, name: ev.name, isError: ev.isError });
     }
     const result = await turn.result;
-    emit({ type: "result", id, stopReason: result.stopReason, usage: result.usage, toolCalls, text, ms: performance.now() - t0 });
+    emit({ type: "result", id, stopReason: result.stopReason, usage: result.usage, toolCalls, text, ms: performance.now() - t0,
+      ...(hooks ? { audit } : {}) });
   } catch (e) {
     emit({ type: "error", id, message: String((e as Error)?.message ?? e).slice(0, 500) });
   } finally {
