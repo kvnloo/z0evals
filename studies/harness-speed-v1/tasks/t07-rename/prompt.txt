@@ -1,0 +1,1 @@
+Rename the function calc_area to area everywhere in the shapes package (no alias, remove the old name entirely). Make `python3 -m unittest` pass. Do not modify the tests.
