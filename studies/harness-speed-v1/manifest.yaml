@@ -1,0 +1,78 @@
+schema_version: z0eval.study.v1
+id: harness-speed-v1
+title: Same model, four coding-agent harnesses (Hermes, fx/libfx, pi, omp) - latency and small-task success, one variable at a time
+status: draft
+created: "2026-10-21"
+updated: "2026-10-21"
+
+run_id: s1-20261021
+evidence_status: local-measured
+external_inference_spend_usd: 0  # every arm ran on the owner's ChatGPT subscription; cost columns are list-price estimates
+preregistration: protocol.md (committed f879cff before any counted run; amendments listed in it)
+
+hardware:
+  host: mbp (MacBook Pro running CachyOS Linux, kernel 7.2.3-1-cachyos)
+  cpu: Intel Core i7-4870HQ @ 2.50GHz, 8 threads
+  memory: 15 GB
+  network: residential, same link for every arm
+
+control:
+  provider: OpenAI ChatGPT subscription via each harness's own Codex/OpenAI OAuth sign-in
+  model: gpt-6.1-sol
+  reasoning_effort: low
+  concurrency: one request at a time
+
+harnesses:
+  - name: hermes
+    version: Hermes Agent v0.22.1+33.gca069e1
+    repo: NousResearch/hermes-agent
+    commit: ca069e12239a2c8d13887ac9f983557d00bdcfd2
+    note: CLI routes turns through the resident Hermes gateway on the host
+  - name: fx
+    version: libfx 0.0.14 (engine behind the fx CLI, vercel-labs/fx)
+    integrity: sha512-8wIEkRlKuQnbueyt6NBwi4xEiEnoRpwvAocKolzzmyz/r14s4gXiE3XivGk4QJpNnMMGHAJRKlH0WhW//q7B5Q==
+    driver: harness/fx_run.ts under bun 1.4.0, four bench-owned tools (read, write, edit, bash)
+    note: fx CLI 0.0.8 on the host is not signed in to any provider, so the CLI itself was not measured
+  - name: pi
+    version: "@earendil-works/pi-coding-agent 1.3.0"
+    sha256_cli_bundle: e79626f2dd6f94aa45d30f3fa63cd84319a6eefcd150b353cfaf274366926774
+    runtime: node v26.8.1
+    plugins:
+      - name: SoL-Pi
+        repo: NVlabs/SoL-Pi
+        commit: 219568034fa54ed121ede80961655e33dfb9d0e3
+        config: {version: 1, actionFusion: true, observationPack: true, evidencePreservingReducer: false, onlineContextCompact: false, cacheWriteReadRatio: 12.5}
+      - name: "@shift-labs/pi-rlm"
+        version: 0.5.0
+        integrity: sha512-mf2a8pUbW0XPcui/dUMXHq1GcbWmhT7xzW2PW3UHYJWli62V7wu+CN5EqJHTqKSVQH+m1mQAYDyUl+lZt7fdJw==
+  - name: omp
+    version: omp/18.11.0
+    sha256_binary: c23a58ad8a92f4e738aa12dc904f3b0a1ac7035b953b9bf5d39b71a226179f6f
+    note: no RLM variant installed, so there is no omp-rlm arm
+
+sources:
+  - repo: kvnloo/z0bridge
+    commit: 9d7ffc5
+    branch: feat/fx-worker
+    role: prior fx-vs-Hermes bench (scripts/bench-fx-vs-hermes.ts), cited as prior result only
+  - path: zer0/data/operations/libfx-surface/20261020T2040Z-gpt56sol/summary.json
+    role: prior result (n=10, one prompt, gpt-5.6-sol, groot), cited not re-run
+
+questions:
+  - With the model fixed, how do Hermes, fx (libfx), pi and omp differ in first-token and full-request latency, cold and warm?
+  - On eight small verified coding tasks, how do they differ in success, wall time, tokens and tool calls?
+  - Inside each harness, what does one plugin/tool configuration change do (Hermes default vs safe-mode minimal; omp user config vs off; pi + SoL-Pi; pi + pi-rlm)?
+
+artifacts:
+  - path: protocol.md
+    kind: preregistered-protocol
+  - path: tasks/
+    kind: frozen-task-set
+    provenance: authored for this study; visible tests, hidden verifier tests and reference solutions (verifier checked fail-on-original, pass-on-reference)
+  - path: harness/
+    kind: runner-and-analysis
+  - path: data/s1/
+    kind: raw-measurements
+    provenance: rows written by harness/bench.py and harness/warm.py on the MBP; reply text truncated to 400 chars; no prompts beyond the task prompts, no credentials
+  - path: analysis/
+    kind: derived

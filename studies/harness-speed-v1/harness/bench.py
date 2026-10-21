@@ -35,16 +35,30 @@ LATENCY_EXPECT = "391"
 TIMEOUT = {"latency": 120, "tasks": 600}
 
 
-def omp_model():
-    return os.environ.get("HSB_OMP_MODEL", f"openai-codex/{MODEL}")
+OMP_MODELS = {"claude-opus-5-5": "anthropic/claude-opus-5-5"}
+
+
+def split_arm(arm):
+    """'omp-base@claude-opus-5-5' -> ('omp-base', 'claude-opus-5-5'); plain arms use MODEL."""
+    base, _, model = arm.partition("@")
+    return base, (model or None)
+
+
+def omp_model(arm=""):
+    _base, model = split_arm(arm)
+    return OMP_MODELS[model] if model else f"openai-codex/{MODEL}"
 
 
 def arm_cmd(arm, prompt):
     """argv for one request. Model, provider and effort are identical across arms; only the
-    harness and its plugin/tool configuration change."""
+    harness and its plugin/tool configuration change. `@model` arms (C5) change only the model.
+    `-offline` / `-clarify` arms are exploratory follow-ups (session s2), not preregistered."""
+    base_arm, model_override = split_arm(arm)
+    if model_override and not base_arm.startswith("omp"):
+        raise ValueError("model arms are defined for omp only")
     hermes = ["hermes", "chat", "-q", prompt, "--provider", "openai-codex", "-m", MODEL, "--reasoning", EFFORT,
               "--format", "stream-json", "--yolo", "--source", "tool", "--max-turns", "60"]
-    omp = ["omp", "-p", "--mode", "json", "--no-session", "--no-title", "--model", omp_model(), "--thinking", EFFORT,
+    omp = ["omp", "-p", "--mode", "json", "--no-session", "--no-title", "--model", omp_model(arm), "--thinking", EFFORT,
            "--auto-approve", "--max-time", "600"]
     pi = ["pi", "-p", "--mode", "json", "--no-session", "--provider", "openai-codex", "--model", MODEL,
           "--thinking", EFFORT]
@@ -59,12 +73,16 @@ def arm_cmd(arm, prompt):
         "pi-base": pi + pi_base + ["--tools", "read,bash,edit,write", "--", prompt],
         "pi-solpi": pi + pi_base + ["-e", SOLPI, "--tools", "read,bash,edit,write", "--", prompt],
         "pi-rlm": pi + pi_base + ["-e", PIRLM, "--rlm", "--", prompt],
+        # exploratory (s2): pi-base plus --offline (no startup network operations)
+        "pi-base-offline": pi + pi_base + ["--offline", "--tools", "read,bash,edit,write", "--", prompt],
+        # exploratory (s2): hermes-base with the clarify toolset only (no shell/file tool to compute with)
+        "hermes-base-clarify": hermes + ["--safe-mode", "-t", "clarify"],
     }
-    return table[arm]
+    return table[base_arm]
 
 
 def family(arm):
-    return arm.split("-")[0]
+    return arm.split("-")[0].split("@")[0]
 
 
 class Parse:
@@ -191,7 +209,7 @@ def run_one(arm, prompt, cwd, timeout):
     uncached = max(0, tk["input_total"] - tk["cache_read"])
     cost = uncached * 2e-6 + tk["cache_read"] * 1e-7 + tk["output"] * 1e-5  # uniform list-price estimate
     return {
-        "arm": arm, "family": family(arm), "model": MODEL if family(arm) != "omp" else omp_model(),
+        "arm": arm, "family": family(arm), "model": MODEL if family(arm) != "omp" else omp_model(arm),
         "ttft_ms": parser.first_text, "total_ms": total, "exit": p.returncode, "timed_out": timed_out,
         "text": parser.text[-400:], "tool_calls": parser.tool_calls, "model_requests": parser.model_requests,
         "tokens": tk, "cost_est_usd": round(cost, 6), "reported": parser.reported, "errors": parser.errors,

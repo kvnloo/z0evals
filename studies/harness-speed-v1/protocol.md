@@ -102,6 +102,21 @@ semantics differ per harness and are normalized in `bench.py` (`input_total` inc
 - pi arms now pass `--` before the prompt: the extension flag `--rlm` swallowed the next argument
   (pi exited with no turn). Found in diagnostic smoke; no counted data existed.
 
+## Session s2 (declared after s1 latency, before s2 runs)
+
+C5 plus two exploratory follow-ups that s1 latency raised. Exploratory arms (X) were not in the
+original plan; they are reported as exploratory and only compared with controls run in s2.
+
+- C5: `omp-base` (gpt-6.1-sol) vs `omp-base@claude-opus-5-5` (omp's Anthropic sign-in, thinking
+  low): cold latency 32 blocks + tasks 8 x 1 rep (claude lane near its weekly budget).
+- X1: pi exits ~3 s after its answer in cold mode. `pi-base` vs `pi-base-offline` (`--offline`,
+  "disable startup network operations"), cold latency 32 blocks.
+- X2: Hermes called a tool on ~97% of `17 * 23` requests. `hermes-base` vs `hermes-base-clarify`
+  (`-t clarify`, no shell/file tool), cold latency 32 blocks.
+- All six arms (`omp-base`, `omp-base@claude-opus-5-5`, `pi-base`, `pi-base-offline`,
+  `hermes-base`, `hermes-base-clarify`) share the same interleaved blocks, seed 20261023. C5 cost
+  uses omp's own per-message cost fields, since the gpt-6.1-sol price table does not apply.
+
 ## Not claimed
 
 No claim about other models, long tasks, large repos, multi-turn chats, concurrency, or any host
