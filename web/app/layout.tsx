@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Hanken_Grotesk, JetBrains_Mono, Parastoo } from "next/font/google";
+import { Cormorant_Garamond, Hanken_Grotesk, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 
 // The reference self-hosts HK Grotesk and Departure Mono. HK Grotesk is a
@@ -9,21 +9,25 @@ import "./globals.css";
 // label/number/code role. See web/README.md for the substitution table.
 const sans = Hanken_Grotesk({
   subsets: ["latin"],
+  weight: ["400", "600"],
   display: "swap",
   variable: "--font-hk-grotesk",
 });
-const mono = JetBrains_Mono({
+const mono = IBM_Plex_Mono({
   subsets: ["latin"],
+  weight: ["400", "500"],
   display: "swap",
   variable: "--font-departure-mono",
 });
 // Parastoo is the reference's own display face and is available openly, so the
 // display role needs no substitution at all.
-const display = Parastoo({
+// Dash Living Night display face.
+const display = Cormorant_Garamond({
   subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: ["500"],
+  style: ["normal", "italic"],
   display: "swap",
-  variable: "--font-parastoo",
+  variable: "--font-cormorant",
 });
 
 export const viewport: Viewport = {

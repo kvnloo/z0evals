@@ -14,10 +14,10 @@ export default function FamilyStack({ families, selected, onSelect }: {
   const total = (f: Family) => f.runs;
   const seg = (v: number) => (v / max) * (W - L - R);
   const PARTS: [keyof Family, string, string][] = [
-    ["correct", "correct", "#29916e"],
-    ["abstained", "abstained", "#64748b"],
-    ["invalid", "invalid call", "#b45309"],
-    ["dangerous", "dangerous", "#b91c1c"],
+    ["correct", "correct", "#d7b986"],
+    ["abstained", "abstained", "#81b9da"],
+    ["invalid", "invalid call", "#e7a875"],
+    ["dangerous", "dangerous", "#e37f65"],
   ];
 
   return (
@@ -47,10 +47,10 @@ export default function FamilyStack({ families, selected, onSelect }: {
               }}
             >
               <text x={L - 10} y={yy + 15} textAnchor="end" fontSize="11.5"
-                    fill={active ? "#1a3029" : "#3c3836"} fontWeight={active ? 700 : 400}>
+                    fill={active ? "#ECE8DF" : "#B4AFA3"} fontWeight={active ? 700 : 400}>
                 {f.name.replace(/_/g, " ")}
               </text>
-              <text x={L - 10} y={yy + 27} textAnchor="end" fontSize="9.5" fill="#a8a8a8">
+              <text x={L - 10} y={yy + 27} textAnchor="end" fontSize="9.5" fill="#837F74">
                 {f.states} state{f.states > 1 ? "s" : ""}
               </text>
               {PARTS.map(([key, , colour]) => {

@@ -64,7 +64,7 @@ export default function ObservationScrubber({ matrix }: { matrix: Matrix }) {
             const arm = matrix.arms.find((x) => x.id === a)!;
             const r0 = st.runs[0];
             const rate = st.successRate ?? 0;
-            const colour = rate === 1 ? "#29916e" : rate === 0 ? "#b91c1c" : "#b45309";
+            const colour = rate === 1 ? "#d7b986" : rate === 0 ? "#e37f65" : "#e7a875";
             return (
               <tr key={a} data-active={rate === 1 && !arm.unfiltered}>
                 <td>{arm.label}</td>
@@ -77,7 +77,7 @@ export default function ObservationScrubber({ matrix }: { matrix: Matrix }) {
                 <td style={{ fontFamily: "var(--font-mono)", fontSize: 12.5 }}>
                   {r0.selected ?? "—"}
                   {r0.goldAction && r0.selected !== r0.goldAction ? (
-                    <span style={{ color: "#b91c1c" }}> → gold {r0.goldAction}</span>
+                    <span style={{ color: "#e37f65" }}> → gold {r0.goldAction}</span>
                   ) : null}
                 </td>
               </tr>

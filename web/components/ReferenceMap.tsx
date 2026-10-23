@@ -13,7 +13,7 @@ export default function ReferenceMap() {
           <li><a href="https://www.southbridge.ai/blog/jev-watching-the-agents">southbridge — “jev: watching the agents”</a> — the closest conceptual and visual reference for the article.</li>
           <li><a href="https://github.com/southbridgeai/jev">jev</a> — bounded probabilistic decisions without generating prose token by token.</li>
           <li><a href="https://github.com/kvnloo/z0intelligence">openjev / z0intelligence</a> — our local path for direct logit readout, nanojev, q-route and a common decision backend.</li>
-          <li><a href="https://github.com/NousResearch/hermes-agent/pull/113020">hermes pr #113020 — probabilistic decision providers</a> — provider-neutral typed decisions, abstention and replay metrics. authored by <code>fangliquanflq</code>, not tek.</li>
+          <li><a href="https://github.com/NousResearch/hermes-agent/pull/113020">hermes pr #ECE8DF — probabilistic decision providers</a> — provider-neutral typed decisions, abstention and replay metrics. authored by <code>fangliquanflq</code>, not tek.</li>
         </ul>
       </details>
 
@@ -23,7 +23,7 @@ export default function ReferenceMap() {
           <li><a href="https://github.com/NousResearch/hermes-agent/pull/88663">teknium1 — pr #88663: browser use a/b eval</a> — 204-run benchmark turned into a permanent rerunnable eval.</li>
           <li><a href="https://github.com/NousResearch/hermes-agent/pull/79162">teknium1 — pr #79162: core-toolset a/b harness</a> — one variable at a time, production-derived trap tasks, trace scoring, programmatic success.</li>
           <li><a href="https://github.com/NousResearch/hermes-agent/pull/87326">teknium1 — pr #87326: lean-tail compaction recall eval</a> — quality and retained tokens measured together.</li>
-          <li><a href="https://github.com/NousResearch/hermes-agent/pull/109903">teknium1 — pr #109903: move living benchmarks into evals/</a> — evals as durable repo artifacts instead of one-off scripts.</li>
+          <li><a href="https://github.com/NousResearch/hermes-agent/pull/109903">teknium1 — pr #98cf8b: move living benchmarks into evals/</a> — evals as durable repo artifacts instead of one-off scripts.</li>
         </ul>
       </details>
 

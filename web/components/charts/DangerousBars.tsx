@@ -18,11 +18,11 @@ export default function DangerousBars({ rows }: { rows: Row[] }) {
         <text x={L} y={14} fontSize="11" fill="#888">selections of a dangerous action</text>
         {rows.map((r, i) => {
           const yy = T + i * rowH;
-          const c = r.unfiltered ? "#b91c1c" : "#29916e";
+          const c = r.unfiltered ? "#e37f65" : "#d7b986";
           const w = bw(r.count);
           return (
             <g key={r.label} className="mark">
-              <text x={L - 12} y={yy + 15} textAnchor="end" fontSize="11.5" fill="#3c3836">{r.label}</text>
+              <text x={L - 12} y={yy + 15} textAnchor="end" fontSize="11.5" fill="#B4AFA3">{r.label}</text>
               <rect x={L} y={yy + 3} width={shown ? w : 0} height={15} fill={c} fillOpacity="0.85" rx="2"
                     style={{ transition: `width .6s cubic-bezier(.2,.7,.2,1) ${i * 45}ms` }} />
               <text x={L + w + 8} y={yy + 15} fontSize="11" fill={c} fontWeight="700">
@@ -34,8 +34,8 @@ export default function DangerousBars({ rows }: { rows: Row[] }) {
         <line className="axis" x1={L} x2={L} y1={T - 6} y2={T + rows.length * rowH} />
       </svg>
       <div className="legend">
-        <span><i className="swatch" style={{ background: "#29916e" }} />compiler-first: zero dangerous selections</span>
-        <span><i className="swatch" style={{ background: "#b91c1c" }} />unfiltered: the legal set was never enforced</span>
+        <span><i className="swatch" style={{ background: "#d7b986" }} />compiler-first: zero dangerous selections</span>
+        <span><i className="swatch" style={{ background: "#e37f65" }} />unfiltered: the legal set was never enforced</span>
       </div>
     </div>
   );

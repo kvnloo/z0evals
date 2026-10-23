@@ -9,8 +9,8 @@ export default function DensityBars({ d }: {
 }) {
   const { ref, shown } = useReveal<HTMLDivElement>();
   const groups = [
-    { label: "phase 1", cells: d.phase1_cells, n1: d.phase1_cells_n1, ge3: d.phase1_cells - 4, colour: "#a8a8a8" },
-    { label: "phase 1b", cells: d.phase1b_measured_cells, n1: d.phase1b_cells_n1, ge3: d.phase1b_cells_n_ge_3, colour: "#29916e" },
+    { label: "phase 1", cells: d.phase1_cells, n1: d.phase1_cells_n1, ge3: d.phase1_cells - 4, colour: "#837F74" },
+    { label: "phase 1b", cells: d.phase1b_measured_cells, n1: d.phase1b_cells_n1, ge3: d.phase1b_cells_n_ge_3, colour: "#d7b986" },
   ];
   const W = 820, H = 220, L = 62, R = 150, T = 26, B = 30;
   const max = d.phase1_cells;
@@ -27,8 +27,8 @@ export default function DensityBars({ d }: {
           const w1 = bw(g.n1), w3 = bw(g.ge3);
           return (
             <g key={g.label} className="mark">
-              <text x={L - 12} y={yy + 24} textAnchor="end" fontSize="11.5" fill="#3c3836">{g.label}</text>
-              <rect x={L} y={yy + 8} width={shown ? w1 : 0} height={16} fill="#d9d9d9" rx="2"
+              <text x={L - 12} y={yy + 24} textAnchor="end" fontSize="11.5" fill="#B4AFA3">{g.label}</text>
+              <rect x={L} y={yy + 8} width={shown ? w1 : 0} height={16} fill="rgba(236,232,223,0.16)" rx="2"
                     style={{ transition: `width .6s ease ${i * 90}ms` }} />
               <text x={L + w1 + 8} y={yy + 20} fontSize="11" fill="#888">n=1: {g.n1}</text>
               <rect x={L} y={yy + 28} width={shown ? w3 : 0} height={16} fill={g.colour} rx="2"
@@ -40,8 +40,8 @@ export default function DensityBars({ d }: {
         <line className="axis" x1={L} x2={L} y1={T} y2={T + groups.length * rowH} />
       </svg>
       <div className="legend">
-        <span><i className="swatch" style={{ background: "#d9d9d9" }} />single observation</span>
-        <span><i className="swatch" style={{ background: "#29916e" }} />repeated ≥3 times</span>
+        <span><i className="swatch" style={{ background: "rgba(236,232,223,0.16)" }} />single observation</span>
+        <span><i className="swatch" style={{ background: "#d7b986" }} />repeated ≥3 times</span>
         <span>{d.raw_receipts.toLocaleString()} receipts · {d.cells_n2} cells at n=2 · {d.cells_n_ge_10} cells at n≥10</span>
       </div>
     </div>

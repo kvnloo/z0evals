@@ -73,11 +73,11 @@ export default function Calibration({ rows, threshold = 0.5 }: {
         ))}
         <line className="axis" x1={L} x2={W - R} y1={TOP_H - B} y2={TOP_H - B} />
         <line className="axis" x1={L} x2={L} y1={T} y2={TOP_H - B} />
-        <line x1={L} y1={topY(0)} x2={W - R} y2={topY(1)} stroke="#1a3029"
+        <line x1={L} y1={topY(0)} x2={W - R} y2={topY(1)} stroke="#ECE8DF"
               strokeWidth="1" strokeDasharray="3 3" opacity="0.5" />
-        <text x={W - R + 8} y={topY(1) + 4} fontSize="10.5" fill="#1a3029">perfect calibration</text>
+        <text x={W - R + 8} y={topY(1) + 4} fontSize="10.5" fill="#ECE8DF">perfect calibration</text>
         <text transform={`translate(13 ${T + (TOP_H - T - B) / 2}) rotate(-90)`} textAnchor="middle"
-              fontSize="11" fill="#676767">observed accuracy</text>
+              fontSize="11" fill="#837F74">observed accuracy</text>
 
         {bins.map((b, i) => {
           const cx = x((b.lo + b.hi) / 2);
@@ -86,10 +86,10 @@ export default function Calibration({ rows, threshold = 0.5 }: {
             <g key={b.lo} className="mark"
                onMouseEnter={() => setHover({ x: cx, y: topY(acc), r: null as unknown as CalRow })}
                onMouseLeave={() => setHover(null)}>
-              <line x1={cx} y1={TOP_H - B} x2={cx} y2={topY(acc)} stroke="#29916e" strokeWidth="1" opacity="0.25" />
-              <circle cx={cx} cy={topY(acc)} r={3 + Math.min(4, Math.sqrt(b.n) / 2.4)} fill="#29916e"
+              <line x1={cx} y1={TOP_H - B} x2={cx} y2={topY(acc)} stroke="#d7b986" strokeWidth="1" opacity="0.25" />
+              <circle cx={cx} cy={topY(acc)} r={3 + Math.min(4, Math.sqrt(b.n) / 2.4)} fill="#d7b986"
                       style={{ opacity: shown ? 1 : 0, transition: `opacity .4s ease ${i * 60}ms` }} />
-              <text x={cx} y={topY(acc) - 9} textAnchor="middle" fontSize="9.5" fill="#29916e">n={b.n}</text>
+              <text x={cx} y={topY(acc) - 9} textAnchor="middle" fontSize="9.5" fill="#d7b986">n={b.n}</text>
             </g>
           );
         })}
@@ -99,12 +99,12 @@ export default function Calibration({ rows, threshold = 0.5 }: {
           every recorded decision at its stated confidence
         </text>
         <line x1={x(threshold)} x2={x(threshold)} y1={TOP_H + GAP} y2={H - B + 6}
-              stroke="#b91c1c" strokeWidth="1" strokeDasharray="4 3" opacity="0.8" />
-        <text x={x(threshold) + 5} y={TOP_H + GAP - 10 + 12} fontSize="10" fill="#b91c1c">
+              stroke="#e37f65" strokeWidth="1" strokeDasharray="4 3" opacity="0.8" />
+        <text x={x(threshold) + 5} y={TOP_H + GAP - 10 + 12} fontSize="10" fill="#e37f65">
           abstain below {threshold.toFixed(2)}
         </text>
         <line className="axis" x1={L} x2={W - R} y1={H - B + 6} y2={H - B + 6} />
-        <text x={(L + W - R) / 2} y={H - 10} textAnchor="middle" fontSize="11.5" fill="#676767">
+        <text x={(L + W - R) / 2} y={H - 10} textAnchor="middle" fontSize="11.5" fill="#837F74">
           reported confidence
         </text>
 
@@ -117,7 +117,7 @@ export default function Calibration({ rows, threshold = 0.5 }: {
             cx={cx}
             cy={cy}
             r="2.6"
-            fill={r.correct ? "#29916e" : "#b91c1c"}
+            fill={r.correct ? "#d7b986" : "#e37f65"}
             style={{ opacity: shown ? 0.85 : 0, transition: `opacity .5s ease ${Math.min(i, 60) * 8}ms` }}
             onMouseEnter={() => setHover({ x: cx, y: cy, r })}
             onMouseLeave={() => setHover(null)}
@@ -142,8 +142,8 @@ export default function Calibration({ rows, threshold = 0.5 }: {
       ) : null}
 
       <div className="legend">
-        <span><i className="swatch" style={{ background: "#29916e" }} />verified correct</span>
-        <span><i className="swatch" style={{ background: "#b91c1c" }} />wrong</span>
+        <span><i className="swatch" style={{ background: "#d7b986" }} />verified correct</span>
+        <span><i className="swatch" style={{ background: "#e37f65" }} />wrong</span>
         <span>
           {rows.length} decisions carry a confidence
           {overconf.length ? ` · ${overconf.length} bins overstate it` : ""}
