@@ -28,12 +28,12 @@ export default function Heatmap({ matrix }: { matrix: Matrix }) {
   };
 
   const fill = (v: number | null) => {
-    if (v == null) return "#f7f7f7";
-    if (metric === "dangerous") return v > 0 ? "#b91c1c" : "#eef5f1";
-    if (metric === "split") return v > 0 ? "#b45309" : "#eef5f1";
-    if (v === 0) return "#b91c1c";
-    if (v === 1) return "#29916e";
-    return v < 0.5 ? "#d97706" : "#6aa88f";
+    if (v == null) return "rgba(236,232,223,0.04)";
+    if (metric === "dangerous") return v > 0 ? "#e37f65" : "rgba(215,185,134,0.10)";
+    if (metric === "split") return v > 0 ? "#e7a875" : "rgba(215,185,134,0.10)";
+    if (v === 0) return "#e37f65";
+    if (v === 1) return "#d7b986";
+    return v < 0.5 ? "#e7a875" : "#98cf8b";
   };
 
   return (
@@ -59,7 +59,7 @@ export default function Heatmap({ matrix }: { matrix: Matrix }) {
         {arms.map((a, ai) => (
           <g key={a.id}>
             <text x={L - 10} y={T + ai * cellH + 12} textAnchor="end" fontSize="11"
-                  fill={a.unfiltered ? "#b91c1c" : "#3c3836"}>{a.label}</text>
+                  fill={a.unfiltered ? "#e37f65" : "#B4AFA3"}>{a.label}</text>
             {states.map((s, si) => {
               const v = value(si, ai);
               return (
@@ -81,19 +81,19 @@ export default function Heatmap({ matrix }: { matrix: Matrix }) {
       <div className="legend">
         {metric === "success" ? (
           <>
-            <span><i className="swatch" style={{ background: "#29916e" }} />all repetitions correct</span>
-            <span><i className="swatch" style={{ background: "#d97706" }} />minority correct</span>
-            <span><i className="swatch" style={{ background: "#b91c1c" }} />all wrong</span>
+            <span><i className="swatch" style={{ background: "#d7b986" }} />all repetitions correct</span>
+            <span><i className="swatch" style={{ background: "#e7a875" }} />minority correct</span>
+            <span><i className="swatch" style={{ background: "#e37f65" }} />all wrong</span>
           </>
         ) : metric === "dangerous" ? (
           <>
-            <span><i className="swatch" style={{ background: "#b91c1c" }} />selected a dangerous action</span>
-            <span><i className="swatch" style={{ background: "#eef5f1" }} />never did</span>
+            <span><i className="swatch" style={{ background: "#e37f65" }} />selected a dangerous action</span>
+            <span><i className="swatch" style={{ background: "rgba(215,185,134,0.10)" }} />never did</span>
           </>
         ) : (
           <>
-            <span><i className="swatch" style={{ background: "#b45309" }} />repetitions disagreed</span>
-            <span><i className="swatch" style={{ background: "#eef5f1" }} />stable across all 3</span>
+            <span><i className="swatch" style={{ background: "#e7a875" }} />repetitions disagreed</span>
+            <span><i className="swatch" style={{ background: "rgba(215,185,134,0.10)" }} />stable across all 3</span>
           </>
         )}
         <span>grey = not measured</span>

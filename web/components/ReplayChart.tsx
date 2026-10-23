@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { Arm, Matrix } from "@/data/types";
 import { useReveal } from "./charts/useReveal";
 
-const COLOUR = ["#29916e", "#1a3029", "#0f766e", "#7c5295", "#b45309", "#64748b", "#b91c1c"];
+const COLOUR = ["#d7b986", "#ECE8DF", "#63bfae", "#b098cd", "#e7a875", "#81b9da", "#e37f65"];
 const W = 860, H = 320, L = 52, R = 150, T = 22, B = 62;
 
 /**
@@ -36,7 +36,7 @@ export default function ReplayChart({ matrix, selected }: { matrix: Matrix; sele
       const scale = a.warmP50Ms && a.warmP50Ms > 0 ? a.warmP50Ms : 1;
       return {
         arm: a,
-        colour: a.unfiltered ? "#b91c1c" : COLOUR[i % COLOUR.length],
+        colour: a.unfiltered ? "#e37f65" : COLOUR[i % COLOUR.length],
         points: vals.map((v, k) => (v == null ? null : { k, y: v / scale })),
       };
     });
@@ -99,14 +99,14 @@ export default function ReplayChart({ matrix, selected }: { matrix: Matrix; sele
         ))}
         <line className="axis" x1={L} x2={W - R} y1={H - B} y2={H - B} />
         <line className="axis" x1={L} x2={L} y1={T} y2={H - B} />
-        <text x={L + (W - L - R) / 2} y={H - 26} textAnchor="middle" fontSize="11" fill="#676767">
+        <text x={L + (W - L - R) / 2} y={H - 26} textAnchor="middle" fontSize="11" fill="#837F74">
           bounded-choice state, in sweep order
         </text>
         <text transform={`translate(13 ${T + (H - T - B) / 2}) rotate(-90)`} textAnchor="middle"
-              fontSize="11" fill="#676767">decision latency ÷ that arm&rsquo;s own p50</text>
+              fontSize="11" fill="#837F74">decision latency ÷ that arm&rsquo;s own p50</text>
 
         {matrix.states.map((s, k) => (
-          <line key={s.id} x1={x(k)} x2={x(k)} y1={T} y2={H - B} stroke="#f7f7f7" />
+          <line key={s.id} x1={x(k)} x2={x(k)} y1={T} y2={H - B} stroke="rgba(236,232,223,0.04)" />
         ))}
 
         {series.map((s, si) => {
@@ -132,7 +132,7 @@ export default function ReplayChart({ matrix, selected }: { matrix: Matrix; sele
           );
         })}
 
-        <line x1={x(cut)} x2={x(cut)} y1={T} y2={H - B} stroke="#1a3029" strokeWidth="1" opacity="0.55" />
+        <line x1={x(cut)} x2={x(cut)} y1={T} y2={H - B} stroke="#ECE8DF" strokeWidth="1" opacity="0.55" />
       </svg>
 
       <div className="scrubRow">

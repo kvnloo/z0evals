@@ -9,9 +9,9 @@ export default function OrchestrationBars({ data, total }: { data: Sets; total: 
   const { ref, shown } = useReveal<HTMLDivElement>();
   const models = Object.keys(data.solved);
   const metrics: [string, Trio, string][] = [
-    ["solved", data.solved, "#29916e"],
-    ["correct stops", data.correct_stops, "#1a3029"],
-    ["failures to escalate", data.failures_to_escalate, "#b91c1c"],
+    ["solved", data.solved, "#d7b986"],
+    ["correct stops", data.correct_stops, "#ECE8DF"],
+    ["failures to escalate", data.failures_to_escalate, "#e37f65"],
   ];
   const W = 820, H = 260, L = 44, R = 18, T = 34, B = 44;
   const groupW = (W - L - R) / models.length;
@@ -41,8 +41,8 @@ export default function OrchestrationBars({ data, total }: { data: Sets; total: 
                 if (v == null) {
                   return (
                     <g key={label}>
-                      <rect x={x} y={H - B - 2} width={barW - 5} height={2} fill="#d9d9d9" />
-                      <text x={x + (barW - 5) / 2} y={H - B - 8} textAnchor="middle" fontSize="10" fill="#a8a8a8">n/a</text>
+                      <rect x={x} y={H - B - 2} width={barW - 5} height={2} fill="rgba(236,232,223,0.16)" />
+                      <text x={x + (barW - 5) / 2} y={H - B - 8} textAnchor="middle" fontSize="10" fill="#837F74">n/a</text>
                     </g>
                   );
                 }
@@ -57,7 +57,7 @@ export default function OrchestrationBars({ data, total }: { data: Sets; total: 
                   </g>
                 );
               })}
-              <text x={gx + groupW / 2} y={H - B + 18} textAnchor="middle" fontSize="11.5" fill="#3c3836">{m}</text>
+              <text x={gx + groupW / 2} y={H - B + 18} textAnchor="middle" fontSize="11.5" fill="#B4AFA3">{m}</text>
             </g>
           );
         })}

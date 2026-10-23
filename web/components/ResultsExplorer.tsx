@@ -47,7 +47,7 @@ export default function ResultsExplorer({ matrix }: { matrix: Matrix }) {
         {matrix.arms.map((a) => (
           <button key={a.id} type="button" aria-pressed={arms.includes(a.id)}
                   onClick={() => toggle(a.id)}
-                  style={a.unfiltered ? { borderColor: arms.includes(a.id) ? "#b91c1c" : undefined } : undefined}>
+                  style={a.unfiltered ? { borderColor: arms.includes(a.id) ? "#e37f65" : undefined } : undefined}>
             {a.label}
           </button>
         ))}
