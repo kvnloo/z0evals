@@ -26,7 +26,9 @@ LEDE = re.compile(r'<div class="lede">\s*(.*?)\s*</div>', re.S)
 
 def render(md: str) -> str:
     md = HEADING_ID.sub(lambda m: f"{m.group(1)} {m.group(2)} {{: #{m.group(3)} }}", md)
-    return markdown.markdown(md, extensions=["attr_list", "tables", "fenced_code", "md_in_html", "sane_lists"])
+    html = markdown.markdown(md, extensions=["attr_list", "tables", "fenced_code", "md_in_html", "sane_lists"])
+    # wide tables scroll inside their own box on phones instead of crushing their columns
+    return re.sub(r"<table>(.*?)</table>", r'<div class="table-wrap"><table>\1</table></div>', html, flags=re.S)
 
 
 def split(src: str) -> tuple[dict, str]:
@@ -42,7 +44,8 @@ def build_post(path: Path) -> dict:
     lede = ""
     m = LEDE.search(html)
     if m:
-        lede = re.sub(r"<[^>]+>", "", m.group(1)).strip()
+        # the lede is raw HTML in the source, so render any markdown inside it before stripping tags
+        lede = re.sub(r"<[^>]+>", "", markdown.markdown(m.group(1))).strip()
         html = html.replace(m.group(0), "", 1)
     slug = path.stem
     return {

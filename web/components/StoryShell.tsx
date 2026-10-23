@@ -151,7 +151,7 @@ export default function StoryShell({
         <div className="article">
           <MobileToc items={toc} onNavigate={(id) => navigate(id)} />
           <div className="article-body prose">
-            <p className="story-lede">{meta.lede}</p>
+            {meta.lede ? <p className="story-lede">{meta.lede}</p> : null}
             <section id="story-panel" data-mode="story" hidden={mode !== "story"}>
               {story}
             </section>
