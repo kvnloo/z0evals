@@ -33,7 +33,7 @@ tonight we ran five measurements. one local worker class passed our speed-first 
 
 ## two questions {#question}
 
-z0 should do two things for the agents it sits beside. it should move work off the frontier model when a cheaper or faster model gives the same answer. and it should learn, from outcomes that someone or something independently checked, when its own gate is right. tonight asked whether either is ready. every experiment below was pre-registered in its source repository, every pinned commit was pushed, and only aggregates are published. the only runtime change was a shadow-only demotion.
+z0 should do two things for the agents it sits beside. it should move work off the frontier model when a cheaper or faster model gives the same answer. and it should learn, from outcomes that someone or something independently checked, when its own gate is right. tonight asked whether either is ready. the scored offload, faithfulness, verification-density and verified-loop comparisons were pre-registered in their source repositories. utilization is a source-reported baseline, not a pre-registered comparison. cited source revisions are pinned, and only aggregates are published. the only runtime change was a shadow-only demotion.
 
 ## speed-first offload {#offload}
 
@@ -103,10 +103,10 @@ the verified loop (evolution-lab, pre-registration ded915a) would compare the de
 the result (1b80a4e) is **insufficient data**. of 23 exported rows, 16 had no verified label and 1 was not an act, leaving 6 rows, 1 not-success, and one session. grouped cross-validation was impossible. the gate's numbers on those 6 are descriptive only.
 
 <table class="result-table">
-<thead><tr><th>population</th><th>turns/wk</th><th>resolved/wk</th><th>weeks to gate</th><th>weeks to 80% power</th></tr></thead>
+<thead><tr><th>population</th><th>turns/wk</th><th>feature-covered resolved/wk</th><th>weeks to gate</th><th>weeks to 80% power</th></tr></thead>
 <tbody>
 <tr class="primary"><td>live (interactive + agent)</td><td>217</td><td>28</td><td>24.1</td><td>29.6</td></tr>
-<tr><td>all cohorts, current coverage</td><td>2492</td><td>651</td><td>19.8</td><td>24.3</td></tr>
+<tr><td>all cohorts, current coverage</td><td>2492</td><td>34.1</td><td>19.8</td><td>24.3</td></tr>
 <tr><td>all cohorts, if eval harness sessions emitted features</td><td>2492</td><td>651</td><td>1.0</td><td>1.3</td></tr>
 </tbody>
 </table>
