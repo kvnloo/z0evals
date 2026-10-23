@@ -59,6 +59,12 @@ unknown schemas, symlinks, changing files, malformed/truncated JSONL, inputs
 larger than 8 MiB and rows larger than 4 KiB. No partial summary is printed
 on failure, and errors never include a raw row or input pathname.
 
+The producer preserves fixed error codes in `decision`: `outcome: error`
+accepts its documented `error` and `byte_limit` decisions. A byte-limited
+fetch remains an error, not an invalid query or a retrieval miss. Unknown
+decision codes and combinations such as `outcome: error, decision: stale`
+remain rejected; classified failures retain their distinct outcomes.
+
 `query_hmac` uses a **per-process random key**: equality is not meaningful
 across launches and this tool does not emit identifiers or de-duplicate query
 rows. No continuity, causal improvement, latency or source-use measurements

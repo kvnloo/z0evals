@@ -22,6 +22,8 @@ OUTCOMES = (
     "hit", "miss", "denied", "unavailable", "stale",
     "rate_limited", "invalid", "error",
 )
+# Fixed producer error codes retain their decision instead of becoming "error".
+ERROR_DECISIONS = frozenset({"error", "byte_limit"})
 FIELDS = frozenset({
     "schema", "tool", "outcome", "timestamp", "query_hmac",
     "count", "bytes", "denied_count", "unavailable_count", "decision",
@@ -119,7 +121,7 @@ def _validate_row(row: object, line_number: int) -> dict:
             (tool == "fetch" and decision in
              ("invalid_id", "invalid_arguments", "byte_limit"))))
     else:  # error
-        valid = count == 0 and decision == "error"
+        valid = count == 0 and decision in ERROR_DECISIONS
     if outcome != "hit" and (denied != 0 or unavailable != 0):
         if outcome == "denied":
             valid = valid and denied >= 0 and unavailable == 0

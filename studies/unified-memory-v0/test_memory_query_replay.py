@@ -115,6 +115,21 @@ class MemoryQueryReplayTests(unittest.TestCase):
         self.assertEqual(summary["by_tool_outcome"]["fetch"]["stale"], 1)
         self.assertEqual(summary["by_tool_outcome"]["invalid"]["invalid"], 1)
 
+    def test_cli_accepts_fixed_producer_error_decisions(self) -> None:
+        self.write_rows(*(
+            audit(tool="fetch", outcome="error", count=0, decision=decision)
+            for decision in ("byte_limit", "error")
+        ))
+        result = self.run_cli()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.stderr, "")
+        summary = json.loads(result.stdout)
+        self.assertEqual(summary["records"], 2)
+        self.assertEqual(summary["by_outcome"]["error"], 2)
+        self.assertEqual(summary["by_tool_outcome"]["fetch"]["error"], 2)
+        self.assertEqual(summary["by_outcome"]["miss"], 0)
+        self.assertEqual(summary["by_outcome"]["invalid"], 0)
+
     def test_per_process_hmac_is_not_used_for_deduplication(self) -> None:
         self.write_rows(audit(), audit())
         result = self.run_cli()
@@ -177,6 +192,7 @@ class MemoryQueryReplayTests(unittest.TestCase):
             audit(outcome="rate_limited", count=1, decision="rate_limited"),
             audit(outcome="invalid", count=0, decision="allowed"),
             audit(outcome="error", count=0, decision="stale"),
+            audit(outcome="error", count=0, decision="unrecognized_error"),
             audit(tool="fetch", count=2),
             audit(tool="fetch", denied_count=1),
             audit(tool="invalid", count=0, outcome="hit"),
