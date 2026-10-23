@@ -86,7 +86,7 @@ class FleetMbpThermalTests(unittest.TestCase):
         gold = self.case["gold"]
         self.assertEqual(gold["supersedes_only"], "mbp thermal max_temp_c")
         self.assertFalse(gold["cpu_correction"])
-        self.assertIn("independent", gold["cpu_note"])
+        self.assertIn("unrelated", gold["cpu_note"])
         self.assertEqual(set(gold["unaffected_gates"]), {"CPU quota", "memory", "disk", "battery"})
 
     def test_fresh_client_input_cannot_be_an_answer_key(self) -> None:
