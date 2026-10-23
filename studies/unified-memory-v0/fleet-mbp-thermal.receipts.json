@@ -1,0 +1,184 @@
+{
+  "schema": "z0eval.unified_memory_handoff_receipt_slots.v0",
+  "case_id": "fleet-mbp-thermal-agent-policy-user-correction",
+  "execution_status": "NOT_RUN",
+  "admission_qualification": "NOT_QUALIFIED",
+  "model_input_qualification": "NOT_QUALIFIED",
+  "existing_result_schema": "receipt.schema.json",
+  "harness_receipts": [],
+  "comparison": {
+    "same": [
+      "model_revision",
+      "neutral_question",
+      "prompt_template",
+      "input_budget",
+      "decoding_settings",
+      "read_only_tool_permissions",
+      "source_coverage_snapshot"
+    ],
+    "qualification": "NOT_QUALIFIED"
+  },
+  "arms": [
+    {
+      "name": "memory_enabled",
+      "execution_status": "NOT_RUN",
+      "admission_qualification": "NOT_QUALIFIED",
+      "model_input_qualification": "NOT_QUALIFIED",
+      "model_revision": null,
+      "prompt_hash": null,
+      "budget_tokens": null,
+      "stage_receipts": [
+        {
+          "stage": "capture",
+          "execution_status": "NOT_RUN",
+          "verified": false,
+          "receipt_ref": null,
+          "evidence_refs": [],
+          "measured_at": null
+        },
+        {
+          "stage": "retrieve",
+          "execution_status": "NOT_RUN",
+          "verified": false,
+          "receipt_ref": null,
+          "evidence_refs": [],
+          "measured_at": null
+        },
+        {
+          "stage": "exact_source_verify",
+          "execution_status": "NOT_RUN",
+          "verified": false,
+          "receipt_ref": null,
+          "evidence_refs": [],
+          "measured_at": null
+        },
+        {
+          "stage": "actual_model_input",
+          "execution_status": "NOT_RUN",
+          "verified": false,
+          "receipt_ref": null,
+          "evidence_refs": [],
+          "measured_at": null
+        },
+        {
+          "stage": "use",
+          "execution_status": "NOT_RUN",
+          "verified": false,
+          "receipt_ref": null,
+          "evidence_refs": [],
+          "measured_at": null
+        },
+        {
+          "stage": "independent_check",
+          "execution_status": "NOT_RUN",
+          "verified": false,
+          "receipt_ref": null,
+          "evidence_refs": [],
+          "measured_at": null
+        }
+      ]
+    },
+    {
+      "name": "memory_disabled_control",
+      "execution_status": "NOT_RUN",
+      "admission_qualification": "NOT_QUALIFIED",
+      "model_input_qualification": "NOT_QUALIFIED",
+      "model_revision": null,
+      "prompt_hash": null,
+      "budget_tokens": null,
+      "stage_receipts": [
+        {
+          "stage": "capture",
+          "execution_status": "NOT_RUN",
+          "verified": false,
+          "receipt_ref": null,
+          "evidence_refs": [],
+          "measured_at": null
+        },
+        {
+          "stage": "retrieve",
+          "execution_status": "NOT_RUN",
+          "verified": false,
+          "receipt_ref": null,
+          "evidence_refs": [],
+          "measured_at": null
+        },
+        {
+          "stage": "exact_source_verify",
+          "execution_status": "NOT_RUN",
+          "verified": false,
+          "receipt_ref": null,
+          "evidence_refs": [],
+          "measured_at": null
+        },
+        {
+          "stage": "actual_model_input",
+          "execution_status": "NOT_RUN",
+          "verified": false,
+          "receipt_ref": null,
+          "evidence_refs": [],
+          "measured_at": null
+        },
+        {
+          "stage": "use",
+          "execution_status": "NOT_RUN",
+          "verified": false,
+          "receipt_ref": null,
+          "evidence_refs": [],
+          "measured_at": null
+        },
+        {
+          "stage": "independent_check",
+          "execution_status": "NOT_RUN",
+          "verified": false,
+          "receipt_ref": null,
+          "evidence_refs": [],
+          "measured_at": null
+        }
+      ]
+    }
+  ],
+  "negative_executions": [
+    {
+      "case_id": "sibling-scope",
+      "status": "NOT_RUN",
+      "receipt_ref": null
+    },
+    {
+      "case_id": "unknown-scope",
+      "status": "NOT_RUN",
+      "receipt_ref": null
+    },
+    {
+      "case_id": "same-metadata-new-bytes",
+      "status": "NOT_RUN",
+      "receipt_ref": null
+    },
+    {
+      "case_id": "missing-required-original",
+      "status": "NOT_RUN",
+      "receipt_ref": null
+    },
+    {
+      "case_id": "required-source-outage",
+      "status": "NOT_RUN",
+      "receipt_ref": null
+    },
+    {
+      "case_id": "quoted-old-approval",
+      "status": "NOT_RUN",
+      "receipt_ref": null
+    },
+    {
+      "case_id": "duplicate-restart",
+      "status": "NOT_RUN",
+      "receipt_ref": null
+    },
+    {
+      "case_id": "other-node-propagation",
+      "status": "NOT_RUN",
+      "receipt_ref": null
+    }
+  ],
+  "interpretation": "Slots are a run plan, not observed events; no verified source admission, model input, measured latency, or harness use is claimed."
+}
