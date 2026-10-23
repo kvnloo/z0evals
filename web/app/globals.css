@@ -1786,3 +1786,15 @@ html, body { background: #0c0c0a; }
 .log-links a::before { content: "↗ "; }
 .log-links a.log-post { color: var(--gold); }
 .log-foot { margin-top: 56px; color: #837F74; font-size: .9rem; max-width: 46rem; }
+
+/* ---------- markdown tables ---------- */
+.prose .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 1.5em 0; border-radius: 14px;
+  background: var(--sheen), var(--glass-fill); border: 1px solid var(--hair); border-top-color: var(--rimtop); }
+.prose .table-wrap table { width: 100%; min-width: 560px; border-collapse: collapse; margin: 0; font-size: .9rem; line-height: 1.45; }
+.prose .table-wrap th, .prose .table-wrap td { padding: 10px 14px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--hair); }
+.prose .table-wrap th { font: 600 12px/16px var(--font-sans); letter-spacing: .4px; text-transform: uppercase; color: #837F74; white-space: nowrap; }
+.prose .table-wrap td { color: #B4AFA3; }
+.prose .table-wrap td:first-child { color: #ECE8DF; }
+.prose .table-wrap tr:last-child td { border-bottom: 0; }
+.prose .table-wrap code { white-space: nowrap; }
+.log-focus.prose { max-width: none; }

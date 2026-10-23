@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import fs from "node:fs";
 import path from "node:path";
-import LogExplorer, { STATUS, type LogEntry } from "@/components/LogExplorer";
+import LogExplorer, { type LogEntry } from "@/components/LogExplorer";
+import { STATUS } from "@/lib/logStatus";
 
 export const metadata: Metadata = {
   title: "the research log — z0evals",
