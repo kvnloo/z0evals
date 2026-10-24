@@ -17,7 +17,7 @@ sources:
     commit: 68231658f0ec0338464c0916a2329b9587444312
     role: canonical contract identity
   - repo: kvnloo/z0intelligence
-    commit: 870763b83415d6d8a4a8997c866fb8afc3632f0f
+    commit: 306a08df2b18a1837b6ad887246bcb18a4ad32c2
     branch: feat/aodl-governed-worker-v1
     role: first host-governed OMP-compatible remote worker canary
 
