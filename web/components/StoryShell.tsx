@@ -75,6 +75,7 @@ export default function StoryShell({
           <nav className="site-nav" aria-label="research pages">
             <a className="brand" href="../">z0evals</a>
             <div className="links">
+              <a href="../log/">log</a>
               <a href="../">phase 1b</a>
               <a href="../z0intelligence-function-routing/">routing</a>
               <a href="../researching-the-frontier/">research</a>
@@ -150,7 +151,7 @@ export default function StoryShell({
         <div className="article">
           <MobileToc items={toc} onNavigate={(id) => navigate(id)} />
           <div className="article-body prose">
-            <p className="story-lede">{meta.lede}</p>
+            {meta.lede ? <p className="story-lede">{meta.lede}</p> : null}
             <section id="story-panel" data-mode="story" hidden={mode !== "story"}>
               {story}
             </section>

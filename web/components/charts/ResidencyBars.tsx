@@ -34,22 +34,22 @@ export default function ResidencyBars({ rows }: { rows: Row[] }) {
           return (
             <g key={r.label} className="mark">
               <rect x={x} y={H - B - (shown ? h : 0)} width={w} height={shown ? h : 0}
-                    fill={cold ? "#1a3029" : "#29916e"} rx="2"
+                    fill={cold ? "#ECE8DF" : "#d7b986"} rx="2"
                     style={{ transition: `y .6s cubic-bezier(.2,.7,.2,1) ${i * 70}ms, height .6s cubic-bezier(.2,.7,.2,1) ${i * 70}ms` }} />
-              <text x={x + w / 2} y={H - B + 17} textAnchor="middle" fontSize="11" fill="#3c3836">{r.label}</text>
+              <text x={x + w / 2} y={H - B + 17} textAnchor="middle" fontSize="11" fill="#B4AFA3">{r.label}</text>
               <text x={x + w / 2} y={H - B - h - 7} textAnchor="middle" fontSize="11.5" fontWeight="700"
-                    fill={cold ? "#1a3029" : "#29916e"}>{fmtMs(r.p50Ms)}</text>
+                    fill={cold ? "#ECE8DF" : "#d7b986"}>{fmtMs(r.p50Ms)}</text>
             </g>
           );
         })}
         {warm ? (
           <line x1={L} x2={W - R} y1={H - B - bh(warm.p50Ms)} y2={H - B - bh(warm.p50Ms)}
-                stroke="#b91c1c" strokeWidth="1" strokeDasharray="4 3" opacity="0.7" />
+                stroke="#e37f65" strokeWidth="1" strokeDasharray="4 3" opacity="0.7" />
         ) : null}
       </svg>
       <div className="legend">
-        <span><i className="swatch" style={{ background: "#1a3029" }} />pay once (cold load / model swap)</span>
-        <span><i className="swatch" style={{ background: "#29916e" }} />pay per call (warm)</span>
+        <span><i className="swatch" style={{ background: "#ECE8DF" }} />pay once (cold load / model swap)</span>
+        <span><i className="swatch" style={{ background: "#d7b986" }} />pay per call (warm)</span>
       </div>
     </div>
   );
