@@ -3,7 +3,7 @@ id: aodl-golden-trace-v1
 title: First governed AODL root-trace join
 status: draft
 created: "2026-10-01"
-updated: "2026-10-01"
+updated: "2026-10-24"
 
 parent_studies:
   - aodl-admission-v1
@@ -17,7 +17,7 @@ sources:
     commit: 68231658f0ec0338464c0916a2329b9587444312
     role: canonical contract identity
   - repo: kvnloo/z0intelligence
-    commit: 28db1eecbe9fa9921c52945e15d4894b6dddae3d
+    commit: 0a7f1524730e08e7276a6f8c5f4573b8a9112957
     branch: feat/aodl-governed-worker-v1
     role: first host-governed OMP-compatible remote worker canary
 
