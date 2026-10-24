@@ -188,6 +188,8 @@ The native diff may also contain a private `path`, which the post never copies.
 Use a `FINDING_ID=HTTPS_URL` override if an evidence URL is local.
 Every referenced finding needs an evidence URL.
 Both policy versions must be full SHA-256 values.
+The publisher retains missing-endpoint warnings from Markdown.
+For JSON, it renders top-level `serving_missing` rule IDs and per-change `serving_missing: true` in a separate warning section.
 
 The output path is `posts/policy/YYYY-MM-DD-<first 12 version characters>.md`.
 Front matter records both versions, the policy URL, evidence URLs and the changelog SHA-256.

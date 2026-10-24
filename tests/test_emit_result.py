@@ -257,6 +257,19 @@ class PolicyPostTest(unittest.TestCase):
         self.assertNotIn("/private", output.read_text())
         self.assertIn("finding-1", output.read_text())
 
+    def test_serving_warnings_survive_both_changelog_formats(self):
+        diff = {
+            "changes": [{"rule_id": "F-omp.tool-1", "from": "canary", "to": "live",
+                         "because": ["finding-1"], "serving_missing": True}],
+            "serving_missing": ["F-router.model-1"],
+        }
+        body = publisher.change_markdown(diff)
+        self.assertIn("## Missing serving endpoints", body)
+        self.assertIn("`F-omp.tool-1` has no matching serving endpoint.", body)
+        self.assertIn("`F-router.model-1` has no matching serving endpoint.", body)
+        output = publisher.policy_post(body, evidence_urls=["https://example.org/evidence/1"], **self.args)
+        self.assertIn(body, output.read_text())
+
 
 if __name__ == "__main__":
     unittest.main()

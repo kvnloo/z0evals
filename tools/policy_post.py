@@ -46,6 +46,15 @@ def change_markdown(diff: dict) -> str:
             raise ValueError("change.because must contain finding IDs")
         lines.append(f"- `{change['rule_id']}`: {change['from']} → {change['to']}.")
         lines.append(f"  Evidence: {', '.join(change['because']) or 'no evidence recorded'}.")
+    missing = diff.get("serving_missing", [])
+    if not isinstance(missing, list) or not all(isinstance(rule, str) for rule in missing):
+        raise ValueError("serving_missing must contain rule IDs")
+    missing = sorted(set(missing) | {
+        change["rule_id"] for change in changes if change.get("serving_missing") is True
+    })
+    if missing:
+        lines.extend(["", "## Missing serving endpoints", ""])
+        lines.extend(f"- `{rule}` has no matching serving endpoint." for rule in missing)
     return "\n".join(lines) + "\n"
 
 
