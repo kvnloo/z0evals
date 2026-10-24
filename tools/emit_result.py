@@ -28,7 +28,7 @@ def finding_view(result: dict) -> dict:
         "arm", "metric", "evidence_class", "scope_note", "ts"
     )}
     finding["subject"] = {"family": result["family"], "job": result["job"]}
-    for key in ("baseline", "expires_at"):
+    for key in ("baseline", "expires_at", "synthetic"):
         if key in result:
             finding[key] = copy.deepcopy(result[key])
     return finding

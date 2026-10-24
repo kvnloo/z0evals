@@ -106,6 +106,9 @@ Supply these fields:
   `inference` never supplies promotion evidence.
 - Optional `baseline`: `{arm, value}`.
   Optional `expires_at`: the evidence expiry timestamp.
+- Optional `synthetic`: a boolean test-artifact marker.
+  Set it to `true` for synthetic evidence.
+  The emitter preserves it in the finding view.
 
 Retain explicit promotion metadata when the study measured it.
 Use `metric.live_shadow` for live shadow labels.
@@ -190,6 +193,11 @@ Every referenced finding needs an evidence URL.
 Both policy versions must be full SHA-256 values.
 The publisher retains missing-endpoint warnings from Markdown.
 For JSON, it renders top-level `serving_missing` rule IDs and per-change `serving_missing: true` in a separate warning section.
+The publisher preserves synthetic provenance.
+JSON uses top-level `synthetic: true`.
+Markdown uses `**Synthetic policy. This is not a real experiment promotion.**` on its own line.
+Synthetic posts have `synthetic: true` in front matter and an explicit warning.
+They do not report real experiment promotions or relax any stage gate.
 
 The output path is `posts/policy/YYYY-MM-DD-<first 12 version characters>.md`.
 Front matter records both versions, the policy URL, evidence URLs and the changelog SHA-256.

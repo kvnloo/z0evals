@@ -17,6 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 VERSION = re.compile(r"^[0-9a-f]{64}$")
 MARKDOWN_LINK = re.compile(r"\[[^\]]+\]\((https://[^\s)]+)\)")
 LOCAL_LINK = re.compile(r"\[([^\]]+)\]\((file://[^)]+)\)")
+SYNTHETIC_MARKER = "**Synthetic policy. This is not a real experiment promotion.**"
 
 
 def public_url(value: str) -> str:
@@ -70,6 +71,7 @@ def policy_post(
 ) -> Path:
     """Render a JSON diff or Markdown changelog with public provenance links."""
     evidence = []
+    synthetic = False
     replacements = {}
     for item in evidence_urls or []:
         if item.startswith("https://"):
@@ -83,6 +85,9 @@ def policy_post(
         diff = json.loads(source)
         if not isinstance(diff, dict):
             raise ValueError("JSON diff must be an object")
+        synthetic = diff.get("synthetic", False)
+        if not isinstance(synthetic, bool):
+            raise ValueError("synthetic must be a boolean")
         for supplied, key in ((from_version, "from_version"), (to_version, "to_version"), (policy_url, "policy_url")):
             if supplied is not None and key in diff and supplied != diff[key]:
                 raise ValueError(f"CLI and JSON disagree on {key}")
@@ -106,6 +111,7 @@ def policy_post(
     else:
         if not source.strip():
             raise ValueError("Markdown changelog is empty")
+        synthetic = SYNTHETIC_MARKER in {line.strip() for line in source.splitlines()}
         for label, supplied in (("From", from_version), ("To", to_version)):
             match = re.search(rf"^{label}: `([0-9a-f]{{64}})`\s*$", source, re.M)
             if match:
@@ -150,12 +156,18 @@ def policy_post(
         "policy_url": policy_url,
         "changelog_sha256": hashlib.sha256(source.encode()).hexdigest(),
         "evidence": evidence,
+        "synthetic": synthetic,
     }
     links = "\n".join(f"- [Evidence {index}]({url})" for index, url in enumerate(evidence, 1))
+    warning = (
+        "> Synthetic policy evidence. This post does not report a real experiment promotion.\n\n"
+        if synthetic else ""
+    )
     rendered = (
         "---\n" + yaml.safe_dump(meta, sort_keys=False, allow_unicode=True) + "---\n\n"
         + f"Policy version: [`{to_version}`]({policy_url}).\n\n"
         + "This post records policy output. It does not authorize or change routes.\n\n"
+        + warning
         + body.rstrip() + "\n\n## Evidence links\n\n" + links + "\n"
     )
     output = root / "posts" / "policy" / f"{day.isoformat()}-{to_version[:12]}.md"

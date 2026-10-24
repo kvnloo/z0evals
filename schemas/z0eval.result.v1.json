@@ -48,6 +48,7 @@
     "ts": {"type": "string", "format": "date-time"},
     "expires_at": {"type": "string", "format": "date-time"},
     "baseline": {"$ref": "#/$defs/baseline"},
+    "synthetic": {"type": "boolean", "description": "Synthetic evidence is a test artifact, not a real experiment promotion."},
     "findings": {
       "description": "The emitter derives this one-item consumer view from the top-level fields. It must not disagree with them.",
       "type": "array", "minItems": 1, "maxItems": 1,
@@ -112,6 +113,7 @@
         "arm": {"$ref": "#/$defs/arm"},
         "metric": {"$ref": "#/$defs/metric"},
         "evidence_class": {"$ref": "#/$defs/evidence_class"},
+        "synthetic": {"type": "boolean"},
         "scope_note": {"$ref": "#/$defs/text"},
         "ts": {"type": "string", "format": "date-time"},
         "expires_at": {"type": "string", "format": "date-time"},

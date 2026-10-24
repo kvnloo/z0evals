@@ -170,6 +170,15 @@ class EmitResultTest(unittest.TestCase):
         self.assertEqual(result["findings"][0]["baseline"], self.result["baseline"])
         self.assertEqual(result["findings"][0]["expires_at"], self.result["expires_at"])
 
+    def test_synthetic_receipt_marker_reaches_finding(self):
+        self.result["synthetic"] = True
+        result = json.loads(self.emit().read_text())
+        self.assertIs(result["synthetic"], True)
+        self.assertIs(result["findings"][0]["synthetic"], True)
+        self.result["synthetic"] = "true"
+        with self.assertRaises(ValidationError):
+            self.emit()
+
 
 class PolicyPostTest(unittest.TestCase):
     def setUp(self):
@@ -269,6 +278,30 @@ class PolicyPostTest(unittest.TestCase):
         self.assertIn("`F-router.model-1` has no matching serving endpoint.", body)
         output = publisher.policy_post(body, evidence_urls=["https://example.org/evidence/1"], **self.args)
         self.assertIn(body, output.read_text())
+
+    def test_synthetic_json_post_is_not_a_real_promotion(self):
+        diff = {
+            "synthetic": True, "changes": [],
+            "evidence": [{"id": "fixture", "url": "https://example.org/fixture"}],
+        }
+        output = publisher.policy_post(json.dumps(diff), **self.args)
+        source = output.read_text()
+        self.assertIs(yaml.safe_load(source.split("---\n")[1])["synthetic"], True)
+        self.assertIn("does not report a real experiment promotion", source)
+        diff["synthetic"] = "false"
+        with self.assertRaisesRegex(ValueError, "must be a boolean"):
+            publisher.policy_post(json.dumps(diff), **self.args)
+
+    def test_native_markdown_synthetic_marker_sets_front_matter(self):
+        body = (
+            "# Decision policy changelog\n\n"
+            + publisher.SYNTHETIC_MARKER + "\n\n"
+            + "[Fixture](https://example.org/fixture)\n"
+        )
+        output = publisher.policy_post(body, **self.args)
+        source = output.read_text()
+        self.assertIs(yaml.safe_load(source.split("---\n")[1])["synthetic"], True)
+        self.assertIn("does not report a real experiment promotion", source)
 
 
 if __name__ == "__main__":
