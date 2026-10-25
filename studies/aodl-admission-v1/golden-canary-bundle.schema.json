@@ -29,6 +29,7 @@
     "verification_scope": {"const": "exact public synthetic fixture only"},
     "structural_execution_complete": {"const": true},
     "verified_outcome_complete": {"const": true},
+    "provider_reported_cost_usd": {"type": ["number", "null"], "minimum": 0},
     "golden_trace": {"const": "golden-trace.json"},
     "raw_state": {"const": "raw/state"}
   },
