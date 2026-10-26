@@ -73,7 +73,7 @@ export default function ResearchExplorer({ items }: { items: ResearchItem[] }) {
             onClick={() => { haptic.select(); setMeasured(!measured); }}>
             <span className="dot ok" aria-hidden="true" /> measured only
           </button>
-          <input className="log-search" type="search" placeholder="search titles and deks" value={q}
+          <input className="log-search" type="search" placeholder="search" value={q}
             onChange={(e) => setQ(e.target.value)} aria-label="search research" />
         </div>
       </div>

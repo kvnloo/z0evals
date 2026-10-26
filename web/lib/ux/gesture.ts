@@ -93,6 +93,8 @@ export function useSwipe(ref: RefObject<HTMLElement | null>, opts: SwipeOptions)
       const done = () => {
         anim = null;
         t.style.willChange = "";
+        // a resting identity transform would make this element the containing block for fixed descendants
+        if (target === 0) t.style.transform = "";
         o.current.onSettled?.(target);
       };
       if (anim) anim.addEventListener("finish", done);
@@ -168,7 +170,8 @@ export function useSwipe(ref: RefObject<HTMLElement | null>, opts: SwipeOptions)
       const first = s[0];
       const lastS = s[s.length - 1];
       const dt = Math.max(1, lastS.t - first.t);
-      const velocity = ((lastS.p - first.p) / dt) * 1000;
+      // a pause before lifting means no fling: stale samples must not count
+      const velocity = e.timeStamp - lastS.t > 50 ? 0 : ((lastS.p - first.p) / dt) * 1000;
       const moved = t0.offset - (o.current.rest?.() ?? 0);
       const dir: 1 | -1 = (moved !== 0 ? Math.sign(moved) : Math.sign(velocity) || 1) as 1 | -1;
       const commit = (Math.abs(velocity) > 500 && Math.sign(velocity) === dir) || Math.abs(moved) > 0.4 * o.current.extent();

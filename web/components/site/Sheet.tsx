@@ -154,6 +154,8 @@ export default function Sheet({
     canStart: (e) => {
       if (!open) return false;
       startedInBody.current = Boolean(body.current?.contains(e.target as Node));
+      // mouse drags in the body are text selection; only the handle drags the sheet
+      if (e.pointerType === "mouse" && !(e.target as Element | null)?.closest?.(".sheet-handle")) return false;
       return !startedInBody.current || (body.current?.scrollTop ?? 0) <= 0;
     },
     canLock: (dy) => !startedInBody.current || dy > 0,

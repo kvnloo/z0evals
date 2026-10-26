@@ -2064,3 +2064,7 @@ html[data-header-hidden] .section-bar { transform: translateY(calc(-1 * var(--he
 /* Cormorant's old-style 0 reads as "o": keep the wordmark and display numbers lining */
 .wordmark, .home-positioning, .post-title, .entry-card-title, .page-title, .menu-row, .prevnext-title,
 .prose h2, .prose h3, .log-card h4, .article-title { font-variant-numeric: lining-nums; font-feature-settings: "lnum" 1; }
+
+.filter-bar, .filter-bar > *, .seg-scroll, .filter-row2 { min-width: 0; max-width: 100%; }
+.filter-bar { overflow-x: clip; }
+.filter-row2 .log-toggle { flex: 0 0 auto; }
