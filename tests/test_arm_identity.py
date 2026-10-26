@@ -113,7 +113,7 @@ def test_jev_is_not_banned_globally():
 
 def test_frozen_arm_ids_were_not_renamed():
     """Presentation was corrected downstream; the join keys are untouched."""
-    corpus = Path("/home/kvn/tmp/openjev/results/phase1b/p1b-20260921T1430Z/observations.jsonl")
+    corpus = Path.home() / "tmp" / "openjev" / "results" / "phase1b" / "p1b-20260921T1430Z" / "observations.jsonl"
     if corpus.is_file():
         arms = set()
         with corpus.open(encoding="utf-8") as fh:

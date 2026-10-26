@@ -34,6 +34,59 @@ The initial report will investigate:
 - bounded tool choice versus authentic orchestration
 - the basis for a continuously distilled Q-Route policy
 
+## Setup
+
+CI pins Python 3.12 and Node 22 (`.python-version`, `.nvmrc`). Python 3.10 or newer and Node 20.9 or newer also work, but CI does not test other versions.
+
+Always use a virtual environment. Many hosts (Arch/CachyOS, Debian 12+, Ubuntu 24.04, Homebrew Python) mark the system Python as externally managed (PEP 668), and a bare `pip install` fails there. Do not pass `--break-system-packages`.
+
+```bash
+# with uv
+uv venv .venv --python 3.12
+uv pip install -p .venv -r requirements.txt
+
+# or with the standard library only
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+```
+
+Run every script with `.venv/bin/python`. The checks below follow the CI order (`.github/workflows/ci.yml`). `zer0.repo.yaml` (`setup:`) declares the same order for the z0 onboarder.
+
+```bash
+PY=.venv/bin/python
+
+# Python tier (no network after pip)
+$PY -m unittest discover -s tests -p test_pages_publication.py -v
+$PY scripts/validate.py
+$PY tests/expire_claims.py
+$PY scripts/validate_optchat_publication.py
+$PY -m unittest discover -s tests -p test_optchat_publication.py -v
+$PY scripts/audit_web_source.py
+$PY scripts/build_site.py && test -f site/index.html
+$PY scripts/build_site_data.py   # must run before any npm typecheck/dev/build
+$PY scripts/build_posts.py
+$PY -m unittest discover -s tests -p test_build_posts.py -v
+
+# Web tier (needs the npm registry and Google Fonts at build time)
+cd web
+npm ci --no-audit --no-fund      # npm only; keep optional deps (platform natives)
+npm run typecheck
+Z0_BASE_PATH=/z0evals npx next build && test -f out/index.html
+cd ..
+$PY scripts/audit_web_export.py --root web/out
+```
+
+Offline, run only the Python tier: `next/font/google` fetches fonts during `next build`.
+
+The generators write gitignored outputs (`site/`, `web/data/posts/`, `web/data/research-focus.html`, `web/data/optchat-long-horizon-v0.json`). `build_site_data.py` also rewrites the committed `web/data/study.json`: without the local openjev corpus (`~/tmp/openjev`) only its `matrixOrigin` line changes; with the corpus it also rewrites `studies/slm-router-v0/data/phase1b-matrix.json`. Do not commit that drift by accident.
+
+### Open questions for the maintainer
+
+These are known and not resolved here:
+
+- **B7, branching docs conflict.** `prompt.md` says the stable scheme (branch from `origin/main`). `.verified-oss-loop/rollout.yml`, `AGENTS.md` and `CONTRIBUTING.md` say the rolling scheme with base `nightly`. Until the maintainer decides, `python3 .verified-oss-loop/rollout.py show` is the authority.
+- **B8, single-branch or shallow clones.** These see only `origin/main`, but the Pages build and the contributor flow need `main`, `dev`, `nightly` and `preview`. Run `git fetch origin main dev nightly preview`. Also, `web/data/research-log.json` links `studies/fsm-work-item-v0` at a SHA that is not on `main`, and `docs/verified-oss-loop.md` references `tests/fixtures/issues-tiny.json`, which does not exist.
+
 ## Layout
 
 ```text
@@ -51,10 +104,11 @@ Do **not** push a whole local worktree or private trace directory.
 Use an import spec that pins the source repository and commit, and explicitly allowlists each artifact to publish:
 
 ```bash
-python -m pip install -r requirements.txt
-python scripts/import_local.py imports/slm-router-v0.local.yaml
-python scripts/validate.py
+.venv/bin/python scripts/import_local.py imports/slm-router-v0.local.yaml
+.venv/bin/python scripts/validate.py
 ```
+
+Set up the venv first (see Setup).
 
 See `imports/slm-router-v0.example.yaml`.
 
