@@ -38,8 +38,21 @@ def split(src: str) -> tuple[dict, str]:
     return yaml.safe_load(m.group(1)) or {}, src[m.end():]
 
 
+GENERATED = ROOT / "web/data/generated"
+BLOCK = re.compile(r"(<!-- generated:([a-z0-9-]+) -->\n)(.*?)(<!-- /generated:\2 -->)", re.S)
+
+
+def splice_generated(body: str) -> str:
+    """Replace a committed snapshot block with web/data/generated/<name>.md when it exists."""
+    def swap(m: re.Match) -> str:
+        fresh = GENERATED / f"{m.group(2)}.md"
+        return m.group(1) + (fresh.read_text(encoding="utf-8") if fresh.is_file() else m.group(3)) + m.group(4)
+    return BLOCK.sub(swap, body)
+
+
 def build_post(path: Path) -> dict:
     meta, body = split(path.read_text(encoding="utf-8"))
+    body = splice_generated(body)
     html = render(body)
     lede = ""
     m = LEDE.search(html)

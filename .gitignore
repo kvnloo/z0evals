@@ -8,3 +8,4 @@ _channels/
 # prerendered by scripts/build_posts.py
 web/data/posts/
 web/data/research-focus.html
+web/data/generated/
