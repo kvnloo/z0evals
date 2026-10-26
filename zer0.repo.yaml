@@ -84,6 +84,9 @@ architecture:
 # Repo-local onboarding steps (kvnloo/z0 onboard design §2.6, §8.2). z0 reads this
 # block only from the pinned SHA in its mirror, never from a working tree. The z0
 # registry owns host-level and cross-repo steps and wins on a duplicate step id.
+# So each step here uses the z0 registry's id for the same step (z0evals.t0.*,
+# z0evals.venv, z0evals.deps, z0evals.t1.*, z0evals.web.*): a different id would make
+# z0 plan it twice. Facts in `when:` are z0 host-profile facts (network.npmjs, ...).
 # Each step uses the closed step kinds of kvnloo/z0 schemas/onboard-step.schema.json.
 # `where: build` is the component tree: a clean adopted checkout or a z0-owned clone.
 # argv only (no shell); the working directory is the component tree. Web steps use
@@ -100,70 +103,70 @@ setup:
   tiers:
     - id: preflight
       summary: stdlib only, any python3 >= 3.10, before any install
-      steps: [z0evals.rollout-show, z0evals.pages-url-map, z0evals.test-arm-identity, z0evals.expire-claims-preflight]
+      steps: [z0evals.t0.rollout, z0evals.t0.pages_map, z0evals.t0.arm_identity, z0evals.t0.expire_claims]
     - id: python
       summary: venv plus requirements.txt, then the CI python steps; no network after pip
-      steps: [z0evals.venv, z0evals.pip-install, z0evals.test-pages-publication, z0evals.validate, z0evals.expire-claims, z0evals.validate-optchat, z0evals.test-optchat-publication, z0evals.audit-web-source, z0evals.build-site, z0evals.build-site-data, z0evals.build-posts, z0evals.test-build-posts]
+      steps: [z0evals.venv, z0evals.deps, z0evals.t1.pages, z0evals.t1.validate, z0evals.t1.expire_claims, z0evals.t1.optchat_validate, z0evals.t1.optchat_tests, z0evals.t1.audit_source, z0evals.t1.build_site, z0evals.t1.site_data, z0evals.t1.posts, z0evals.t1.posts_tests]
     - id: web
       summary: needs the npm registry, Google Fonts (next/font/google) and node >= 20.9; else unavailable(offline|node)
       when: &web_gate
         - {fact: network.fonts_google, op: eq, value: true}
-        - {fact: network.npm_registry, op: eq, value: true}
+        - {fact: network.npmjs, op: eq, value: true}
         - {fact: toolchains.node.version, op: ge, value: "20.9.0"}
-      steps: [z0evals.npm-ci, z0evals.typecheck, z0evals.next-build, z0evals.audit-web-export]
+      steps: [z0evals.web.deps, z0evals.web.typecheck, z0evals.web.build, z0evals.web.audit]
   steps:
     # preflight
-    - {id: z0evals.rollout-show, component: z0evals, kind: check, consent: {class: C0}, where: build,
+    - {id: z0evals.t0.rollout, component: z0evals, kind: check, consent: {class: C0}, where: build,
        argv: [python3, .verified-oss-loop/rollout.py, show]}
-    - {id: z0evals.pages-url-map, component: z0evals, kind: check, consent: {class: C0}, where: build,
+    - {id: z0evals.t0.pages_map, component: z0evals, kind: check, consent: {class: C0}, where: build,
        argv: [python3, .verified-oss-loop/pages-url-map.py, check, --root, ., --base, /z0evals]}
-    - {id: z0evals.test-arm-identity, component: z0evals, kind: check, consent: {class: C0}, where: build,
+    - {id: z0evals.t0.arm_identity, component: z0evals, kind: check, consent: {class: C0}, where: build,
        argv: [python3, tests/test_arm_identity.py]}
-    - {id: z0evals.expire-claims-preflight, component: z0evals, kind: check, consent: {class: C0}, where: build,
+    - {id: z0evals.t0.expire_claims, component: z0evals, kind: check, consent: {class: C0}, where: build,
        argv: [python3, tests/expire_claims.py]}
     # python
     - {id: z0evals.venv, component: z0evals, kind: venv, consent: {class: C0}, where: venv,
-       needs: [z0evals.rollout-show, z0evals.pages-url-map, z0evals.test-arm-identity, z0evals.expire-claims-preflight],
+       needs: [z0evals.t0.rollout, z0evals.t0.pages_map, z0evals.t0.arm_identity, z0evals.t0.expire_claims],
        argv: [python3, -m, venv, .venv], probe: {argv: [.venv/bin/python, -c, "import sys; assert sys.version_info >= (3, 10)"]},
        undo: {kind: remove_owned}}
-    - {id: z0evals.pip-install, component: z0evals, kind: pip_install, consent: {class: C0}, where: venv, network: true,
+    - {id: z0evals.deps, component: z0evals, kind: pip_install, consent: {class: C0}, where: venv, network: true,
        needs: [z0evals.venv], argv: [.venv/bin/python, -m, pip, install, -r, requirements.txt],
        probe: {argv: [.venv/bin/python, -c, "import yaml, jsonschema, markdown"]}, undo: {kind: remove_owned}}
-    - {id: z0evals.test-pages-publication, component: z0evals, kind: check, consent: {class: C0}, where: build,
-       needs: [z0evals.pip-install], argv: [.venv/bin/python, -m, unittest, discover, -s, tests, -p, test_pages_publication.py, -v]}
-    - {id: z0evals.validate, component: z0evals, kind: check, consent: {class: C0}, where: build,
-       needs: [z0evals.test-pages-publication], argv: [.venv/bin/python, scripts/validate.py]}
-    - {id: z0evals.expire-claims, component: z0evals, kind: check, consent: {class: C0}, where: build,
-       needs: [z0evals.validate], argv: [.venv/bin/python, tests/expire_claims.py]}
-    - {id: z0evals.validate-optchat, component: z0evals, kind: check, consent: {class: C0}, where: build,
-       needs: [z0evals.expire-claims], argv: [.venv/bin/python, scripts/validate_optchat_publication.py]}
-    - {id: z0evals.test-optchat-publication, component: z0evals, kind: check, consent: {class: C0}, where: build,
-       needs: [z0evals.validate-optchat], argv: [.venv/bin/python, -m, unittest, discover, -s, tests, -p, test_optchat_publication.py, -v]}
-    - {id: z0evals.audit-web-source, component: z0evals, kind: check, consent: {class: C0}, where: build,
-       needs: [z0evals.test-optchat-publication], argv: [.venv/bin/python, scripts/audit_web_source.py]}
-    - {id: z0evals.build-site, component: z0evals, kind: run, consent: {class: C0}, where: build,
-       needs: [z0evals.audit-web-source], argv: [.venv/bin/python, scripts/build_site.py],
+    - {id: z0evals.t1.pages, component: z0evals, kind: check, consent: {class: C0}, where: build,
+       needs: [z0evals.deps], argv: [.venv/bin/python, -m, unittest, discover, -s, tests, -p, test_pages_publication.py, -v]}
+    - {id: z0evals.t1.validate, component: z0evals, kind: check, consent: {class: C0}, where: build,
+       needs: [z0evals.t1.pages], argv: [.venv/bin/python, scripts/validate.py]}
+    - {id: z0evals.t1.expire_claims, component: z0evals, kind: check, consent: {class: C0}, where: build,
+       needs: [z0evals.t1.validate], argv: [.venv/bin/python, tests/expire_claims.py]}
+    - {id: z0evals.t1.optchat_validate, component: z0evals, kind: check, consent: {class: C0}, where: build,
+       needs: [z0evals.t1.expire_claims], argv: [.venv/bin/python, scripts/validate_optchat_publication.py]}
+    - {id: z0evals.t1.optchat_tests, component: z0evals, kind: check, consent: {class: C0}, where: build,
+       needs: [z0evals.t1.optchat_validate], argv: [.venv/bin/python, -m, unittest, discover, -s, tests, -p, test_optchat_publication.py, -v]}
+    - {id: z0evals.t1.audit_source, component: z0evals, kind: check, consent: {class: C0}, where: build,
+       needs: [z0evals.t1.optchat_tests], argv: [.venv/bin/python, scripts/audit_web_source.py]}
+    - {id: z0evals.t1.build_site, component: z0evals, kind: run, consent: {class: C0}, where: build,
+       needs: [z0evals.t1.audit_source], argv: [.venv/bin/python, scripts/build_site.py],
        probe: {argv: [test, -f, site/index.html]}, verify: {argv: [test, -f, site/index.html]}, undo: {kind: none}}
     # build_site_data.py must run before any npm typecheck/dev/build (B5).
-    - {id: z0evals.build-site-data, component: z0evals, kind: run, consent: {class: C0}, where: build,
-       needs: [z0evals.build-site], argv: [.venv/bin/python, scripts/build_site_data.py],
+    - {id: z0evals.t1.site_data, component: z0evals, kind: run, consent: {class: C0}, where: build,
+       needs: [z0evals.t1.build_site], argv: [.venv/bin/python, scripts/build_site_data.py],
        probe: {argv: [test, -f, web/data/optchat-long-horizon-v0.json]}, verify: {argv: [test, -f, web/data/optchat-long-horizon-v0.json]}, undo: {kind: none}}
-    - {id: z0evals.build-posts, component: z0evals, kind: run, consent: {class: C0}, where: build,
-       needs: [z0evals.build-site-data], argv: [.venv/bin/python, scripts/build_posts.py],
+    - {id: z0evals.t1.posts, component: z0evals, kind: run, consent: {class: C0}, where: build,
+       needs: [z0evals.t1.site_data], argv: [.venv/bin/python, scripts/build_posts.py],
        probe: {argv: [test, -d, web/data/posts]}, verify: {argv: [test, -f, web/data/research-focus.html]}, undo: {kind: none}}
-    - {id: z0evals.test-build-posts, component: z0evals, kind: check, consent: {class: C0}, where: build,
-       needs: [z0evals.build-posts], argv: [.venv/bin/python, -m, unittest, discover, -s, tests, -p, test_build_posts.py, -v]}
+    - {id: z0evals.t1.posts_tests, component: z0evals, kind: check, consent: {class: C0}, where: build,
+       needs: [z0evals.t1.posts], argv: [.venv/bin/python, -m, unittest, discover, -s, tests, -p, test_build_posts.py, -v]}
     # web (npm only; keep optional deps: the platform natives are optional deps)
-    - {id: z0evals.npm-ci, component: z0evals, kind: run, consent: {class: C0}, where: build, network: true, when: *web_gate,
-       needs: [z0evals.test-build-posts], argv: [npm, --prefix, web, ci, --no-audit, --no-fund],
+    - {id: z0evals.web.deps, component: z0evals, kind: run, consent: {class: C0}, where: build, network: true, when: *web_gate,
+       needs: [z0evals.t1.posts_tests], argv: [npm, --prefix, web, ci, --no-audit, --no-fund],
        probe: {argv: [test, -x, web/node_modules/.bin/next]}, undo: {kind: none}}
-    - {id: z0evals.typecheck, component: z0evals, kind: check, consent: {class: C0}, where: build, when: *web_gate,
-       needs: [z0evals.npm-ci], argv: [npm, --prefix, web, run, typecheck]}
-    - {id: z0evals.next-build, component: z0evals, kind: run, consent: {class: C0}, where: build, network: true, when: *web_gate,
-       needs: [z0evals.typecheck], argv: [npm, --prefix, web, run, build], env: {Z0_BASE_PATH: /z0evals},
+    - {id: z0evals.web.typecheck, component: z0evals, kind: check, consent: {class: C0}, where: build, when: *web_gate,
+       needs: [z0evals.web.deps], argv: [npm, --prefix, web, run, typecheck]}
+    - {id: z0evals.web.build, component: z0evals, kind: run, consent: {class: C0}, where: build, network: true, when: *web_gate,
+       needs: [z0evals.web.typecheck], argv: [npm, --prefix, web, run, build], env: {Z0_BASE_PATH: /z0evals},
        probe: {argv: [test, -f, web/out/index.html]}, verify: {argv: [test, -f, web/out/index.html]}, undo: {kind: none}}
-    - {id: z0evals.audit-web-export, component: z0evals, kind: check, consent: {class: C0}, where: build, when: *web_gate,
-       needs: [z0evals.next-build], argv: [.venv/bin/python, scripts/audit_web_export.py, --root, web/out]}
+    - {id: z0evals.web.audit, component: z0evals, kind: check, consent: {class: C0}, where: build, when: *web_gate,
+       needs: [z0evals.web.build], argv: [.venv/bin/python, scripts/audit_web_export.py, --root, web/out]}
   post_check:
     # `git status --porcelain` after all tiers. The committed web/data/study.json
     # was built with the openjev corpus present, so a build without it rewrites

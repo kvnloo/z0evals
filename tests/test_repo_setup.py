@@ -5,12 +5,24 @@ must follow the same steps, in the same order, as .github/workflows/ci.yml.
 """
 from __future__ import annotations
 
+import re
 import unittest
 from pathlib import Path
 
 import yaml
 
 REPO = Path(__file__).resolve().parents[1]
+
+# Facts a `when:` may name: the z0 host profile (kvnloo/z0 schemas/host-profile.schema.json;
+# network keys are registry/onboarding.yaml `network_probes`). z0 treats a missing fact
+# as false, so a misspelt fact silently disables a tier. kvnloo/z0 runs the full check:
+# `scripts/repo-setup-check zer0.repo.yaml`.
+Z0_FACTS = {
+    "network": {"github", "pypi", "npmjs", "fonts_google", "pytorch", "bun", "k2_fsa"},
+    "toolchains": {"node", "npm", "python3", "git", "uv", "bun"},
+}
+# z0 plans the registry's step and this one as the same step only when the ids match.
+Z0_REGISTRY_IDS = re.compile(r"^z0evals\.(t0\.[a-z_]+|venv|deps|t1\.[a-z_]+|web\.[a-z_]+)$")
 
 
 def load_setup() -> dict:
@@ -72,6 +84,19 @@ class RepoSetupTest(unittest.TestCase):
             self.assertEqual(self.steps[sid].get("when"), gate, sid)
         for sid in self.tiers["python"]["steps"] + self.tiers["preflight"]["steps"]:
             self.assertNotIn("when", self.steps[sid], sid)
+
+    def test_when_facts_are_z0_host_facts(self) -> None:
+        conds = [c for t in self.setup_block["tiers"] for c in t.get("when", [])]
+        conds += [c for s in self.setup_block["steps"] for c in s.get("when", [])]
+        self.assertTrue(conds)
+        for cond in conds:
+            root, key = cond["fact"].split(".")[:2]
+            self.assertIn(root, Z0_FACTS, cond["fact"])
+            self.assertIn(key, Z0_FACTS[root], cond["fact"])
+
+    def test_step_ids_are_the_z0_registry_ids(self) -> None:
+        for sid in self.steps:
+            self.assertRegex(sid, Z0_REGISTRY_IDS)
 
     def test_python_tier_follows_ci_order(self) -> None:
         tier = [self.steps[sid] for sid in self.tiers["python"]["steps"]]
