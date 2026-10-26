@@ -1,0 +1,24 @@
+s01	short	Your meeting starts at nine.
+s02	short	Sure, I can do that.
+s03	short	It is seventy two degrees outside.
+s04	short	Did you want the red one?
+s05	short	Turn left at the next light.
+s06	short	I found three new messages.
+s07	short	That sounds like a great plan.
+s08	short	Let me check that for you.
+m01	medium	I looked through your calendar, and you have a dentist appointment on Thursday at two thirty in the afternoon.
+m02	medium	The package should arrive between four and six tomorrow, and the driver will text you before he gets there.
+m03	medium	Would you like me to read the full email aloud, or just give you a short summary of the main points first?
+m04	medium	It looks like the flight was delayed by forty five minutes, so you still have plenty of time to get coffee.
+m05	medium	Your total comes to twenty three dollars and fifty cents, including tax, and the receipt has been saved to your files.
+m06	medium	I can set a reminder for tomorrow morning, but first I need to know what time you usually wake up on weekdays.
+m07	medium	The recipe calls for two cups of flour, one teaspoon of salt, and about half a cup of warm water for the dough.
+m08	medium	Honestly, I think the second option is better because it costs less and it will take much less time to finish.
+l01	long	So here is what happened this morning. The train was late by about twelve minutes, which meant you missed the first half of the standup, but your manager sent a short summary of the key decisions and the two action items that were assigned to you.
+l02	long	If you want to cook dinner tonight, you could use the chicken from the fridge, along with the rice in the pantry, and then add whatever vegetables you have left, because the forecast says it will rain and you probably do not want to go shopping.
+l03	long	The article explains that the new battery design lasts roughly three times longer than the older version, charges to eighty percent in under ten minutes, and costs only a little more to build, which is why several car makers are already testing it.
+l04	long	Before you leave, remember to lock the back door, turn off the lights in the kitchen, and bring the umbrella, because I just checked the weather and there is a seventy percent chance of heavy showers starting around five o'clock this evening.
+l05	long	I understand that you are frustrated, and I am sorry about the mix up with the order, so let me explain what I can do right now, which is to refund the charge immediately and send a replacement by express shipping at no extra cost to you.
+l06	long	When you get to the station, take the second exit, walk past the bakery on the corner, and you will see a blue door with the number forty two on it, which is where your friend said she would be waiting for you around seven.
+l07	long	To summarize the project so far, the first prototype worked well in the lab, the second one failed under heat, and the third is still being tested, but if the results hold, we could ship a small batch by the end of next month.
+l08	long	Please keep in mind that the report is due on Friday, that the budget numbers still need one final review, and that the team meeting has been moved to Wednesday at ten, so you may want to update your calendar as soon as you can.
