@@ -22,6 +22,7 @@ export default async function MarkdownPost({ params }: { params: Promise<{ slug:
   const repo = "https://github.com/kvnloo/z0evals";
   return (
     <StoryShell
+      slug={slug}
       meta={{ title: p.title, subtitle: p.subtitle, author: p.author, date: p.date, status: p.status, lede: p.lede }}
       toc={toc}
       story={<div dangerouslySetInnerHTML={{ __html: p.html }} />}

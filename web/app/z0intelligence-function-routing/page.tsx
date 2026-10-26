@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import data from "@/data/z0intelligence-function-routing.json";
-import StoryShell, { type StoryMeta, type StoryBanner } from "@/components/StoryShell";
+import { studyMeta } from "@/lib/catalog";
+import StoryShell, { type StoryBanner } from "@/components/StoryShell";
 import type { TocItem } from "@/components/Toc";
 import MetricReveal, { type MetricRevealStage } from "@/components/MetricReveal";
 import EvidencePipeline, { type PipelineStage } from "@/components/EvidencePipeline";
@@ -743,7 +744,8 @@ const explore = (
 export default function Page() {
   return (
     <StoryShell
-      meta={M as StoryMeta}
+      slug="z0intelligence-function-routing"
+      meta={studyMeta("z0intelligence-function-routing")}
       banner={M.banner as StoryBanner}
       toc={toc}
       story={story}
