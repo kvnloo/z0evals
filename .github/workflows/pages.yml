@@ -64,6 +64,8 @@ jobs:
       channel_paths: ${{ steps.channels.outputs.paths }}
     env:
       BASE: /${{ github.event.repository.name }}/
+      # Read-only public issue/PR states for scripts/build_cua_status.py (falls back to its snapshot).
+      GITHUB_TOKEN: ${{ github.token }}
     steps:
       - name: Checkout (all channel branches)
         uses: actions/checkout@v4
@@ -133,6 +135,7 @@ jobs:
                    && python3 scripts/validate.py \
                    && { [ ! -f scripts/validate_optchat_publication.py ] || python3 scripts/validate_optchat_publication.py; } \
                    && python3 scripts/build_site_data.py \
+                   && { [ ! -f scripts/build_cua_status.py ] || python3 scripts/build_cua_status.py || true; } \
                    && { [ ! -f scripts/build_posts.py ] || python3 scripts/build_posts.py; } \
                    && cd web \
                    && npm ci --no-audit --no-fund \
