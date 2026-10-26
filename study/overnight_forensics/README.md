@@ -191,6 +191,24 @@ eligible weeks, a group and each night's rows remain in a single held-out fold.
 This conservative rule can make fitting impossible; that is reported, not
 worked around with random splits.
 
+Training additionally requires `outcome_observed_at` strictly before the
+held-out week's Monday-noon local boundary (the night-date week begins at
+noon, not midnight). The availability bound is at least the independent exit
+and last activity, so a long cross-week run cannot leak its future outcome.
+Missing observation timing is excluded from training, never inferred from the
+dispatch timestamp; descriptive tables do not depend on this timing field.
+
+Mutable source outcome/termination summaries have no reliable historical
+observation event. Extraction therefore records their **current read time** as
+a conservative availability upper bound, not the historical native exit time.
+Native enrichment refreshes that bound, and owner-block joins never backdate
+other evidence. This can withhold every historical fold in a one-time snapshot;
+that is intentional. Historically recorded label-observation events or a
+prospective sequence of frozen snapshots would be needed for historical fitting.
+Even an owner block known during the run is conservatively bounded by the row's
+exit/activity and any later snapshot evidence. Legacy exports lacking timing
+remain descriptive-only, rather than silently regaining the leaky split.
+
 Report pooled out-of-fold AUC and a seeded 400-draw held-out-week cluster
 bootstrap percentile interval. Single-class/insufficient folds cannot justify
 an AUC or weights. If fitted, also fit the fixed model to the labeled cohort
@@ -212,7 +230,9 @@ runtime policy is outside this public evidence repository.
 Synthetic tests cover Wilson intervals, missing outcomes and n<15, clock/DST
 boundaries, label heuristics, same-project restart censoring, strictly prior
 launch counts, forward weekly folds and cross-week lineage exclusion, verdict
-direction, optional model/AUC execution, exact owner-block joins, read-only SQL,
+direction, delayed/unknown/boundary-equal labels, cross-week endpoints, an
+all-labels-in-the-future counterexample and an ordinary synthetic fit,
+optional model/AUC execution, exact owner-block joins, read-only SQL,
 mirror deduplication, late-prompt exclusion, private permissions, raw-text
 exclusion, frozen-data hash checks, and the actual extraction/analysis CLIs.
 No private source data or generated receipt belongs in a commit or PR diff.

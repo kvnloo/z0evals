@@ -198,6 +198,10 @@ def extract_sessions(path, source, seen, rows, manifest, cutoff=None):
                         existing["native_exit_enriched"] = True
                         existing["termination_failed"] = termination in FAILED_TERMINATIONS
                         existing["labels"] = labels(existing["reported_outcome"], termination, end, existing["activity_end"])
+                        # Mutable source outcomes have no historical raised-at
+                        # event. Read time is a conservative availability bound,
+                        # not a claim that the outcome was known at native exit.
+                        existing["outcome_observed_at"] = datetime.now(timezone.utc).timestamp()
                         existing["overnight"] = overnight(existing["start"], existing["activity_end"], end)
                 continue
             order = "ordinal" if "ordinal" in mc else "id"
@@ -235,6 +239,7 @@ def extract_sessions(path, source, seen, rows, manifest, cutoff=None):
                                    "is_automated": bool(r["is_automated"]) if av and r.get("is_automated") is not None else None,
                                    **features},
                       "labels": labels(outcome, termination, terminated_end, last),
+                      "outcome_observed_at": datetime.now(timezone.utc).timestamp(),
                       "termination_failed": termination in FAILED_TERMINATIONS,
                       "reported_outcome": outcome if outcome in SUCCESS_OUTCOMES | {"unknown", "abandoned"} else None,
                       "signals": {k: r.get(k) for k in ["health_score", "runaway_tool_loop_count", "compaction_count", "tool_failure_signal_count"]} if av else {},
@@ -286,6 +291,9 @@ def enrich_blocked(path, rows, manifest):
                 if when is not None and end is not None and r["start"] <= when <= end:
                     r["labels"]["needed_owner"] = True
                     r["labels"]["completed_unattended"] = False
+                    # Retain the conservative snapshot bound if already known;
+                    # never backdate other outcome evidence to the block event.
+                    r["outcome_observed_at"] = max(r.get("outcome_observed_at") or when, when)
                     blocked += 1
         manifest.append({"source": "kanban", "status": "exact_links_only", "linked_events": linked, "blocked_during_run": blocked,
                          "limitation": "Current task-session linkage can omit earlier attempts; no negative owner label inferred."})
@@ -434,6 +442,7 @@ def main():
                           "First prompt features require timestamp within 60 seconds of start; wrappers remain a confound.",
                           "Session model/provider fields are mutable: dispatch values unavailable and excluded.",
                           "is_automated is source metadata, not independently verified dispatch state.",
+                          "Mutable outcome/termination availability is conservatively bounded by extraction read time, not backdated to exit.",
                           "Long conversations can span several nights; unit remains one session."]}
     private_write(out / "extraction.json", json.dumps(receipt, indent=2) + "\n")
     print(json.dumps(receipt["counts"]))

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import argparse
 from collections import Counter, defaultdict
-from datetime import date, timedelta
+from datetime import date, datetime, time, timedelta
 import hashlib
 import json
 import math
@@ -13,9 +13,9 @@ import random
 
 
 try:
-    from .extract import MIN_CELL, OUTPUT, private_directory, private_write
+    from .extract import MIN_CELL, OUTPUT, ZONE, private_directory, private_write
 except ImportError:
-    from extract import MIN_CELL, OUTPUT, private_directory, private_write
+    from extract import MIN_CELL, OUTPUT, ZONE, private_directory, private_write
 
 PROVISIONAL = True
 MANY_RUNS = 6  # Prespecified proxy: >=6 other starts in either lookback window.
@@ -81,11 +81,37 @@ def week_key(night):
     return (d - timedelta(days=d.weekday())).isoformat()
 
 
+def outcome_available_at(row):
+    """Conservative label-availability bound; never infer it from dispatch.
+
+    End/activity bounds also prevent inconsistent observation metadata from
+    admitting a label for a still-running session. Legacy/unknown timing is
+    excluded from training, but remains usable in descriptive tables.
+    """
+    observed = row.get("outcome_observed_at")
+    if not isinstance(observed, (int, float)) or not math.isfinite(observed):
+        return None
+    bounds = [observed, row["start"]]
+    for key in ("end", "activity_end"):
+        value = row.get(key)
+        if value is not None:
+            if not isinstance(value, (int, float)) or not math.isfinite(value):
+                return None
+            bounds.append(value)
+    return max(bounds)
+
+
+def week_boundary(week):
+    # Night dates roll at noon: Monday 00:00-11:59 belongs to Sunday.
+    return datetime.combine(date.fromisoformat(week), time(12), ZONE).timestamp()
+
+
 def time_blocked_folds(rows):
     """Forward weeks; exclude entire cross-week lineages from CV.
 
     A lineage cannot be in multiple held-out folds. Keeping it in its last
     week would move earlier nights into later folds, so exclude it instead.
+    Training labels must be observed strictly before the held-out week starts.
     """
     group_weeks = defaultdict(set)
     for r in rows:
@@ -98,7 +124,10 @@ def time_blocked_folds(rows):
     for week in sorted(weeks):
         test = weeks[week]
         groups = {rows[i]["group"] for i in test}
-        train = [i for i in earlier if rows[i]["group"] not in groups]
+        boundary = week_boundary(week)
+        train = [i for i in earlier if rows[i]["group"] not in groups
+                 and (available := outcome_available_at(rows[i])) is not None
+                 and available < boundary]
         if train:
             yield train, test
         earlier.extend(test)
@@ -185,7 +214,7 @@ def regression(rows):
             predictions.append((week_key(usable[i]["night"]), observed_target(usable[i]), sigmoid(sum(a * b for a, b in zip(vector, weights)))))
         folds += 1
     if len({w for w, _, _ in predictions}) < 4 or not predictions:
-        return {"status": "not fitted (fewer than four eligible held-out weeks after lineage purging)", "n": len(usable), "folds": folds, "weights": None}
+        return {"status": "not fitted (fewer than four eligible held-out weeks after lineage and outcome-availability purging)", "n": len(usable), "folds": folds, "weights": None}
     point = auc([y for _, y, _ in predictions], [p for _, _, p in predictions])
     if point is None:
         return {"status": "not fitted (held-out outcomes single-class)", "n": len(usable), "weights": None}
@@ -257,6 +286,8 @@ def analyze(rows, extraction):
                    "restarted_not_resumed": "Project-level heuristic only; dropped from outcome target and regression."},
                "decision_rule": "Both groups need >=15 labeled runs; nonoverlapping Wilson 95% intervals in harmful direction confirms descriptive association, opposite rejects; otherwise insufficient. No multiplicity correction, no causal claim.",
                "limitations": ["Unknown outcomes excluded from rates, never counted as failures.",
+                               "Training labels require observed timing strictly before held-out night-week boundary; unknown timing is excluded.",
+                               "Mutable source summaries use extraction read time as a conservative availability bound, not historical exit time.",
                                "No-event tail requires independent end timestamp; AgentsView last activity is not an independent end.",
                                "Owner intervention negatives unavailable; completion label is a surrogate, not proof of unattended execution.",
                                "Post-dispatch restart/evening-cut proxies excluded from regression.",

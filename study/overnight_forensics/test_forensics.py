@@ -22,6 +22,7 @@ def row(i=0, success: bool | None = True, **features):
     start = ts("2026-01-02T22:00:00-06:00") + i * 86400
     return {"id": str(i), "parent": None, "project": "synthetic", "group": str(i),
             "start": start, "end": start + 7200, "activity_end": start + 7200,
+            "outcome_observed_at": start + 7200,
             "night": e.night_key(start), "overnight": True, "restart_observable": True,
             "termination_failed": False, "evening_cut_never_resumed": None,
             "features": {"start_hour": 22, "weekday": i % 7, "harness": "hermes", "provider": None, "model": None,
@@ -125,6 +126,58 @@ def test_time_folds_forward_nights_and_lineage_purge():
         assert not (held_out_groups & current)
         held_out_groups |= current
         assert rows[0]["group"] not in current
+        boundary = a.week_boundary(a.week_key(rows[test[0]]["night"]))
+        for i in train:
+            available = a.outcome_available_at(rows[i])
+            assert available is not None and available < boundary
+
+
+@pytest.mark.parametrize("timing", ["crossing_end", "crossing_activity", "delayed_termination", "delayed_owner", "unknown", "equal_boundary"])
+def test_training_labels_must_precede_week_boundary(timing):
+    control, delayed, held = row(0), row(1, False), row(10)
+    boundary = a.week_boundary(a.week_key(held["night"]))
+    if timing == "crossing_end":
+        delayed["end"] = boundary + 1
+    elif timing == "crossing_activity":
+        delayed["activity_end"] = boundary + 1
+    elif timing == "unknown":
+        del delayed["outcome_observed_at"]
+    else:
+        delayed["outcome_observed_at"] = boundary + (0 if timing == "equal_boundary" else 1)
+        if timing == "delayed_owner":
+            delayed["labels"]["stalled"] = None
+            delayed["labels"]["needed_owner"] = True
+    folds = list(a.time_blocked_folds([control, delayed, held]))
+    assert folds == [([0], [2])]
+
+
+def test_delayed_label_can_enter_later_week_but_not_earlier_week():
+    earlier, first, later = row(0), row(10), row(20)
+    earlier["outcome_observed_at"] = first["end"] + 1
+    folds = list(a.time_blocked_folds([earlier, first, later]))
+    assert folds == [([0, 1], [2])]
+
+
+def test_all_labels_in_future_counterexample_withholds_model():
+    rows = [row(i, i % 2 == 1, acceptance=i % 2 == 1) for i in range(180)]
+    future = rows[-1]["start"] + 86400
+    for r in rows:
+        r["project"] = r["id"]
+        r["end"] = r["activity_end"] = future
+    assert list(a.time_blocked_folds(rows)) == []
+    result = a.regression(rows)
+    assert result["status"].startswith("not fitted")
+    assert result["folds"] == 0 and result["weights"] is None
+    # Historical exits alone cannot backdate a retrospectively observed label.
+    for r in rows:
+        r["end"] = r["activity_end"] = r["start"] + 7200
+        r["outcome_observed_at"] = future
+    assert list(a.time_blocked_folds(rows)) == []
+    assert a.regression(rows)["weights"] is None
+    for r in rows:
+        r.pop("outcome_observed_at")
+    assert list(a.time_blocked_folds(rows)) == []
+    assert a.regression(rows)["weights"] is None
 
 
 def test_antipattern_verdict_direction_and_threshold():
@@ -185,6 +238,7 @@ def test_readonly_extraction_dedup_enrichment_and_privacy(tmp_path):
     e.extract_sessions(native, "hermes", seen, rows, manifest)
     assert len(rows) == 1 and rows[0]["native_exit_enriched"]
     assert rows[0]["labels"]["completed_unattended"] is True
+    assert rows[0]["outcome_observed_at"] >= rows[0]["end"]
     assert rows[0]["features"]["acceptance"] is True
     safe = {k: v for k, v in rows[0].items() if not k.startswith("_")}
     assert "SYNTHETIC PRIVATE SENTINEL" not in json.dumps(safe)
@@ -223,6 +277,7 @@ def test_owner_event_exact_join_and_time_window(tmp_path):
     e.enrich_blocked(db, [r], [])
     assert r["labels"]["needed_owner"] is True
     assert a.observed_target(r) == 0
+    assert r["outcome_observed_at"] >= r["start"] + 1
 
 
 def test_private_permissions_and_repository_refusal(tmp_path):
