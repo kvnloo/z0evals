@@ -5,6 +5,10 @@ study: gui-scripting-speed-z0live-control
 status: evidence-local
 author: "zer0 research"
 date: "october 20, 2026"
+dek: "we kept the lexical matcher and did not ship the on-phone model tier."
+area: speed-ux
+published: 2026-10-20
+log: [gui-scripting-speed-z0live-control]
 mock_data: false
 toc:
   - id: question

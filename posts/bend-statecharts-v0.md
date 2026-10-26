@@ -5,6 +5,10 @@ study: fsm-integration-v0
 status: evidence-pending
 author: "zer0 research"
 date: "october 21, 2026"
+dek: "three statecharts, then a replay of the things our agents actually left behind."
+area: governance
+published: 2026-10-21
+log: [fsm-integration-v0, fsm-work-item-v0, fsm-worker-supervision-v0, fsm-hapsland-layers-v0]
 mock_data: false
 toc:
   - id: question

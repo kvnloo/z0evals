@@ -5,6 +5,10 @@ study: factory-intelligence-v0
 status: draft
 author: "zer0 research"
 date: "september 30, 2026"
+dek: "no small model beats the 8b at forming z0's own calls, and 'auto-merge on green' fails on our own history."
+area: governance
+published: 2026-09-30
+log: [factory-intelligence-v0]
 mock_data: false
 toc:
   - id: question

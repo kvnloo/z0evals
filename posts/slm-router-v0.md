@@ -6,6 +6,10 @@ status: evidence-local
 mock_data: false
 author: "Zer0 Research"
 date: "September 21, 2026"
+dek: "why we stopped paying an autoregressive model to make decisions that barely require language."
+area: cost-routing
+published: 2026-09-21
+kind: study
 toc:
   - id: evidence
     label: Evidence

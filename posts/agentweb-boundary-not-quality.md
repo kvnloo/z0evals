@@ -5,6 +5,10 @@ study: agentweb-emma-z0-v0
 status: evidence-local
 author: "zer0 research"
 date: "september 30, 2026"
+dek: "deterministic integration evidence is useful. it is not an answer-quality result."
+area: speed-ux
+published: 2026-09-30
+log: [agentweb-emma-z0-v0]
 mock_data: false
 toc:
   - id: boundary

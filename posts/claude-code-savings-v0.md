@@ -5,6 +5,11 @@ study: claude-code-savings-v0
 status: draft
 author: "zer0 research"
 date: "september 30, 2026"
+dek: "one night of dogfooding z0intelligence inside claude code, measured with reported usage and checked outcomes."
+area: cost-routing
+published: 2026-09-30
+series: claude-code-savings
+log: [claude-code-savings-v0]
 mock_data: false
 toc:
   - id: question

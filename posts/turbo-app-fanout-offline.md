@@ -5,6 +5,10 @@ study: turbo-app-fanout
 status: evidence-local
 author: "zer0 research"
 date: "october 22, 2026"
+dek: "the git rollback was real. the screens and preview failures were synthetic."
+area: speed-ux
+published: 2026-10-22
+log: [turbo-app-fanout]
 mock_data: false
 toc:
   - id: scope
