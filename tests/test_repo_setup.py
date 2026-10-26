@@ -36,6 +36,8 @@ def ci_python_runs() -> list[str]:
     for run in runs:
         if run.startswith("npm "):
             break  # the web tier starts here
+        if "test_repo_setup.py" in run:
+            continue  # this self-check of the setup block is not a setup step
         if run.startswith("python ") and "pip install" not in run:
             python_tier.append(run)
     return python_tier
@@ -106,6 +108,14 @@ class RepoSetupTest(unittest.TestCase):
             if s["argv"][0] == ".venv/bin/python" and s["kind"] in ("check", "run")
         ]
         self.assertEqual(ours, ci_python_runs())
+
+    def test_ci_runs_this_check(self) -> None:
+        ci = yaml.safe_load((REPO / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8"))
+        runs = [s["run"] for s in ci["jobs"]["validate"]["steps"] if "run" in s]
+        install = next(i for i, run in enumerate(runs) if "pip install -r requirements.txt" in run)
+        here = [i for i, run in enumerate(runs) if "test_repo_setup.py" in run]
+        self.assertEqual(len(here), 1, "ci.yml must run tests/test_repo_setup.py once")
+        self.assertGreater(here[0], install, "it needs PyYAML from requirements.txt")
 
     def test_pins_match_version_files(self) -> None:
         py = (REPO / ".python-version").read_text(encoding="utf-8").strip()
