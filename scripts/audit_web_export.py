@@ -117,11 +117,11 @@ def check_relative_links(
         if not clean or clean.startswith("/"):
             continue
 
-        target = path.parent / clean
+        target = (path.parent / clean).resolve()
         if clean.endswith("/") or target.suffix == "":
             target = target / "index.html"
         try:
-            target.relative_to(root)
+            target.relative_to(root.resolve())
         except ValueError:
             errors.append(f"{name}: internal href escapes export root: {href}")
             continue
