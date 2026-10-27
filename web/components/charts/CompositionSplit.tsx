@@ -27,15 +27,15 @@ export default function CompositionSplit({
           const hurtW = scale(r.hurt);
           return (
             <g key={r.id} className="mark">
-              <text x={L - 12} y={yy + 20} textAnchor="end" fontSize="11.5" fill="#3c3836">{r.label}</text>
+              <text x={L - 12} y={yy + 20} textAnchor="end" fontSize="11.5" fill="#B4AFA3">{r.label}</text>
               <text x={L - 12} y={yy + 36} textAnchor="end" fontSize="10.5" fill="#888">
                 {r.correct}/{total} correct
               </text>
               {r.hurt > 0 ? (
                 <>
-                  <rect x={mid} y={yy + 6} width={shown ? hurtW : 0} height={22} fill="#b91c1c" fillOpacity="0.85" rx="2"
+                  <rect x={mid} y={yy + 6} width={shown ? hurtW : 0} height={22} fill="#e37f65" fillOpacity="0.85" rx="2"
                         style={{ transition: `width .6s cubic-bezier(.2,.7,.2,1) ${i * 80}ms` }} />
-                  <text x={mid + hurtW + 8} y={yy + 21} fontSize="11" fill="#b91c1c" fontWeight="700">
+                  <text x={mid + hurtW + 8} y={yy + 21} fontSize="11" fill="#e37f65" fontWeight="700">
                     {r.hurt} hurt
                   </text>
                   <text x={mid + 8} y={yy + 38} fontSize="10.5" fill="#888">0 helped</text>

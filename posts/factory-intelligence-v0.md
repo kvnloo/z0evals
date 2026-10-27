@@ -1,6 +1,6 @@
 ---
 title: "three small decisions, three pre-registered bars"
-subtitle: "no small model beats the 8b at forming z0's own calls, a learned recovery controller beats a constant but not an mlp, and 'auto-merge on green' fails on our own history."
+subtitle: "no small model beats the 8b at forming z0's own calls, a learned recovery controller beats a constant but misses the mlp comparison bar, and 'auto-merge on green' fails on our own history."
 study: factory-intelligence-v0
 status: draft
 author: "zer0 research"
@@ -31,7 +31,7 @@ a factory of agents makes many small decisions that should not need the frontier
 
 ## who forms z0's calls {#toolcall}
 
-z0intelligence#20 asked which small local models on groot (an rtx 3080 ti) form z0's own function calls correctly, and at what latency and vram. the pre-registration (6d56416) froze 184 items: 48 z0 `route_worker` / `delegate_worker` calls built from real claude code turns (text stays private, git has hashes), 125 bfcl v4 items across five categories, and the 11-item pinned action-selector cohort. every arm ran with thinking off, temperature 0, and one shared parser chain. the comparator was the farm default, qwen3-8b.
+z0intelligence#20 asked which small local models on the desktop (an rtx 3080 ti) form z0's own function calls correctly, and at what latency and vram. the pre-registration (6d56416) froze 184 items: 48 z0 `route_worker` / `delegate_worker` calls built from real claude code turns (text stays private, git has hashes), 125 bfcl v4 items across five categories, and the 11-item pinned action-selector cohort. every arm ran with thinking off, temperature 0, and one shared parser chain. the comparator was the farm default, qwen3-8b.
 
 <table class="result-table">
 <thead><tr><th>arm</th><th>pooled exact</th><th>z0 exact (form)</th><th>bfcl</th><th>irrelevance</th><th>p50 ms</th><th>vram mib</th><th>vs qwen3-8b</th></tr></thead>
@@ -109,12 +109,14 @@ after seeing the holdout we looked at two narrower rules. these are exploratory,
 - **one sample, one setting.** tool-calling ran once per item with thinking off on a shared gpu, and hammer's bfcl numbers are an upper bound because bfcl is public.
 - **nothing was promoted.** no routing config, role default, controller or merge policy changed because of these results.
 
-<details>
-<summary><strong>references</strong></summary>
 
-- [z0intelligence](https://github.com/kvnloo/z0intelligence): branches `exp/tool-calling-portfolio-v0` and `feat/promotion-sim-v0`. commits are pinned in the study manifest.
-- [evolution-lab](https://github.com/kvnloo/evolution-lab): branch `exp/t3b-action-space-v1`.
-- [berkeley function calling leaderboard](https://github.com/ShishirPatil/gorilla) (bfcl v4, apache-2.0): the 125-item subset, sampled with a fixed seed.
-- [qwen3](https://huggingface.co/Qwen), [hammer 2.1](https://huggingface.co/MadeAgents), [functiongemma](https://huggingface.co/google), [nvidia/nemotron-orchestrator-8b](https://huggingface.co/nvidia/Nemotron-Orchestrator-8B): the models under test.
+
+
+<details>
+<summary><strong>frozen study sources</strong></summary>
+
+- [studies/factory-intelligence-v0/README.md](https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/factory-intelligence-v0/README.md)
+- [studies/factory-intelligence-v0/manifest.yaml](https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/factory-intelligence-v0/manifest.yaml)
+- [studies/factory-intelligence-v0/data/summary.json](https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/factory-intelligence-v0/data/summary.json)
 
 </details>

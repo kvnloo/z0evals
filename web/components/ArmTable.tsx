@@ -16,14 +16,14 @@ export default function ArmTable({ arms, highlight }: { arms: Arm[]; highlight?:
       <tbody>
         {arms.map((a) => (
           <tr key={a.id} data-active={highlight?.includes(a.id)}>
-            <td style={{ color: a.unfiltered ? "#b91c1c" : undefined }}>{a.label}</td>
+            <td style={{ color: a.unfiltered ? "#e37f65" : undefined }}>{a.label}</td>
             <td className="num">{a.n}</td>
             <td className="num" style={{ fontWeight: 700 }}>{pct(a.successRate)}</td>
             <td className="num">[{pct(a.wilson95[0], 2)}, {pct(a.wilson95[1], 2)}]</td>
             <td className="num">{a.warmP50Ms == null ? "—" : `${Math.round(a.warmP50Ms).toLocaleString()} ms`}</td>
-            <td className="num" style={{ color: a.dangerous ? "#b91c1c" : "#29916e" }}>{a.dangerous}</td>
+            <td className="num" style={{ color: a.dangerous ? "#e37f65" : "#d7b986" }}>{a.dangerous}</td>
             <td className="num">{a.abstained}</td>
-            <td className="num" style={{ color: a.repDisagreeStates ? "#b45309" : undefined }}>{a.repDisagreeStates}</td>
+            <td className="num" style={{ color: a.repDisagreeStates ? "#e7a875" : undefined }}>{a.repDisagreeStates}</td>
           </tr>
         ))}
       </tbody>

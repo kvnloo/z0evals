@@ -43,7 +43,7 @@ export default function ActionTable({ actions, limit = 14 }: { actions: Action[]
                     <span className="bar-label">{(rate * 100).toFixed(0)}%</span>
                   </div>
                 </td>
-                <td className="num" style={{ color: a.dangerous ? "#b91c1c" : "#a8a8a8" }}>
+                <td className="num" style={{ color: a.dangerous ? "#e37f65" : "#837F74" }}>
                   {a.dangerous || "—"}
                 </td>
               </tr>
@@ -52,8 +52,8 @@ export default function ActionTable({ actions, limit = 14 }: { actions: Action[]
         </tbody>
       </table>
       <div className="legend">
-        <span><i className="swatch" style={{ background: "#e7e7e7" }} />offered in the compiled legal set</span>
-        <span><i className="swatch" style={{ background: "#29916e" }} />chosen</span>
+        <span><i className="swatch" style={{ background: "rgba(236,232,223,0.10)" }} />offered in the compiled legal set</span>
+        <span><i className="swatch" style={{ background: "#d7b986" }} />chosen</span>
         <span>the gap is what the compiler removed</span>
       </div>
     </div>
