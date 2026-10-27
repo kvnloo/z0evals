@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Fixture Settings</title>
+<style>
+ body{font:15px system-ui;margin:0} header{padding:12px;background:#eee}
+ li{list-style:none;padding:12px;border-bottom:1px solid #ddd;cursor:pointer}
+ ul{margin:0;padding:0} .val{color:#555;margin-left:8px}
+</style></head>
+<body>
+<header><button id="back" aria-label="Navigate up">&larr;</button> <span id="title">Settings</span>
+ <input id="q" aria-label="Search settings" placeholder="Search"></header>
+<main id="main"></main>
+<script>
+// Owned, synthetic fixture. Independent oracle: window.__state (pages visited, value shown).
+const PAGES = {
+  home: {title: "Settings", rows: ["Connections","Connected devices","Modes and Routines","Sounds and vibration",
+    "Notifications","Display","Battery","Wallpaper and style","Themes","Home screen","Lock screen and AOD",
+    "Security and privacy","Location","Safety and emergency","Accounts and backup","Google","Advanced features",
+    "Digital Wellbeing","Device care","Apps","General management","Accessibility","Software update","About phone"]},
+  "About phone": {title: "About phone", rows: ["Status information","Legal information","Software information","Battery information"]},
+  "Software information": {title: "Software information", values: {"One UI version":"8.0","Android version":"16","Kernel version":"5.10"}},
+  "Battery": {title: "Battery", values: {"Battery level":"57%","Power saving":"Off"}},
+  "Display": {title: "Display", values: {"Screen timeout":"30 seconds","Dark mode":"On"}},
+};
+window.__state = {visited: [], shown: null};
+function render(name){
+  const p = PAGES[name] || {title:name, rows:[]};
+  window.__state.visited.push(name);
+  document.getElementById("title").textContent = p.title;
+  const m = document.getElementById("main"); m.innerHTML = "";
+  const ul = document.createElement("ul"); m.appendChild(ul);
+  // simulated app latency: page content arrives 120 ms after navigation (like an Activity opening)
+  setTimeout(() => {
+    for (const r of (p.rows||[])) { const li=document.createElement("li"); li.setAttribute("role","button");
+      li.textContent=r; li.onclick=()=>render(r); ul.appendChild(li); }
+    for (const [k,v] of Object.entries(p.values||{})) { const li=document.createElement("li");
+      li.innerHTML=`<span class="k">${k}</span><span class="val">${v}</span>`; ul.appendChild(li);
+      window.__state.shown = Object.assign(window.__state.shown||{}, {[k]:v}); }
+    document.body.dataset.page = name;
+  }, 120);
+}
+document.getElementById("back").onclick = () => render("home");
+document.getElementById("q").oninput = (e) => { const s=e.target.value.toLowerCase();
+  const hits = Object.keys(PAGES).concat(PAGES.home.rows).filter(x=>x.toLowerCase().includes(s));
+  const m=document.getElementById("main"); m.innerHTML=""; const ul=document.createElement("ul"); m.appendChild(ul);
+  for (const h of [...new Set(hits)]) { const li=document.createElement("li"); li.setAttribute("role","button");
+    li.textContent=h; li.onclick=()=>render(h); ul.appendChild(li); } };
+render("home");
+</script></body></html>

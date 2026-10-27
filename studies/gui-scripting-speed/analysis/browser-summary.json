@@ -1,0 +1,167 @@
+{
+ "android-version|axtree+event": {
+  "runs": 10,
+  "verified": 10,
+  "total_ms_p50": 299.9,
+  "total_ms_min": 253.9,
+  "total_ms_max": 363.2,
+  "observe_ms_p50": 10.9,
+  "settle_ms_p50": 283.0,
+  "obs_bytes_p50": 56989,
+  "observations": 3
+ },
+ "android-version|axtree+fixed": {
+  "runs": 10,
+  "verified": 10,
+  "total_ms_p50": 1029.6,
+  "total_ms_min": 1023.4,
+  "total_ms_max": 1083.5,
+  "observe_ms_p50": 15.3,
+  "settle_ms_p50": 1009.0,
+  "obs_bytes_p50": 56989,
+  "observations": 3
+ },
+ "android-version|compact+event": {
+  "runs": 10,
+  "verified": 10,
+  "total_ms_p50": 296.5,
+  "total_ms_min": 246.7,
+  "total_ms_max": 401.3,
+  "observe_ms_p50": 6.5,
+  "settle_ms_p50": 283.1,
+  "obs_bytes_p50": 1793,
+  "observations": 3
+ },
+ "android-version|compiled": {
+  "runs": 10,
+  "verified": 10,
+  "total_ms_p50": 246.0,
+  "total_ms_min": 242.3,
+  "total_ms_max": 285.5,
+  "observe_ms_p50": 0.0,
+  "settle_ms_p50": 0.0,
+  "obs_bytes_p50": 0,
+  "observations": 0
+ },
+ "android-version|pixel+fixed": {
+  "runs": 10,
+  "verified": 10,
+  "total_ms_p50": 1304.3,
+  "total_ms_min": 1146.7,
+  "total_ms_max": 1383.3,
+  "observe_ms_p50": 273.9,
+  "settle_ms_p50": 1006.8,
+  "obs_bytes_p50": 118216,
+  "observations": 4
+ },
+ "battery-level|axtree+event": {
+  "runs": 10,
+  "verified": 10,
+  "total_ms_p50": 165.9,
+  "total_ms_min": 130.9,
+  "total_ms_max": 192.9,
+  "observe_ms_p50": 9.9,
+  "settle_ms_p50": 120.4,
+  "obs_bytes_p50": 43835,
+  "observations": 2
+ },
+ "battery-level|axtree+fixed": {
+  "runs": 10,
+  "verified": 10,
+  "total_ms_p50": 562.3,
+  "total_ms_min": 513.7,
+  "total_ms_max": 575.3,
+  "observe_ms_p50": 11.0,
+  "settle_ms_p50": 503.7,
+  "obs_bytes_p50": 43835,
+  "observations": 2
+ },
+ "battery-level|compact+event": {
+  "runs": 10,
+  "verified": 10,
+  "total_ms_p50": 129.3,
+  "total_ms_min": 123.3,
+  "total_ms_max": 175.9,
+  "observe_ms_p50": 3.6,
+  "settle_ms_p50": 121.8,
+  "obs_bytes_p50": 1438,
+  "observations": 2
+ },
+ "battery-level|compiled": {
+  "runs": 10,
+  "verified": 10,
+  "total_ms_p50": 127.3,
+  "total_ms_min": 121.5,
+  "total_ms_max": 189.7,
+  "observe_ms_p50": 0.0,
+  "settle_ms_p50": 0.0,
+  "obs_bytes_p50": 0,
+  "observations": 0
+ },
+ "battery-level|pixel+fixed": {
+  "runs": 10,
+  "verified": 10,
+  "total_ms_p50": 626.3,
+  "total_ms_min": 571.9,
+  "total_ms_max": 705.2,
+  "observe_ms_p50": 102.3,
+  "settle_ms_p50": 503.8,
+  "obs_bytes_p50": 56300,
+  "observations": 2
+ },
+ "search-display|axtree+event": {
+  "runs": 10,
+  "verified": 10,
+  "total_ms_p50": 196.0,
+  "total_ms_min": 137.0,
+  "total_ms_max": 241.7,
+  "observe_ms_p50": 17.6,
+  "settle_ms_p50": 122.1,
+  "obs_bytes_p50": 53612,
+  "observations": 3
+ },
+ "search-display|axtree+fixed": {
+  "runs": 10,
+  "verified": 10,
+  "total_ms_p50": 526.0,
+  "total_ms_min": 519.1,
+  "total_ms_max": 575.1,
+  "observe_ms_p50": 12.4,
+  "settle_ms_p50": 503.9,
+  "obs_bytes_p50": 53612,
+  "observations": 3
+ },
+ "search-display|compact+event": {
+  "runs": 10,
+  "verified": 10,
+  "total_ms_p50": 133.2,
+  "total_ms_min": 130.0,
+  "total_ms_max": 182.2,
+  "observe_ms_p50": 4.9,
+  "settle_ms_p50": 122.4,
+  "obs_bytes_p50": 1577,
+  "observations": 3
+ },
+ "search-display|compiled": {
+  "runs": 10,
+  "verified": 10,
+  "total_ms_p50": 126.9,
+  "total_ms_min": 123.6,
+  "total_ms_max": 175.4,
+  "observe_ms_p50": 0.0,
+  "settle_ms_p50": 0.0,
+  "obs_bytes_p50": 0,
+  "observations": 0
+ },
+ "search-display|pixel+fixed": {
+  "runs": 10,
+  "verified": 10,
+  "total_ms_p50": 748.4,
+  "total_ms_min": 625.2,
+  "total_ms_max": 799.4,
+  "observe_ms_p50": 220.3,
+  "settle_ms_p50": 503.8,
+  "obs_bytes_p50": 65176,
+  "observations": 3
+ }
+}

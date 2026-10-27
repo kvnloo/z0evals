@@ -1,0 +1,68 @@
+{
+ "jev:flat": {
+  "L1": {
+   "n": 46,
+   "correct": 45,
+   "acc": 0.978,
+   "errors": 0,
+   "p50_ms": 161.2,
+   "base_rate_done": 0.152,
+   "always_no_acc": 0.848
+  },
+  "L2": {
+   "n": 92,
+   "correct": 92,
+   "acc": 1.0,
+   "errors": 0,
+   "p50_ms": 156.6,
+   "both_orders": 46,
+   "one_order": 0,
+   "pairs": 46
+  },
+  "L3": {
+   "n": 46,
+   "correct": 45,
+   "acc": 0.978,
+   "errors": 0,
+   "p50_ms": 157.5
+  },
+  "L4": {
+   "n": 138,
+   "acc": 0.913,
+   "p50_ms": 152.6
+  }
+ },
+ "z0int:openjev_06b": {
+  "L1": {
+   "n": 46,
+   "correct": 7,
+   "acc": 0.152,
+   "errors": 0,
+   "p50_ms": 27.4,
+   "base_rate_done": 0.152,
+   "always_no_acc": 0.848
+  },
+  "L2": {
+   "n": 92,
+   "correct": 61,
+   "acc": 0.663,
+   "errors": 0,
+   "p50_ms": 27.9,
+   "both_orders": 17,
+   "one_order": 27,
+   "pairs": 46
+  },
+  "L3": {
+   "n": 46,
+   "correct": 26,
+   "acc": 0.565,
+   "errors": 0,
+   "p50_ms": 29.3
+  },
+  "L4": {
+   "n": 138,
+   "acc": 0.348,
+   "p50_ms": 42.7
+  }
+ }
+}

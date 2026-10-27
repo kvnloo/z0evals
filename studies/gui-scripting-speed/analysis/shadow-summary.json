@@ -1,0 +1,515 @@
+{
+ "schema": "z0evals.gui_scripting_speed.shadow_summary.v1",
+ "incumbent": "jev:flat",
+ "cases": 46,
+ "split_cases": {
+  "holdout": 25,
+  "dev": 21
+ },
+ "arms": {
+  "jev:flat": {
+   "decisions": 138,
+   "correct": 110,
+   "uncertain": 22,
+   "wrong": 6,
+   "error": 0,
+   "false_autonomy": 0,
+   "accuracy": 0.797,
+   "raw_correct": 126,
+   "raw_accuracy": 0.913,
+   "latency_ms_p50": 152.6,
+   "latency_ms_p95": 268.3,
+   "model_calls_mean": 1,
+   "by_kind": {
+    "clear": {
+     "n": 75,
+     "correct": 72,
+     "raw_correct": 72
+    },
+    "split": {
+     "n": 18,
+     "correct": 12,
+     "raw_correct": 15
+    },
+    "multi": {
+     "n": 12,
+     "correct": 8,
+     "raw_correct": 12
+    },
+    "trap": {
+     "n": 33,
+     "correct": 18,
+     "raw_correct": 27
+    }
+   },
+   "agreement_with_incumbent_info_only": 1.0,
+   "has_confidence": true,
+   "cold_load_ms": null,
+   "engine": "jev-api",
+   "max_options": 32
+  },
+  "jev:flat+bt": {
+   "decisions": 138,
+   "correct": 122,
+   "uncertain": 7,
+   "wrong": 9,
+   "error": 0,
+   "false_autonomy": 0,
+   "accuracy": 0.884,
+   "raw_correct": 122,
+   "raw_accuracy": 0.884,
+   "latency_ms_p50": 159.8,
+   "latency_ms_p95": 548.6,
+   "model_calls_mean": 3.09,
+   "by_kind": {
+    "clear": {
+     "n": 75,
+     "correct": 72,
+     "raw_correct": 72
+    },
+    "split": {
+     "n": 18,
+     "correct": 15,
+     "raw_correct": 15
+    },
+    "multi": {
+     "n": 12,
+     "correct": 11,
+     "raw_correct": 11
+    },
+    "trap": {
+     "n": 33,
+     "correct": 24,
+     "raw_correct": 24
+    }
+   },
+   "agreement_with_incumbent_info_only": 0.891,
+   "has_confidence": true,
+   "cold_load_ms": null,
+   "engine": "jev-api",
+   "max_options": 32
+  },
+  "llamacpp:http://127.0.0.1:18421|qwen3-1.7b-q4km": {
+   "decisions": 138,
+   "correct": 71,
+   "uncertain": 0,
+   "wrong": 67,
+   "error": 0,
+   "false_autonomy": 0,
+   "accuracy": 0.514,
+   "raw_correct": 71,
+   "raw_accuracy": 0.514,
+   "latency_ms_p50": 114.7,
+   "latency_ms_p95": 152.0,
+   "model_calls_mean": 1,
+   "by_kind": {
+    "clear": {
+     "n": 75,
+     "correct": 52,
+     "raw_correct": 52
+    },
+    "split": {
+     "n": 18,
+     "correct": 0,
+     "raw_correct": 0
+    },
+    "multi": {
+     "n": 12,
+     "correct": 9,
+     "raw_correct": 9
+    },
+    "trap": {
+     "n": 33,
+     "correct": 10,
+     "raw_correct": 10
+    }
+   },
+   "agreement_with_incumbent_info_only": 0.536,
+   "has_confidence": false,
+   "cold_load_ms": 3510.5,
+   "engine": "llama.cpp",
+   "max_options": 64
+  },
+  "llamacpp:http://127.0.0.1:46847|qwen3-4b-q4km": {
+   "decisions": 138,
+   "correct": 93,
+   "uncertain": 8,
+   "wrong": 37,
+   "error": 0,
+   "false_autonomy": 0,
+   "accuracy": 0.674,
+   "raw_correct": 93,
+   "raw_accuracy": 0.674,
+   "latency_ms_p50": 161.4,
+   "latency_ms_p95": 619.8,
+   "model_calls_mean": 1,
+   "by_kind": {
+    "clear": {
+     "n": 75,
+     "correct": 63,
+     "raw_correct": 63
+    },
+    "split": {
+     "n": 18,
+     "correct": 3,
+     "raw_correct": 3
+    },
+    "multi": {
+     "n": 12,
+     "correct": 6,
+     "raw_correct": 6
+    },
+    "trap": {
+     "n": 33,
+     "correct": 21,
+     "raw_correct": 21
+    }
+   },
+   "agreement_with_incumbent_info_only": 0.717,
+   "has_confidence": false,
+   "cold_load_ms": 692.4,
+   "engine": "llama.cpp",
+   "max_options": 64
+  },
+  "ollama:qwen2.5:3b": {
+   "decisions": 138,
+   "correct": 79,
+   "uncertain": 13,
+   "wrong": 46,
+   "error": 0,
+   "false_autonomy": 0,
+   "accuracy": 0.572,
+   "raw_correct": 79,
+   "raw_accuracy": 0.572,
+   "latency_ms_p50": 85.8,
+   "latency_ms_p95": 170.2,
+   "model_calls_mean": 1,
+   "by_kind": {
+    "clear": {
+     "n": 75,
+     "correct": 56,
+     "raw_correct": 56
+    },
+    "split": {
+     "n": 18,
+     "correct": 2,
+     "raw_correct": 2
+    },
+    "multi": {
+     "n": 12,
+     "correct": 9,
+     "raw_correct": 9
+    },
+    "trap": {
+     "n": 33,
+     "correct": 12,
+     "raw_correct": 12
+    }
+   },
+   "agreement_with_incumbent_info_only": 0.572,
+   "has_confidence": false,
+   "cold_load_ms": 57354.0,
+   "engine": "ollama",
+   "max_options": 64
+  },
+  "rule:lexical": {
+   "decisions": 46,
+   "correct": 20,
+   "uncertain": 0,
+   "wrong": 26,
+   "error": 0,
+   "false_autonomy": 0,
+   "accuracy": 0.435,
+   "raw_correct": 20,
+   "raw_accuracy": 0.435,
+   "latency_ms_p50": 0.0,
+   "latency_ms_p95": 0.1,
+   "model_calls_mean": 0,
+   "by_kind": {
+    "clear": {
+     "n": 25,
+     "correct": 14,
+     "raw_correct": 14
+    },
+    "split": {
+     "n": 6,
+     "correct": 2,
+     "raw_correct": 2
+    },
+    "multi": {
+     "n": 4,
+     "correct": 2,
+     "raw_correct": 2
+    },
+    "trap": {
+     "n": 11,
+     "correct": 2,
+     "raw_correct": 2
+    }
+   },
+   "agreement_with_incumbent_info_only": 0.413,
+   "has_confidence": false,
+   "cold_load_ms": null,
+   "engine": "deterministic",
+   "max_options": 999
+  },
+  "z0int:decider_2b": {
+   "decisions": 138,
+   "correct": 0,
+   "uncertain": 0,
+   "wrong": 0,
+   "error": 138,
+   "false_autonomy": 0,
+   "accuracy": 0.0,
+   "raw_correct": 0,
+   "raw_accuracy": 0.0,
+   "latency_ms_p50": null,
+   "latency_ms_p95": null,
+   "model_calls_mean": 0,
+   "by_kind": {
+    "clear": {
+     "n": 75,
+     "correct": 0,
+     "raw_correct": 0
+    },
+    "split": {
+     "n": 18,
+     "correct": 0,
+     "raw_correct": 0
+    },
+    "multi": {
+     "n": 12,
+     "correct": 0,
+     "raw_correct": 0
+    },
+    "trap": {
+     "n": 33,
+     "correct": 0,
+     "raw_correct": 0
+    }
+   },
+   "agreement_with_incumbent_info_only": 0.0,
+   "has_confidence": false,
+   "cold_load_ms": 11621.0,
+   "engine": "z0int-transformers",
+   "max_options": 255
+  },
+  "z0int:julia_1": {
+   "decisions": 138,
+   "correct": 24,
+   "uncertain": 0,
+   "wrong": 105,
+   "error": 9,
+   "false_autonomy": 3,
+   "accuracy": 0.174,
+   "raw_correct": 24,
+   "raw_accuracy": 0.174,
+   "latency_ms_p50": 264.8,
+   "latency_ms_p95": 779.4,
+   "model_calls_mean": 1.17,
+   "by_kind": {
+    "clear": {
+     "n": 75,
+     "correct": 9,
+     "raw_correct": 9
+    },
+    "split": {
+     "n": 18,
+     "correct": 0,
+     "raw_correct": 0
+    },
+    "multi": {
+     "n": 12,
+     "correct": 6,
+     "raw_correct": 6
+    },
+    "trap": {
+     "n": 33,
+     "correct": 9,
+     "raw_correct": 9
+    }
+   },
+   "agreement_with_incumbent_info_only": 0.13,
+   "has_confidence": false,
+   "cold_load_ms": 19052.9,
+   "engine": "z0int-transformers",
+   "max_options": 20
+  },
+  "z0int:laya_421m": {
+   "decisions": 138,
+   "correct": 42,
+   "uncertain": 0,
+   "wrong": 96,
+   "error": 0,
+   "false_autonomy": 3,
+   "accuracy": 0.304,
+   "raw_correct": 42,
+   "raw_accuracy": 0.304,
+   "latency_ms_p50": 1781.3,
+   "latency_ms_p95": 5093.0,
+   "model_calls_mean": 1.85,
+   "by_kind": {
+    "clear": {
+     "n": 75,
+     "correct": 21,
+     "raw_correct": 21
+    },
+    "split": {
+     "n": 18,
+     "correct": 3,
+     "raw_correct": 3
+    },
+    "multi": {
+     "n": 12,
+     "correct": 3,
+     "raw_correct": 3
+    },
+    "trap": {
+     "n": 33,
+     "correct": 15,
+     "raw_correct": 15
+    }
+   },
+   "agreement_with_incumbent_info_only": 0.217,
+   "has_confidence": true,
+   "cold_load_ms": 13736.2,
+   "engine": "z0int-transformers",
+   "max_options": 16
+  },
+  "z0int:nanojev": {
+   "decisions": 138,
+   "correct": 24,
+   "uncertain": 0,
+   "wrong": 114,
+   "error": 0,
+   "false_autonomy": 6,
+   "accuracy": 0.174,
+   "raw_correct": 24,
+   "raw_accuracy": 0.174,
+   "latency_ms_p50": 186.7,
+   "latency_ms_p95": 324.8,
+   "model_calls_mean": 1,
+   "by_kind": {
+    "clear": {
+     "n": 75,
+     "correct": 6,
+     "raw_correct": 6
+    },
+    "split": {
+     "n": 18,
+     "correct": 0,
+     "raw_correct": 0
+    },
+    "multi": {
+     "n": 12,
+     "correct": 6,
+     "raw_correct": 6
+    },
+    "trap": {
+     "n": 33,
+     "correct": 12,
+     "raw_correct": 12
+    }
+   },
+   "agreement_with_incumbent_info_only": 0.109,
+   "has_confidence": true,
+   "cold_load_ms": 16168.1,
+   "engine": "z0int-transformers",
+   "max_options": 255
+  },
+  "z0int:openjev_06b": {
+   "decisions": 138,
+   "correct": 48,
+   "uncertain": 0,
+   "wrong": 90,
+   "error": 0,
+   "false_autonomy": 0,
+   "accuracy": 0.348,
+   "raw_correct": 48,
+   "raw_accuracy": 0.348,
+   "latency_ms_p50": 42.7,
+   "latency_ms_p95": 105.1,
+   "model_calls_mean": 1.85,
+   "by_kind": {
+    "clear": {
+     "n": 75,
+     "correct": 30,
+     "raw_correct": 30
+    },
+    "split": {
+     "n": 18,
+     "correct": 0,
+     "raw_correct": 0
+    },
+    "multi": {
+     "n": 12,
+     "correct": 6,
+     "raw_correct": 6
+    },
+    "trap": {
+     "n": 33,
+     "correct": 12,
+     "raw_correct": 12
+    }
+   },
+   "agreement_with_incumbent_info_only": 0.326,
+   "has_confidence": true,
+   "cold_load_ms": 17095.8,
+   "engine": "z0int-transformers",
+   "max_options": 16
+  }
+ },
+ "incumbent_by_split": {
+  "dev": {
+   "accuracy": 0.794,
+   "latency_ms_p50": 152.2,
+   "latency_ms_mean": 164.6,
+   "n": 63
+  },
+  "holdout": {
+   "accuracy": 0.8,
+   "latency_ms_p50": 153.3,
+   "latency_ms_mean": 173.2,
+   "n": 75
+  }
+ },
+ "offload_simulation": {
+  "z0int:laya_421m": {
+   "tau_dev": null,
+   "dev": null,
+   "holdout": null
+  },
+  "z0int:nanojev": {
+   "tau_dev": 0.5,
+   "dev": {
+    "n": 63,
+    "accuracy": 0.794,
+    "wrong": 3,
+    "false_autonomy": 0,
+    "offload_rate": 0.0,
+    "latency_ms_p50": 372.0,
+    "latency_ms_mean": 360.8,
+    "latency_ms_p95": 491.8
+   },
+   "holdout": {
+    "n": 75,
+    "accuracy": 0.8,
+    "wrong": 3,
+    "false_autonomy": 0,
+    "offload_rate": 0.0,
+    "latency_ms_p50": 347.4,
+    "latency_ms_mean": 359.8,
+    "latency_ms_p95": 470.0
+   }
+  },
+  "z0int:openjev_06b": {
+   "tau_dev": null,
+   "dev": null,
+   "holdout": null
+  }
+ },
+ "notes": [
+  "passive shadow predictions on a frozen fixture; not executed outcomes",
+  "agreement_with_incumbent is information only"
+ ]
+}

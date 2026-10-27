@@ -1,0 +1,164 @@
+{
+ "android-version|compiled_macro": {
+  "runs": 3,
+  "verified": 3,
+  "wall_ms_p50": 3809.0,
+  "wall_ms_min": 2600,
+  "wall_ms_max": 3890,
+  "model_calls_median": 0,
+  "phone_actions_median": 2,
+  "errors": [],
+  "unverified_statuses": []
+ },
+ "android-version|deterministic_adb": {
+  "runs": 3,
+  "verified": 3,
+  "wall_ms_p50": 140.0,
+  "wall_ms_min": 127,
+  "wall_ms_max": 156,
+  "model_calls_median": 0,
+  "phone_actions_median": 0,
+  "errors": [],
+  "unverified_statuses": []
+ },
+ "android-version|phone_goal:flat": {
+  "runs": 3,
+  "verified": 3,
+  "wall_ms_p50": 12906.0,
+  "wall_ms_min": 11338,
+  "wall_ms_max": 15998,
+  "model_calls_median": 6,
+  "phone_actions_median": 6,
+  "errors": [],
+  "unverified_statuses": []
+ },
+ "android-version|phone_goal:flat+bt": {
+  "runs": 3,
+  "verified": 3,
+  "wall_ms_p50": 14299.0,
+  "wall_ms_min": 11612,
+  "wall_ms_max": 15003,
+  "model_calls_median": 6,
+  "phone_actions_median": 6,
+  "errors": [],
+  "unverified_statuses": []
+ },
+ "battery-level|compiled_macro": {
+  "runs": 3,
+  "verified": 3,
+  "wall_ms_p50": 2101.0,
+  "wall_ms_min": 1504,
+  "wall_ms_max": 2179,
+  "model_calls_median": 0,
+  "phone_actions_median": 1,
+  "errors": [],
+  "unverified_statuses": []
+ },
+ "battery-level|deterministic_adb": {
+  "runs": 3,
+  "verified": 3,
+  "wall_ms_p50": 144.0,
+  "wall_ms_min": 115,
+  "wall_ms_max": 302,
+  "model_calls_median": 0,
+  "phone_actions_median": 0,
+  "errors": [],
+  "unverified_statuses": []
+ },
+ "battery-level|phone_goal:flat": {
+  "runs": 3,
+  "verified": 2,
+  "wall_ms_p50": 9800.0,
+  "wall_ms_min": 7231,
+  "wall_ms_max": 9899,
+  "model_calls_median": 3,
+  "phone_actions_median": 3,
+  "errors": [],
+  "unverified_statuses": [
+   "done"
+  ]
+ },
+ "battery-level|phone_goal:flat+bt": {
+  "runs": 3,
+  "verified": 3,
+  "wall_ms_p50": 8718.0,
+  "wall_ms_min": 8008,
+  "wall_ms_max": 9331,
+  "model_calls_median": 3,
+  "phone_actions_median": 3,
+  "errors": [],
+  "unverified_statuses": []
+ },
+ "model-name|compiled_macro": {
+  "runs": 3,
+  "verified": 3,
+  "wall_ms_p50": 2260.0,
+  "wall_ms_min": 1655,
+  "wall_ms_max": 2289,
+  "model_calls_median": 0,
+  "phone_actions_median": 1,
+  "errors": [],
+  "unverified_statuses": []
+ },
+ "model-name|deterministic_adb": {
+  "runs": 3,
+  "verified": 3,
+  "wall_ms_p50": 152.0,
+  "wall_ms_min": 116,
+  "wall_ms_max": 248,
+  "model_calls_median": 0,
+  "phone_actions_median": 0,
+  "errors": [],
+  "unverified_statuses": []
+ },
+ "model-name|phone_goal:flat": {
+  "runs": 3,
+  "verified": 3,
+  "wall_ms_p50": 12726.0,
+  "wall_ms_min": 10642,
+  "wall_ms_max": 13099,
+  "model_calls_median": 5,
+  "phone_actions_median": 5,
+  "errors": [],
+  "unverified_statuses": []
+ },
+ "model-name|phone_goal:flat+bt": {
+  "runs": 3,
+  "verified": 2,
+  "wall_ms_p50": 12628.0,
+  "wall_ms_min": 11943,
+  "wall_ms_max": 13313,
+  "model_calls_median": 5.0,
+  "phone_actions_median": 5.0,
+  "errors": [
+   "error"
+  ],
+  "unverified_statuses": [
+   "error"
+  ]
+ },
+ "ALL|compiled_macro": {
+  "runs": 9,
+  "verified": 9,
+  "wall_ms_p50": 2260,
+  "wall_ms_p95": 3890
+ },
+ "ALL|deterministic_adb": {
+  "runs": 9,
+  "verified": 9,
+  "wall_ms_p50": 144,
+  "wall_ms_p95": 302
+ },
+ "ALL|phone_goal:flat": {
+  "runs": 9,
+  "verified": 8,
+  "wall_ms_p50": 11338,
+  "wall_ms_p95": 15998
+ },
+ "ALL|phone_goal:flat+bt": {
+  "runs": 9,
+  "verified": 8,
+  "wall_ms_p50": 11777,
+  "wall_ms_p95": 15003
+ }
+}
