@@ -92,15 +92,13 @@ class BuildComponentDataTest(unittest.TestCase):
     def test_label_delegates(self):
         # _label imports arm_identity lazily; make scripts importable only
         # during this test, then restore sys.path and the module cache.
-        with (
-            mock.patch.object(sys, "path", [str(SCRIPTS), *sys.path]),
-            mock.patch.dict(sys.modules),
-        ):
-            import arm_identity
+        with mock.patch.object(sys, "path", [str(SCRIPTS), *sys.path]):
+            with mock.patch.dict(sys.modules):
+                import arm_identity
 
-            actual = build_component_data._label("compiler+jev")
-            self.assertEqual(actual, "nanojev 0.6b · compiler-first")
-            self.assertEqual(actual, arm_identity.long("compiler+jev"))
+                actual = build_component_data._label("compiler+jev")
+                self.assertEqual(actual, "nanojev 0.6b · compiler-first")
+                self.assertEqual(actual, arm_identity.long("compiler+jev"))
 
     def test_load_skips_blank_lines(self):
         with tempfile.TemporaryDirectory() as tmp:
