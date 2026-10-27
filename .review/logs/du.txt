@@ -1,0 +1,5 @@
+84K	/tmp/claude-1000/-mnt-zer0models/52196f2a-92ff-4945-bef2-e87521808758/tasks/w6mbunnjv.output
+88K	/tmp/claude-1000/-mnt-zer0models/52196f2a-92ff-4945-bef2-e87521808758/tasks/wmujurcm2.output
+92K	/tmp/claude-1000/-mnt-zer0models/52196f2a-92ff-4945-bef2-e87521808758/tasks/w9pg8tkct.output
+96K	/tmp/claude-1000/-mnt-zer0models/52196f2a-92ff-4945-bef2-e87521808758/tasks/wlam4uulx.output
+132K	/tmp/claude-1000/-mnt-zer0models/52196f2a-92ff-4945-bef2-e87521808758/tasks/wu0kj5ycv.output

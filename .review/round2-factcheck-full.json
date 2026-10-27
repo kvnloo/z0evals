@@ -1,0 +1,211 @@
+[
+ {
+  "verdict": "Not ready to send as is, but the fixes are edits, not new runs. Read as the gist's author, the post is honest about most test conditions and attributes almost nothing to the gist that it does not say. Three things would lose him.\n\n1. The headline crossover of turn 82 rests on pricing Haiku at one twentieth of Sonnet. The final report's own table has a row the post leaves out: with Haiku at one third of Sonnet, the crossover with compactions is not reached (7.49M against 4.61M units at turn 112). He will check that ratio first.\n2. Three of the six questions are answered by the gist itself, and the first one presupposes a savings claim the gist does not make. The post even says so two paragraphs earlier.\n3. The compactor's shell execution is presented as a failure of the design. It is a property of the Claude Code route: the harness gave compactions an empty allow list and Claude Code ran read-only commands anyway. The gist says the tools are \"never called\".\n\nThe first screen is not enough for him to read on. The lede has no numbers and no ask, and section 2 corrects a round-1 account he has never seen. The prose is also padded: nearly every paragraph ends with a \"these are X, not Y\" disclaimer, and internal labels (E4, E5, E6, B2, \"the final audit\") run throughout.\n\nThe fairness conditions you listed are mostly admitted: the 1,000,000-token window, the synthetic script, the hard-coded 1-hour write and the thinned baseline all are. Not admitted: the eight-request cap behind three of the four recall misses is the harness's, and the tool-calling and turn-confusion rates were measured at low effort, not the gist's xhigh.\n\nI did not check the 1:20 ratio against a public price list; the final report says it did not either.",
+  "wrong": [
+   {
+    "quote": "What practical baseline and model window do your savings refer to, and at what chat length were they measured?",
+    "problem": "The question presupposes that the gist claims savings against some baseline session. It does not. Its only saving figure is batched merging against merging at every message, and it states both the comparison and the length. The post itself says the gist makes no such promise, so the question contradicts the post.",
+    "correct": "The gist's figure is \"about 4x less (21 vs 80 line-inputs per message)\" for a batched view against per-message merging, in a 30,000-message simulation. Drop the question or replace it with one he alone can answer, for example: \"Have you compared total spend against a continued cached session on a 1,000,000-token window, and from what length does UniiChat win?\"",
+    "source": "optchat.md section 3.3 lines 214-221; post line 42"
+   },
+   {
+    "quote": "It also reports simulated cache and batching savings.",
+    "problem": "The cache figures in the gist are not savings. They are cache-read shares of the prefix from a replay against a model of the cache. Only the batching figure is a saving, and it is against unbatched merging of the same view, not against another kind of session.",
+    "correct": "\"It reports two simulations: batching merges costs about 4x less than merging at every message (30,000 messages), and turns read 98.6% of their prefix from the cache, compactions 96.2% (3,000 messages against a model of the cache). Neither compares UniiChat with a continued session.\"",
+    "source": "optchat.md lines 218-221 and 239-241"
+   },
+   {
+    "quote": "It does not promise that fresh UniiChat calls beat a cached continued session at short lengths.",
+    "problem": "\"At short lengths\" implies the gist promises this at longer lengths. The gist makes no cost comparison with a continued session at any length.",
+    "correct": "\"It makes no cost comparison with a continued session at any length. That baseline is ours.\"",
+    "source": "optchat.md, whole document: the only cost statements are lines 20-21, 201-221 and 233-241"
+   },
+   {
+    "quote": "The gist's central comparison against a forgetful or compacted session remains untested here.",
+    "problem": "The gist states a motivation (sessions fill up, get compacted or dropped, and rot). It runs and reports no comparison.",
+    "correct": "\"The failure the gist sets out to fix, a session that is compacted, dropped or degraded by length, did not occur in the baseline, so the design's main benefit was not tested.\"",
+    "source": "optchat.md lines 3-5"
+   },
+   {
+    "quote": "Do the reported cache shares count all input or only the cacheable prefix, and were the simulated shares checked against real usage?",
+    "problem": "The first half is answered by the gist, and the post already knows the answer: line 127 calls them \"simulated prefix shares\" with \"a different denominator\".",
+    "correct": "The gist says \"turns read 98.6% of their prefix from the cache\". Keep only the second half: \"Were the 98.6% and 96.2% prefix shares checked against real usage, and what did you see?\"",
+    "source": "optchat.md lines 239-241; post line 127"
+   },
+   {
+    "quote": "Which cache-read and write prices do you use, and does the advice against one-hour entries assume a chat without long pauses?",
+    "problem": "The first half is answered by the gist. The second half is partly answered: the gist accepts a miss after a pause longer than the entry lifetime and says not to send keep-alive pings.",
+    "correct": "The gist gives about 0.1x for reads, 1.25x for writes and 2x for 1-hour writes. Ask the open part: \"For a chat a person types into with pauses over 5 minutes, did you measure that 5-minute entries plus cold rewrites still beat 1-hour entries?\"",
+    "source": "optchat.md lines 201-203 and 233-237"
+   },
+   {
+    "quote": "Are shell tools visible to your compactor, and what prevents their execution when a compaction follows a request inside the chat?",
+    "problem": "The first half is answered by the gist: a compaction has the same system prompt and tools as a turn.",
+    "correct": "Ask what the gist leaves open: \"The gist says the compactor's tools are 'never called'. Is that enforced by your harness (tool calls discarded or the send failed) or only by the prompt? How often does Haiku at xhigh attempt one?\"",
+    "source": "optchat.md lines 245-247 and 390"
+   }
+  ],
+  "imprecise_or_unfair": [
+   {
+    "quote": "To combine Sonnet turns with Haiku compactions, this table weights Haiku units at 0.05 of Sonnet units. That is the relative input, write and output price reconstructed from the CLI estimates.",
+    "problem": "The turn-82 headline depends on this 1:20 ratio. The final report fitted the CLI's figures to Haiku 0.10 and Sonnet 2 USD per million input tokens, and did not check them against a price list. Its economics table has a row the post omits: with Haiku at one third of Sonnet, the crossover with compactions is not reached (7.49M against 4.61M units at turn 112). Compaction used 13.73M Haiku units, 4.7 times the arm's turn units. The post's later line \"a different model price ... could move the total crossover beyond the run\" hides a computed result behind a hypothetical. This is overclaiming under the repo's rules.",
+    "fix": "Add the one-third row to the crossover table. In the crossover section, say that compaction used 4.7 times the turn units and is affordable only at the CLI's 1:20 ratio. State the fitted per-million prices and that they were not checked against a price list."
+   },
+   {
+    "quote": "That limits what happened in this trial. It does not make the instruction sufficient to prevent tool execution: the compactor actually listed and read repository material when it was supposed to produce a summary.",
+    "problem": "This reads as a design failure, but execution was a property of the route. The review notes record that compactions were given tools with an empty allow list and that Claude Code ran read-only shell commands regardless. The gist says the tools are \"never called\"; a harness on the raw API can simply not execute them. The post admits neither point.",
+    "fix": "Split it into two findings. First, the model attempted a tool call in 11.2% of low-effort sends despite the prompt; that concerns the design. Second, Claude Code executed 159 read-only shell commands and 1 file read even with an empty allow list; that concerns the route, and a harness that owns tool execution would drop them."
+   },
+   {
+    "quote": "Compactions also used tools despite the instruction \"Call no tools, and output only the line, without an id+n| head.\"",
+    "problem": "The failures section does not repeat that the replay compactor ran at low effort, not the gist's xhigh. In the sweep, xhigh and high made 0 tool calls (0/184 and 0/212) and low made 4/318. The same gap applies to embedded-request obedience and the rebuilt nodes. The reader is left to assemble this from another section.",
+    "fix": "Open the section with one sentence: \"Everything below was measured with Haiku at low effort, our choice, not the gist's xhigh. In the sweep, xhigh made no tool calls in 184 sends. We did not run the replay at xhigh or high.\""
+   },
+   {
+    "quote": "Three of UniiChat's four recall misses came from one turn that exhausted its eight-request allowance on zooms and produced no answers.",
+    "problem": "The eight-request cap is the harness's. The gist sets no limit on zooms per turn. The post does not say whose cap it is, so three of the four misses (the whole 50/54 against 54/54 gap except one) read as a design limit.",
+    "fix": "Say the cap is the trial's, that the gist has none, and whether the baseline had the same cap. Give the recall score both ways: 50/54 as run, and 1 miss in 51 outside the capped turn."
+   },
+   {
+    "quote": "We said Claude Code's one-hour cache marks could not be changed. That was wrong.",
+    "problem": "The addressee has not seen round 1, so the section corrects claims he never read. It also omits the point that concerns him: the gist itself says \"Claude Code subscriptions mark with their own 1-hour lifetime\", and the cache-lifetime probe found a setting that gives 5-minute writes on the subscription route. That is new information about his document and a natural question for him.",
+    "fix": "Cut the section to a short note near the end. In the crossover section, state: \"The gist says Claude Code subscriptions mark with their own 1-hour lifetime. We found CLAUDE_CODE_PROMPT_CACHE_TTL=5m gives 5-minute writes there. Our core hard-coded 1 hour on the view mark, against the gist's API advice, so the 1-hour columns carry a 2x write the design does not ask for.\""
+   },
+   {
+    "quote": "Victor Taelin's UniiChat specification says: \"So the context has a constant size and nothing is ever lost.\" It proposes a permanent log, a tree of summaries and fresh calls that can open those summaries to recover detail. Our longer replay reached the bounded-view regime and measured a cost crossover against a continued Claude Code session.",
+    "problem": "The first screen has no numbers and no ask. It spends two sentences telling the author what his own design is, then refers to \"our earlier account\", which he has not seen. The next three paragraphs restate the gist again. He cannot tell from this screen what was found or what is wanted from him.",
+    "fix": "Lead with the result and the ask, for example: \"We rebuilt UniiChat from your gist and ran it through Claude Code beside a continued session: 112 tool-heavy Sonnet turns, 1,161 messages, three real 128 KB batches. Turn cost went flat at about 27,000-34,000 units while the continued session rose from 13,699 to 86,316. Cumulatively UniiChat was cheaper from turn 57 on turn calls and turn 82 with Haiku-low compactions, but only level in the CLI's USD. The baseline has a 1,000,000-token window, never compacted and answered 54/54 recall questions, so the memory benefit was not tested. Under the shared prompt, 12 of 112 turns answered as compactions and 11.2% of low-effort compaction sends called a tool. Six questions for you are at the end.\" Cut the design recap to one paragraph listing what was implemented and what was not."
+   },
+   {
+    "quote": "Claude Code reported a 1,000,000-token Sonnet window. Its continued session ended at 344,607 prompt tokens with no auto-compaction events over 112 turns.",
+    "problem": "The window is admitted, but the fact he needs is missing: 344,607 tokens is past a 200,000-token window, so on a standard window the baseline would have auto-compacted inside this run and the memory comparison would have happened. The post also omits the final report's inferred estimate that filling the window needs 300+ turns of this script.",
+    "fix": "Add the turn at which the baseline's prompt passed 200,000 tokens and the 300+ turn estimate, marked inferred. Add a question: \"Was the design aimed at 200,000-token windows? Does the case change when the continued session has 1,000,000 tokens?\""
+   },
+   {
+    "quote": "The stock comparison ended at 37 turns, one run per arm. Stock tools and skills cost 889,826 units against 625,676 for the thinned session.",
+    "problem": "The UniiChat figure for the same 37 turns is left out. The final report gives 667,964 units for UniiChat turn calls: below stock, above thinned. Against the Claude Code most people run, UniiChat's turn calls were already cheaper at 37 turns. Omitting that is unfair to the design.",
+    "fix": "Add the third number and its caveats: \"UniiChat turn calls: 667,964, compactions excluded, and UniiChat itself ran thinned.\""
+   },
+   {
+    "quote": "The reason is the Sonnet cache-read price. The unit uses 0.1 times input. The CLI estimate uses 0.05 times input for Sonnet.",
+    "problem": "This decides the result, and it is stated as a fact about the CLI with no figures. An expert will doubt a 0.05x read price. The following paragraphs make the same point three times.",
+    "fix": "Give the fitted prices once (Sonnet 2 / 4 / 0.10 / 10 USD per million for input / 1-hour write / read / output; Haiku 0.10 / 0.20 / 0.01 / 0.50), say they were fitted from the CLI's cost field and not checked against a price list, and cut the repetition. This is also a good question for him: which read price does he see billed?"
+   },
+   {
+    "quote": "Have you seen ordinary turns return summary lines under the shared prompt, and have you measured instruction compliance after the relevant rule disappears from the visible summaries?",
+    "problem": "Two unrelated questions share one bullet. Each of the six bullets is a double question. The one finding only he can explain is missing from the list: a turn that adds 90 or more lines defeats the 20-block lookback and rewrites the whole view. The final report's question list included it.",
+    "fix": "One question per bullet, each with our number attached. Suggested set: (1) why xhigh; (2) is \"never called\" enforced by the harness or the prompt; (3) do turns ever answer as compactions for you (we saw 12/112 on Sonnet); (4) what happens after a turn that adds more than about 84 lines; (5) were the prefix shares checked against real usage; (6) does the case hold against a 1,000,000-token continued session, and from what length."
+   },
+   {
+    "quote": "The original E5 report used a blended coefficient as if it were a model price ratio. The final audit corrected that interpretation.",
+    "problem": "Internal process leaks into the post. E4, E5, E6, B2, \"the final audit\", \"the final skeptical report\", \"the number-source review\" and \"the original report's maximum-tries claim was not reconciled\" mean nothing to an outside reader and read as the authors arguing with their own drafts.",
+    "fix": "Name experiments by what they are (the effort sweep, the 112-turn replay, the overhead probes). Remove all references to internal reports and audits from the body. Keep reconciliation notes in the study files."
+   },
+   {
+    "quote": "These are measured scheduling observations, not isolated latency benchmarks for a person using the system.",
+    "problem": "Nearly every paragraph ends with a disclaimer of this shape. Other examples: \"These are measured programme counts, not independent samples\", \"This is not evidence about what the subscription actually costs its owner\", \"The separate skipped-task row prevents that flattering interpretation\", \"These are accounting assumptions applied to measured usage, not money paid on the subscription\". The repetition buries the findings and reads as defensive.",
+    "fix": "State the evidence status once per table, in a column or caption (measured, recomputed, repriced, inferred). Delete the trailing disclaimers. Keep one limits section."
+   },
+   {
+    "quote": "The shared system prompt asks the same model to handle turns and compactions. In the replay, Sonnet sometimes summarized the new user message instead of doing the task. The harness identified 12 such turns out of 112. The final reviewer found fewer with a narrower regex, so the broader count should be read as a harness classification supported by inspected examples, not a uniquely defined detection rate.",
+    "problem": "This is the finding most useful to him, and it is hedged until it says little. No example reply is shown and the narrower count is not given. The post also does not say what followed the system prompt in these turns. The gist expects the user's own instructions there, and the trial's instructions and message format could contribute to the confusion.",
+    "fix": "Give both counts, quote one such reply (synthetic data, so it is safe), and state what the user-instruction block contained and how the user message was framed. Then say plainly that 5 of 73 edit tasks were not done."
+   },
+   {
+    "quote": "That was the effort specified in the gist, so testing it was justified. Treating its cost as unavoidable was not.",
+    "problem": "The gist prescribes \"a cheap one\" and reports that UniiChat uses Haiku at xhigh. \"Specified\" is slightly stronger than the text. The surrounding paragraph is self-criticism about round 1 that the addressee has no context for.",
+    "fix": "\"The gist asks for a cheap model and says UniiChat uses Haiku at xhigh. We tested the four efforts.\" Move the round-1 reflection to the short corrections note."
+   },
+   {
+    "quote": "The baseline and UniiChat also had different prompts and memory tools. Their identical script does not make every other property identical.",
+    "problem": "Too vague for the reader who most needs it. He cannot tell what the baseline's prompt was, whether the UniiChat arm carried the same thinned Claude Code blocks (the 170-token reminder before the view and the 357-token environment block after the message), or whether those blocks sit where the gist says per-turn state must go.",
+    "fix": "Say concretely what each arm's request contained, in order, and where Claude Code's injected blocks fall relative to the view and the message."
+   }
+  ],
+  "privacy": "No email address, credential, local path or private prompt appears in the post. A grep of the post and the study directory for home and mount paths and addresses found only the public repo slug kvnloo/z0intelligence in manifest.yaml, which source pinning requires.\n\nThree things to settle before the post goes public (sending it to Taelin privately is fine):\n\n- **Unlisted gist.** The post names him and quotes his prompt and spec lines verbatim. Publishing would disclose content he has not made public. Ask his consent in the same message, or paraphrase and withhold the name until he agrees.\n- **Unpushed commits.** The hashes 098433d and fd454e7 are on a branch that has not been pushed. They reveal nothing private, but nobody outside can resolve them. Say so, or push before publishing.\n- **Owner wording.** \"The owner's normal configuration\" and \"subscription login\" reveal nothing personal. They read oddly to an outsider; \"a normally configured install\" would do."
+ },
+ {
+  "verdict": "The post is largely accurate: I recomputed the cost tables, crossovers, compaction share, compactor sweep and compactor tool-failure counts from the raw rows, and all but one figure match. The one wrong number is the edit-turn denominator (73 should be 63). The rest are wording, scope and retraction gaps, listed below.\n\n**Recomputed from raw rows and matching the post**\n- **Unit checkpoint table:** every cell matches, using the assignment rule the post states (compaction sends by call start between successive turn-call starts; 474 / 1,125 / 2,140 / 2,383 sends).\n- **USD checkpoint table:** every cell matches (0.588 / 0.821 / 0.525 through 4.646 / 6.019 / 5.995).\n- **Crossovers:** 57 and 82 at one-hour writes, 32 and 71 repriced at five-minute, 80 and not reached in CLI USD.\n- **Shares:** compaction is 22.8% of the UniiChat arm's USD (1.373 of 6.019). Cache-read shares are 95.6% / 93.0% / 98.9%, and the baseline read 32.28M of 32.62M input-side tokens.\n- **CLI prices:** Sonnet 2 / 4 / 0.10 / 10 per million reproduces the baseline's 5.995 USD exactly, so the 0.05x read price is confirmed.\n- **Batches and view:** turns 52 / 77 / 103, pairs 348 / 263 / 276, all byte figures, 1,161 messages, largest view 127,752.\n- **Baseline and waits:** 344,607 prompt tokens, 0 compaction events, 1,000,000 window; wait median 3.8 s, max 95.0 s; the 95- and 90-line turns followed by full rewrites.\n- **E4 sweep table:** every Haiku row matches (lines, sends, first-try and final fit, USD per line, seconds per line, sends per line, thinking per send, tool sends); naive 0.412 against corrected 0.231 also matches.\n- **E4 harness figures:** level-5 standing rules and corrections, reader scores, 17-25 of 232 items, and the Sonnet partial rows match E4's analysis output.\n- **Compactor tool events:** 266 of 2,383 sends (11.16%), 273 calls; 159 shell calls ran, 6 did not, 1 read, 102 zoom, 4 date, 1 edit.\n- **Grades:** 50/54 and 54/54 recall, 13/16 and 16/16 corrections, 351/351 and 383/383, 31/4 and 2/1 ungradable, 27/27 traps, Opus 11/12 and 12/12 all match the stored grade items.\n- **E6 and B2:** 27,295, 2,253, 1,641, 170, 357, 1,726; 24 of 24 and 8 of 8 identical sequences; the 330 s expiry; B2 889,826 against 625,676 over 37 turns; 23,690 first request.\n- **Ledger:** E4 1,334, E5 3,070 and E6 52 requests, matching the per-model rows.\n\n**Gist statements:** every quotation is verbatim and every description of the spec checks out against the saved copy. One question for the author is already answered by the gist (see the list).\n\n**Study files:** `summary.json` and `manifest.yaml` agree with the post on every number they share, and the manifest's hash of `summary.json` is correct. Several post numbers are missing from the frozen summary (see the list). The manifest says `status: draft` while the post says `evidence-local`.\n\n**Not checked by me:** I did not rerun the grader or the E4 regex counts, and I did not recompute the pi paper numbers.\n\nFiles: `/mnt/zer0models/z0-wt/salvage/z0evals-optchat-post/posts/optchat-claude-code-v0.md`, `/mnt/zer0models/z0-wt/salvage/z0evals-optchat-post/studies/optchat-claude-code-v0/summary.json`, `/mnt/zer0models/z0-wt/salvage/z0evals-optchat-post/studies/optchat-claude-code-v0/manifest.yaml`. I wrote nothing under the post directory.",
+  "wrong": [
+   {
+    "quote": "| edit turns that changed nothing | 5/73 | 0/73 |",
+    "problem": "The denominator does not recompute. The harness defines an edit turn as script kind add, fix or probe (E5 `harness/analyze.py` line 453). In the 112 completed turns that is 27 add + 18 fix + 18 probe = 63, not 73. No other grouping of kinds gives 73 (fix+add = 45; adding corr and bulk gives 53, 69 or 71). The 73 comes from the E5 report; the final report copied it without recomputing, and `number-sources.md` line 102 asserts it without a source. The numerators are right: turns 35, 49, 50, 59 and 80 in the UniiChat arm, none in the baseline.",
+    "correct": "5/63 and 0/63 (add, fix and probe turns among the 112 completed). If only add and fix turns are meant, 5/45 and 0/45. `summary.json` does not hold this figure at all, so add it there with the definition.",
+    "source": "/mnt/zer0models/z0-wt/salvage/optchat-trial/results/E5/script.json (kinds of turns 1-112), E5/harness/analyze.py line 453, E5/A/turns.jsonl and E5/B/turns.jsonl `changed`/`deleted` fields"
+   }
+  ],
+  "imprecise_or_unfair": [
+   {
+    "quote": "The batch result was followed by new messages, so end-of-turn sizes were above the low-water target; those sizes do not mean every batch stopped at that target.",
+    "problem": "The hedge points the wrong way. The turn rows record the view right after each batch: 63,843, 63,688 and 63,753 bytes, all at or under the 64,000 target. So every batch did reach the target; only the end-of-turn sizes are higher because the turn kept adding lines.",
+    "fix": "Say: each batch took the view to 63,688-63,843 bytes, under the 64,000 target (n=3); the end-of-turn sizes in the table are higher because messages were added after the batch in the same turn."
+   },
+   {
+    "quote": "| stock tools and skills, user settings disabled | 23,690 | first B2 request, n=1, measured |",
+    "problem": "The table sets this beside 2,253 for the thinned session, but the two are different probes. 23,690 is the whole first Sonnet request of the replay (21 tools, 17 skills, plus the 212-byte first message). 2,253 is a Haiku probe with 2 tools and a 'Reply with exactly: OK' message. The like-for-like thinned figure in the same replay is 4,852 tokens: arm B's first request, same message, 4 tools.",
+    "fix": "Add the 4,852 row (E5 thinned arm, first request, n=1) and say 23,690 against 4,852 is the matched comparison; keep 2,253 labelled as the round-1-flags probe with a trivial message on Haiku."
+   },
+   {
+    "quote": "In the replay, Sonnet sometimes summarized the new user message instead of doing the task. The harness identified 12 such turns out of 112.",
+    "problem": "Eleven of the 12 turns were order, fact or correction messages (6 order, 3 fact, 2 correction) with no edit task to do; only turn 35 was a task. The overlap with the five edit turns that changed nothing is exactly one turn (35). 'Instead of doing the task' reads as 12 skipped tasks.",
+    "fix": "Say the reply was a summary line in the compaction format on 12 turns: 11 were orders, facts or corrections to note and 1 was an edit task (turn 35), which is the only overlap with the five edit turns that changed nothing."
+   },
+   {
+    "quote": "## new failure modes {#failures}",
+    "problem": "Two of the three were already seen in round 1. The round-1 post reported Haiku at default effort calling zoom in 5 of 271 compaction sends, and Sonnet writing answers to two arithmetic baits into 8 nodes. What is new is the scale with shell tools listed (11.2%), actual execution of shell commands, and turns answering as compactions.",
+    "fix": "Retitle to something like 'failure modes at scale' and add one sentence: round 1 saw zoom calls at default effort (5 of 271) and Sonnet answering baits; round 2 adds turn-as-compaction replies and executed shell commands."
+   },
+   {
+    "quote": "In the sweep, each candidate answered two or three of five planted requests within a summary line, according to the report's inspected examples.",
+    "problem": "The E4 report supports 'two or three of five' for the four Haiku efforts only. For Sonnet it names one answer (1517, Sonnet medium, on a 32-message partial corpus that does not contain all five baits).",
+    "fix": "Write 'each Haiku effort answered two or three of the five planted requests in a line; Sonnet medium wrote one answer on its partial corpus'."
+   },
+   {
+    "quote": "The round-1 retry-heavy E1 USD figures have not been repaired individually. We retain them as historical reported figures with that defect recorded, rather than treating them as audited costs.",
+    "problem": "The round-1 post published no E1 USD figure, and this post retains none, so the sentence refers to nothing a reader can find. The USD figures that were published and are retained (E3 whole-arm 0.640 and 0.468, the 5x and 58x) carry the same naive sum over one or two retry rows. Differenced, they are 0.635 and 0.461, so 5.0x stays and 58x becomes about 57x.",
+    "fix": "Say the defect was in the E1 analysis script and affected no E1 figure published here; the retained E3 whole-arm ratios move immaterially when corrected (5.0x unchanged, 58x to about 57x). Record the same in `summary.json`, which currently says only that E3 weighted-token results are unaffected."
+   },
+   {
+    "quote": "The earlier roughly 5-times to 58-times whole-arm penalties have disappeared in this setup.",
+    "problem": "Round 1's other forward-looking claim is dropped without a retraction. The round-1 post gave a model prediction that turn calls would become cheaper around user message 185-215, and with compactions around message 400 or later for Sonnet and never for Haiku. Round 2 measured turn 57 and turn 82 (different script, low effort). `summary.json` marks the prediction superseded; the post is silent.",
+    "fix": "Add one sentence to the corrections section: the round-1 break-even prediction (185-215, and 400 or later with compactions) is superseded by the measured turn 57 and turn 82, on a different script and compactor effort."
+   },
+   {
+    "quote": "| reminder block before the view | 170 | n=1, measured by difference |",
+    "problem": "Round 1 said about 240 tokens sat before the view and 356 after. The new 170 and 357 replace that estimate, but the post does not say so. `summary.json` records the change under `wrapper_estimate`.",
+    "fix": "Add a clause: this replaces round 1's estimate of about 240 tokens before the view; the tail estimate (356) is confirmed at 357."
+   },
+   {
+    "quote": "Our longer replay reached the bounded-view regime and measured a cost crossover against a continued Claude Code session.",
+    "problem": "The lede and title state the crossover without its condition. With compactions it holds in the gist's unit (turn 82) but is not reached in the CLI's own USD by turn 112 (6.019 against 5.995). Only the turn-call crossover holds in both.",
+    "fix": "Add to the lede: on turn calls in both accountings; with compactions only at the gist's 0.1x read price, and level but not crossed in the CLI's USD."
+   },
+   {
+    "quote": "- Do the reported cache shares count all input or only the cacheable prefix, and were the simulated shares checked against real usage?",
+    "problem": "The gist answers the first half: 'turns read 98.6% of their prefix from the cache', measured 'by replaying 3,000 messages against a model of Anthropic's cache'. The post itself calls them 'simulated prefix shares' earlier. Asking the author what his own text states weakens the question.",
+    "fix": "Ask instead: your 98.6% and 96.2% are prefix shares from a cache model; have you measured the share of all input on real usage? Ours was 95.6% for turns and 93.0% for compactions."
+   },
+   {
+    "quote": "We said Claude Code's one-hour cache marks could not be changed. That was wrong.",
+    "problem": "The gist itself says 'Claude Code subscriptions mark with their own 1-hour lifetime'. Round 1 cited that line. The correction does not mention it, so the author may read the retraction as contradicting his own text.",
+    "fix": "Add: the specification notes that subscriptions mark with a 1-hour lifetime; that is the default, and an environment setting changes it."
+   },
+   {
+    "quote": "UniiChat's turn cost becomes roughly flat while the baseline grows with the accumulated session.",
+    "problem": "The stretch means still rise: 27,882 (turns 26-50), 27,300 (51-75), 31,266 (76-100), 34,442 (101-112), about 24% over the bounded-view stretch. The 51-75 row is not in the table. The post hedges 'flat' but shows no number for the drift.",
+    "fix": "State the range: 27,300-34,442 units per turn from turn 26 on, against 27,839-86,316 for the baseline. Consider adding the turns 51-75 row (27,300 / 32,449 / 40,592)."
+   },
+   {
+    "quote": "Stock tools and skills cost 889,826 units against 625,676 for the thinned session.",
+    "problem": "These numbers are correct but are not in the frozen `summary.json`. Also absent: 23,690; the 32.28M of 32.62M baseline read figure; the naive 0.412 against corrected 0.231; the 17-25 of 232 items; and the 1.84 scaled ratio. The repo rule is that posts must not go beyond the frozen study.",
+    "fix": "Add these figures to `summary.json` under round_2 (and 1.84 under the round-1 fields), with n and status."
+   },
+   {
+    "quote": "The round-2 trial branch ended at `098433d`, a local commit adding background compaction and a pre-render settle step. Round 1 used `fd454e7`.",
+    "problem": "The round-1 post named the spec revision (3c190e06, October 8, fetched October 11). The rewrite dropped it from the post body; it survives only in the manifest. The author cannot tell which revision of his gist was tested.",
+    "fix": "Restore one sentence naming the gist revision and fetch date."
+   }
+  ],
+  "privacy": "Nothing private found in the post or the two study files.\n\n- **Post:** no local paths, email addresses, tokens, session or request ids. It says 'the owner's normal configuration' without detail.\n- **summary.json:** no paths or credentials. It cites two internal artifacts that are not public: 'workflow journal.jsonl result at line 9' and '.review/number-sources.md' (lines 972 and 979). These are not personal data, but they point readers at files that will not be published; reword or drop them.\n- **manifest.yaml:** names the source repo as kvnloo/z0intelligence (the same public GitHub owner as the z0evals repo itself) and the gist as unlisted. No paths or tokens.\n- **Not for publication:** the `.review/` folder contains absolute local paths and should stay out of any allowlist.\n- **Trial-side observation, not a post issue:** one compactor shell call failed on the owner's `ls --icons` alias, so compactor shell commands ran under the owner's shell profile."
+ }
+]

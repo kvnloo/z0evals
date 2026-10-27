@@ -1,0 +1,8 @@
+5175 posts/optchat-claude-code-v0.md
+privacy grep: no matches (exit 1)
+python3 -m json.tool: OK (exit 0)
+manifest YAML parse: OK
+summary SHA-256 matches manifest: e4d6b9afaeb7b65beec22c3eca0cb89fe0daedb4c828404c19e3f98ab49545f7
+post/manifest status: evidence-local (matched)
+correction coverage: 15/15 items, BEFORE/AFTER present
+raw-row correction assertions: passed

@@ -1,0 +1,66 @@
+5160 posts/optchat-claude-code-v0.md
+100:| 25 | 0.588 | 0.821 | 0.525 |
+153:In the longer replay, low-effort compaction accounted for about 23% of the UniiChat arm's estimated USD, n=2,383 sends. The short trial's whole-arm penalties were originally reported as 5 to 58 times; corrected, they are 5 to about 57 times. They do not describe this setup, which uses a different script and effort.
+252:The round-1 line-writing analysis summed the CLI's cumulative process USD at every retry, counting earlier spend again. No USD figure from that line-writing experiment was published here. The same defect slightly affected the short paired-chat totals. Differenced estimates are USD 0.635 and 0.461 versus source-reported 0.640 and 0.468, n=26 turns per arm. The Sonnet whole-arm ratio stays 5.0 times; Haiku changes from 58 times to about 57. In the new low-effort sweep, n=318 sends, the naive sum is USD 0.412 against USD 0.231 after differencing.
+---PRIV
+posts/optchat-claude-code-v0.md:174:Standing-order checks count when files change. Skipped tasks produce ungradable checks. Perfect compliance among changes made therefore leaves task-completion failu
+---JSON
+ok
+5fcd3487b2c0553a1e705d1dcf32c6c75483d10a1b6d5a1598059b4bb0d10785  studies/optchat-claude-code-v0/summary.json
+32:  sha256: 5fcd3487b2c0553a1e705d1dcf32c6c75483d10a1b6d5a1598059b4bb0d10785
+---HEAD
+36:## the claim and the trial {#claim}
+57:## the measured crossover {#crossover}
+117:## the compactor sweep {#compactor}
+155:## correctness and missed work {#correctness}
+187:## failure modes at scale {#failures}
+225:## overhead and pi on paper {#overhead}
+248:## corrections to the short trial {#corrections}
+262:## limits of the result {#limits}
+276:## questions for the author {#questions}
+---CORR
+1027
+1:# Round-2 corrections, second pass
+7:## R1-W1
+39:## R1-W2
+61:## R1-W3
+83:## R1-W4
+105:## R1-W5
+137:## R1-W6
+169:## R1-W7
+201:## R1-I1
+223:## R1-I2
+245:## R1-I3
+267:## R1-I4
+289:## R1-I5
+311:## R1-I6
+337:## R1-I7
+359:## R1-I8
+381:## R1-I9
+403:## R1-I10
+435:## R1-I11
+457:## R1-I12
+479:## R1-I13
+501:## R1-I14
+523:## R1-I15
+545:## R2-W1
+585:## R2-I1
+607:## R2-I2
+647:## R2-I3
+669:## R2-I4
+691:## R2-I5
+713:## R2-I6
+735:## R2-I7
+757:## R2-I8
+797:## R2-I9
+823:## R2-I10
+855:## R2-I11
+877:## R2-I12
+899:## R2-I13
+921:## R2-I14
+943:## Extra (a)
+961:## Extra (b)
+989:## Extra (c)
+1007:## Privacy and verdict-level checks
+1017:## Frozen-study consistency
+1021:## Verification

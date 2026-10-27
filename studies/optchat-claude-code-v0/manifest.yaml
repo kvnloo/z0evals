@@ -1,0 +1,166 @@
+schema_version: z0eval.study.v1
+id: optchat-claude-code-v0
+title: 'UniiChat through Claude Code: a price-dependent crossover and an untested memory benefit'
+status: evidence-local
+scoring: partially scored
+created: '2026-10-11'
+updated: '2026-10-12'
+sources:
+- repo: kvnloo/z0intelligence
+  commit: fd454e7767bbd907984cd7546c7f62da18ff35bf
+  role: Round-1 UniiChat core and Claude Code backend; trial branch local when frozen
+- repo: kvnloo/z0intelligence
+  commit: 098433dc76f6b7945a7e5d61a89e0d37670d046d
+  role: Round-2 trial branch head 098433d; E5 background compactor and settle; E4 uses round-1 commit; exact E6
+    per-call checkout not independently pinned; local when frozen
+- source: Victor Taelin's UniiChat specification, an unlisted gist
+  commit: 3c190e06f34aba0c69f49042c526093269604935
+  revision_date: '2026-10-08'
+  fetched: '2026-10-11'
+  role: specification
+questions:
+- Do the parts of the design exercised here behave as the specification describes?
+- In one short chat, what does UniiChat cost against a continued Claude Code session, a comparison introduced by
+  this study?
+- What do 512-byte lines keep after forced merges in a dense synthetic corpus?
+- Does a longer tool-heavy replay reach the real bounded-view regime and a cost crossover?
+- How does compactor effort affect per-line cost, fit, downstream recall and tool discipline?
+- Which overhead and cache-lifetime effects are measured through Claude Code, and which pi results are paper estimates?
+artifacts:
+- path: summary.json
+  kind: result
+  sha256: 5fcd3487b2c0553a1e705d1dcf32c6c75483d10a1b6d5a1598059b4bb0d10785
+limitations:
+- 'Round 1 only, historical scope: The headline chat had 26 user messages, 60 logged messages and 21.7 KB of log.
+  Forty-eight messages were 512 bytes or less and entered the view verbatim, so the script offered little compression.'
+- 'Round 1 only, historical scope: After 26 messages the view was 15.8-16.2 KB, and it reached 17.7 KB only after
+  six extra Opus questions. The 64-128 KB regime was not reached. One batch was observed only at limits scaled to
+  16/8 KB.'
+- 'Round 1 only, historical scope: Eager merges were 36 of 49 compaction sends and 81% of compaction output in the
+  Sonnet chat. No call in that chat read a merged line.'
+- 'Round 1 only, historical scope: Claude Code''s own marks were 1-hour entries. The harness also requested one
+  hour for the view mark; a 5-minute view mark was not tested.'
+- 'Round 1 only, historical scope: The continued-session baseline used Claude Code''s default system prompt and
+  three file tools. The UniiChat arm replaced that prompt and also supplied zoom and date.'
+- 'Round 1 only, historical scope: Compactions did not run in the background. The harness started leaves after each
+  turn and ran merges to idle, so wait figures are upper bounds. Three experiments shared one account.'
+- 'Round 1 only, historical scope: The feeder logged a whole turn before compacting, which made predecessor gaps
+  more common than they would be with a live background compactor.'
+- 'Round 1 only, historical scope: Compactions ran at xhigh effort; turns and the baseline used Claude Code''s default
+  effort. Equivalence between CLI and API effort settings was not verified.'
+- 'Round 1 only, historical scope: The fidelity corpus was synthetic and dense, with 174 planted exact items in
+  80 messages. It forced all lines through level 3 and used substring and key-term grading.'
+- 'Round 1 only, historical scope: USD figures are Claude Code CLI estimates. The table prices Haiku input at about
+  one twentieth of Sonnet per token; prices are not observable on a subscription.'
+- 'Round 1 only, historical scope: The core had known bugs and deviations, including placeholder sizes for unbuilt
+  leaves and a writer gate keyed on the compaction-view epoch rather than the exact prefix. Several bugs had regression
+  tests, but one reported fix was not re-verified.'
+- 'Round 1 only, historical scope: The implementation commit is on a branch that was not pushed when the study was
+  frozen.'
+- 'Round 1 only, historical scope: The continued-session baseline never hit context rot or auto-compaction. Its
+  first request was 3,851-4,627 tokens with three tools, not the 28,793-token default tool-set case measured separately.'
+- 'Round 1 only, historical scope: One run was made per arm, so there is no variance estimate.'
+- 'Round 1 only, historical scope: Recall answers were regex-graded by the harness. Fidelity, order-survival, correction-survival,
+  answer-grade and prefix-only cache figures were not independently recomputed.'
+- 'Round 1 only, historical scope: Raw call rows are not published here; only the frozen summary is.'
+- 'Round 1 only, historical scope: The specification does not claim savings against a continued session. That comparison
+  belongs to this study.'
+- 'Correction: Claude Code cache lifetime is configurable; E6 measured 5-minute writes. Round-1 trial core hard-coded
+  1h. Long 5m replay is repriced, not run.'
+- 'Correction: round-1 E1 script sums cumulative process USD on retry rows; no E1 USD figure was published here.
+  E4 costs use differences. Corrected E3 whole-arm USD estimates are 0.635 and 0.461 rather than source-reported
+  0.640 and 0.468; ratios remain 5.0 times and about 57 times, n=26 turns per arm.'
+- 'Correction: xhigh short-chat whole-arm ratios are not a general compaction penalty; E4 low costs 4.9 times less
+  per line at the same 38/40 Sonnet-reader score.'
+- 'Round 2: one run per principal arm, synthetic script, 112 of 260 main turns, 37-turn stock-tools baseline and
+  10 late Opus turns per arm.'
+- 'Round 2: baseline never auto-compacted, ending at 344607 tokens inside a reported 1000000-token window; central
+  memory advantage remains untested.'
+- 'Round 2: fitted CLI Sonnet read price is 0.05 times input versus 0.1 in the unit; Haiku is 1/20 of Sonnet on input/write/output. These prices were not checked against a price list or invoice. At a 1/3 Haiku weight, total cost does not cross within 112 turns (7.49M versus 4.61M units).'
+- 'Round 2: E5 recall/compliance/trap grades and E4 standing-rule/correction checks are harness grades, not independently
+  regraded outcomes.'
+- 'Round 2: pi was captured and repriced on paper only; no live pi requests.'
+- 'Round 2: Haiku-low attempted tools in 266/2383 sends; Claude Code executed 159 read-only/no-op shell commands and one file read despite an empty allow list. No compactor write applied. Execution is route behaviour; a tool-owning harness could discard attempts. No high/xhigh replay was run.'
+- 'Round 2: recall turn 105 had the same eight-request trial cap in both arms; the gist sets no zoom cap. UniiChat scored 50/54 as run and missed one of 51 outside that turn. A larger cap was not tested.'
+- 'Round 2: baseline prompt first exceeded 200000 during turn 82. Filling its reported million-token window is estimated at 300+ turns, inferred rather than measured. No smaller-window replay was run.'
+- 'Round 2: turn-37 interruption was resumed with a changed failure-retry allowance; high-effort fallback was configured
+  but unused.'
+- 'Round 2: E6 exact per-call implementation revision is not independently established; trial branch head is pinned,
+  not assumed to apply to every prior call.'
+claims:
+- claim: Cost crossover on turn calls in a bounded-view replay
+  status: measured usage with stated weights
+  n_turns_per_arm: 112
+  W2_cumulative_turn: 57
+  W1_25_repriced_cumulative_turn: 32
+- claim: Total-cost crossover with low-effort Haiku
+  status: depends on read and compactor prices; W2 Haiku 0.05 crossover at 82, Haiku 1/3 and CLI USD not reached by 112
+- claim: Memory advantage against a compacted or forgetful baseline
+  status: untested; baseline never auto-compacted and scored 54/54 recall
+- claim: Pi saves costs in a live replay
+  status: not measured; paper analysis only
+rounds:
+  round_1:
+    frozen: '2026-10-11'
+    experiments:
+    - E1
+    - E2
+    - E3
+    requests:
+      haiku: 1082
+      sonnet: 205
+      opus: 56
+    corrections: summary.json round_1_corrections
+  round_2:
+    frozen: '2026-10-12'
+    experiments:
+    - E4
+    - E5
+    - E6
+    trial_head: 098433d
+    requests:
+      by_experiment:
+        E4:
+          haiku: 1099
+          sonnet: 235
+          opus: 0
+        E5:
+          haiku: 2387
+          sonnet: 643
+          opus: 40
+        E6:
+          haiku: 43
+          sonnet: 9
+          opus: 0
+      total_by_model:
+        haiku: 3529
+        sonnet: 887
+        opus: 40
+      pi_live: 0
+      basis: sum reservation and signed settlement n from ledger-r2.jsonl; auxiliary readers, probes and tests included
+      E5_main:
+        A_turn_requests: 301
+        B_turn_requests: 247
+        compaction_sends: 2383
+        extra_Haiku_smoke_sends: 4
+        B2_requests: 95
+        Opus_A_requests: 23
+        Opus_B_requests: 17
+    evidence_priority: Final skeptical report takes precedence over the E4, E6 and E5 experiment reports where they differ
+    measured:
+    - real-limit batches
+    - usage costs at 1h
+    - compactor sweep aggregates
+    - Claude Code overhead and 5m probes
+    harness_graded:
+    - recall
+    - compliance
+    - standing-rule survival
+    - correction survival
+    inferred:
+    - long 5m replay repricing
+    - pi overhead and costs
+    unmeasured:
+    - live pi
+    - baseline context-rot or auto-compaction failure
+    - main script after turn 112

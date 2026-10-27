@@ -1,0 +1,48 @@
+schema_version: z0eval.study.v1
+id: optchat-claude-code-v0
+title: UniiChat rebuilt as closely as Claude Code allows
+status: draft
+scoring: partially scored
+created: "2026-10-11"
+updated: "2026-10-12"
+
+sources:
+  - repo: kvnloo/z0intelligence
+    commit: fd454e7767bbd907984cd7546c7f62da18ff35bf
+    role: UniiChat core and Claude Code backend under test; branch trial/optchat-uniichat was not pushed when frozen
+  - source: Victor Taelin's UniiChat specification, an unlisted gist
+    commit: 3c190e06f34aba0c69f49042c526093269604935
+    revision_date: "2026-10-08"
+    fetched: "2026-10-11"
+    role: specification
+
+questions:
+  - Do the parts of the design exercised here behave as the specification describes?
+  - In one short chat, what does UniiChat cost against a continued Claude Code session, a comparison introduced by this study?
+  - What do 512-byte lines keep after forced merges in a dense synthetic corpus?
+
+artifacts:
+  - path: summary.json
+    kind: result
+    sha256: e94ad6cc6e037d953fd84d62acf771dbf1836e688038aec88a83808fc415bb12
+
+limitations:
+  - The headline chat had 26 user messages, 60 logged messages and 21.7 KB of log. Forty-eight messages were 512 bytes or less and entered the view verbatim, so the script offered little compression.
+  - After 26 messages the view was 15.8-16.2 KB, and it reached 17.7 KB only after six extra Opus questions. The 64-128 KB regime was not reached. One batch was observed only at limits scaled to 16/8 KB.
+  - Eager merges were 36 of 49 compaction sends and 81% of compaction output in the Sonnet chat. No call in that chat read a merged line.
+  - Claude Code's own marks were 1-hour entries. The harness also requested one hour for the view mark; a 5-minute view mark was not tested.
+  - The continued-session baseline used Claude Code's default system prompt and three file tools. The UniiChat arm replaced that prompt and also supplied zoom and date.
+  - Compactions did not run in the background. The harness started leaves after each turn and ran merges to idle, so wait figures are upper bounds. Three experiments shared one account.
+  - The feeder logged a whole turn before compacting, which made predecessor gaps more common than they would be with a live background compactor.
+  - Compactions ran at xhigh effort; turns and the baseline used Claude Code's default effort. Equivalence between CLI and API effort settings was not verified.
+  - The fidelity corpus was synthetic and dense, with 174 planted exact items in 80 messages. It forced all lines through level 3 and used substring and key-term grading.
+  - USD figures are Claude Code CLI estimates. The table prices Haiku input at about one twentieth of Sonnet per token; prices are not observable on a subscription.
+  - The core had known bugs and deviations, including placeholder sizes for unbuilt leaves and a writer gate keyed on the compaction-view epoch rather than the exact prefix. Several bugs had regression tests, but one reported fix was not re-verified.
+  - The implementation commit is on a branch that was not pushed when the study was frozen.
+  - The continued-session baseline never hit context rot or auto-compaction. Its first request was 3,851-4,627 tokens with three tools, not the 28,793-token default tool-set case measured separately.
+  - One run was made per arm, so there is no variance estimate.
+  - Recall answers were regex-graded by the harness. Fidelity, order-survival, correction-survival, answer-grade and prefix-only cache figures were not independently recomputed.
+  - Raw call rows are not published here; only the frozen summary is.
+  - The specification does not claim savings against a continued session. That comparison belongs to this study.
+
+claims: []

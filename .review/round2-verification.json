@@ -1,0 +1,191 @@
+{
+  "eligible_edits": {
+    "n": 63,
+    "kinds": {
+      "add": 27,
+      "fix": 18,
+      "probe": 18
+    },
+    "unchanged": {
+      "A": [
+        35,
+        49,
+        50,
+        59,
+        80
+      ],
+      "B": []
+    }
+  },
+  "summary_style": {
+    "n": 12,
+    "kinds": {
+      "order": 6,
+      "fact": 3,
+      "corr": 2,
+      "fix": 1
+    },
+    "edit_overlap": [
+      35
+    ]
+  },
+  "batch_view_bytes": [
+    63843,
+    63688,
+    63753
+  ],
+  "matched_first_request_input": {
+    "stock": 23690,
+    "thinned": 4852
+  },
+  "thinned_tools_n": 4,
+  "stock_37_turn_units": {
+    "stock": 889826,
+    "thinned": 625676
+  },
+  "baseline_input": {
+    "read": 32279785,
+    "all_input_side": 32624884
+  },
+  "intervals": [
+    {
+      "turns": [
+        26,
+        50
+      ],
+      "n": 25,
+      "means": [
+        27882,
+        35544,
+        27839
+      ]
+    },
+    {
+      "turns": [
+        51,
+        75
+      ],
+      "n": 25,
+      "means": [
+        27300,
+        32449,
+        40592
+      ]
+    },
+    {
+      "turns": [
+        76,
+        100
+      ],
+      "n": 25,
+      "means": [
+        31266,
+        38139,
+        60898
+      ]
+    },
+    {
+      "turns": [
+        101,
+        112
+      ],
+      "n": 12,
+      "means": [
+        34442,
+        40933,
+        86316
+      ]
+    }
+  ],
+  "checkpoint75": {
+    "units": [
+      1716425,
+      2153148,
+      2053234
+    ],
+    "usd": [
+      2.752,
+      3.625,
+      2.779
+    ]
+  },
+  "stretch_mean_rise_percent": 23.527723979628433,
+  "crossovers": {
+    "W2_turns": 57,
+    "W2_combined": 82,
+    "USD_turns": 80,
+    "USD_combined": null
+  },
+  "endpoint_cli_usd": {
+    "combined": 6.01897123,
+    "baseline": 5.9949864999999996
+  },
+  "legacy_E3_usd": {
+    "sonnet": {
+      "corrected": 0.6351538099999999,
+      "baseline": 0.1277671,
+      "ratio": 4.971184365928318,
+      "sends": 75,
+      "n_turns": 26
+    },
+    "haiku": {
+      "corrected": 0.4607499799999998,
+      "baseline": 0.00810401,
+      "ratio": 56.85456706001101,
+      "sends": 79,
+      "n_turns": 26
+    }
+  },
+  "scaled_round1": {
+    "n": 42,
+    "units": [
+      219094.2,
+      119060.40000000001
+    ],
+    "ratio": 1.840193716802564
+  },
+  "E4_low_usd": {
+    "n": 318,
+    "naive": 0.41234329000000003,
+    "corrected": 0.23076417999999993
+  },
+  "E4_level5_items": {
+    "haiku-low": [
+      25,
+      232
+    ],
+    "haiku-medium": [
+      25,
+      232
+    ],
+    "haiku-high": [
+      23,
+      232
+    ],
+    "haiku-xhigh": [
+      17,
+      232
+    ]
+  },
+  "E4_baits_per_arm": {
+    "haiku-low": 2,
+    "haiku-medium": 2,
+    "haiku-high": 2,
+    "haiku-xhigh": 2,
+    "sonnet-medium": 2
+  },
+  "E4_sonnet_medium_answers": [
+    "1517",
+    "5040"
+  ],
+  "E1_default_zoom": {
+    "sends": 271,
+    "zoom_sends": 5
+  },
+  "E1_arithmetic_baits": {
+    "baits": 2,
+    "nodes": 8,
+    "status": "stored harness classifications"
+  },
+  "all_assertions": "passed"
+}

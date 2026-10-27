@@ -1,0 +1,10 @@
+Rewrote the post, updated both study files, and created both review audits. The snapshot is unchanged. No commit or push.
+
+Actual verification output:
+
+```text
+4795 posts/optchat-claude-code-v0.md
+summary.json: valid JSON
+manifest.yaml: valid YAML
+privacy grep: no matches (grep exit 1)
+```

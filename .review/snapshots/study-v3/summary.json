@@ -1,0 +1,327 @@
+{
+  "schema_version": "z0eval.summary.v1",
+  "study": "optchat-claude-code-v0",
+  "frozen": "2026-10-11",
+  "spec": {
+    "description": "Victor Taelin's UniiChat specification, an unlisted gist",
+    "title": "UniiChat: one chat that never ends",
+    "revision": "3c190e06f34aba0c69f49042c526093269604935",
+    "revision_date": "2026-10-08",
+    "fetched": "2026-10-11"
+  },
+  "implementation": {
+    "commit": "fd454e7767bbd907984cd7546c7f62da18ff35bf",
+    "branch": "trial/optchat-uniichat",
+    "branch_pushed_when_frozen": false,
+    "description": "about 1,700 lines of Python with no dependencies, including the Claude Code backend"
+  },
+  "harness": {
+    "cli": "Claude Code 2.1.296, claude -p, subscription login",
+    "models": [
+      "claude-haiku-5-5",
+      "claude-sonnet-5-5",
+      "claude-opus-5-5"
+    ],
+    "turn_effort": "Claude Code default",
+    "compaction_effort": "xhigh",
+    "isolation": "user settings, user plugins, memory files and user MCP servers disabled; the trial MCP server supplied zoom and date; Claude Code built-in plugins remained loaded"
+  },
+  "requests": {
+    "experiments": {
+      "total": 1249,
+      "haiku": 988,
+      "sonnet": 205,
+      "opus": 56,
+      "by_experiment": {
+        "E1": 562,
+        "E2": 250,
+        "E3": 437
+      }
+    },
+    "probes_and_smoke_tests": {
+      "total": 94,
+      "haiku": 94
+    },
+    "programme_total": {
+      "total": 1343,
+      "haiku": 1082,
+      "sonnet": 205,
+      "opus": 56
+    },
+    "killed_in_flight_without_a_row": 5
+  },
+  "experiments": {
+    "E1": "line writing and forced merges through level 3 on a dense synthetic corpus",
+    "E2": "prompt-cache behaviour with synthetic views",
+    "E3": "a 26-message chat in both arms on sonnet and on haiku, six late questions on opus, one 42-message uniichat chat at scaled-down limits and two short probes: six uniichat chats in all"
+  },
+  "short_chat": {
+    "user_messages": 26,
+    "logged_messages_sonnet": 60,
+    "logged_bytes_sonnet": 21687,
+    "mean_user_message_bytes": 270,
+    "user_message_range_bytes": [
+      42,
+      1123
+    ],
+    "user_messages_over_512_bytes": 5,
+    "messages_512_bytes_or_less": 48,
+    "tool_calls": 4,
+    "view_after_26_messages_bytes": {
+      "sonnet": 15814,
+      "haiku": 16187
+    },
+    "view_after_6_extra_opus_questions_bytes": 17734,
+    "merged_lines_entering_the_view": 0
+  },
+  "cost_unit": {
+    "description": "one uncached input token of the turn model; input + W*cache_write + 0.1*cache_read + 5*output",
+    "measured_write_weight": 2,
+    "specification_write_weight": 1.25,
+    "subscription_cost_is_notional": true
+  },
+  "cost_26_messages": [
+    {
+      "turn_model": "sonnet",
+      "uniichat_turn_calls_weighted_tokens": 110260,
+      "continued_session_weighted_tokens": 76297,
+      "ratio_at_write_weight_2": 1.45,
+      "ratio_at_write_weight_1_25": 1.33,
+      "uniichat_including_compactions_usd_cli_estimate": 0.64,
+      "continued_usd_cli_estimate": 0.128,
+      "whole_arm_ratio": 5.0
+    },
+    {
+      "turn_model": "haiku",
+      "uniichat_turn_calls_weighted_tokens": 124750,
+      "continued_session_weighted_tokens": 81040,
+      "ratio_at_write_weight_2": 1.54,
+      "uniichat_including_compactions_usd_cli_estimate": 0.468,
+      "continued_usd_cli_estimate": 0.0081,
+      "whole_arm_ratio": 58
+    },
+    {
+      "turn_model": "opus",
+      "scope": "last 6 recall questions on a chat seeded from the Sonnet run",
+      "uniichat_turn_calls_weighted_tokens": 35618,
+      "continued_session_weighted_tokens": 33807,
+      "ratio_at_write_weight_2": 1.05,
+      "compactions_needed": 0
+    }
+  ],
+  "prompt_and_cache": {
+    "sonnet_prompt_tokens": {
+      "uniichat_total_over_26_messages": 226864,
+      "continued_total_over_26_messages": 261156,
+      "uniichat_at_message_26": 10602,
+      "continued_at_message_26": 12315
+    },
+    "cache_read_share_same_26_message_window": {
+      "sonnet_uniichat": 0.872,
+      "sonnet_continued": 0.951,
+      "haiku_uniichat": 0.9,
+      "haiku_continued": 0.955
+    },
+    "mean_cache_write_after_first_turn": {
+      "sonnet_uniichat_tokens": 990,
+      "sonnet_continued_tokens": 360
+    },
+    "writes_reported_at_1_hour_tokens": 3356351,
+    "writes_reported_at_5_minutes_tokens": 0,
+    "view_mark_requested_by_harness": "1h",
+    "five_minute_view_mark_tested": false
+  },
+  "compaction_output": {
+    "E1_xhigh": {
+      "sends": 116,
+      "mean_output_tokens": 11326,
+      "mean_thinking_tokens": 11107,
+      "wall_seconds": {
+        "mean": 45.5,
+        "median": 18.5,
+        "max": 267
+      }
+    },
+    "E3_sonnet_chat": {
+      "sends": 49,
+      "output_tokens_total": 834302,
+      "output_tokens_mean": 17027,
+      "leaf": {
+        "sends": 13,
+        "output_tokens_median": 6165,
+        "output_tokens_max": 37570,
+        "wall_seconds_median": 23.2
+      },
+      "merge": {
+        "sends": 36,
+        "output_tokens_total": 675919,
+        "share_of_output_tokens": 0.81,
+        "output_tokens_median": 13037,
+        "output_tokens_max": 70943,
+        "wall_seconds_median": 49.8
+      }
+    },
+    "E3_haiku_chat": {
+      "sends": 53,
+      "output_tokens_total": 859289,
+      "leaf_sends": 10,
+      "leaf_wall_seconds_median": 19.4,
+      "merge_sends": 43,
+      "merge_output_tokens": 768474,
+      "merge_wall_seconds_median": 47.6
+    },
+    "format_and_tool_use": {
+      "xhigh_sends": 504,
+      "xhigh_sends_E1": 288,
+      "xhigh_sends_E3": 216,
+      "xhigh_tool_call_sends": 0,
+      "default_effort_sends": 271,
+      "default_effort_zoom_sends": 5,
+      "all_sends_checked_for_heads_or_multiline_output": 775,
+      "heads_or_multiline_replies": 0
+    }
+  },
+  "latency": {
+    "turn_call_median_seconds": {
+      "sonnet_uniichat": 3.2,
+      "sonnet_continued": 3.2,
+      "haiku_uniichat": 2.8,
+      "haiku_continued": 2.1
+    },
+    "leaf_waits": {
+      "sonnet_chat": {
+        "n": 7,
+        "median_seconds": 23,
+        "max_seconds": 212
+      },
+      "haiku_chat": {
+        "n": 7,
+        "median_seconds": 63,
+        "max_seconds": 109
+      },
+      "scaled_42_message_chat": {
+        "n": 15,
+        "median_seconds": 43,
+        "max_seconds": 296
+      }
+    },
+    "interpretation": "upper bounds from a harness that began leaf compactions after the turn and did not overlap compaction with user time; three experiments shared one account"
+  },
+  "cache_measurements": {
+    "turn_sequence": {
+      "model": "haiku",
+      "calls": 24,
+      "view_kb_range": [
+        80,
+        133
+      ],
+      "whole_input_read_share": 0.9643,
+      "prefix_only_read_share_estimate": 0.9746
+    },
+    "single_line_change_written_token_range": [
+      26949,
+      27193
+    ],
+    "single_line_change_read_tokens": 1641,
+    "counter_case_written_tokens": 2401,
+    "lookback": {
+      "blocks_found": [
+        20,
+        21
+      ],
+      "blocks_not_found": [
+        22,
+        23,
+        24
+      ],
+      "calls_per_block_count": 1,
+      "model": "haiku"
+    },
+    "model_switch_write_tokens": {
+      "sonnet": 27111,
+      "opus": 27084
+    },
+    "lifetime_minutes": {
+      "hits": [
+        6,
+        15,
+        30
+      ],
+      "miss": 93,
+      "samples_at_miss": 2
+    }
+  },
+  "harness_reported_results": {
+    "recall_grades": {
+      "uniichat": "61 of 61 across six chats",
+      "continued": "42 of 42",
+      "after_scaled_batch_detail_questions": 13,
+      "turns_with_zoom_among_those_questions": 10
+    },
+    "fidelity": {
+      "haiku_80_messages": {
+        "leaf": "119 of 174",
+        "level_3": "40 of 174"
+      },
+      "sonnet_64_messages": {
+        "leaf": "105 of 135",
+        "level_3": "41 of 135"
+      },
+      "opus_first_16_messages": {
+        "leaf": "39 of 40",
+        "level_3": "16 of 40"
+      },
+      "common_first_16_messages": {
+        "haiku": "36 to 8 of 40",
+        "sonnet": "36 to 14 of 40",
+        "opus": "39 to 16 of 40"
+      }
+    },
+    "order_survival": {
+      "haiku_leaf": "17 of 20",
+      "haiku_level_3": "9 of 20",
+      "sonnet_leaf": "14 of 16",
+      "sonnet_level_3": "9 of 16"
+    },
+    "correction_survival": {
+      "E3": "21 of 21 across three chats",
+      "E1": "Haiku lost 900 ms, one of three corrected values, at level 3"
+    }
+  },
+  "provenance": {
+    "recomputed_from_raw_rows_or_ledger": [
+      "request totals",
+      "cost tables",
+      "prompt and cache totals",
+      "view sizes",
+      "wait statistics",
+      "compaction send and token statistics",
+      "cache placement, lookback, concurrency, lifetime and model-switch figures"
+    ],
+    "reported_by_harness_not_independently_recomputed": [
+      "fidelity counts",
+      "order survival",
+      "correction survival",
+      "answer grades",
+      "prefix-only cache percentages"
+    ],
+    "raw_call_rows_published": false
+  },
+  "predictions_not_measurements": {
+    "last_measured_user_message": 42,
+    "turn_calls_might_become_cheaper_near_message_range": [
+      185,
+      215
+    ],
+    "including_compactions": "around message 400 or later for Sonnet turns, earlier for Opus turns, and never for Haiku turns; cumulative break-even would be later"
+  },
+  "not_tested": [
+    "the 64-128 KB sawtooth with real model-written lines",
+    "the steady-state 16-32 KB compaction view",
+    "a continued session reaching context rot or auto-compaction",
+    "a five-minute mark on the harness-controlled view",
+    "tool-heavy turns with large results",
+    "whether an agent obeys a standing order after it leaves the view",
+    "repeats sufficient for a variance estimate"
+  ]
+}

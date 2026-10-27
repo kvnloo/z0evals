@@ -1,0 +1,7 @@
+Finished the post corrections and synchronized summary and manifest. All 37 reviewer items plus (a), (b), and (c) are recorded in `.review/round2-corrections-2.md`.
+
+- Post: **5,160 words**, within range.
+- `summary.json`: valid via `json.load`.
+- SHA-256 matches the manifest: `5fcd3487b2c0553a1e705d1dcf32c6c75483d10a1b6d5a1598059b4bb0d10785`.
+
+No commit or push.

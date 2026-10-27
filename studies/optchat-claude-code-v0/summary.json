@@ -1,0 +1,1360 @@
+{
+  "schema_version": "z0eval.summary.v1",
+  "study": "optchat-claude-code-v0",
+  "frozen": "2026-10-12",
+  "spec": {
+    "description": "Victor Taelin's UniiChat specification, an unlisted gist",
+    "title": "UniiChat: one chat that never ends",
+    "revision": "3c190e06f34aba0c69f49042c526093269604935",
+    "revision_date": "2026-10-08",
+    "fetched": "2026-10-11"
+  },
+  "implementation": {
+    "commit": "fd454e7767bbd907984cd7546c7f62da18ff35bf",
+    "branch": "trial/optchat-uniichat",
+    "branch_pushed_when_frozen": false,
+    "description": "about 1,700 lines of Python with no dependencies, including the Claude Code backend",
+    "scope": "round 1"
+  },
+  "harness": {
+    "cli": "Claude Code 2.1.296, claude -p, subscription login",
+    "models": [
+      "claude-haiku-5-5",
+      "claude-sonnet-5-5",
+      "claude-opus-5-5"
+    ],
+    "turn_effort": "Claude Code default",
+    "compaction_effort": "xhigh",
+    "isolation": "user settings, user plugins, memory files and user MCP servers disabled; the trial MCP server supplied zoom and date; Claude Code built-in plugins remained loaded",
+    "scope": "round 1"
+  },
+  "requests": {
+    "experiments": {
+      "total": 1249,
+      "haiku": 988,
+      "sonnet": 205,
+      "opus": 56,
+      "by_experiment": {
+        "E1": 562,
+        "E2": 250,
+        "E3": 437
+      }
+    },
+    "probes_and_smoke_tests": {
+      "total": 94,
+      "haiku": 94
+    },
+    "programme_total": {
+      "total": 1343,
+      "haiku": 1082,
+      "sonnet": 205,
+      "opus": 56
+    },
+    "killed_in_flight_without_a_row": 5
+  },
+  "experiments": {
+    "E1": "line writing and forced merges through level 3 on a dense synthetic corpus",
+    "E2": "prompt-cache behaviour with synthetic views",
+    "E3": "a 26-message chat in both arms on sonnet and on haiku, six late questions on opus, one 42-message uniichat chat at scaled-down limits and two short probes: six uniichat chats in all"
+  },
+  "short_chat": {
+    "user_messages": 26,
+    "logged_messages_sonnet": 60,
+    "logged_bytes_sonnet": 21687,
+    "mean_user_message_bytes": 270,
+    "user_message_range_bytes": [
+      42,
+      1123
+    ],
+    "user_messages_over_512_bytes": 5,
+    "messages_512_bytes_or_less": 48,
+    "tool_calls": 4,
+    "view_after_26_messages_bytes": {
+      "sonnet": 15814,
+      "haiku": 16187
+    },
+    "view_after_6_extra_opus_questions_bytes": 17734,
+    "merged_lines_entering_the_view": 0
+  },
+  "cost_unit": {
+    "description": "one uncached input token of the turn model; input + W*cache_write + 0.1*cache_read + 5*output",
+    "measured_write_weight": 2,
+    "specification_write_weight": 1.25,
+    "subscription_cost_is_notional": true
+  },
+  "cost_26_messages": [
+    {
+      "turn_model": "sonnet",
+      "uniichat_turn_calls_weighted_tokens": 110260,
+      "continued_session_weighted_tokens": 76297,
+      "ratio_at_write_weight_2": 1.45,
+      "ratio_at_write_weight_1_25": 1.33,
+      "uniichat_including_compactions_usd_cli_estimate": 0.635,
+      "continued_usd_cli_estimate": 0.128,
+      "whole_arm_ratio": 5.0,
+      "whole_arm_interpretation": "Historical short-chat xhigh result, not a prediction for low effort or longer chats.",
+      "source_reported_before_usd_correction": {
+        "uniichat_including_compactions_usd_cli_estimate": 0.64,
+        "whole_arm_ratio": 5.0
+      },
+      "whole_arm_status": "corrected cumulative-USD differences from raw E3 rows; one run per arm, n=26 turns; rounded ratio"
+    },
+    {
+      "turn_model": "haiku",
+      "uniichat_turn_calls_weighted_tokens": 124750,
+      "continued_session_weighted_tokens": 81040,
+      "ratio_at_write_weight_2": 1.54,
+      "uniichat_including_compactions_usd_cli_estimate": 0.461,
+      "continued_usd_cli_estimate": 0.0081,
+      "whole_arm_ratio": 57,
+      "whole_arm_interpretation": "Historical short-chat xhigh result, not a prediction for low effort or longer chats.",
+      "source_reported_before_usd_correction": {
+        "uniichat_including_compactions_usd_cli_estimate": 0.468,
+        "whole_arm_ratio": 58
+      },
+      "whole_arm_status": "corrected cumulative-USD differences from raw E3 rows; one run per arm, n=26 turns; rounded ratio"
+    },
+    {
+      "turn_model": "opus",
+      "scope": "last 6 recall questions on a chat seeded from the Sonnet run",
+      "uniichat_turn_calls_weighted_tokens": 35618,
+      "continued_session_weighted_tokens": 33807,
+      "ratio_at_write_weight_2": 1.05,
+      "compactions_needed": 0
+    }
+  ],
+  "prompt_and_cache": {
+    "sonnet_prompt_tokens": {
+      "uniichat_total_over_26_messages": 226864,
+      "continued_total_over_26_messages": 261156,
+      "uniichat_at_message_26": 10602,
+      "continued_at_message_26": 12315
+    },
+    "cache_read_share_same_26_message_window": {
+      "sonnet_uniichat": 0.872,
+      "sonnet_continued": 0.951,
+      "haiku_uniichat": 0.9,
+      "haiku_continued": 0.955
+    },
+    "mean_cache_write_after_first_turn": {
+      "sonnet_uniichat_tokens": 990,
+      "sonnet_continued_tokens": 360
+    },
+    "writes_reported_at_1_hour_tokens": 3356351,
+    "writes_reported_at_5_minutes_tokens": 0,
+    "view_mark_requested_by_harness": "1h",
+    "five_minute_view_mark_tested": false
+  },
+  "compaction_output": {
+    "E1_xhigh": {
+      "sends": 116,
+      "mean_output_tokens": 11326,
+      "mean_thinking_tokens": 11107,
+      "wall_seconds": {
+        "mean": 45.5,
+        "median": 18.5,
+        "max": 267
+      }
+    },
+    "E3_sonnet_chat": {
+      "sends": 49,
+      "output_tokens_total": 834302,
+      "output_tokens_mean": 17027,
+      "leaf": {
+        "sends": 13,
+        "output_tokens_median": 6165,
+        "output_tokens_max": 37570,
+        "wall_seconds_median": 23.2
+      },
+      "merge": {
+        "sends": 36,
+        "output_tokens_total": 675919,
+        "share_of_output_tokens": 0.81,
+        "output_tokens_median": 13037,
+        "output_tokens_max": 70943,
+        "wall_seconds_median": 49.8
+      }
+    },
+    "E3_haiku_chat": {
+      "sends": 53,
+      "output_tokens_total": 859289,
+      "leaf_sends": 10,
+      "leaf_wall_seconds_median": 19.4,
+      "merge_sends": 43,
+      "merge_output_tokens": 768474,
+      "merge_wall_seconds_median": 47.6
+    },
+    "format_and_tool_use": {
+      "xhigh_sends": 504,
+      "xhigh_sends_E1": 288,
+      "xhigh_sends_E3": 216,
+      "xhigh_tool_call_sends": 0,
+      "default_effort_sends": 271,
+      "default_effort_zoom_sends": 5,
+      "all_sends_checked_for_heads_or_multiline_output": 775,
+      "heads_or_multiline_replies": 0
+    }
+  },
+  "latency": {
+    "turn_call_median_seconds": {
+      "sonnet_uniichat": 3.2,
+      "sonnet_continued": 3.2,
+      "haiku_uniichat": 2.8,
+      "haiku_continued": 2.1
+    },
+    "leaf_waits": {
+      "sonnet_chat": {
+        "n": 7,
+        "median_seconds": 23,
+        "max_seconds": 212
+      },
+      "haiku_chat": {
+        "n": 7,
+        "median_seconds": 63,
+        "max_seconds": 109
+      },
+      "scaled_42_message_chat": {
+        "n": 15,
+        "median_seconds": 43,
+        "max_seconds": 296
+      }
+    },
+    "interpretation": "upper bounds from a harness that began leaf compactions after the turn and did not overlap compaction with user time; three experiments shared one account"
+  },
+  "cache_measurements": {
+    "turn_sequence": {
+      "model": "haiku",
+      "calls": 24,
+      "view_kb_range": [
+        80,
+        133
+      ],
+      "whole_input_read_share": 0.9643,
+      "prefix_only_read_share_estimate": 0.9746
+    },
+    "single_line_change_written_token_range": [
+      26949,
+      27193
+    ],
+    "single_line_change_read_tokens": 1641,
+    "counter_case_written_tokens": 2401,
+    "lookback": {
+      "blocks_found": [
+        20,
+        21
+      ],
+      "blocks_not_found": [
+        22,
+        23,
+        24
+      ],
+      "calls_per_block_count": 1,
+      "model": "haiku"
+    },
+    "model_switch_write_tokens": {
+      "sonnet": 27111,
+      "opus": 27084
+    },
+    "lifetime_minutes": {
+      "hits": [
+        6,
+        15,
+        30
+      ],
+      "miss": 93,
+      "samples_at_miss": 2
+    }
+  },
+  "harness_reported_results": {
+    "recall_grades": {
+      "uniichat": "61 of 61 across six chats",
+      "continued": "42 of 42",
+      "after_scaled_batch_detail_questions": 13,
+      "turns_with_zoom_among_those_questions": 10
+    },
+    "fidelity": {
+      "haiku_80_messages": {
+        "leaf": "119 of 174",
+        "level_3": "40 of 174"
+      },
+      "sonnet_64_messages": {
+        "leaf": "105 of 135",
+        "level_3": "41 of 135"
+      },
+      "opus_first_16_messages": {
+        "leaf": "39 of 40",
+        "level_3": "16 of 40"
+      },
+      "common_first_16_messages": {
+        "haiku": "36 to 8 of 40",
+        "sonnet": "36 to 14 of 40",
+        "opus": "39 to 16 of 40"
+      }
+    },
+    "order_survival": {
+      "haiku_leaf": "17 of 20",
+      "haiku_level_3": "9 of 20",
+      "sonnet_leaf": "14 of 16",
+      "sonnet_level_3": "9 of 16"
+    },
+    "correction_survival": {
+      "E3": "21 of 21 across three chats",
+      "E1": "Haiku lost 900 ms, one of three corrected values, at level 3"
+    }
+  },
+  "provenance": {
+    "recomputed_from_raw_rows_or_ledger": [
+      "request totals",
+      "prompt and cache totals",
+      "view sizes",
+      "wait statistics",
+      "compaction send and token statistics",
+      "cache placement, lookback, concurrency, lifetime and model-switch figures",
+      "E3 turn-call weighted-token tables; E1 retry-arm USD excluded after cumulative-sum error found"
+    ],
+    "reported_by_harness_not_independently_recomputed": [
+      "fidelity counts",
+      "order survival",
+      "correction survival",
+      "answer grades",
+      "prefix-only cache percentages"
+    ],
+    "raw_call_rows_published": false
+  },
+  "predictions_not_measurements": {
+    "last_measured_user_message": 42,
+    "turn_calls_might_become_cheaper_near_message_range": [
+      185,
+      215
+    ],
+    "including_compactions": "around message 400 or later for Sonnet turns, earlier for Opus turns, and never for Haiku turns; cumulative break-even would be later",
+    "status": "superseded as guidance by measured E5 cumulative crossovers at turns 57 and 82 with W=2, read weight 0.1 and Haiku weight 0.05; historical predictions used a different script and xhigh compactor effort"
+  },
+  "not_tested": [
+    "the 64-128 KB sawtooth with real model-written lines",
+    "the steady-state 16-32 KB compaction view",
+    "a continued session reaching context rot or auto-compaction",
+    "a five-minute mark on the harness-controlled view",
+    "tool-heavy turns with large results",
+    "whether an agent obeys a standing order after it leaves the view",
+    "repeats sufficient for a variance estimate"
+  ],
+  "round_1_frozen": "2026-10-11",
+  "legacy_fields_scope": "Existing fields through not_tested describe round 1, subject to round_1_corrections. Round 2 is additive below.",
+  "round_1_corrections": {
+    "cache_lifetime": {
+      "retracted": "Claude Code forces 1-hour marks and these cannot be changed",
+      "replacement": "The specification notes subscription marks have a one-hour lifetime by default. E6 measured 5-minute writes with CLAUDE_CODE_PROMPT_CACHE_TTL=5m; the trial core also hard-coded 1h on its view mark",
+      "n_haiku_warm_turns": 24,
+      "n_sonnet_warm_turns": 8,
+      "long_replay_5m_run": false
+    },
+    "E1_usd_sum": {
+      "defect": "E1 analysis summed cumulative process USD per send, double-counting retries.",
+      "replacement": "No E1 USD figure was published here. E4 costs use differences. E3 token ratios are unaffected; E3 whole-arm USD totals are corrected below.",
+      "E1_published_usd_figure_affected": false,
+      "E3_differenced_whole_arm_cli_usd": {
+        "sonnet": 0.635,
+        "haiku": 0.461
+      },
+      "E3_source_reported_whole_arm_cli_usd": {
+        "sonnet": 0.64,
+        "haiku": 0.468
+      },
+      "E3_corrected_whole_arm_ratios": {
+        "sonnet": 5.0,
+        "haiku_approximate": 57
+      },
+      "n_turns_per_arm": 26,
+      "status": "E3 totals verified by differencing raw retry rows; subscription CLI estimates, not invoices"
+    },
+    "xhigh_generalization": {
+      "replacement": "Round-1 xhigh whole-arm ratios are historical scope; low effort costs 4.9 times less per line in the sweep at the same 38/40 Sonnet-reader score. Long replay cost also depends on compactor price and read weight.",
+      "equal_reliability_established": false
+    },
+    "wrapper_estimate": {
+      "previous_before_view_tokens_estimate": 240,
+      "previous_tail_tokens_estimate": 356,
+      "E6_before_view_tokens_by_difference": 170,
+      "E6_tail_tokens_by_difference": 357,
+      "n_each": 1
+    },
+    "scope": {
+      "replacement": "Real-limit batching and tool-heavy turns now measured in E5; baseline failure, repeats, live pi, and long 5m replay remain untested. Round 1 remains one short-script experiment, not a no-crossover result."
+    }
+  },
+  "round_2": {
+    "frozen": "2026-10-12",
+    "implementation": {
+      "branch": "trial/optchat-uniichat",
+      "head_short": "098433d",
+      "commit": "098433dc76f6b7945a7e5d61a89e0d37670d046d",
+      "parent_commit": "fd454e7767bbd907984cd7546c7f62da18ff35bf",
+      "branch_pushed_when_frozen": false,
+      "E4_commit": "fd454e7767bbd907984cd7546c7f62da18ff35bf",
+      "E5_commit": "098433dc76f6b7945a7e5d61a89e0d37670d046d",
+      "E6_scope": "uses existing core modules across round-2 work; exact per-call checkout not independently pinned",
+      "changes": [
+        "background compactor",
+        "poll ready queues during calls",
+        "pre-render Chat.settle on real line sizes"
+      ],
+      "tests": "43 reported passing in experiment report; not rerun for this publication"
+    },
+    "experiments": {
+      "E4": "compactor sweep: 128-message Haiku corpus through L5; Sonnet partial first 32 messages; Sonnet readers plus supplementary repeated Haiku readers",
+      "E5": "synthetic 260-turn engineering script: 112 turns per main Sonnet arm, 37-turn stock-tools baseline, 10-turn late Opus arms",
+      "E6": "Claude Code overhead and 5-minute cache probes; local request captures and pi paper repricing; no live pi call"
+    },
+    "requests": {
+      "by_experiment": {
+        "E4": {
+          "haiku": 1099,
+          "sonnet": 235,
+          "opus": 0
+        },
+        "E5": {
+          "haiku": 2387,
+          "sonnet": 643,
+          "opus": 40
+        },
+        "E6": {
+          "haiku": 43,
+          "sonnet": 9,
+          "opus": 0
+        }
+      },
+      "total_by_model": {
+        "haiku": 3529,
+        "sonnet": 887,
+        "opus": 40
+      },
+      "pi_live": 0,
+      "basis": "sum reservation and signed settlement n from ledger-r2.jsonl; auxiliary readers, probes and tests included",
+      "E5_main": {
+        "A_turn_requests": 301,
+        "B_turn_requests": 247,
+        "compaction_sends": 2383,
+        "extra_Haiku_smoke_sends": 4,
+        "B2_requests": 95,
+        "Opus_A_requests": 23,
+        "Opus_B_requests": 17
+      }
+    },
+    "cost_accounting": {
+      "unit": "input + W*cache_write + 0.1*cache_read + 5*output; output includes thinking",
+      "W_observed": 2,
+      "W_5m_repriced": 1.25,
+      "Haiku_to_Sonnet_unit_weight": 0.05,
+      "USD_is_CLI_estimate_not_subscription_invoice": true,
+      "USD_fitted_prices_per_million": {
+        "haiku": {
+          "input": 0.1,
+          "write_1h": 0.2,
+          "read": 0.01,
+          "output": 0.5
+        },
+        "sonnet": {
+          "input": 2,
+          "write_1h": 4,
+          "read": 0.1,
+          "output": 10
+        }
+      },
+      "CLI_Sonnet_read_input_ratio": 0.05,
+      "unit_read_input_ratio": 0.1,
+      "retracted_E5_blended_coefficient_as_price_ratio": 0.0627,
+      "compaction_assignment": "call ts at or after each A turn-call ts and before next A turn-call ts; final interval includes tail; last turn row per n handles resumed run",
+      "rounding": "whole units; table USD to 3 decimals",
+      "price_validation": "fitted from CLI cost fields; not checked against a price list or invoice"
+    },
+    "checkpoints": [
+      {
+        "turn": 25,
+        "mean_range": [
+          1,
+          25
+        ],
+        "n_mean": 25,
+        "cumulative_n_turns_per_arm": 25,
+        "mean_units_W2": {
+          "A_turn": 13475,
+          "A_with_compactions": 18133,
+          "B": 13699
+        },
+        "cumulative_units_W2": {
+          "A_turn": 336881,
+          "A_with_compactions": 453331,
+          "B": 342472
+        },
+        "cumulative_cli_usd": {
+          "A_turn": 0.588,
+          "A_with_compactions": 0.821,
+          "B": 0.525
+        },
+        "compaction_sends": 474,
+        "audit_legacy_blend_0_0627_total": 482909
+      },
+      {
+        "turn": 50,
+        "mean_range": [
+          26,
+          50
+        ],
+        "n_mean": 25,
+        "cumulative_n_turns_per_arm": 50,
+        "mean_units_W2": {
+          "A_turn": 27882,
+          "A_with_compactions": 35544,
+          "B": 27839
+        },
+        "cumulative_units_W2": {
+          "A_turn": 1033920,
+          "A_with_compactions": 1341926,
+          "B": 1038436
+        },
+        "cumulative_cli_usd": {
+          "A_turn": 1.693,
+          "A_with_compactions": 2.309,
+          "B": 1.49
+        },
+        "compaction_sends": 1125,
+        "audit_legacy_blend_0_0627_total": 1420160
+      },
+      {
+        "turn": 75,
+        "mean_range": [
+          51,
+          75
+        ],
+        "n_mean": 25,
+        "cumulative_n_turns_per_arm": 75,
+        "mean_units_W2": {
+          "A_turn": 27300,
+          "A_with_compactions": 32449,
+          "B": 40592
+        },
+        "cumulative_units_W2": {
+          "A_turn": 1716425,
+          "A_with_compactions": 2153148,
+          "B": 2053234
+        },
+        "cumulative_cli_usd": {
+          "A_turn": 2.752,
+          "A_with_compactions": 3.625,
+          "B": 2.779
+        },
+        "status": "recomputed raw usage; compactions assigned by turn-call start timestamps"
+      },
+      {
+        "turn": 100,
+        "mean_range": [
+          76,
+          100
+        ],
+        "n_mean": 25,
+        "cumulative_n_turns_per_arm": 100,
+        "mean_units_W2": {
+          "A_turn": 31266,
+          "A_with_compactions": 38139,
+          "B": 60898
+        },
+        "cumulative_units_W2": {
+          "A_turn": 2498064,
+          "A_with_compactions": 3106617,
+          "B": 3575688
+        },
+        "cumulative_cli_usd": {
+          "A_turn": 3.992,
+          "A_with_compactions": 5.209,
+          "B": 4.708
+        },
+        "compaction_sends": 2140,
+        "audit_legacy_blend_0_0627_total": 3261190
+      },
+      {
+        "turn": 112,
+        "mean_range": [
+          101,
+          112
+        ],
+        "n_mean": 12,
+        "cumulative_n_turns_per_arm": 112,
+        "mean_units_W2": {
+          "A_turn": 34442,
+          "A_with_compactions": 40933,
+          "B": 86316
+        },
+        "cumulative_units_W2": {
+          "A_turn": 2911371,
+          "A_with_compactions": 3597811,
+          "B": 4611482
+        },
+        "cumulative_cli_usd": {
+          "A_turn": 4.646,
+          "A_with_compactions": 6.019,
+          "B": 5.995
+        },
+        "compaction_sends": 2383,
+        "audit_legacy_blend_0_0627_total": 3772166
+      }
+    ],
+    "crossovers_cumulative": {
+      "n_turns_per_arm": 112,
+      "definition": "first turn from which A stays <= B through measured endpoint",
+      "W2_turn_calls": 57,
+      "W2_with_compactions_Haiku_0_05": 82,
+      "W1_25_turn_calls": 32,
+      "W1_25_with_compactions_Haiku_0_05": 71,
+      "CLI_USD_turn_calls": 80,
+      "CLI_USD_with_compactions": null,
+      "status_W2": "recomputed from measured usage",
+      "status_W1_25": "repriced, assumes unchanged usage and no new expiry misses, not replayed",
+      "W2_with_compactions_Haiku_one_third": null
+    },
+    "E4_sweep": {
+      "haiku-low": {
+        "messages": 128,
+        "sends": 318,
+        "model_built_lines": 171,
+        "first_try_fit": 94,
+        "final_fit": 170,
+        "over_limit_sizes": [
+          519
+        ],
+        "usd_per_model_built_line": 0.00135,
+        "call_seconds_per_model_built_line": 6.5,
+        "sends_per_line": 1.86,
+        "thinking_tokens_per_send": 461.8,
+        "tool_call_sends": 4,
+        "Sonnet_reader_correct": 38,
+        "Sonnet_reader_n": 40,
+        "downstream_scope": "full Haiku tree",
+        "standing_rules_L5": {
+          "present": 9,
+          "n": 13,
+          "status": "harness regex, not independently regraded"
+        },
+        "corrected_values_L5": {
+          "present": 7,
+          "n": 10,
+          "status": "harness regex, not independently regraded"
+        }
+      },
+      "haiku-medium": {
+        "messages": 128,
+        "sends": 274,
+        "model_built_lines": 177,
+        "first_try_fit": 112,
+        "final_fit": 177,
+        "over_limit_sizes": [],
+        "usd_per_model_built_line": 0.00159,
+        "call_seconds_per_model_built_line": 8.5,
+        "sends_per_line": 1.55,
+        "thinking_tokens_per_send": 980.4,
+        "tool_call_sends": 1,
+        "Sonnet_reader_correct": 39,
+        "Sonnet_reader_n": 40,
+        "downstream_scope": "full Haiku tree",
+        "standing_rules_L5": {
+          "present": 8,
+          "n": 13,
+          "status": "harness regex, not independently regraded"
+        },
+        "corrected_values_L5": {
+          "present": 7,
+          "n": 10,
+          "status": "harness regex, not independently regraded"
+        }
+      },
+      "haiku-high": {
+        "messages": 128,
+        "sends": 212,
+        "model_built_lines": 178,
+        "first_try_fit": 144,
+        "final_fit": 178,
+        "over_limit_sizes": [],
+        "usd_per_model_built_line": 0.00246,
+        "call_seconds_per_model_built_line": 15.5,
+        "sends_per_line": 1.19,
+        "thinking_tokens_per_send": 2954.1,
+        "tool_call_sends": 0,
+        "Sonnet_reader_correct": 40,
+        "Sonnet_reader_n": 40,
+        "downstream_scope": "full Haiku tree",
+        "standing_rules_L5": {
+          "present": 12,
+          "n": 13,
+          "status": "harness regex, not independently regraded"
+        },
+        "corrected_values_L5": {
+          "present": 10,
+          "n": 10,
+          "status": "harness regex, not independently regraded"
+        }
+      },
+      "haiku-xhigh": {
+        "messages": 128,
+        "sends": 184,
+        "model_built_lines": 179,
+        "first_try_fit": 174,
+        "final_fit": 179,
+        "over_limit_sizes": [],
+        "usd_per_model_built_line": 0.00657,
+        "call_seconds_per_model_built_line": 47.7,
+        "sends_per_line": 1.03,
+        "thinking_tokens_per_send": 11572.1,
+        "tool_call_sends": 0,
+        "Sonnet_reader_correct": 38,
+        "Sonnet_reader_n": 40,
+        "downstream_scope": "full Haiku tree",
+        "standing_rules_L5": {
+          "present": 12,
+          "n": 13,
+          "status": "harness regex, not independently regraded"
+        },
+        "corrected_values_L5": {
+          "present": 8,
+          "n": 10,
+          "status": "harness regex, not independently regraded"
+        }
+      },
+      "sonnet-low": {
+        "messages": 32,
+        "sends": 80,
+        "model_built_lines": 45,
+        "first_try_fit": 24,
+        "final_fit": 45,
+        "over_limit_sizes": [],
+        "usd_per_model_built_line": 0.01504,
+        "call_seconds_per_model_built_line": 5.3,
+        "sends_per_line": 1.78,
+        "thinking_tokens_per_send": 0.0,
+        "tool_call_sends": 0,
+        "Sonnet_reader_correct": 10,
+        "Sonnet_reader_n": 10,
+        "downstream_scope": "32-message partial Sonnet tree inside hybrid Haiku-xhigh remainder"
+      },
+      "sonnet-medium": {
+        "messages": 32,
+        "sends": 88,
+        "model_built_lines": 45,
+        "first_try_fit": 21,
+        "final_fit": 44,
+        "over_limit_sizes": [
+          520
+        ],
+        "usd_per_model_built_line": 0.01553,
+        "call_seconds_per_model_built_line": 5.6,
+        "sends_per_line": 1.96,
+        "thinking_tokens_per_send": 0.0,
+        "tool_call_sends": 0,
+        "Sonnet_reader_correct": 10,
+        "Sonnet_reader_n": 10,
+        "downstream_scope": "32-message partial Sonnet tree inside hybrid Haiku-xhigh remainder"
+      }
+    },
+    "E5": {
+      "script_turns": 260,
+      "brief_label_turns": 250,
+      "main_completed_turns_per_arm": 112,
+      "runs_per_arm": 1,
+      "messages": 1161,
+      "tree_nodes": 2318,
+      "model_built_nodes": 1122,
+      "nodes_over_512_bytes": 11,
+      "batches": [
+        {
+          "turn": 52,
+          "pairs_merged": 348,
+          "before_render": 0,
+          "mid_turn": [
+            {
+              "at_message": 518,
+              "merged": 348,
+              "view_bytes": 63843,
+              "view_lines": 171
+            }
+          ],
+          "view_bytes_end_of_previous_turn": 123778,
+          "view_bytes_sent_this_turn": 124266,
+          "view_bytes_after_this_turn": 65652,
+          "this_turn_cache_write": 8198,
+          "this_turn_cache_read": 253009,
+          "next_turn_cache_write": 30254,
+          "next_turn_cache_read": 4227,
+          "next_turn_view_bytes_sent": 65666
+        },
+        {
+          "turn": 77,
+          "pairs_merged": 263,
+          "before_render": 0,
+          "mid_turn": [
+            {
+              "at_message": 793,
+              "merged": 263,
+              "view_bytes": 63688,
+              "view_lines": 183
+            }
+          ],
+          "view_bytes_end_of_previous_turn": 118414,
+          "view_bytes_sent_this_turn": 118428,
+          "view_bytes_after_this_turn": 67467,
+          "this_turn_cache_write": 12753,
+          "this_turn_cache_read": 113095,
+          "next_turn_cache_write": 33138,
+          "next_turn_cache_read": 4227,
+          "next_turn_view_bytes_sent": 67481
+        },
+        {
+          "turn": 103,
+          "pairs_merged": 276,
+          "before_render": 0,
+          "mid_turn": [
+            {
+              "at_message": 1045,
+              "merged": 276,
+              "view_bytes": 63753,
+              "view_lines": 159
+            }
+          ],
+          "view_bytes_end_of_previous_turn": 127738,
+          "view_bytes_sent_this_turn": 127752,
+          "view_bytes_after_this_turn": 65634,
+          "this_turn_cache_write": 2437,
+          "this_turn_cache_read": 192290,
+          "next_turn_cache_write": 34647,
+          "next_turn_cache_read": 114798,
+          "next_turn_view_bytes_sent": 65648
+        }
+      ],
+      "cache_read_shares": {
+        "A_turn": 0.9556,
+        "A_compaction": 0.9297,
+        "B": 0.9894
+      },
+      "baseline_context_window": 1000000,
+      "baseline_prompt_tokens_end": 344607,
+      "baseline_auto_compactions": 0,
+      "grades": {
+        "A": {
+          "recall": {
+            "all": {
+              "pass": 50,
+              "fail": 4
+            }
+          },
+          "recall_by_category": {
+            "correction": {
+              "pass": 13,
+              "fail": 3
+            },
+            "detail": {
+              "pass": 13
+            },
+            "fact": {
+              "pass": 14,
+              "fail": 1
+            },
+            "order": {
+              "pass": 10
+            }
+          },
+          "comply_all_edit_turns": {
+            "all": {
+              "pass": 351
+            }
+          },
+          "probe_traps": {
+            "all": {
+              "pass": 27
+            }
+          },
+          "not_gradable": {
+            "all": {
+              "na": 31,
+              "blocked": 4
+            }
+          }
+        },
+        "B": {
+          "recall": {
+            "all": {
+              "pass": 54
+            }
+          },
+          "recall_by_category": {
+            "correction": {
+              "pass": 16
+            },
+            "detail": {
+              "pass": 13
+            },
+            "fact": {
+              "pass": 15
+            },
+            "order": {
+              "pass": 10
+            }
+          },
+          "comply_all_edit_turns": {
+            "all": {
+              "pass": 383
+            }
+          },
+          "probe_traps": {
+            "all": {
+              "pass": 27
+            }
+          },
+          "not_gradable": {
+            "all": {
+              "na": 2,
+              "blocked": 1
+            }
+          }
+        }
+      },
+      "grades_status": "reported regex and file-inspection grades, not independently regraded",
+      "turns_replied_as_compaction_line": [
+        2,
+        4,
+        6,
+        7,
+        9,
+        11,
+        12,
+        23,
+        29,
+        35,
+        89,
+        101
+      ],
+      "compaction_style_count_scope": "12 broad harness classifications; final reviewer narrower regex found 9",
+      "compactor_tool_call_sends": 266,
+      "compactor_tool_call_send_denominator": 2383,
+      "compactor_tool_calls": {
+        "file_read_executed": 1,
+        "zoom_denied": 102,
+        "date_denied": 4,
+        "shell_non_error_results": 159,
+        "shell_unsuccessful_results": 6,
+        "edit_no_applied_change": 1
+      },
+      "all_executed_shell_commands": "successful shell commands read-only or no-op; no compactor write applied",
+      "lookback": [
+        {
+          "turn": 28,
+          "lines_added": 95,
+          "next_turn": 29,
+          "next_view_bytes_sent": 63738,
+          "next_requests": 1,
+          "next_cache_write": 30515,
+          "next_cache_read": 4227
+        },
+        {
+          "turn": 77,
+          "lines_added": 90,
+          "next_turn": 78,
+          "next_view_bytes_sent": 67481,
+          "next_requests": 1,
+          "next_cache_write": 33138,
+          "next_cache_read": 4227
+        }
+      ],
+      "wait_if_message_immediate_seconds": {
+        "n": 112,
+        "median": 3.8,
+        "mean": 7.6,
+        "p90": 19.4,
+        "max": 95.0
+      },
+      "intervention": "halt at turn 37; failure retry allowance raised to 12, high-effort fallback after six failures configured but never used; resumed in same fold",
+      "Opus_scope": {
+        "turns_each": 10,
+        "A_recall": {
+          "correct": 11,
+          "n": 12
+        },
+        "B_recall": {
+          "correct": 12,
+          "n": 12
+        },
+        "economics_status": "forked-session artifact; not a long Opus price comparison"
+      },
+      "tool_result_classification_note": "Final audit counts retained. Its six shell denials include a command error, and the edit returned string-not-found rather than permission denial. Post uses non-error/unsuccessful/no-applied-change labels verified from raw tool results.",
+      "edit_turns_with_no_file_change": {
+        "A": 5,
+        "B": 0,
+        "n_eligible_turns_per_arm": 63,
+        "eligible_kinds": {
+          "add": 27,
+          "fix": 18,
+          "probe": 18
+        },
+        "n_completed_turns_per_arm": 112,
+        "definition": "Add, fix and probe turns; numerator counts no changed files and no request-budget cut, matching the harness.",
+        "A_turns": [
+          35,
+          49,
+          50,
+          59,
+          80
+        ],
+        "B_turns": [],
+        "runs_per_arm": 1,
+        "status": "recomputed from raw turn rows and script; file changes are harness observations, not independently verified task outcomes"
+      },
+      "batch_completion_view": {
+        "min_bytes": 63688,
+        "max_bytes": 63843,
+        "target_bytes": 64000,
+        "n_batches": 3,
+        "view_bytes_by_turn": {
+          "52": 63843,
+          "77": 63688,
+          "103": 63753
+        },
+        "status": "measured batch completion sizes from raw turn rows; end-of-turn sizes include later messages"
+      },
+      "matched_first_request_input": {
+        "stock_tools_skills_user_settings_disabled": 23690,
+        "thinned_four_tools": 4852,
+        "n_requests_per_arm": 1,
+        "same_scripted_message": true,
+        "status": "measured first-request all-input-side tokens from raw per-request usage"
+      },
+      "compaction_style_kind_counts": {
+        "order": 6,
+        "fact": 3,
+        "correction": 2,
+        "edit_fix": 1,
+        "n_classified_turns": 12,
+        "n_completed_turns": 112,
+        "unchanged_edit_overlap_turns": [
+          35
+        ],
+        "status": "broad harness reply-format classification recomputed from raw replies and script; not twelve failed edit tasks"
+      },
+      "turn_26_on_stretch_means": {
+        "intervals": [
+          {
+            "turns": [
+              26,
+              50
+            ],
+            "n": 25,
+            "means": [
+              27882,
+              35544,
+              27839
+            ]
+          },
+          {
+            "turns": [
+              51,
+              75
+            ],
+            "n": 25,
+            "means": [
+              27300,
+              32449,
+              40592
+            ]
+          },
+          {
+            "turns": [
+              76,
+              100
+            ],
+            "n": 25,
+            "means": [
+              31266,
+              38139,
+              60898
+            ]
+          },
+          {
+            "turns": [
+              101,
+              112
+            ],
+            "n": 12,
+            "means": [
+              34442,
+              40933,
+              86316
+            ]
+          }
+        ],
+        "n_turns": 87,
+        "runs_per_arm": 1,
+        "A_turn_mean_range": [
+          27300,
+          34442
+        ],
+        "B_turn_mean_range": [
+          27839,
+          86316
+        ],
+        "first_to_last_stretch_rise_percent_rounded": 24,
+        "status": "recomputed raw usage under W=2 and read weight 0.1; intervals are means, not individual-turn bounds"
+      },
+      "stock_tools_comparison": {
+        "stock_units": 889826,
+        "thinned_units": 625676,
+        "n_turns_per_arm": 37,
+        "runs_per_arm": 1,
+        "status": "recomputed raw turn usage, W=2 and read weight 0.1; stock and thinned continued sessions",
+        "uniichat_turn_call_units": 667964,
+        "uniichat_scope": "thinned arm, compactions excluded"
+      },
+      "baseline_cache_input_tokens": {
+        "cache_read_tokens": 32279785,
+        "all_input_side_tokens": 32624884,
+        "cache_read_millions_rounded": 32.28,
+        "all_input_side_millions_rounded": 32.62,
+        "n_turns": 112,
+        "runs": 1,
+        "status": "recomputed raw usage; all input-side tokens includes input, cache write and cache read"
+      },
+      "compaction_unit_price_sensitivity": {
+        "n_turns_per_arm": 112,
+        "n_compaction_sends": 2383,
+        "runs_per_arm": 1,
+        "W": 2,
+        "read_weight": 0.1,
+        "compaction_own_Haiku_units": 13728791.3,
+        "A_turn_Sonnet_units": 2911371.1,
+        "compaction_to_turn_own_unit_ratio_rounded": 4.7,
+        "Haiku_weight_0_05_total_units": 3597811,
+        "Haiku_weight_one_third_total_units": 7487635,
+        "baseline_units": 4611482,
+        "status": "repriced measured usage; alternative Haiku/Sonnet weights, not independently verified prices"
+      },
+      "baseline_prompt_first_over_200000": {
+        "turn": 82,
+        "prompt_tokens_by_request": [
+          193052,
+          195248,
+          197899,
+          200672,
+          201127
+        ],
+        "n_turns_observed": 112,
+        "runs": 1,
+        "status": "measured raw prompt-token row; no smaller-window replay"
+      },
+      "estimated_turns_to_fill_window": {
+        "estimate": "300+",
+        "window_tokens": 1000000,
+        "n_observed_turns": 112,
+        "status": "source-reported inference beyond observed endpoint; compaction trigger not measured"
+      },
+      "recall_request_cap": {
+        "turn": 105,
+        "max_requests_per_arm": 8,
+        "A_requests_used": 8,
+        "B_requests_used": 1,
+        "cap_owner": "trial harness; gist specifies no zoom cap",
+        "A_as_run": {
+          "correct": 50,
+          "n": 54
+        },
+        "A_excluding_capped_turn": {
+          "correct": 50,
+          "misses": 1,
+          "n": 51
+        },
+        "status": "exclusion analysis of stored harness grades; larger cap not tested"
+      },
+      "compactor_execution_scope": {
+        "effort": "low",
+        "tool_allow_list": [],
+        "permission_mode": "dontAsk",
+        "tools_visible": [
+          "Read",
+          "Write",
+          "Edit",
+          "Bash",
+          "zoom",
+          "date"
+        ],
+        "execution_owner": "Claude Code route",
+        "shell_non_error_results": 159,
+        "file_reads_executed": 1,
+        "writes_applied": 0,
+        "n_sends": 2383,
+        "status": "raw tool events and route configuration; tool-owning harness could discard attempts"
+      },
+      "prompt_comparison": {
+        "A": "file and shell tools plus zoom/date; gist prompt plus synthetic project instructions; CLI reminder; saved chat view; plain new message; CLI environment tail",
+        "B": "same file and shell tools; Claude Code default prompt plus same synthetic project instructions; continued history and new message; CLI wrapper blocks",
+        "user_instructions": "synthetic maintainer/project identity, repository-only work, independent tool calls grouped",
+        "turn_effort": "CLI default",
+        "compactor_effort": "Haiku low",
+        "wrapper_sizes_scope": "170 before view and 357 after message measured in separate probes, n=1 each",
+        "status": "harness configuration plus captured request shapes; no private prompt bodies published"
+      },
+      "compaction_style_example": {
+        "turn": 35,
+        "kind": "fix",
+        "reply_excerpt": "user (msg 323): item_line in report.py breaks columns when a name is longer than 24 characters; cut it to 23 characters plus `~`. Not started; no edits yet, report.py's item_line source not re-read since msg 148.",
+        "status": "synthetic reply excerpt; broader count 12/112, source review narrower count 9/112"
+      }
+    },
+    "E6": {
+      "overhead": {
+        "cc_stock_owner_config": 27295,
+        "cc_thinned_round1": 2253,
+        "tools_plus_system_entry": 1641,
+        "cc_reminder_block_tokens": 170,
+        "cc_environment_tail_tokens": 357,
+        "note": "pi figure = thinned Claude Code minus the two added blocks; tool-name and identity-line differences (about 10 bytes) ignored",
+        "pi_subscription_inferred": 1726,
+        "cc_thinned_round1_scope": {
+          "n": 2,
+          "model": "Haiku",
+          "message": "trivial message",
+          "status": "measured overhead probes with round-1 flags; separate from the matched E5 first requests"
+        }
+      },
+      "n_thinned": 2,
+      "n_stock_each": 1,
+      "n_blocks_each": 1,
+      "five_minute_warm_sequences": {
+        "haiku_n": 24,
+        "sonnet_n": 8,
+        "identical_token_counts": true,
+        "haiku_write_tokens": 41292,
+        "sonnet_write_tokens": 14460
+      },
+      "expiry": {
+        "n": 1,
+        "pause_seconds": 330,
+        "expired": true
+      },
+      "pi_live_calls": 0,
+      "pi_status": "paper analysis and local dummy request capture only; pi costs and cache behaviour not measured",
+      "paper_assumptions": [
+        "subtract measured Claude Code wrapper blocks",
+        "unchanged tools-and-system token cost",
+        "client-added content does not break caching",
+        "5-minute marks honoured and no expiry misses",
+        "same output as single round-1 runs"
+      ]
+    },
+    "provenance": {
+      "authoritative_report": "Final skeptical report; aggregate conclusions retained in this frozen summary",
+      "experiment_reports": {
+        "E4": "Compactor sweep report",
+        "E6": "Overhead and cache-lifetime report",
+        "E5": "Long replay report"
+      },
+      "priority": "Final skeptical report takes precedence over experiment reports where they differ",
+      "public_raw_rows": false,
+      "recomputed": [
+        "ledger totals",
+        "E4 send/token/cost/time aggregates",
+        "E5 usage costs and corrected checkpoint assignment",
+        "E5 batches and prompt/context sizes",
+        "E6 block counts and cache write-class confirmation"
+      ],
+      "reported_not_independently_regraded": [
+        "E5 recall, compliance and trap grades",
+        "E4 standing-rule and correction counts"
+      ],
+      "inferred_or_repriced": [
+        "all pi token/cost estimates",
+        "long replay with W=1.25",
+        "alternative price weights"
+      ],
+      "not_measured": [
+        "baseline auto-compaction or context-rot failure",
+        "turns after 112",
+        "live pi",
+        "long high-effort compactor arm",
+        "variance across principal arms"
+      ]
+    },
+    "limits": [
+      "one run per principal arm and synthetic corpus/script",
+      "112 of 260 turns, budget stop",
+      "subscription CLI USD estimate, no invoice validation",
+      "baseline never auto-compacted and stayed perfect on graded recall",
+      "5-minute long replay repriced only",
+      "pi live arm not run",
+      "Sonnet compactor partial 32-message tree and 10 questions",
+      "regex/file grading, no human or model judge",
+      "known placeholder-size issue and omitted delivery/images/pages/subagent/device features",
+      "concurrent arms on one account, latency not isolated",
+      "E6 exact per-call implementation revision not established"
+    ],
+    "E4_bait_answers": {
+      "haiku_distinct_requests_answered": {
+        "low": 2,
+        "medium": 2,
+        "high": 2,
+        "xhigh": 2
+      },
+      "n_planted_requests_full_corpus": 5,
+      "runs_per_effort": 1,
+      "status": "stored retained-line harness classifications, cross-checked against raw reply answer markers; not independently regraded",
+      "sonnet_medium": {
+        "answers": [
+          "1517",
+          "5040"
+        ],
+        "n_distinct_requests_answered": 2,
+        "n_corpus_messages": 32,
+        "all_five_baits_present": false,
+        "status": "partial corpus; both answer markers verified in raw reply rows"
+      },
+      "sonnet_low": {
+        "answers": [
+          "5040"
+        ],
+        "n_distinct_requests_answered": 1,
+        "n_corpus_messages": 32,
+        "all_five_baits_present": false,
+        "retained_line_classifications": [
+          "28+1",
+          "28+4",
+          "24+8"
+        ],
+        "status": "stored retained-line classifications cross-checked against raw answer markers; not independently regraded"
+      }
+    },
+    "E4_low_usd_accounting": {
+      "naive_cumulative_sum": 0.412,
+      "corrected_differenced_sum": 0.231,
+      "n_sends": 318,
+      "runs": 1,
+      "status": "recomputed from raw low-effort rows; subscription CLI estimates, not invoices"
+    },
+    "E4_level5_exact_items": {
+      "kept_range": [
+        17,
+        25
+      ],
+      "n_planted_items": 232,
+      "kept_by_effort": {
+        "low": 25,
+        "medium": 25,
+        "high": 23,
+        "xhigh": 17
+      },
+      "runs_per_effort": 1,
+      "status": "stored harness exact-substring grades, not independently regraded; paraphrases count as absent, not a recall error rate"
+    }
+  },
+  "round_1_scaled_42_messages": {
+    "turn_model": "haiku",
+    "n_turns_per_arm": 42,
+    "runs_per_arm": 1,
+    "uniichat_turn_calls_weighted_tokens": 219094,
+    "continued_session_weighted_tokens": 119060,
+    "ratio_at_write_weight_2": 1.84,
+    "status": "recomputed raw usage; scaled view limits; compactions excluded; continued Haiku arm reused"
+  }
+}

@@ -1,0 +1,242 @@
+{
+ "verdict": "Not ready to send as written. Most raw numbers recompute exactly from the rows, including every cell of the cost table, 226,864 / 261,156, 11,326 / 11,107 / 45.5 s (n=116), 834,302, 69% / 97%, 990 / 360, 10,602 / 12,315, all the cache-notes token figures, 40 of 50 / 30 of 38 (mean gap 3.02 / 3.13, max 11), the eight-node Sonnet bait count and the 1,082 / 205 / 56 ledger totals. But 12 statements are wrong or unsupported and about 25 are imprecise.\n\nThe ones that matter most for a letter to the gist's author:\n- **\"No choice\" on 1-hour writes is unsupported.** Our own harness hard-codes a 1-hour TTL on the view mark (`blocks_of(..., ttl=\"1h\")` in claude_cli.py), and E2 says a 5-minute mark was never tried.\n- **The Haiku baseline cache share is from the wrong window.** 97.1% is over 42 turns; over the same 26 turns it is 95.5%.\n- **\"549 sends at xhigh\" is wrong twice.** It is a mis-sum of 559 and includes 271 default-effort sends, 5 of which did call tools. The xhigh count is 504.\n- **The gist revision is dated wrongly.** The latest revision is 3c190e06, committed 2026-10-08; October 11 is the fetch date.\n- **The four mistakes are mis-listed.** The audit's four outright mistakes are 1, 2, 3 and 13; the own-system-prompt one is half of mistake 6.\n- **Several \"the gist does not say\" lines are things the gist does say.** It says a batch rewrites the view once, that the cache misses after a batch and after a model switch, that the percentages are \"of their prefix\", and that per-turn state goes after the view.\n- **\"Before any model call\" is false.** 94 Haiku probe and smoke calls ran from 23:26 UTC, before the rewrite was committed.\n- **1,343 is the programme total, not the three experiments.** The three experiments account for 1,249.\n\nI ran the repo's tests/test_optchat.py read-only (40 passed, worktree still clean) and made no model calls.",
+ "wrong": [
+  {
+   "quote": "three experiments, 1,343 calls: 1,082 haiku, 205 sonnet, 56 opus.",
+   "problem": "The ledger total of 1,343 is the whole programme. The three experiments are 1,249 (E1 562, E2 250, E3 437; Haiku 988, Sonnet 205, Opus 56). The other 94 are Haiku probe and smoke calls. These are API requests reserved on the ledger, and 5 have no row (killed in flight). The subtitle's \"1,343 real calls\" has the same problem.",
+   "replacement": "three experiments, 1,249 api requests: 988 haiku, 205 sonnet, 56 opus. another 94 haiku requests went on probes and smoke tests, 1,343 in all; 5 of those were killed in flight and left no row."
+  },
+  {
+   "quote": "before any model call, a second agent that had not written the code checked it against the gist:",
+   "problem": "The ledger shows 94 Haiku probe and smoke requests from 2026-10-11 23:26 UTC to 00:52 UTC. The rewrite was committed at 23:44 UTC and the conformance fix (fd454e7) at 00:55 UTC. Model calls therefore preceded the check; only the three experiments (first call 01:00 UTC) came after it.",
+   "replacement": "before the three experiments ran, a second agent that had not written the code checked it against the gist:"
+  },
+  {
+   "quote": "true at xhigh across 549 sends: no heads, no preambles, no tool calls.",
+   "problem": "549 is the report's mis-sum of the E1 sends; the rows give 559 (116+107+25+118+105+48+40). Of those, 271 were at default effort, and 5 of them did call zoom. At xhigh there are 288 E1 sends plus 216 E3 compaction sends, 504 in all, with no tool call. I found no id+n head and no multi-line reply in all 775 compaction sends. summary.json carries the same 549.",
+   "replacement": "true at xhigh across 504 sends (288 in the line-writing experiment, 216 in the end-to-end chats): no heads, no preambles, no tool calls. at default effort haiku called zoom in 5 of 271 sends."
+  },
+  {
+   "quote": "the same view as one block, or appended to the system prompt, read nothing from cache on the next call.",
+   "problem": "False for the system-prompt placement. With the same view and a new message it read 97.9% (28,092 read, 610 written) with the prompt replaced, and 98.0% with it appended. It failed only when the view grew by 4 lines (0 or 847 read). As one user block, a new message rewrote the view (26,784 written) but still read the 1,641 tools-and-system tokens.",
+   "replacement": "the same view as one user block was rewritten whole on the next message (26,784 tokens written, only the 1,641 tools-and-system tokens read). placed in the system prompt it survived a new message but was rewritten whole as soon as it grew by 4 lines. one haiku sample each."
+  },
+  {
+   "quote": "the baseline read 95.1% (sonnet) and 97.1% (haiku) of its prompt from cache at 0.1×.",
+   "problem": "97.1% is the Haiku baseline over all 42 turns (536,744 of 552,825). Over the 26 turns that the 90.0% is compared with, it read 95.5% (284,751 of 298,037).",
+   "replacement": "the baseline read 95.1% (sonnet) and 95.5% (haiku) of its prompt from cache over the same 26 messages."
+  },
+  {
+   "quote": "on a claude code subscription there is no choice: every token written across the three experiments was a 1-hour write, at 2×, and none was a 5-minute one.",
+   "problem": "The count is right (3,356,351 tokens at 1h, 0 at 5m, recomputed). \"No choice\" is unsupported: the harness itself sets the view mark to 1 hour (`blocks_of(view, per=4, ttl=\"1h\")` in src/z0int/optchat/claude_cli.py), and E2 says a 5-minute mark on the view was not tried. Only Claude Code's own marks were shown to be 1-hour. 2× is the gist's API price; prices are not observable on a subscription. The same applies to \"with w = 2 because every write claude code made was a 1-hour entry\" and to \"forced 1-hour writes\" in the limits.",
+   "replacement": "every token written across the three experiments was reported as a 1-hour write (3,356,351 tokens, none at 5 minutes), which the gist prices at 2×. claude code's own marks are 1-hour and we could not change them. the mark on the view was ours, and we also set it to 1 hour; we did not test whether a 5-minute mark there would be honoured."
+  },
+  {
+   "quote": "in the revision of october 11, 2026",
+   "problem": "The saved gist metadata lists three revisions; the latest is 3c190e06f34aba0c69f49042c526093269604935, committed 2026-10-08T01:58:24Z. 2026-10-11 is the gist's updated_at and our fetch date, and the saved file is byte-identical to that revision. summary.json (`revision_date: 2026-10-11`) and manifest.yaml (`commit: revision of 2026-10-11`) repeat the error.",
+   "replacement": "in revision 3c190e06 of october 8, 2026 (fetched october 11)"
+  },
+  {
+   "quote": "that code measured the first message of a pair instead of the last, merged at every message, rebuilt the view on load and gave compactions their own system prompt. those are four of the gist's thirteen listed mistakes",
+   "problem": "The design.json audit scores the old code as committing mistakes 1, 2, 3 and 13 (scanning the tree for work) outright, plus half of mistake 6 (context present, own system prompt), and partly mistake 7 (a sample line as the ruler). The post lists the half-mistake as one of the four and omits mistake 13.",
+   "replacement": "that code measured a pair's age from its first message instead of its last, merged at every message, rebuilt the view on load and scanned the tree for work. those are four of the gist's thirteen listed mistakes; it also gave compactions their own system prompt, which is half of a fifth."
+  },
+  {
+   "quote": "the view never passed 16.2 kb, so no batch ever fired at the gist's limits.",
+   "problem": "After 26 messages the view was 15,814 bytes (Sonnet) and 16,187 bytes (Haiku). The Opus arm, also at the gist's limits and seeded from the Sonnet chat, was sent a view of up to 17,445 bytes and ended at 17,734. \"the view peaked at 16.2 kb\" in the limits, the 16.2 KB line in manifest.yaml and \"15.8-16.2 KB\" in summary.json need the same qualifier. The conclusion that no batch fired stands.",
+   "replacement": "after 26 messages the view was 15.8 to 16.2 kb (17.7 kb after the six extra opus questions), an eighth of the 128 kb at which the gist's first batch fires. so no batch ever fired at the gist's limits."
+  },
+  {
+   "quote": "61 of 61 recall answers correct across the three models, including 16 detail questions asked after a batch had merged the detail away.",
+   "problem": "61 recomputes as a question count (11+11+25+6+4+4). 16 does not: after the batch there were 13 whole-message detail questions (7 in the scaled chat, 3 in each of the two probes), or 21 questions of all kinds; 16 is the length of the extension. Only 10 of those turns zoomed, so \"had merged the detail away\" is not shown for all of them. The grades are regex grades that the report did not recompute.",
+   "replacement": "61 of 61 recall answers correct across the three models (regex-graded by the harness), including 13 detail questions asked after the one batch; the model zoomed on 10 of those turns."
+  },
+  {
+   "quote": "ours were gone from the merged lines by the third level.",
+   "problem": "Overclaims. At the third level 9 of 20 (Haiku) and 9 of 16 (Sonnet) order messages still kept every key term, and 65% and 80% of key strings were still present.",
+   "replacement": "about half of ours had lost a key term by the third level, and \"do not redeploy\" was already missing from the first line written."
+  },
+  {
+   "quote": "the frozen numbers, the call ledger and the list of what was and was not recomputed are in `studies/optchat-claude-code-v0/`.",
+   "problem": "The study directory holds only summary.json and manifest.yaml. There is no ledger, and the manifest says raw call rows are not published.",
+   "replacement": "the frozen numbers, the call totals and the list of what was and was not recomputed are in `studies/optchat-claude-code-v0/`. raw call rows are not published."
+  }
+ ],
+ "imprecise": [
+  {
+   "quote": "we built uniichat to the letter. the mechanism works. the savings did not show up. / it is evidence that the gist's savings do not appear in a short chat",
+   "problem": "The gist never states a saving against a continued session. Its only cost comparison is batched merging against merging at every message (\"about 4x less (21 vs 80 line-inputs per message)\"). The post concedes this only in its last limits bullet.",
+   "replacement": "it is evidence that the saving we expected from the gist's design, against a continued session, does not appear in a short chat driven through claude code. the gist itself never makes that comparison."
+  },
+  {
+   "quote": "with user settings, plugins, memory and mcp servers switched off.",
+   "problem": "Every init event shows Claude Code's two built-in plugins loaded, and the trial's own MCP server supplied zoom and date. The model ids and CLI version are not stated anywhere in the post.",
+   "replacement": "with user settings, user plugins, memory files and the user's mcp servers switched off (claude code 2.1.296; claude-haiku-5-5, claude-sonnet-5-5, claude-opus-5-5). the only mcp server was ours, serving zoom and date. turn calls ran at default effort, compactions at xhigh."
+  },
+  {
+   "quote": "the system prompt verbatim",
+   "problem": "The prompt sent is the gist's with the paragraph on computers dropped (3,622 bytes against 3,911), which the gist allows.",
+   "replacement": "the system prompt verbatim, less the paragraph on computers, which the gist says to drop without device tools"
+  },
+  {
+   "quote": "not built: handing a message to a running call, pages for long messages, subagents and `zoom(\"Name\")`, per-turn device state.",
+   "problem": "The report also lists images as not built (the gist's zoom(id, 1) gives a message \"whole, with its images\").",
+   "replacement": "not built: handing a message to a running call, pages for long messages, images, subagents and `zoom(\"Name\")`, per-turn device state."
+  },
+  {
+   "quote": "20 and 21 added blocks found the previous mark. 22, 23 and 24 did not, and the whole view was rewritten.",
+   "problem": "Correct (written 13,985 and 14,652 against 21,195, 36,532 and 53,073), but it is one Haiku call per block count.",
+   "replacement": "20 and 21 added blocks found the previous mark. 22, 23 and 24 did not, and the whole view was rewritten (haiku, one call each)."
+  },
+  {
+   "quote": "ungated, 8 of 8 concurrent haiku calls paid for the full prefix in one wave. gated on the first response event, exactly 1 paid, in all four waves.",
+   "problem": "Leaves out the second ungated Haiku wave, where only 2 of 8 paid, and the Sonnet (2 of 4) and Opus (2 of 2) ungated waves.",
+   "replacement": "ungated, 8 of 8 concurrent haiku calls paid for the full prefix in one wave and 2 of 8 in the other (sonnet 2 of 4, opus 2 of 2). gated on the first response event, exactly 1 paid, in all four waves."
+  },
+  {
+   "quote": "one scripted chat of 26 user messages, run twice: once as uniichat (a fresh call per message, the view, the new message) and once as one continued claude code session. same questions, same tools.",
+   "problem": "The pair was run on Sonnet and on Haiku; Opus got only 6 late questions on a chat seeded from the Sonnet one. The tools were not identical: the uniichat arm had zoom and date plus Read, Write and Edit under the gist prompt, while the baseline had Claude Code's default system prompt and the three file tools.",
+   "replacement": "one scripted chat of 26 user messages, run as a pair on sonnet and again on haiku: once as uniichat (a fresh call per message, the view, the new message) and once as one continued claude code session with its default system prompt. same messages, same three file tools; uniichat also had zoom and date. opus answered 6 late questions on the sonnet chat in each arm."
+  },
+  {
+   "quote": "answers were equally good in both arms. the uniichat arm got 61 of 61, and the continued session was also all correct.",
+   "problem": "61 spans six uniichat chats, including the scaled arm and two probes, not the 26-message pair. The baseline n is missing (42 questions: 11 Sonnet, 25 Haiku over 42 turns, 6 Opus). Grading is by regex and was not recomputed by the report. The post never says this, although the manifest lists it as a limitation.",
+   "replacement": "answers were equally good in both arms by the harness's regex grading, which we did not re-grade by hand: 61 of 61 across all six uniichat chats, and 42 of 42 in the continued sessions."
+  },
+  {
+   "quote": "latency: the turn call itself has the same median in both arms, 3.2 s.",
+   "problem": "True of the Sonnet pair (3.24 s and 3.22 s). The Haiku pair was 2.8 s against 2.1 s.",
+   "replacement": "latency: the turn call itself has the same median in both arms with sonnet, 3.2 s (haiku: 2.8 s against 2.1 s)."
+  },
+  {
+   "quote": "when a line did have to be written first, the median wait was 23 to 63 s and the worst was 296 s.",
+   "problem": "In the two 26-message chats the medians were 23 s and 63 s with maxima of 212 s and 109 s (n=7 turns each). 296 s is from the scaled 42-message arm (median 43 s, n=15, zero wait on 27 of 42).",
+   "replacement": "when a line did have to be written first (7 turns in each chat), the median wait was 23 s and 63 s and the worst 212 s; the scaled 42-message chat had a worst of 296 s."
+  },
+  {
+   "quote": "one compaction send averaged 11,326 output tokens, of which 11,107 were thinking, and took 45.5 s (n=116).",
+   "problem": "Correct, but 45.5 s is a mean pulled up by the merges; the median is 18.5 s and the maximum 267 s. Question 2 repeats \"45 seconds per 512-byte line\".",
+   "replacement": "one compaction send averaged 11,326 output tokens, of which 11,107 were thinking, and took 45.5 s on average (median 18.5 s, max 267 s, n=116)."
+  },
+  {
+   "quote": "compacting a 26-message chat cost 834,302 haiku output tokens.",
+   "problem": "Correct for the Sonnet-turn chat (49 sends); the Haiku-turn chat cost 859,289 (53 sends). Worth saying that 36 of the 49 sends were merges whose lines never entered the view at this length.",
+   "replacement": "compacting the 26-message sonnet chat cost 834,302 haiku output tokens in 49 sends (859,289 in 53 for the haiku chat); 36 of the 49 were merges that the view never used at this length."
+  },
+  {
+   "quote": "at message 26 the view was 10,602 prompt tokens and the full history was 12,315. a 512-byte line is not much shorter than a 1 kb message.",
+   "problem": "12,315 is the continued session's whole prompt at message 26, including Claude Code's overhead; it is not a bare history. Only 5 of the 26 user messages are 776 to 1,123 bytes; the other 21 are 42 to 218 bytes. The view was 60 single-message lines averaging 264 bytes, and only about 12 of the 60 logged messages needed a model-written line. Most of the view is messages kept word for word.",
+   "replacement": "at message 26 the uniichat prompt was 10,602 tokens and the continued session's was 12,315. most messages were under 512 bytes and so stayed word for word (about 12 of 60 needed a written line), and no merged line had entered the view."
+  },
+  {
+   "quote": "a change to any single line of a 64 kb view (first, middle, three quarters, sixth from the end) wrote 26,949 to 27,193 tokens and read 1,641, on all three models.",
+   "problem": "The four positions were tested on Haiku only; Sonnet and Opus were tested on the middle line only. The counter-case is omitted: after four +4-line calls, a change 10 lines from the end wrote 2,401 and read 28,714, because an earlier mark sat before it. One call each.",
+   "replacement": "a change to one line of a 64 kb view wrote 26,949 to 27,193 tokens and read 1,641: first, middle, three quarters and sixth from the end on haiku, middle on sonnet and opus, one call each. when earlier calls had left a mark before the change, only 2,401 were written."
+  },
+  {
+   "quote": "things we learned about the cache that the gist does not say, or says differently: [...] with entries only at marks, and our marks at the end of the view, a batch costs the whole view once, not the tail.",
+   "problem": "The gist does say \"A batch rewrites the view once\" and \"The cache misses after a pause longer than the entry lifetime, after a batch, and after a switch of model or account.\" The measured difference is narrower: its sentence \"A merge changes the view from the merged line on\" suggests the lines before the merge stay cached, and they did not.",
+   "replacement": "the gist says a batch rewrites the view once and that the cache misses after a batch. it also says a merge changes the view \"from the merged line on\", which reads as if the lines before the merge stay cached. with entries only at marks, and the marks at the end of the view, they did not: a batch costs the whole view once."
+  },
+  {
+   "quote": "a turn with about 42 tool calls would do that. the gist does not mention the limit.",
+   "problem": "The 42-call figure is inferred (two logged lines per call), not measured. The gist does mention the 20-block lookback (\"looks back up to 20 blocks from a mark for an earlier one\"); what it omits is the consequence for a long turn.",
+   "replacement": "a turn with about 42 tool calls would do that (inferred from two logged lines per call, not measured). the gist gives the 20-block lookback but not this consequence."
+  },
+  {
+   "quote": "so \"compactions read the turns' cache entry\" holds only when turns and compactions use the same model.",
+   "problem": "The words in quotation marks are not in the gist; its sentence is \"so it reads them from the turns' cache entry\". The gist also already says the cache misses \"after a switch of model or account\", so this confirms the gist's rule and points out a consequence; it is not something the gist omits.",
+   "replacement": "the gist says the cache misses after a switch of model, and we confirm it. the consequence it does not draw: a compaction \"reads them from the turns' cache entry\" only when turns and compactions run on the same model, and its own compactor is haiku."
+  },
+  {
+   "quote": "about 240 tokens before the view and 356 after, the latter rewritten on every call. the gist's shape, `[tools] [system] [view] [message]` and nothing else, cannot be had there.",
+   "problem": "\"and nothing else\" is ours. The gist itself puts per-turn state after the view: \"Per-turn state (date, open devices) goes after the view, never in the system prompt.\" A date block after the view therefore fits the gist; the departure is the roughly 240 tokens before the view. E2 says the positions were inferred from which tokens were rewritten, not read off the wire. The 356 tokens were rewritten when cwd, date or effort changed, and E2 calls that block constant per cwd and day.",
+   "replacement": "about 240 tokens before the view and 356 after, by our estimate from which tokens were rewritten; we did not read the request off the wire. the tail fits the gist, which puts per-turn state after the view. the block before the view does not, and no flag removes it."
+  },
+  {
+   "quote": "lifetime. entries were read in full at 6, 15 and 30 minutes and were gone at 93 minutes (2 samples).",
+   "problem": "The 6-minute (350 s), 30-minute (1,804 s) and two 93-minute (5,564 s and 5,574 s) samples recompute. One of the 93-minute samples still read the 1,641 tools-and-system tokens, which another call had rewritten 10 s earlier. I did not find the 15-minute sample in the index rows I checked.",
+   "replacement": "lifetime. untouched entries were read in full at 6, about 15 and 30 minutes and the view was gone at 93 minutes (2 samples). one sample per gap."
+  },
+  {
+   "quote": "the fidelity table (119 of 174 / 40 of 174; 105 of 135 / 41 of 135; 39 of 40 / 16 of 40)",
+   "problem": "The figures match the E1 tables, but the report marks them \"not recomputed\" and the post presents them unqualified. The three rows cover different corpora (Haiku 80 messages, Sonnet 64, Opus the first 16), so they are not comparable. On the common first 16 messages they are Haiku 36/40 to 8/40, Sonnet 36/40 to 14/40 and Opus 39/40 to 16/40.",
+   "replacement": "add under the table: \"counts are as reported by the harness's substring test and were not independently recomputed. the rows cover different message sets (80, 64 and 16 messages); on the first 16 messages alone: haiku 36 then 8 of 40, sonnet 36 then 14, opus 39 then 16.\""
+  },
+  {
+   "quote": "standing orders fade. by the third merge only 9 of 20 order messages (haiku) and 9 of 16 (sonnet) kept every key term. \"do not redeploy\" and \"revert\" were gone from the merged lines in both.",
+   "problem": "The counts match E1 (as reported, not recomputed). \"Do not redeploy\" was not lost by merging: it is missing from the leaf line in both models, and Sonnet's leaf also lacks \"Revert\".",
+   "replacement": "standing orders fade. at the leaf 17 of 20 order messages (haiku) and 14 of 16 (sonnet) kept every key term; by the third merge 9 of 20 and 9 of 16 did (harness counts, not recomputed). \"do not redeploy\" was missing from the first line written in both, and \"revert\" was gone by the third merge in both."
+  },
+  {
+   "quote": "corrections fared better: 21 of 21 corrected values were still present in the highest node across three chats.",
+   "problem": "That is the E3 figure (7 facts in 3 chats, up to node 0+64, as reported). E1 has a counter-example the post leaves out: of 3 corrections, Haiku lost the new value \"900 ms\" at the third level.",
+   "replacement": "corrections fared better: in the end-to-end chats 21 of 21 corrected values were still present in the highest node (7 facts in 3 chats). in the line-writing experiment haiku lost one of three, \"900 ms\", at the third merge."
+  },
+  {
+   "quote": "any break-even we could state is inferred, not measured: for a chat like this one, roughly message 215 for turn calls alone and message 400 or later with compactions.",
+   "problem": "The report's figures are the points where a uniichat turn becomes cheaper than a baseline turn, not cumulative break-even. 215 is where the first batch would fire (185 to 215 in E3). \"400 or later\" is for Sonnet turns; the report says earlier for Opus and never for Haiku turns.",
+   "replacement": "anything we could state is inferred, not measured: for a chat like this one a uniichat turn might become the cheaper one around the first batch, near message 185 to 215, for turn calls alone, and around message 400 or later with compactions on sonnet turns (never with haiku turns). the cumulative break-even would be later still."
+  },
+  {
+   "quote": "the baseline never got into trouble. the continued session peaked at 15,987 tokens.",
+   "problem": "15,987 is the Haiku baseline at message 42. The 26-message baselines ended at 12,315 (Sonnet) and 13,226 (Haiku).",
+   "replacement": "the baseline never got into trouble. the continued session's prompt was 12,315 tokens at message 26 and peaked at 15,987 at message 42."
+  },
+  {
+   "quote": "the baseline was a thinned claude code session, 3,851 to 4,627 tokens of overhead, not a stock one at 28,793.",
+   "problem": "3,851 and 4,627 are the first-request prompt sizes of the Sonnet and Haiku baselines, which include the 1,123-byte first message. 28,793 is measured in E2 (two identical Haiku calls), but not on a stock session: it is a no-view call with the gist prompt appended to Claude Code's default system prompt, the default tool set and all the isolation flags on. It includes about 1,200 tokens of gist prompt and none of a user's own settings, plugins or memory.",
+   "replacement": "the baseline was a thinned claude code session: its first request was 3,851 to 4,627 tokens with three tools. the default tool set measured 28,793 tokens in a separate call (haiku, with the gist prompt appended and user configuration off)."
+  },
+  {
+   "quote": "the script was mostly questions and answers with messages near 1 kb.",
+   "problem": "Only the 5 planted fact messages are 776 to 1,123 bytes; the other 21 user messages are 42 to 218 bytes (mean 270, median about 115).",
+   "replacement": "the script was mostly short questions and answers; the five messages that planted facts were near 1 kb."
+  },
+  {
+   "quote": "our core has bugs. the trial found eight, including sizes that count an unbuilt leaf at its placeholder's length, so a batch can end above 64,000 bytes. none changes a number in this post",
+   "problem": "The report lists eight items marked \"Bug\". At the pinned commit fd454e7 the test file has passing regression tests for several of them (bulk load refused, short view.json refused, crash between the two view saves, zoom past the end, a reader's status), and the report itself says the first was reported fixed. \"None changes a number\" is the author's judgement; the report does not say it.",
+   "replacement": "our core had bugs. the trial lists eight; several were already fixed at the pinned commit, and one that remains is that sizes count an unbuilt leaf at its placeholder's length, so a batch can end above 64,000 bytes. we believe none changes a number in this post, but that was not checked independently."
+  },
+  {
+   "quote": "98.6% and 96.2% of what? the prefix, or the whole input?",
+   "problem": "The gist answers this literally: \"turns read 98.6% of their prefix from the cache, compactions 96.2%\", and the post's own table says \"the gist says 98.6% of the prefix\". The open question is what the prefix includes. 97.5% is an estimate (97.46).",
+   "replacement": "what does \"prefix\" cover in 98.6% and 96.2%? everything before the new message, or only the previous call's view? we read 96.4% of the whole input at 80 to 133 kb (haiku, n=24), and about 97.5% of the prefix by our estimate."
+  },
+  {
+   "quote": "a second round is running now: a 250-turn tool-heavy replay [...] and the same requests through pi, where we control the request. this post will be updated with it.",
+   "problem": "This is a statement about work in progress with nothing in the frozen study behind it, and \"running now\" goes stale. The site rule is that posts must not claim beyond the frozen study.",
+   "replacement": "next, not yet measured: a 250-turn tool-heavy replay at the gist's real limits against a continued session that is allowed to auto-compact, a sweep for a cheaper compactor, and the same requests through pi, where we control the request."
+  }
+ ],
+ "claims_about_the_gist": [
+  "Lede, \"a chat can run forever at a constant context size, with nearly every token read from the prompt cache\": SUPPORTED. Gist lines 20-21: \"So the context has a constant size and nothing is ever lost. No one compacts by hand, and nearly every token is read from the prompt cache.\"",
+  "\"the gist says 'a cheap one. uniichat uses claude haiku at xhigh effort.'\": SUPPORTED, verbatim apart from case. Gist line 310: \"**The model:** a cheap one. UniiChat uses Claude Haiku at xhigh effort.\"",
+  "\"the gist prices a cache write at 1.25×\": SUPPORTED. Gist lines 201-203: \"The prompt cache charges about 0.1x for a prefix it has seen and 1.25x to write a new one, and the cached prefix ends at the first changed byte.\"",
+  "\"and says not to buy 1-hour entries\" / \"the gist notes that subscriptions mark at one hour\": SUPPORTED. Gist lines 233-235: \"On the API, entries live 5 minutes from their last read. Don't buy 1-hour entries (they cost 2x to write), and don't send keep-alive pings. Claude Code subscriptions mark with their own 1-hour lifetime.\" The gist's 2x is an API price, so the post should say 2× is the gist's figure and not something observed.",
+  "\"the gist says the cached prefix ends at the first changed byte and that a merge changes the view 'from the merged line on'\": SUPPORTED. Line 203 as above, and lines 214-215: \"**A batch rewrites the view once.** A merge changes the view from the merged line on, so every merge costs a rewrite.\" The post leaves out the bold sentence, which already says a batch rewrites the view once, and line 236: \"The cache misses after a pause longer than the entry lifetime, after a batch, and after a switch of model or account.\"",
+  "\"entries are stored only at marks; the lookback is 20 blocks\": SUPPORTED. Gist lines 225-229: \"The view goes in blocks of 4 lines. One cache mark sits on the last whole block and one on the request's end. Anthropic stores entries only at marks and looks back up to 20 blocks from a mark for an earlier one. So the next call finds this mark and pays only for the lines after it.\"",
+  "\"84 lines is a cliff ... the gist does not mention the limit\": PARTLY. The gist states the 20-block lookback (line 227) but not what happens when a turn adds more than about 84 lines. The post should say \"does not mention the consequence\".",
+  "\"the cache is per model ... 'compactions read the turns' cache entry'\": NOT A VERBATIM QUOTE, and the gist already covers the rule. Gist lines 245-247: \"It is a call like a turn, with the **same system prompt and tools** (never called), so it reads them from the turns' cache entry.\" Line 236-237: the cache misses \"after a switch of model or account\". The gist does not say which model the turns run on.",
+  "\"a call on a prefix another call is writing should wait\": SUPPORTED. Gist lines 230-232: \"A call whose marked prefix another call is writing waits until that call's response starts; otherwise both pay to write it. This matters because compactions start up to 8 at a time on one prefix.\"",
+  "\"each turn reads the last view from cache and writes only the new lines\": SUPPORTED. Gist lines 211-213: \"The last call's whole view is a prefix of the next call's view, so each turn reads it from the cache and writes only the new lines and its message.\"",
+  "\"the gist says 98.6% of the prefix\" and question 4, \"98.6% and 96.2% of what?\": the gist is explicit that it is the prefix and that the figure is simulated. Lines 239-241: \"Measured by replaying 3,000 messages against a model of Anthropic's cache: turns read 98.6% of their prefix from the cache, compactions 96.2%.\" The question should ask what \"prefix\" includes; \"the prefix or the whole input\" is already answered. The post should also call the gist's figures simulated when comparing them with measured ones.",
+  "\"compactions call no tools and output only the line\": SUPPORTED. Gist line 390: \"Call no tools, and output only the line, without an id+n| head.\"",
+  "\"nothing is lost: zoom recovers it\": SUPPORTED. Lines 17-20: \"When a line is too vague, the model **zooms**. It opens the line into the two lines it was made from, down to the message itself. So the context has a constant size and nothing is ever lost.\"",
+  "\"the view's latest word is the truth\" and \"say in your reply what you learned\": SUPPORTED. Lines 358-363: \"The view is your memory, and its latest word on a thing is the truth. ... Summaries keep little of tool output, so say in your reply what you learned that will matter later.\"",
+  "\"a model can hit 512 bytes with the ruler, the cut and retries\": SUPPORTED. Line 285: \"Models can't count bytes, so the ruler shows the length.\" Line 296: \"Try at most 5 times, and keep the shortest line.\" Mistake 7 (line 468): \"Trusting the model to count bytes. Use the ruler, the cut, retries.\"",
+  "\"the gist's shape, [tools] [system] [view] [message] and nothing else\": \"AND NOTHING ELSE\" IS NOT IN THE GIST. Line 206 gives \"[tools] [system prompt] [view] [new message]\" and line 431 \"call [tools] [system] [view] [m], in a fresh session\". But lines 438-439 say: \"Per-turn state (date, open devices) goes after the view, never in the system prompt.\" The gist therefore allows a date block after the view; only the text Claude Code puts before the view departs from it.",
+  "\"the view placement ... is the gist's own: 4-line blocks with a mark on the last whole block, at the start of the user message\": the blocks and the mark are the gist's (lines 225-226). \"At the start of the user message\" is our reading of \"[system prompt] [view] [new message]\"; the gist does not name the message role.",
+  "\"a compaction's view stops at the first unbuilt line, as the gist requires\": SUPPORTED. Lines 305-306: \"A compaction's view stops at the first unbuilt line, so no call ever sees a placeholder or half a message.\" Also line 303: \"A message's node starts once fewer than 8 lines before it are still unbuilt.\"",
+  "\"the 128 kb to 64 kb batch\", \"the 16 to 32 kb compaction view\", \"512-byte nodes\", \"the 64 to 128 kb sawtooth\": SUPPORTED. Lines 187-191: \"Once the view passes 128,000 bytes, one batch merges the most due pairs until it is at most 64,000 bytes. So the view is a sawtooth. It grows from 64 KB to 128 KB ... and averages 96 KB.\" Line 253: \"merged further, to 16-32 KB (24 KB on average)\". Lines 56-57: \"in at most 512 bytes\".",
+  "\"481, the number the gist gives\" and the t=10 counterexample: SUPPORTED. Lines 179-180: \"At T=10, with the view `0+4, 4+4, 8+1, 9+1`, it merges `0-7`, while push merges `8-9`. It matches push at only 481 of 20,001 steps.\" Line 172: \"(checked for t = 0..20,000)\". The repo tests for both pass.",
+  "\"four of the gist's thirteen listed mistakes\": the gist lists 13 (lines 458-474), so the count of the list is right. The four named in the post are not the four the audit scored as committed outright; those are 1, 2, 3 and 13, with the own-system-prompt half of 6 as \"half of a fifth\".",
+  "\"the gist never compares uniichat with a continued session. it compares batched merging with merging at every message\": SUPPORTED. The only cost comparison is lines 216-220: \"Merging a little at each message ... rewrites about 53 of 192 lines per message. Holding merges back and doing a hundred-odd at once rewrites about 2 per message on average. In a 30,000-message simulation, the batched view cost about 4x less (21 vs 80 line-inputs per message).\" The opening (lines 3-5) sets it against sessions that are \"compacted or dropped\" and that \"rot\", in quality terms and with no cost figure. So the title's and limits' phrase \"the gist's savings\" attributes to the gist a claim it does not make.",
+  "Question 8, \"is the answer the user's instructions at the end of the prompt\": SUPPORTED as a reading. Line 314-316: \"There is one system prompt for turns and compactions. The user's own instructions follow it\". Lines 418-419: \"'The user's words matter most'. A correction given in chat survives up the tree, so most of an AGENTS.md becomes unneeded.\"",
+  "Question 2 context, the wait: the gist says (line 440) \"The wait takes seconds: the compactor summarizing the last turn's messages.\" The post measures 23 to 63 s medians but never quotes this line; it would strengthen the question to quote it.",
+  "Gist identity: the saved API metadata gives `public: false` (a secret, unlisted gist), description \"OptChat - HOW TO REPLICATE MY SETUP\", H1 \"UniiChat: one chat that never ends\", and three revisions, the latest being 3c190e06f34aba0c69f49042c526093269604935 committed 2026-10-08T01:58:24Z. The post's link text matches the H1. Its \"revision of october 11, 2026\" does not match the revision history."
+ ],
+ "privacy": "**Post:** clean. No local paths, email, hostnames, credentials or owner name. It mentions only \"a block with the working directory and the date\", with no values.\n\n**summary.json:** no paths, email address, hostname, token or name. The sha256 matches the manifest (f8006aca...). Three things to tidy:\n- It says the reminder block \"holds the login email\", without giving the address. Acceptable.\n- It leaves in first-person reviewer phrasing (\"my match\", \"Not recomputed by me\", \"on this machine\").\n- It lacks the model ids.\n\n**summary.json against the post:**\n- The cost table, the call totals and every claim figure the post uses are equal.\n- It carries the same errors: \"549 sends\", `revision_date: 2026-10-11`, and \"view 15.8-16.2 KB\" with no mention of the 17.7 KB Opus extension.\n- It correctly lists the 1,960,220 to 1,738,887 correction and the 12 to 11 bait-send correction.\n\n**manifest.yaml, three points for the owner:**\n- `repo: kvnloo/z0intelligence` is the owner's GitHub handle. The other three published manifests use the same string, so this is consistent, but it is the one identifying string in the study.\n- The role line says the branch is \"not yet pushed\", so the pinned SHA fd454e7 cannot be fetched by a reader. That sits badly with the pin-by-SHA rule; push it or say so in the post.\n- `commit: revision of 2026-10-11` should be the gist revision SHA 3c190e06f34aba0c69f49042c526093269604935.\n\n**Manifest limitations against the post's limits:** they do not match.\n- In the manifest but not the post: raw call rows are not published; recall grading is by regex.\n- In the post but not the manifest: the thinned baseline (28,793 against 3,851-4,627); the mostly question-and-answer script; the core bugs; that the comparison is ours and not the gist's.\n- The manifest's 16.2 KB line needs the same correction as the post.\n\n**The gist is secret.** The saved API metadata says `public: false`, and the earlier post does not link it. This post would publish its URL on a public site. Ask the author before publishing.",
+ "checked_count": "About 130 numbers and factual claims checked.\n\n**Recomputed from raw rows or the ledger (about 75):**\n- Ledger totals by family and experiment.\n- All 18 cells of the cost table, including both weights and USD.\n- Prompt, cache-write and cache-read totals and read shares for every E3 arm.\n- 990 against 360 (991 and 359); 10,602 against 12,315; view bytes and line counts.\n- Wait statistics, question counts (61, 26) and zoom counts (18 calls, 13 turns).\n- E1 sends, first-try fits, output, thinking and wall statistics for all 7 arms; tool-calling sends; bait sends and nodes.\n- E2 lookback, mid-change, model switch, overhead, placement, concurrency waves, lifetime samples and the 96.43% sequence.\n- 1-hour against 5-minute write totals: 3,356,351 against 0.\n- Code size: 1,722 lines, standard library only.\n\n**Checked against the gist text:** 25 statements (listed separately).\n\n**Checked against the harness's own analysis files, as reported:** about 20 (fidelity table, orders, corrections, predecessor gap, matched ablations).\n\n**Checked by running the repo's tests read-only:** 40 passed, worktree unchanged. These cover the 20,001 steps, 481, the t=10 case, byte-for-byte texts and the saved view.\n\n**Outcome:** 12 wrong or unsupported, about 28 imprecise or missing their n, the rest correct.",
+ "could_not_check": "- **\"view.json survives eight kills mid-append\"** and the other conformance bullets as findings of a second agent. The conformance reviewer's output is not in final-report.json or anywhere I was pointed. The unit tests cover a saved and loaded view, a torn line and one simulated crash between saves. I found no source for the number eight, or for \"had not written the code\" beyond the workflow script's prompt.\n- **Harness counts taken as reported.** The planted-item counts, order and correction survival, 21 of 21, the answer grades behind 61 of 61 and 26 of 26, and \"13 of 13 restated the facts\" all come from analyzers I did not rerun. They match the harness's own summary files.\n- **The 97.5% prefix-only figure and \"about 240 tokens before the view\"** are the E2 author's estimates.\n- **The 15-minute lifetime sample.** I did not locate it in the index rows I read. The 6-minute, 30-minute and both 93-minute samples are there.\n- **The request layout.** A one-row wire capture exists (calls-wire.jsonl) but I did not open it, because the report says the request carries the owner's login email and token. E2 says the layout was inferred.\n- **Whether the earlier post's study commit (0828b77) is the code the design.json audit describes.** The audit was of master dd39238.\n- **Whether gist `updated_at` 2026-10-11 reflects a content change.** The saved revision history shows the latest content revision on 2026-10-08, and the saved file equals it.\n- **\"A second round is running now\".** Nothing in the frozen data covers it.\n- **The break-even inferences (message 215, 400 or later).** I checked the arithmetic behind 215 (128,000 bytes at about 600 bytes per turn). The 400 figure rests on the E3 author's rate of about 8,300 Sonnet-units of compaction per turn, which I did not re-derive.\n- **Which of the eight listed bugs remain at fd454e7.** I only saw that regression tests for several exist and pass."
+}
