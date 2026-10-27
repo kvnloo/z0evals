@@ -4,7 +4,7 @@ subtitle: "496 pre-registered runs against the current z0 integration: one lever
 study: claude-code-savings-v1
 status: draft
 author: "zer0 research"
-date: "september 30, 2026"
+date: "october 1, 2026"
 mock_data: false
 toc:
   - id: question
@@ -15,6 +15,10 @@ toc:
     label: the headline
   - id: levers
     label: lever by lever
+  - id: gating
+    label: gating did not clear the bar
+  - id: long-followup
+    label: long is not the same as output-heavy
   - id: limits
     label: what this does not prove
 ---
@@ -55,9 +59,27 @@ the full current integration passes its pre-registered test: a third fewer bille
 ## lever by lever {#levers}
 
 - **lean holds everywhere.** it saved 38.5% of tokens on cold repo sessions, 33.8% on warm ones and 25.5% on qa, and 118 of 124 pairs were cheaper. on cost, that is −54% cold and −32% warm, close to v0's −64% and −27%. this is the dependable lever.
-- **the state packet depends on the task.** on current-work questions it cut a further 35.5% of tokens over lean and fixed the last two misses (42/44 → 44/44). stock → lean + packet came out at −62.7% cost, against v0's −61%, so that replicates. on fresh coding tasks in a new directory there is no history for the packet to report, and it *added* 10.8% tokens (holm p = 2.5e-4) with no change in quality. pooled, the two effects cancel. an always-on packet is the wrong default; it should be on when the session is about current work, not for every fresh worktree.
+- **the state packet depends on the task.** on current-work questions it cut a further 35.5% of tokens over lean and fixed the last two misses (42/44 → 44/44). stock → lean + packet came out at −62.7% cost, against v0's −61%, so that replicates. on fresh coding tasks in a new directory there is no history for the packet to report, and it *added* 10.8% tokens (holm p = 2.5e-4); correctness went from 79/80 to 80/80 and the quality guard passed. pooled, the two effects cancel. an always-on packet is the wrong default; it should be on when the session is about current work, not for every fresh worktree.
 - **observationpack does nothing on short tasks.** it never packed anything on the qa questions and rarely on short repo tasks, and the token effect was not significant. on v0's long recall task it packed seven outputs per run and cut cost 41.5%, but total tokens only 4.7%: it halved the expensive cache writes and added one cheap cache-read turn. that is n = 4, so it is consistent with v0's long-session result, not a new confirmation. it is also a reminder that an unweighted token count can hide a real billing saving.
-- **two new plugin features were not measured.** worker routing never ran: under the lean profile's `--strict-mcp-config`, the plugin's `route_worker` mcp server does not load. decisionopportunity emission is shadow-only by design, so it could not change what the model saw.
+- **two new plugin features were not measured.** worker routing never ran in the original trial: under the lean profile's `--strict-mcp-config`, the plugin's `route_worker` mcp server does not load. decisionopportunity emission is shadow-only by design, so it could not change what the model saw.
+
+## gating did not clear the bar {#gating}
+
+the prompt-gated follow-up ran 372 trials. it failed both pre-registered tests against the session-start packet. on repo tasks, tokens changed −7.3%, but the interval ran from −13.8% to +0.8%. on current-work questions, they changed +16.6%, with an interval from −4.8% to +45.6%, against a +5% margin. correctness held. the overhead looked smaller. the registered claim still failed.
+
+worker routing became callable in 3/3 lean probe sessions, but returned PARENT_ONLY every time. that is a loadability result, not offload savings.
+
+source: [gated-packet addendum](https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/claude-code-savings-v1/ADDENDUM-v1b.md).
+
+## long is not the same as output-heavy {#long-followup}
+
+the longer follow-up ran 208 real sessions. across 10 long tasks, observationpack cut estimated cost 30.7% over lean, with an interval from −50.0% to −1.9% and success 39/40 in both arms. the primary test passed.
+
+all of the saving came from directed recall: −64.2%, with 25 outputs packed per session. long multi-bug debugging changed +1.3% under lean and +5.3% under stock. it was long, but the large bash outputs mostly never reached the packing hook.
+
+the aggregate quality guard passed. the recall subgroup did not: 12 → 11 correct sessions. one recall miss is not a general accuracy verdict, but it belongs beside the saving. 44 zero-token session-limit aborts were rerun after reset, so some nominally warm repetitions ran cold.
+
+source: [long-session addendum](https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/claude-code-savings-v1/ADDENDUM-obspack-long.md) and [imported results](https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/claude-code-savings-v1/data/obspack-long/results.json).
 
 ## what this does not prove {#limits}
 
@@ -67,10 +89,20 @@ the full current integration passes its pre-registered test: a third fewer bille
 - the qa suite shares one pinned directory per repo across arms, as in v0.
 - the evolution-lab task ids were frozen after the qa suite started but before the repo suite. this is disclosed in the pre-registration.
 
-<details>
-<summary><strong>references</strong></summary>
 
-- [claude-code-savings-v0](https://github.com/kvnloo/z0evals/tree/study/claude-code-savings-v0) — the study this re-measures.
-- [z0intelligence `study/claude-code-savings-v1`](https://github.com/kvnloo/z0intelligence/tree/study/claude-code-savings-v1) — PREREG.md, runner, tasks, analysis, aggregate results.
+
+
+<details>
+<summary><strong>frozen study sources</strong></summary>
+
+- [studies/claude-code-savings-v1/README.md](https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/claude-code-savings-v1/README.md)
+- [studies/claude-code-savings-v1/manifest.yaml](https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/claude-code-savings-v1/manifest.yaml)
+- [studies/claude-code-savings-v1/data/summary.json](https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/claude-code-savings-v1/data/summary.json)
+- [studies/claude-code-savings-v1/ADDENDUM-v1b.md](https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/claude-code-savings-v1/ADDENDUM-v1b.md)
+- [studies/claude-code-savings-v1/ADDENDUM-obspack-long.md](https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/claude-code-savings-v1/ADDENDUM-obspack-long.md)
+- [studies/claude-code-savings-v1/data/results.json](https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/claude-code-savings-v1/data/results.json)
+- [studies/claude-code-savings-v1/data/trials.csv](https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/claude-code-savings-v1/data/trials.csv)
+- [studies/claude-code-savings-v1/data/v1b/results.json](https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/claude-code-savings-v1/data/v1b/results.json)
+- [studies/claude-code-savings-v1/data/obspack-long/results.json](https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/claude-code-savings-v1/data/obspack-long/results.json)
 
 </details>

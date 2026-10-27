@@ -1,6 +1,6 @@
 ---
 title: "four pre-registered bars, four misses"
-subtitle: "a $0 gpu tier that works, a learned router that doesn't beat a generic one, and why the authority check has to live on the tool call."
+subtitle: "a keyless gpu tier below its proposed admission bar, a learned router that doesn't beat a generic one, and why the authority check has to live on the tool call."
 study: local-offload-and-authority-v0
 status: draft
 author: "zer0 research"
@@ -10,7 +10,7 @@ toc:
   - id: question
     label: two questions
   - id: offload
-    label: a $0 tier on the gpu box
+    label: a keyless tier on the gpu box
   - id: router
     label: the learned router is a generic one
   - id: effects
@@ -33,22 +33,22 @@ four of today's experiments were written down before they ran: the question, the
 
 z0intelligence decides two things for an agent harness. **where** bounded work runs when it does not need the frontier model, and **whether** the agent may do something without asking the human. today we tested one lever on the first question and three on the second, plus a fifth that is only registered so far. all of it ran in shadow; nothing was enforced on live traffic.
 
-## a $0 tier on the gpu box {#offload}
+## a keyless tier on the gpu box {#offload}
 
-groot is an rtx 3080 ti on the tailnet running a llama.cpp router server with four qwen3 sizes. z0intelligence `feat/groot-offload-provider` (8053faa) lets a host declare it as a keyless local provider: whitelisted keys only, a capped concurrency, the $0 route still has to pass its evidence hash check, and there is no remote fallback. we benched it on the frozen 48-item evidence_sufficiency set (supported / insufficient / contradicted).
+the desktop has an rtx 3080 ti on the local network running a llama.cpp router server with four qwen3 sizes. the z0intelligence offload-provider integration (8053faa) lets a host declare it as a keyless local provider: whitelisted keys only, a capped concurrency, the keyless route still has to pass its evidence hash check, and there is no remote fallback. we benched it on the frozen 48-item evidence_sufficiency set (supported / insufficient / contradicted).
 
 <table class="result-table">
 <thead><tr><th>backend</th><th>correct</th><th>confident errors</th><th>median ms/item</th></tr></thead>
 <tbody>
-<tr><td>macbook radeon (vulkan), qwen3-0.6b q8</td><td>25/48</td><td>3</td><td>1236</td></tr>
-<tr><td>groot, qwen3-0.6b q8</td><td>27/48</td><td>3</td><td>41</td></tr>
-<tr><td>groot, qwen3-1.7b q4_k_m</td><td>28/48</td><td>8</td><td>48</td></tr>
-<tr><td>groot, qwen3-4b q4_k_m</td><td>36/48</td><td>4</td><td>63</td></tr>
-<tr class="primary"><td>groot, qwen3-8b q4_k_m</td><td><strong>43/48</strong></td><td><strong>1</strong></td><td>90</td></tr>
+<tr><td>build laptop radeon (vulkan), qwen3-0.6b q8</td><td>25/48</td><td>3</td><td>1236</td></tr>
+<tr><td>the desktop, qwen3-0.6b q8</td><td>27/48</td><td>3</td><td>41</td></tr>
+<tr><td>the desktop, qwen3-1.7b q4_k_m</td><td>28/48</td><td>8</td><td>48</td></tr>
+<tr><td>the desktop, qwen3-4b q4_k_m</td><td>36/48</td><td>4</td><td>63</td></tr>
+<tr class="primary"><td>the desktop, qwen3-8b q4_k_m</td><td><strong>43/48</strong></td><td><strong>1</strong></td><td>90</td></tr>
 </tbody>
 </table>
 
-the same 0.6b weights run about 30x faster on groot. qwen3-8b reached 43/48 with one confident error, one item short of the ≥44/48 bar we proposed for replacing jev (46/48, from earlier work) on this task. so it is the offload default, not an admitted replacement. one honest caveat: that bar was written next to the bench, not committed before it.
+the same 0.6b weights run about 30x faster on the desktop. qwen3-8b reached 43/48 with one confident error, one item short of the ≥44/48 bar we proposed for replacing jev (46/48, from earlier work) on this task. so it is the offload default, not an admitted replacement. one honest caveat: that bar was written next to the bench, not committed before it.
 
 ## the learned router is a generic one {#router}
 
@@ -59,9 +59,9 @@ with a legal candidate set already filtered by policy, would nvidia's nemotron-o
 - a trivial `cheapest` rule got 35/59, and a fixed `strongest` rule delivered a 0.90 pass rate on the 48 evidence items. the orchestrator never proposed the 4b or 8b candidate. it optimised the stated latency preference and did not predict difficulty.
 - it costs about +6 gb of vram and a 3.6 s p50 per decision with thinking on.
 
-the deterministic arm scored 0 on the evidence set for a boring reason: the host listed its own 1236 ms copy of the 0.6b model before groot's 41 ms copy of the same weights. that is a host-ordering bug, not a routing insight, and z0intelligence b072468 lets the host choose the order.
+the deterministic arm scored 0 on the evidence set for a boring reason: the host listed its own 1236 ms copy of the 0.6b model before the desktop's 41 ms copy of the same weights. that is a host-ordering bug, not a routing insight, and z0intelligence b072468 lets the host choose the order.
 
-we then re-scored only the deterministic arm with this host's `local_order = [groot, local]`, under a short addendum pre-registration (0e90053) committed before the re-run. it used the same 59 items, the same per-model outcomes and the same gold, and made no model calls. the deterministic choice became groot's qwen3-8b on all 48 evidence items. the evidence-set pass rate went from 0.52 to **0.90** and mean regret from 1.44 to **0.13**. pooled over 59 items, that is 12/59 correct choices, a 0.86 pass rate and 0.11 regret, against 0.35 for `cheapest` (336cb47). the fix is confirmed. choice accuracy stays low by construction, because gold is the cheapest model that passes and the 8b rarely is. this does not change the orchestrator verdict above.
+we then re-scored only the deterministic arm with this host's the desktop-first host order, under a short addendum pre-registration (0e90053) committed before the re-run. it used the same 59 items, the same per-model outcomes and the same gold, and made no model calls. the deterministic choice became the desktop's qwen3-8b on all 48 evidence items. the evidence-set pass rate went from 0.52 to **0.90** and mean regret from 1.44 to **0.13**. pooled over 59 items, that is 12/59 correct choices, a 0.86 pass rate and 0.11 regret, against 0.35 for `cheapest` (336cb47). the fix is confirmed. choice accuracy stays low by construction, because gold is the cheapest model that passes and the 8b rarely is. this does not change the orchestrator verdict above.
 
 ## reading authority from the prompt {#effects}
 
@@ -94,17 +94,23 @@ of the 22 misses, 16 are parser misses: mostly writes outside the repo made from
 
 ## what this does not prove {#limits}
 
+no hosted per-call invoice does not mean zero hardware, energy or operating cost. those costs were not metered.
+
+
 - **one principal.** every live cohort and replay comes from one operator's claude code usage. in the authority replay, one session and its subagents carry 2,765 of 3,716 calls and all 291 parsed-privileged calls.
 - **llm-labelled gold.** held-out cases and all authority gold were written by separate llm agents from a label policy, not by the user. two v1 misses have disputed gold.
 - **small n.** 48 evidence items, 59 routing items, 60 and 88 held-out prompts, 10–11 live turns. only large effects are detectable.
 - router outcomes are reused single samples, and orchestrator-8b was trained for multi-turn orchestration with frontier experts, so a one-shot pick among small local models is off its distribution.
 - all four verdicts are on shadow replays. none of these levers is enforced, and none is promoted by this study.
 
-<details>
-<summary><strong>references</strong></summary>
 
-- [z0intelligence](https://github.com/kvnloo/z0intelligence): branches `feat/groot-offload-provider`, `exp/orchestrator-router-v0`, `feat/effect-inference-v0`, `feat/effect-inference-v1`, `feat/action-authority-v0`, `feat/resource-posture-v0`. commits are pinned in the study manifest.
-- [nvidia/nemotron-orchestrator-8b](https://huggingface.co/nvidia/Nemotron-Orchestrator-8B) and [nvlabs/toolorchestra](https://github.com/NVlabs/ToolOrchestra): the model and the prompt format under test.
-- [qwen3](https://huggingface.co/Qwen): the offload models.
+
+
+<details>
+<summary><strong>frozen study sources</strong></summary>
+
+- [studies/local-offload-and-authority-v0/README.md](https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/local-offload-and-authority-v0/README.md)
+- [studies/local-offload-and-authority-v0/manifest.yaml](https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/local-offload-and-authority-v0/manifest.yaml)
+- [studies/local-offload-and-authority-v0/data/summary.json](https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/local-offload-and-authority-v0/data/summary.json)
 
 </details>

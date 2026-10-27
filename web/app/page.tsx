@@ -93,6 +93,7 @@ export default function Page() {
           <nav className="site-nav" aria-label="research pages">
             <a className="brand" href="./">z0evals</a>
             <div className="links">
+              <a href="./log/">log</a>
               <a href="./" aria-current="page">phase 1b</a>
               <a href="./z0intelligence-function-routing/">routing</a>
               <a href="./researching-the-frontier/">research</a>
@@ -121,7 +122,11 @@ export default function Page() {
         <main className="article">
           <MobileToc items={TOC} />
           <div className="article-body prose">
-            <Callout kind="info" title="latest research · october 5">
+            <Callout kind="info" title="start here · the research log">
+              <p>
+                every eval, experiment and idea, with what it does and does not show, now lives on one page:{" "}
+                <a href="./log/">the research log</a>. it also says where our attention is going next, and why.
+              </p>
               <p>
                 phase 1b is still the baseline story below. the newer work continues in{" "}
                 <a href="./z0intelligence-function-routing/">what actually deserves a model?</a>,{" "}

@@ -49,22 +49,22 @@ export default function LadderFlow() {
       <svg viewBox={`0 0 ${W} ${H}`} className="chart-svg" role="img"
            aria-label="escalation ladder from deterministic compilation to the general fallback">
         <line x1={L + 11} x2={L + 11} y1={T + 12} y2={T + (RUNGS.length - 1) * rowH + 12}
-              stroke="#d9d9d9" strokeWidth="1" />
+              stroke="rgba(236,232,223,0.16)" strokeWidth="1" />
         {RUNGS.map((r, i) => {
           const lit = step >= i;
           const active = step === i;
           const y = T + i * rowH;
           return (
             <g key={r.id} className="mark" style={{ opacity: lit ? 1 : 0.35, transition: "opacity .35s ease" }}>
-              <line x1={L + 4} x2={L + 18} y1={y + 12} y2={y + 12} stroke={lit ? "#29916e" : "#d9d9d9"} strokeWidth="1.5" />
-              <circle cx={L + 11} cy={y + 12} r={active ? 6 : 4} fill={lit ? "#29916e" : "#fff"}
-                      stroke="#29916e" strokeWidth="1.5"
+              <line x1={L + 4} x2={L + 18} y1={y + 12} y2={y + 12} stroke={lit ? "#d7b986" : "rgba(236,232,223,0.16)"} strokeWidth="1.5" />
+              <circle cx={L + 11} cy={y + 12} r={active ? 6 : 4} fill={lit ? "#d7b986" : "#0c0c0a"}
+                      stroke="#d7b986" strokeWidth="1.5"
                       style={{ animation: active ? "packetPulse 1s ease-in-out infinite" : "none",
                                transition: "r .3s ease" }} />
-              <text x={L + 32} y={y + 9} fontSize="12.5" fill="#1a3029" fontWeight={active ? 700 : 500}>{r.label}</text>
+              <text x={L + 32} y={y + 9} fontSize="12.5" fill="#ECE8DF" fontWeight={active ? 700 : 500}>{r.label}</text>
               <text x={L + 32} y={y + 25} fontSize="11" fill="#888">{r.detail}</text>
               <text x={W - R_PAD} y={y + 16} fontSize="11.5" textAnchor="end"
-                    fill={lit ? "#29916e" : "#a8a8a8"} fontFamily="var(--font-mono)">{r.ms} ms</text>
+                    fill={lit ? "#d7b986" : "#837F74"} fontFamily="var(--font-mono)">{r.ms} ms</text>
             </g>
           );
         })}

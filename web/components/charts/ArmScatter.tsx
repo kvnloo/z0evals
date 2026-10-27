@@ -43,20 +43,20 @@ export default function ArmScatter({ arms }: { arms: Arm[] }) {
         ))}
         <line className="axis" x1={L} x2={W - R} y1={H - B} y2={H - B} />
         <line className="axis" x1={L} x2={L} y1={T} y2={H - B} />
-        <text x={L + innerW / 2} y={H - 8} textAnchor="middle" fontSize="11.5" fill="#676767">
+        <text x={L + innerW / 2} y={H - 8} textAnchor="middle" fontSize="11.5" fill="#837F74">
           warm p50 latency (log)
         </text>
         <text transform={`translate(13 ${T + innerH / 2}) rotate(-90)`} textAnchor="middle"
-              fontSize="11.5" fill="#676767">bounded-choice success</text>
+              fontSize="11.5" fill="#837F74">bounded-choice success</text>
 
-        <polyline fill="none" stroke="#1a3029" strokeWidth="1.25" strokeDasharray="3 3"
+        <polyline fill="none" stroke="#ECE8DF" strokeWidth="1.25" strokeDasharray="3 3"
                   points={front.map((a) => `${x(a.warmP50Ms!)},${y(a.successRate)}`).join(" ")}
                   style={{ opacity: shown ? 0.5 : 0, transition: "opacity .5s ease .15s" }} />
 
         {arms.map((a, i) => {
           const cx = x(lat(a)), cy = y(a.successRate);
           const [lo, hi] = a.wilson95;
-          const stroke = a.unfiltered ? "#b91c1c" : "#29916e";
+          const stroke = a.unfiltered ? "#e37f65" : "#d7b986";
           return (
             <g
               key={a.id}
@@ -72,8 +72,8 @@ export default function ArmScatter({ arms }: { arms: Arm[] }) {
               <line x1={cx} x2={cx} y1={y(lo)} y2={y(hi)} stroke={stroke} strokeWidth="1" opacity="0.4" />
               <line x1={cx - 4} x2={cx + 4} y1={y(lo)} y2={y(lo)} stroke={stroke} strokeWidth="1" opacity="0.5" />
               <line x1={cx - 4} x2={cx + 4} y1={y(hi)} y2={y(hi)} stroke={stroke} strokeWidth="1" opacity="0.5" />
-              <circle cx={cx} cy={cy} r={a.unfiltered ? 7 : 5.5} fill={stroke} stroke="#fff" strokeWidth="1.5" />
-              <text x={cx + 11} y={cy + 3.5} fontSize="11" fill="#3c3836">{a.label}</text>
+              <circle cx={cx} cy={cy} r={a.unfiltered ? 7 : 5.5} fill={stroke} stroke="#0c0c0a" strokeWidth="1.5" />
+              <text x={cx + 11} y={cy + 3.5} fontSize="11" fill="#B4AFA3">{a.label}</text>
             </g>
           );
         })}
@@ -85,9 +85,9 @@ export default function ArmScatter({ arms }: { arms: Arm[] }) {
         </div>
       ) : null}
       <div className="legend">
-        <span><i className="swatch" style={{ background: "#29916e" }} />compiler-first</span>
-        <span><i className="swatch" style={{ background: "#b91c1c" }} />unfiltered control</span>
-        <span><i className="swatch" style={{ background: "#1a3029" }} />pareto frontier</span>
+        <span><i className="swatch" style={{ background: "#d7b986" }} />compiler-first</span>
+        <span><i className="swatch" style={{ background: "#e37f65" }} />unfiltered control</span>
+        <span><i className="swatch" style={{ background: "#ECE8DF" }} />pareto frontier</span>
       </div>
     </div>
   );

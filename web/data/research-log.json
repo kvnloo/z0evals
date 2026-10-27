@@ -1,0 +1,2199 @@
+{
+ "updated": "2026-10-23",
+ "entries": [
+  {
+   "id": "fsm-work-item-v0",
+   "title": "Work-item laws and incident replay",
+   "area": "governance",
+   "question": "Can a small proven statechart detect work that was merged, stranded or served without the required evidence?",
+   "status": "draft-pr",
+   "date": "2026-10-21",
+   "finding": "Source-reported: 15 Bend claims under L1–L7 pass, 10/10 mutants are rejected, and the Python twin matches 400 seeded tapes over 5,077 events. The replay flags 39 integrations without a head receipt, 13 dropped interrupted workers and 32 stranded-integration candidates.",
+   "caveat": "Emitted-book proof only; finite parity and heuristic historical mapping are not proofs of runtime behavior. The README says 174 items but the public artifact lists 111 PRs, 5 services and 59 workers; the total is inconsistent. Shared GitHub identity prevents attributing self-approval.",
+   "links": [
+    {
+     "label": "kvnloo/z0evals PR #105",
+     "url": "https://github.com/kvnloo/z0evals/pull/105"
+    },
+    {
+     "label": "studies/fsm-work-item-v0/README.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/d8a9658dec11e08425ebdc204b75ab3acb526a43/studies/fsm-work-item-v0/README.md"
+    },
+    {
+     "label": "studies/fsm-work-item-v0/manifest.yaml",
+     "url": "https://github.com/kvnloo/z0evals/blob/d8a9658dec11e08425ebdc204b75ab3acb526a43/studies/fsm-work-item-v0/manifest.yaml"
+    },
+    {
+     "label": "studies/fsm-work-item-v0/data/bend-receipt.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/d8a9658dec11e08425ebdc204b75ab3acb526a43/studies/fsm-work-item-v0/data/bend-receipt.json"
+    },
+    {
+     "label": "studies/fsm-work-item-v0/data/bend-mutations.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/d8a9658dec11e08425ebdc204b75ab3acb526a43/studies/fsm-work-item-v0/data/bend-mutations.json"
+    },
+    {
+     "label": "studies/fsm-work-item-v0/data/parity-seed7.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/d8a9658dec11e08425ebdc204b75ab3acb526a43/studies/fsm-work-item-v0/data/parity-seed7.json"
+    },
+    {
+     "label": "studies/fsm-work-item-v0/data/replay-public-20261021.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/d8a9658dec11e08425ebdc204b75ab3acb526a43/studies/fsm-work-item-v0/data/replay-public-20261021.json"
+    },
+    {
+     "label": "statechart program issue #182",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/182"
+    }
+   ],
+   "interesting": false,
+   "why": "The same transition model becomes an incident detector, but its evidence must retain candidates and unknowns rather than turn them into proven violations.",
+   "post": "bend-statecharts-v0"
+  },
+  {
+   "id": "fsm-worker-supervision-v0",
+   "title": "Worker supervision and lease replay",
+   "area": "governance",
+   "question": "Can worker lifecycle laws expose lost work, lease collisions and unobserved resource waits?",
+   "status": "draft-pr",
+   "date": "2026-10-21",
+   "finding": "Source-reported: 19 claims under W1–W6 pass, 17/17 mutants are rejected, and 400 worker tapes cover 3,370 events plus 100 lease and 100 device tapes. Replay finds 26 overdue workers and 419 writes in another session’s lease; the original 13 dropped workers are classified as 10 resume, 2 already integrated and 1 abandon.",
+   "caveat": "Heartbeat, successor and lease mapping are heuristic; recommended actions were not performed. The README’s fleet “no queue wait” wording is not supported by end-to-end queue clocks: the public data explicitly exclude retry-queue time and record busy retries.",
+   "links": [
+    {
+     "label": "kvnloo/z0evals PR #111",
+     "url": "https://github.com/kvnloo/z0evals/pull/111"
+    },
+    {
+     "label": "studies/fsm-worker-supervision-v0/README.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/c621fbbb02300bef45382d01306641eaec5cf3da/studies/fsm-worker-supervision-v0/README.md"
+    },
+    {
+     "label": "studies/fsm-worker-supervision-v0/manifest.yaml",
+     "url": "https://github.com/kvnloo/z0evals/blob/c621fbbb02300bef45382d01306641eaec5cf3da/studies/fsm-worker-supervision-v0/manifest.yaml"
+    },
+    {
+     "label": "studies/fsm-worker-supervision-v0/data/bend-receipt.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/c621fbbb02300bef45382d01306641eaec5cf3da/studies/fsm-worker-supervision-v0/data/bend-receipt.json"
+    },
+    {
+     "label": "studies/fsm-worker-supervision-v0/data/bend-mutations.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/c621fbbb02300bef45382d01306641eaec5cf3da/studies/fsm-worker-supervision-v0/data/bend-mutations.json"
+    },
+    {
+     "label": "studies/fsm-worker-supervision-v0/data/parity-seed7.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/c621fbbb02300bef45382d01306641eaec5cf3da/studies/fsm-worker-supervision-v0/data/parity-seed7.json"
+    },
+    {
+     "label": "studies/fsm-worker-supervision-v0/data/supervise-public-20261021.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/c621fbbb02300bef45382d01306641eaec5cf3da/studies/fsm-worker-supervision-v0/data/supervise-public-20261021.json"
+    }
+   ],
+   "interesting": false,
+   "why": "The replay turns a vague lost-worker problem into a bounded decision queue without pretending that a recommendation is an executed recovery.",
+   "post": "bend-statecharts-v0"
+  },
+  {
+   "id": "fsm-integration-v0",
+   "title": "Integration safety and debt inventory",
+   "area": "governance",
+   "question": "Can an integration-owner statechart separate overdue work from missing deployment evidence?",
+   "status": "draft-pr",
+   "date": "2026-10-21",
+   "finding": "Source-reported: 11/11 semantic mutants are rejected and Python/Bend parity covers 625 tapes, 16,225 prefix comparisons, 20 deadline cases and 300 lease cases. The inventory has 90 open drafts across 8 repositories and 79 findings including gaps: 21 definite overdue-uncontained drafts, 27 unverifiable drafts and 6 unattested runtime/build revisions.",
+   "caveat": "A deadline monitor is not a liveness proof; 79 findings are not 79 proven failures. Checkout drift does not attest an installed build, browser probes after the initial snapshot are WHAT-IF, and the full upstream browser-project gate was blocked by missing Vitest.",
+   "links": [
+    {
+     "label": "kvnloo/z0evals PR #113",
+     "url": "https://github.com/kvnloo/z0evals/pull/113"
+    },
+    {
+     "label": "studies/fsm-integration-v0/README.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/760725750491a9b01fc40f49430af7cb5f299de0/studies/fsm-integration-v0/README.md"
+    },
+    {
+     "label": "studies/fsm-integration-v0/manifest.yaml",
+     "url": "https://github.com/kvnloo/z0evals/blob/760725750491a9b01fc40f49430af7cb5f299de0/studies/fsm-integration-v0/manifest.yaml"
+    },
+    {
+     "label": "studies/fsm-integration-v0/data/bend-receipt-public.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/760725750491a9b01fc40f49430af7cb5f299de0/studies/fsm-integration-v0/data/bend-receipt-public.json"
+    },
+    {
+     "label": "studies/fsm-integration-v0/data/bend-mutations.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/760725750491a9b01fc40f49430af7cb5f299de0/studies/fsm-integration-v0/data/bend-mutations.json"
+    },
+    {
+     "label": "studies/fsm-integration-v0/data/parity-seed3.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/760725750491a9b01fc40f49430af7cb5f299de0/studies/fsm-integration-v0/data/parity-seed3.json"
+    },
+    {
+     "label": "studies/fsm-integration-v0/data/integration-public-20261021.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/760725750491a9b01fc40f49430af7cb5f299de0/studies/fsm-integration-v0/data/integration-public-20261021.json"
+    },
+    {
+     "label": "studies/fsm-integration-v0/data/browser-public.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/760725750491a9b01fc40f49430af7cb5f299de0/studies/fsm-integration-v0/data/browser-public.json"
+    }
+   ],
+   "interesting": false,
+   "why": "The checker refuses to manufacture a healthy deployment from a matching checkout and keeps missing integration ownership separate from proven policy violations.",
+   "post": "bend-statecharts-v0"
+  },
+  {
+   "id": "aodl-admission-v1",
+   "title": "AODL admission conformance",
+   "area": "governance",
+   "question": "Does the structural admission contract reject invalid authority and replay deterministically?",
+   "status": "draft-pr",
+   "date": "2026-10-01",
+   "finding": "The frozen scaffold declares separate cases for denial families 101–106, deterministic replay and semantic identity distinct from source lineage. Its manifest has claims: [] and the branch contains no generated admission receipt dataset.",
+   "caveat": "This is a draft structural contract, not provider dispatch or verified task success. The PR reports a scaffold pass, but committed result receipts are absent; Bend is a differential reference, not runtime authority.",
+   "links": [
+    {
+     "label": "kvnloo/z0evals PR #79",
+     "url": "https://github.com/kvnloo/z0evals/pull/79"
+    },
+    {
+     "label": "studies/aodl-admission-v1/README.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/9141c3d7b4c1380ab126305b9b6df9ae5df609de/studies/aodl-admission-v1/README.md"
+    },
+    {
+     "label": "studies/aodl-admission-v1/manifest.yaml",
+     "url": "https://github.com/kvnloo/z0evals/blob/9141c3d7b4c1380ab126305b9b6df9ae5df609de/studies/aodl-admission-v1/manifest.yaml"
+    }
+   ],
+   "interesting": false,
+   "why": "Authority is pinned to the validated contract rather than caller-supplied limits; structural ALLOW is deliberately not labeled success.",
+   "post": null
+  },
+  {
+   "id": "aodl-runtime-v1",
+   "title": "AODL runtime ordering and restart",
+   "area": "governance",
+   "question": "Does admission become durable before dispatch while restart and drift remain idempotent?",
+   "status": "draft-pr",
+   "date": "2026-10-01",
+   "finding": "The runtime README specifies admission-before-dispatch, denial without dispatch, restart reuse, idempotent replay and immutable authored lineage. Provider validation is replaced with a deterministic no-op; the manifest explicitly sets provider_execution: false and network_calls: false.",
+   "caveat": "The frozen runner is present, but no generated runtime-proof result is committed on this branch. Its contract cannot establish actual provider admission, credentials behavior or physical execution.",
+   "links": [
+    {
+     "label": "kvnloo/z0evals PR #80",
+     "url": "https://github.com/kvnloo/z0evals/pull/80"
+    },
+    {
+     "label": "studies/aodl-admission-v1/RUNTIME.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/f75d2f7ed7872154c314578c4f6687b42efed612/studies/aodl-admission-v1/RUNTIME.md"
+    },
+    {
+     "label": "studies/aodl-admission-v1/runtime-manifest.yaml",
+     "url": "https://github.com/kvnloo/z0evals/blob/f75d2f7ed7872154c314578c4f6687b42efed612/studies/aodl-admission-v1/runtime-manifest.yaml"
+    }
+   ],
+   "interesting": false,
+   "why": "The admission-to-dispatch crash window is tested as a separate seam instead of inferring durability from a completed task.",
+   "post": null
+  },
+  {
+   "id": "aodl-golden-trace-v1",
+   "title": "AODL golden-trace collector",
+   "area": "governance",
+   "question": "Can one governed root trace keep structural completion separate from an independently verified outcome?",
+   "status": "draft-pr",
+   "date": "2026-10-01",
+   "finding": "The collector defines stages 1–6 for structural/execution completion and stage 7 for a separately joined verified outcome. The public CANONICAL_OK fixture requires that exact-output verifier; the allowlisted importer copies five sanitized JSON files and never imports raw state.",
+   "caveat": "This branch freezes the collector, schemas and importer, not an imported completed live-canary dataset. Synthetic collector regression passes reported in the PR do not supply missing runtime stages.",
+   "links": [
+    {
+     "label": "kvnloo/z0evals PR #81",
+     "url": "https://github.com/kvnloo/z0evals/pull/81"
+    },
+    {
+     "label": "studies/aodl-admission-v1/GOLDEN_TRACE.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/6652713e25fb159a047457acfe348bd5ec98e146/studies/aodl-admission-v1/GOLDEN_TRACE.md"
+    },
+    {
+     "label": "studies/aodl-admission-v1/golden-trace-manifest.yaml",
+     "url": "https://github.com/kvnloo/z0evals/blob/6652713e25fb159a047457acfe348bd5ec98e146/studies/aodl-admission-v1/golden-trace-manifest.yaml"
+    }
+   ],
+   "interesting": false,
+   "why": "A completed provider response cannot silently become verified success, and a missing joined outcome remains visible.",
+   "post": null
+  },
+  {
+   "id": "causal-ablation-v0",
+   "title": "Causal attribution remains unresolved",
+   "area": "research",
+   "question": "What component attribution is actually supported by the published compiler-versus-unfiltered results?",
+   "status": "draft-pr",
+   "date": "2026-09-30",
+   "finding": "Four same-backend contrasts cover the same 28 state groups: Hammer2.1 3B +7.14 percentage points, Nemotron Orchestrator 8B -10.71 percentage points, Qwen3.5 4B 0 percentage points and Qwen3.5 9B 0 percentage points. Every compared arm has 0/84 known costUsd readings.",
+   "caveat": "These are recomputed source-label contrasts, not reproduced model measurements, independent outcomes or causal effects. Work-item lineage, folds, label-generator identity and original runtime/configuration pins remain unknown.",
+   "links": [
+    {
+     "label": "kvnloo/z0evals PR #76",
+     "url": "https://github.com/kvnloo/z0evals/pull/76"
+    },
+    {
+     "label": "studies/causal-ablation-v0/README.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/fe98c61e240ad451eddd22989bb9476e7392c13a/studies/causal-ablation-v0/README.md"
+    },
+    {
+     "label": "studies/causal-ablation-v0/manifest.yaml",
+     "url": "https://github.com/kvnloo/z0evals/blob/fe98c61e240ad451eddd22989bb9476e7392c13a/studies/causal-ablation-v0/manifest.yaml"
+    },
+    {
+     "label": "studies/causal-ablation-v0/data/phase1b-audit.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/fe98c61e240ad451eddd22989bb9476e7392c13a/studies/causal-ablation-v0/data/phase1b-audit.json"
+    }
+   ],
+   "interesting": false,
+   "why": "A positive contrast, a negative contrast and two nulls survive the same audit; repeated attempts are not promoted into independent experimental units.",
+   "post": null
+  },
+  {
+   "id": "protected-evaluator-v0",
+   "title": "Protected scoring and frozen incumbents",
+   "area": "governance",
+   "question": "Can an adaptive evaluator refuse improvement credit when the holdout or incumbent was not independently frozen?",
+   "status": "draft-pr",
+   "date": "2026-10-19",
+   "finding": "The frozen diagnostic reports no-skill baseline 0 / 2 and explicit-proposal body 0 / 2, both with 0 actual inspection calls and group-macro score 0.0. The scorer returned DISCARD, delta 0.0; the newer guard binds holdout bytes before queries and uses exact fractions for comparisons.",
+   "caveat": "The negative diagnostic used private source material; only published aggregates are retained. Same-user files are not an independent custody boundary, authentic incumbent execution still needs owner evidence, and the latest scorer guard is unmerged.",
+   "links": [
+    {
+     "label": "kvnloo/z0evals PR #95",
+     "url": "https://github.com/kvnloo/z0evals/pull/95"
+    },
+    {
+     "label": "studies/protected-evaluator-v0/README.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/588c21aeedf8f896fb83988c18351e7a4e100b9f/studies/protected-evaluator-v0/README.md"
+    },
+    {
+     "label": "studies/protected-evaluator-v0/manifest.yaml",
+     "url": "https://github.com/kvnloo/z0evals/blob/588c21aeedf8f896fb83988c18351e7a4e100b9f/studies/protected-evaluator-v0/manifest.yaml"
+    },
+    {
+     "label": "original evaluator contract on preview",
+     "url": "https://github.com/kvnloo/z0evals/blob/7047645132690d5947341684dcfd05d1cf160933/studies/protected-evaluator-v0/README.md"
+    }
+   ],
+   "interesting": false,
+   "why": "A high score without a pinned comparable baseline receives no sealed comparison credit; an exact tie cannot become KEEP through floating-point noise.",
+   "post": null
+  },
+  {
+   "id": "hcl-eval-v0",
+   "title": "Human-capability contract fixtures",
+   "area": "research",
+   "question": "Can a synthetic outcome contract reject missingness and timing errors without pretending to measure human benefit?",
+   "status": "draft-pr",
+   "date": "2026-10-21",
+   "finding": "The README reports 14/14 synthetic test methods; the CLI shows one observed control outcome and one missing candidate outcome. Accepted input always reports CONTRACT_ONLY, human_benefit=NOT_EVALUATED and can_promote=false.",
+   "caveat": "No manifest is intentionally frozen for this pre-study slice. Invented fixture revisions/timestamps are not authentic registration, a synthetic label is not a privacy guarantee, and no real human efficacy or health conclusion is evaluated.",
+   "links": [
+    {
+     "label": "kvnloo/z0evals PR #106",
+     "url": "https://github.com/kvnloo/z0evals/pull/106"
+    },
+    {
+     "label": "studies/hcl-eval-v0/README.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/b21389eafc41d0c95b278718f822e93ad3581ff4/studies/hcl-eval-v0/README.md"
+    }
+   ],
+   "interesting": false,
+   "why": "The missing candidate is neither filled with zero nor turned into a winner; conformance stays separate from benefit.",
+   "post": null
+  },
+  {
+   "id": "engineering-throughput-v0",
+   "title": "Useful work versus faster activity",
+   "area": "speed-ux",
+   "question": "Does a faster collector retain the required facts when failures and preparation remain in the accounting?",
+   "status": "draft-pr",
+   "date": "2026-10-20",
+   "finding": "In the bounded source-reported confirmation, control took 31.121s versus candidate 11.280s including measured preparation: 63.75percent lower observed work time. Both retained the prespecified useful facts; the candidate’s extra user-service timeout is retained, and incomplete first-use optimization cost prevents a complete ROI claim.",
+   "caveat": "One related workflow family and one fresh work item per arm are not fleet-wide throughput or a causal estimate. The earlier package-loss candidate was rejected; stale-reference failures remain failures, independent custody and full assistant latency are absent.",
+   "links": [
+    {
+     "label": "kvnloo/z0evals PR #102",
+     "url": "https://github.com/kvnloo/z0evals/pull/102"
+    },
+    {
+     "label": "studies/engineering-throughput-v0/manifest.yaml",
+     "url": "https://github.com/kvnloo/z0evals/blob/6d63b5582f505407f46e024d620f591c0e1e398d/studies/engineering-throughput-v0/manifest.yaml"
+    },
+    {
+     "label": "studies/engineering-throughput-v0/data/iac-collection-v3.confirmation-facts.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/6d63b5582f505407f46e024d620f591c0e1e398d/studies/engineering-throughput-v0/data/iac-collection-v3.confirmation-facts.json"
+    },
+    {
+     "label": "studies/engineering-throughput-v0/data/iac-collection-v3-confirmation.report.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/6d63b5582f505407f46e024d620f591c0e1e398d/studies/engineering-throughput-v0/data/iac-collection-v3-confirmation.report.json"
+    },
+    {
+     "label": "studies/engineering-throughput-v0/data/iac-collection-v3-first-use.report.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/6d63b5582f505407f46e024d620f591c0e1e398d/studies/engineering-throughput-v0/data/iac-collection-v3-first-use.report.json"
+    },
+    {
+     "label": "studies/engineering-throughput-v0/data/native-facts.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/6d63b5582f505407f46e024d620f591c0e1e398d/studies/engineering-throughput-v0/data/native-facts.json"
+    }
+   ],
+   "interesting": false,
+   "why": "The faster first candidate lost required facts and was rejected; the later bounded win is not allowed to erase failed work or partial first-use cost.",
+   "post": null
+  },
+  {
+   "id": "omp-qualification-v0",
+   "title": "Functional repair is not qualification",
+   "area": "governance",
+   "question": "Can the native launcher preserve strict qualification failures while correcting paths and error reporting?",
+   "status": "draft-pr",
+   "date": "2026-10-10",
+   "finding": "The committed provenance records four offline reporting controls and two archived native transcripts with strict_rejection_set_unchanged: true and historical_results_unchanged: true. The independent oracle declares 4 cases; the registered wrapper’s live qualification is explicitly not rerun.",
+   "caveat": "The PR’s historical functional repair pass is not a new live acceptance of the reporting revision. Independent review reports skip-with-success, escape-check and reuse-attestation gaps; same-user policy/hash controls do not establish independent evaluator custody.",
+   "links": [
+    {
+     "label": "kvnloo/z0evals PR #94",
+     "url": "https://github.com/kvnloo/z0evals/pull/94"
+    },
+    {
+     "label": "studies/unified-memory-v0/omp-launcher-paths.provenance.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/760e78e7fb36278d8c984aacb64737b929b6e532/studies/unified-memory-v0/omp-launcher-paths.provenance.json"
+    },
+    {
+     "label": "studies/unified-memory-v0/test_omp_reuse_oracle.py",
+     "url": "https://github.com/kvnloo/z0evals/blob/760e78e7fb36278d8c984aacb64737b929b6e532/studies/unified-memory-v0/test_omp_reuse_oracle.py"
+    },
+    {
+     "label": "studies/unified-memory-v0/omp_qualification_paths.py",
+     "url": "https://github.com/kvnloo/z0evals/blob/760e78e7fb36278d8c984aacb64737b929b6e532/studies/unified-memory-v0/omp_qualification_paths.py"
+    }
+   ],
+   "interesting": false,
+   "why": "A repaired artifact can pass functional tests while strict qualification remains unresolved; corrected reporting must not rewrite historical failures.",
+   "post": null
+  },
+  {
+   "id": "bend2-memory-authority-v0",
+   "title": "Memory cannot grant permission",
+   "area": "memory",
+   "question": "Can a pure memory projection preserve useful evidence without changing externally supplied authority?",
+   "status": "draft-pr",
+   "date": "2026-10-23",
+   "finding": "The README defines nine quantified laws and 28 finite configurations over admitted, retrieved, replayed and absent memory. A later public operator receipt reports 33 tests, kernel PASS, 28 finite vectors/84 projected bits exact and rejection of the remembered-permission escalation mutant.",
+   "caveat": "These are source-reported executions, not reproduced here. README execution-pending prose is historical relative to the later receipt; emitted-book proof does not attest source/compiler equivalence, trusted grant inputs, native authenticity or universal retrieval enforcement. Scope/correction laws remain future work.",
+   "links": [
+    {
+     "label": "kvnloo/z0intelligence PR #202",
+     "url": "https://github.com/kvnloo/z0intelligence/pull/202"
+    },
+    {
+     "label": "kvnloo/z0intelligence PR #200",
+     "url": "https://github.com/kvnloo/z0intelligence/pull/200"
+    },
+    {
+     "label": "bend/memory_authority/README.md",
+     "url": "https://github.com/kvnloo/z0intelligence/blob/37668503f3f15cc99760153fa857fd59817bd391/bend/memory_authority/README.md"
+    },
+    {
+     "label": "bend/memory_authority/LAWS.bend",
+     "url": "https://github.com/kvnloo/z0intelligence/blob/37668503f3f15cc99760153fa857fd59817bd391/bend/memory_authority/LAWS.bend"
+    },
+    {
+     "label": "bend/memory_authority/PROOF.bend",
+     "url": "https://github.com/kvnloo/z0intelligence/blob/37668503f3f15cc99760153fa857fd59817bd391/bend/memory_authority/PROOF.bend"
+    },
+    {
+     "label": "bend/memory_authority/toolchain.json",
+     "url": "https://github.com/kvnloo/z0intelligence/blob/37668503f3f15cc99760153fa857fd59817bd391/bend/memory_authority/toolchain.json"
+    },
+    {
+     "label": "later public qualification and remaining trust gaps",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/199#issuecomment-6375138066"
+    }
+   ],
+   "interesting": false,
+   "why": "Useful evidence and positive explicit grants survive, so the law is stronger than an all-deny model; remembered approval still cannot authorize a tool.",
+   "post": null
+  },
+  {
+   "id": "bend2-law-program-v0",
+   "title": "Bend proof-gate research program",
+   "area": "governance",
+   "question": "Which deterministic policy boundaries should become laws rather than prose?",
+   "status": "draft-pr",
+   "date": "2026-10-23",
+   "finding": "The context draft separates pure Bend laws, proof witnesses, finite parity, host-adapter tests and observed outcomes. It inventories implemented work-item L1–L7, supervision W1–W6 and integration I1–I5 families without claiming that every proposed law is proved or deployed.",
+   "caveat": "This is a documentation and design program, not an additional experiment. Recovered personal history is not republished; a compiler-emitted-book PASS and a CI workflow are not proof of source equivalence or protected owner-controlled branch policy.",
+   "links": [
+    {
+     "label": "kvnloo/z0intelligence PR #200",
+     "url": "https://github.com/kvnloo/z0intelligence/pull/200"
+    },
+    {
+     "label": "docs/bend2/CONTEXT.md",
+     "url": "https://github.com/kvnloo/z0intelligence/blob/232d73dd9f1399c2536bdaf13fd2e6429d09b10d/docs/bend2/CONTEXT.md"
+    },
+    {
+     "label": "Bend law program issue #199",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/199"
+    },
+    {
+     "label": "statechart program issue #182",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/182"
+    }
+   ],
+   "interesting": false,
+   "why": "The design forces proof scope, toolchain trust and point-of-action enforcement to be audited separately instead of treating a green theorem as a permission token.",
+   "post": null
+  },
+  {
+   "id": "bend2-fleet-admission-v0",
+   "title": "Fleet admission fails closed",
+   "area": "fleet",
+   "question": "Can the selected-worker decision refuse unavailable targets and failed transfers without falling back to the desktop?",
+   "status": "draft-pr",
+   "date": "2026-10-23",
+   "finding": "The pure decision has nine law signatures and an exhaustive 96-state Bend/Python table. A later public operator receipt reports 15 real-adapter/shell tests, 96/96 parity, kernel PASS and rejection of fallback, capacity-bypass and failed-transfer-bypass mutants.",
+   "caveat": "The checked-in guide retains earlier proof-execution-pending headings; later operator/CI receipts are separate source-reported evidence. Pure laws and mocked adapters cannot attest the real SSH peer, transferred source fidelity, runtime success or owner permission; no activation or merge is claimed.",
+   "links": [
+    {
+     "label": "kvnloo/.files PR #48",
+     "url": "https://github.com/kvnloo/.files/pull/48"
+    },
+    {
+     "label": "docs/bend2/FLEET_ADMISSION.md",
+     "url": "https://github.com/kvnloo/.files/blob/a38c60bbe4a261060c3a324682764ff81c79107a/docs/bend2/FLEET_ADMISSION.md"
+    },
+    {
+     "label": "bend/fleet_admission/LAWS.bend",
+     "url": "https://github.com/kvnloo/.files/blob/a38c60bbe4a261060c3a324682764ff81c79107a/bend/fleet_admission/LAWS.bend"
+    },
+    {
+     "label": "bend/fleet_admission/toolchain.json",
+     "url": "https://github.com/kvnloo/.files/blob/a38c60bbe4a261060c3a324682764ff81c79107a/bend/fleet_admission/toolchain.json"
+    }
+   ],
+   "interesting": false,
+   "why": "Missing capacity or failed source transfer produces a typed refusal rather than silently routing heavy work back to the desktop.",
+   "post": null
+  },
+  {
+   "id": "fsm-hapsland-layers-v0",
+   "title": "Compiled statecharts in the browser",
+   "area": "governance",
+   "question": "Can the diagram replay the same compiled transitions as the proof-bound producer?",
+   "status": "draft-pr",
+   "date": "2026-10-21",
+   "finding": "The current receipt-bound view has 17 tapes, 96 steps and 73 display edges, with zero missing or extra Mermaid edges. The README reports all five new snapshot-probe tapes completing at 412×915 and matching every compiled-replay prefix.",
+   "caveat": "Earlier counts in the guide refer to the original two-loop snapshot, not current totals. New tapes begin at observed snapshots but all later events are WHAT-IF; full upstream check:fast was blocked by missing Vitest, and the diagram grants no runtime authority.",
+   "links": [
+    {
+     "label": "kvnloo/.files PR #34",
+     "url": "https://github.com/kvnloo/.files/pull/34"
+    },
+    {
+     "label": "docs/spec-diagram/fsm/README.md",
+     "url": "https://github.com/kvnloo/.files/blob/0cd01e271a913a964f6684c7b8d7340f67f0174b/docs/spec-diagram/fsm/README.md"
+    }
+   ],
+   "interesting": false,
+   "why": "The browser displays compiled-model transitions instead of maintaining a second hand-written state machine.",
+   "post": "bend-statecharts-v0"
+  },
+  {
+   "id": "cua-bend-action-laws-v0",
+   "title": "Bend agrees but the GPU does not win",
+   "area": "speed-ux",
+   "question": "Does CUDA Bend improve the existing per-action guard after the best CPU algorithm is considered?",
+   "status": "draft-pr",
+   "date": "2026-10-23",
+   "finding": "All 4,096 finite guard decisions agree: 236 allow and 3,860 deny; full-vector GPU wall time is 103.8 ms versus about 1.09 ms for the equivalent Python table. Robust filtering resolves 340/340 unique groups versus 104/340 for the simple baseline, but Python makes exactly the same decisions.",
+   "caveat": "Finite conformance is not universal proof or real GUI accuracy. Repeated batches collapse to a 4,096-case period, so large GPU throughput ratios are not verification-speed wins; public #157 does not archive a complete ABAB sequence or the separate HobbyLM comparison.",
+   "links": [
+    {
+     "label": "kvnloo/cua PR #157",
+     "url": "https://github.com/kvnloo/cua/pull/157"
+    },
+    {
+     "label": "research/bend_action_laws/README.md",
+     "url": "https://github.com/kvnloo/cua/blob/c93ecbcb5087f435ae9dd733fa277c5ebabb2296/research/bend_action_laws/README.md"
+    },
+    {
+     "label": "research/bend_action_laws/receipts/summary.json",
+     "url": "https://github.com/kvnloo/cua/blob/c93ecbcb5087f435ae9dd733fa277c5ebabb2296/research/bend_action_laws/receipts/summary.json"
+    }
+   ],
+   "interesting": false,
+   "why": "The periodicity ablation removes the apparent need for the GPU; the decision is to keep CUDA out of the per-action hot path.",
+   "post": "cua-bend-hobbylm-v0"
+  },
+  {
+   "id": "cua-hobbylm-semantic-v0",
+   "title": "A slower decision model finishes more tasks",
+   "area": "speed-ux",
+   "question": "Does HobbyLM’s semantic action loop complete more supported tasks than the small generic model?",
+   "status": "draft-pr",
+   "date": "2026-10-23",
+   "finding": "The separate public matrix reports HobbyLM 22/31 (71.0%) supported successes versus Qwen2.5-0.5B 9/31 (29.0%). HobbyLM uses 58 decisions and 275.67 s controller wall versus Qwen’s 186 decisions and 340.20 s, despite model p50 / p95 of 1.194 / 3.464 s versus 0.247 / 0.705 s.",
+   "caveat": "This is #158, not Bend #157 or a demonstrated ABAB causal design. Models receive semantic text, not PNGs; adapted tasks do not establish general GUI/OSWorld competence. The strong subscription control failed before generation and is unavailable, not a zero model score; full unit/hosted qualification remains pending.",
+   "links": [
+    {
+     "label": "kvnloo/cua PR #158",
+     "url": "https://github.com/kvnloo/cua/pull/158"
+    },
+    {
+     "label": "libs/python/agent/examples/hobbylm_eval/README.md",
+     "url": "https://github.com/kvnloo/cua/blob/0d135c06e75832446dc732e42227b9ebe33ed757/libs/python/agent/examples/hobbylm_eval/README.md"
+    },
+    {
+     "label": "libs/python/agent/examples/hobbylm_eval/results/matrix.json",
+     "url": "https://github.com/kvnloo/cua/blob/0d135c06e75832446dc732e42227b9ebe33ed757/libs/python/agent/examples/hobbylm_eval/results/matrix.json"
+    },
+    {
+     "label": "libs/python/agent/examples/hobbylm_eval/results/hobbylm-summary.json",
+     "url": "https://github.com/kvnloo/cua/blob/0d135c06e75832446dc732e42227b9ebe33ed757/libs/python/agent/examples/hobbylm_eval/results/hobbylm-summary.json"
+    },
+    {
+     "label": "libs/python/agent/examples/hobbylm_eval/results/qwen-summary.json",
+     "url": "https://github.com/kvnloo/cua/blob/0d135c06e75832446dc732e42227b9ebe33ed757/libs/python/agent/examples/hobbylm_eval/results/qwen-summary.json"
+    }
+   ],
+   "interesting": false,
+   "why": "Lower per-decision latency did not produce lower controller wall time or more supported success; action count and outcome matter.",
+   "post": "cua-bend-hobbylm-v0"
+  },
+  {
+   "id": "claude-code-savings-v0",
+   "title": "less prefix, less reported cost",
+   "area": "cost-routing",
+   "question": "which context levers reduce claude code reported cost while preserving checked task quality?",
+   "status": "in-progress",
+   "date": "2026-09-30",
+   "finding": "The pinned held-out comparison reports stock+raw $2.186 21/22 versus lean+packet $0.861 22/22 (-61%). ObservationPack cut long-recall total cost 30.3% with 12/12 verified in both arms; short-task medians were -1.3% / +0.3%.",
+   "caveat": "Manifest remains draft with no matching PR found; small samples and interim looks. Costs are Claude Code estimates, not invoices; packet results are manifest/README source reports rather than rows in the imported summary.",
+   "links": [
+    {
+     "label": "posts/claude-code-savings-v0.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/948ad207ea5d9b280934a8f959df2acb82579361/posts/claude-code-savings-v0.md"
+    },
+    {
+     "label": "studies/claude-code-savings-v0/manifest.yaml",
+     "url": "https://github.com/kvnloo/z0evals/blob/948ad207ea5d9b280934a8f959df2acb82579361/studies/claude-code-savings-v0/manifest.yaml"
+    },
+    {
+     "label": "studies/claude-code-savings-v0/README.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/948ad207ea5d9b280934a8f959df2acb82579361/studies/claude-code-savings-v0/README.md"
+    },
+    {
+     "label": "studies/claude-code-savings-v0/data/summary.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/948ad207ea5d9b280934a8f959df2acb82579361/studies/claude-code-savings-v0/data/summary.json"
+    }
+   ],
+   "interesting": false,
+   "why": "Prefix reduction and useful state compose, while compression is null on short tasks; a cheaper model without state can cost more.",
+   "post": "claude-code-savings-v0"
+  },
+  {
+   "id": "claude-code-savings-v1",
+   "title": "savings depend on the task",
+   "area": "cost-routing",
+   "question": "do the earlier context savings survive pre-registered larger samples and fresh coding tasks?",
+   "status": "in-progress",
+   "date": "2026-10-01",
+   "finding": "The 496-run primary study reports -34.2% billed tokens, -45.4% estimated cost, and success 121/124 -> 124/124. The 208-session long follow-up reports -30.7% estimated cost over lean, but directed recall was -64.2% while multi-bug debugging was +1.3%.",
+   "caveat": "Manifest remains draft with no matching PR found; one host/model and shared QA cache. Prompt gating failed both registered tests; the long follow-up recall subgroup quality guard failed (12 -> 11).",
+   "links": [
+    {
+     "label": "posts/claude-code-savings-v1.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/posts/claude-code-savings-v1.md"
+    },
+    {
+     "label": "studies/claude-code-savings-v1/manifest.yaml",
+     "url": "https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/claude-code-savings-v1/manifest.yaml"
+    },
+    {
+     "label": "studies/claude-code-savings-v1/README.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/claude-code-savings-v1/README.md"
+    },
+    {
+     "label": "studies/claude-code-savings-v1/data/summary.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/claude-code-savings-v1/data/summary.json"
+    },
+    {
+     "label": "studies/claude-code-savings-v1/ADDENDUM-v1b.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/claude-code-savings-v1/ADDENDUM-v1b.md"
+    },
+    {
+     "label": "studies/claude-code-savings-v1/ADDENDUM-obspack-long.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/claude-code-savings-v1/ADDENDUM-obspack-long.md"
+    },
+    {
+     "label": "studies/claude-code-savings-v1/data/results.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/claude-code-savings-v1/data/results.json"
+    },
+    {
+     "label": "studies/claude-code-savings-v1/data/trials.csv",
+     "url": "https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/claude-code-savings-v1/data/trials.csv"
+    },
+    {
+     "label": "studies/claude-code-savings-v1/data/v1b/results.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/claude-code-savings-v1/data/v1b/results.json"
+    },
+    {
+     "label": "studies/claude-code-savings-v1/data/obspack-long/results.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/claude-code-savings-v1/data/obspack-long/results.json"
+    }
+   ],
+   "interesting": false,
+   "why": "A pooled saving hides opposite packet effects and output-heavy versus debugging regimes; later addenda qualify the original optimistic default.",
+   "post": "claude-code-savings-v1"
+  },
+  {
+   "id": "factory-intelligence-v0",
+   "title": "three small decision tests",
+   "area": "governance",
+   "question": "which local tool-caller, recovery controller and merge rule survive frozen comparisons?",
+   "status": "in-progress",
+   "date": "2026-09-30",
+   "finding": "No tool-calling candidate beat Qwen3-8B (152/184). The recovery controller cost 0.288 versus constant 0.368, while the selected merge rule auto-merged 65/91 holdout events with 11 bad (0.169 versus bar 0.115).",
+   "caveat": "Manifest remains draft with no matching PR found; private single-operator histories are aggregate-only. The tool-call gate had a gold defect, recovery content audit is absent, and merge labels mostly measure fixes within three days.",
+   "links": [
+    {
+     "label": "posts/factory-intelligence-v0.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/posts/factory-intelligence-v0.md"
+    },
+    {
+     "label": "studies/factory-intelligence-v0/manifest.yaml",
+     "url": "https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/factory-intelligence-v0/manifest.yaml"
+    },
+    {
+     "label": "studies/factory-intelligence-v0/README.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/factory-intelligence-v0/README.md"
+    },
+    {
+     "label": "studies/factory-intelligence-v0/data/summary.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/factory-intelligence-v0/data/summary.json"
+    }
+   ],
+   "interesting": false,
+   "why": "The recovery primary endpoint passed without passing the MLP comparison; green checks often were not code checks, and the chosen auto-merge rule failed holdout.",
+   "post": "factory-intelligence-v0"
+  },
+  {
+   "id": "local-offload-and-authority-v0",
+   "title": "authority belongs at the action",
+   "area": "governance",
+   "question": "can local routing and prompt-level grants make bounded agent work cheaper without unauthorized actions?",
+   "status": "in-progress",
+   "date": "2026-09-30",
+   "finding": "The learned router tied generic Qwen3-8B at 23/59 versus deterministic 8/59. Action-level authority caught 112/134 unauthorized privileged calls (83.6%), with 12.2% sample friction and 34 ms hook p95; both safety and sample-friction bars failed.",
+   "caveat": "Manifest remains draft with no matching PR found; one operator, LLM-labelled gold and concentrated historical calls. Shadow-only; resource-posture results remain pending; local operating cost was unmetered.",
+   "links": [
+    {
+     "label": "posts/local-offload-and-authority-v0.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/posts/local-offload-and-authority-v0.md"
+    },
+    {
+     "label": "studies/local-offload-and-authority-v0/manifest.yaml",
+     "url": "https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/local-offload-and-authority-v0/manifest.yaml"
+    },
+    {
+     "label": "studies/local-offload-and-authority-v0/README.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/local-offload-and-authority-v0/README.md"
+    },
+    {
+     "label": "studies/local-offload-and-authority-v0/data/summary.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/local-offload-and-authority-v0/data/summary.json"
+    }
+   ],
+   "interesting": false,
+   "why": "A turn-level grant cannot inspect actions chosen later in the turn, but moving the check to the tool call did not by itself make enforcement safe.",
+   "post": "local-offload-and-authority-v0"
+  },
+  {
+   "id": "memory-providers-v0",
+   "title": "perfect recall, stale first",
+   "area": "memory",
+   "question": "on one identical synthetic corpus, do native memory providers retrieve the answer and rank its update first?",
+   "status": "draft-pr",
+   "date": "2026-10-21",
+   "finding": "All three measured surfaces had Recall@5 1.000 and MRR@5 0.944, but newest doc top-1 was 0/5 for each. p50 ms was 17.896 for ctx, 0.666 for Hermes and 1.267 for TencentDB; Supermemory and GraphRAG retrieval were not run.",
+   "caveat": "Draft manifest and open draft PR #114; eight synthetic documents and warm repetitions, unequal native integration overhead, incomplete build provenance, and no generated-answer or full five-way comparison.",
+   "links": [
+    {
+     "label": "PR #114",
+     "url": "https://github.com/kvnloo/z0evals/pull/114"
+    },
+    {
+     "label": "studies/memory-providers-v0/manifest.yaml",
+     "url": "https://github.com/kvnloo/z0evals/blob/13480b1635fdd19f88da7c9910a5b59cf28f0eb2/studies/memory-providers-v0/manifest.yaml"
+    },
+    {
+     "label": "studies/memory-providers-v0/README.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/13480b1635fdd19f88da7c9910a5b59cf28f0eb2/studies/memory-providers-v0/README.md"
+    },
+    {
+     "label": "studies/memory-providers-v0/results.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/13480b1635fdd19f88da7c9910a5b59cf28f0eb2/studies/memory-providers-v0/results.json"
+    },
+    {
+     "label": "studies/memory-providers-v0/data/synthetic.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/13480b1635fdd19f88da7c9910a5b59cf28f0eb2/studies/memory-providers-v0/data/synthetic.json"
+    },
+    {
+     "label": "studies/memory-providers-v0/score.py",
+     "url": "https://github.com/kvnloo/z0evals/blob/13480b1635fdd19f88da7c9910a5b59cf28f0eb2/studies/memory-providers-v0/score.py"
+    },
+    {
+     "label": "studies/memory-providers-v0/test_score.py",
+     "url": "https://github.com/kvnloo/z0evals/blob/13480b1635fdd19f88da7c9910a5b59cf28f0eb2/studies/memory-providers-v0/test_score.py"
+    }
+   ],
+   "interesting": false,
+   "why": "Perfect fixture recall coexists with stale-first retrieval; missing hosted credentials and incomparable prior extraction results stay missing rather than becoming a winner claim.",
+   "post": "memory-providers-v0"
+  },
+  {
+   "id": "offload-and-loop-v0",
+   "title": "a format pass failed faithfulness",
+   "area": "cost-routing",
+   "question": "can local summaries replace frontier work, and are there enough verified outcomes to learn a gate?",
+   "status": "in-progress",
+   "date": "2026-09-30",
+   "finding": "The format-and-facts summary check passed 60/60 locally, but faithfulness found 42/160 (26.3%) hallucinated items versus Haiku 21/159 (13.2%); no class remained speed-qualified. The verified loop had 6 analysis rows, 1 not-success and 1 group, so its result was INSUFFICIENT_DATA.",
+   "caveat": "Manifest remains draft with no matching PR found; one principal/day, small fixtures and one LLM judge. Loop timelines are projections; utilization is an unpinned source-reported operator run.",
+   "links": [
+    {
+     "label": "posts/offload-and-loop-v0.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/posts/offload-and-loop-v0.md"
+    },
+    {
+     "label": "studies/offload-and-loop-v0/manifest.yaml",
+     "url": "https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/offload-and-loop-v0/manifest.yaml"
+    },
+    {
+     "label": "studies/offload-and-loop-v0/README.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/offload-and-loop-v0/README.md"
+    },
+    {
+     "label": "studies/offload-and-loop-v0/data/summary.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/offload-and-loop-v0/data/summary.json"
+    }
+   ],
+   "interesting": false,
+   "why": "A format verifier admitted unsupported summaries, and a pipe-exit bug contaminated success labels; learning is evidence-bound, not learner-bound.",
+   "post": "offload-and-loop-v0"
+  },
+  {
+   "id": "unified-memory-v0",
+   "title": "memory has a source-admission gate",
+   "area": "memory",
+   "question": "can different harnesses recover the same source-supported state without replaying the full history?",
+   "status": "published",
+   "date": "2026-10-23",
+   "finding": "The real-source readiness record has 4 bound source slots, 0 instantiated prompts, 0 model calls and 0 valid receipt rows; the six-case cohort is NOT RUN. The frozen correction plan also leaves all six stages in both arms and eight negative cases NOT_RUN.",
+   "caveat": "The baseline post is published, but the executable source cohort is blocked and PR #115 remains draft and unscored; its successful replay repair is synthetic-source interoperability, not answer use.",
+   "links": [
+    {
+     "label": "PR #57",
+     "url": "https://github.com/kvnloo/z0evals/pull/57"
+    },
+    {
+     "label": "PR #59",
+     "url": "https://github.com/kvnloo/z0evals/pull/59"
+    },
+    {
+     "label": "PR #115",
+     "url": "https://github.com/kvnloo/z0evals/pull/115"
+    },
+    {
+     "label": "posts/unified-memory-v0.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/ef97f8743ec115fec28238c7a4d4eea2c049158e/posts/unified-memory-v0.md"
+    },
+    {
+     "label": "studies/unified-memory-v0/manifest.yaml",
+     "url": "https://github.com/kvnloo/z0evals/blob/ef97f8743ec115fec28238c7a4d4eea2c049158e/studies/unified-memory-v0/manifest.yaml"
+    },
+    {
+     "label": "studies/unified-memory-v0/README.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/e41696618c12e6556b49b98ca57a5902833a5a72/studies/unified-memory-v0/README.md"
+    },
+    {
+     "label": "studies/unified-memory-v0/manifest.yaml",
+     "url": "https://github.com/kvnloo/z0evals/blob/e41696618c12e6556b49b98ca57a5902833a5a72/studies/unified-memory-v0/manifest.yaml"
+    },
+    {
+     "label": "studies/unified-memory-v0/cohort.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/15428ba655ed9e21d2e7d0089e78428387cbbb99/studies/unified-memory-v0/cohort.json"
+    },
+    {
+     "label": "studies/unified-memory-v0/README.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/667223e8a6e25064c1f21d2e6e3bd8ccc17190fd/studies/unified-memory-v0/README.md"
+    },
+    {
+     "label": "studies/unified-memory-v0/READINESS.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/667223e8a6e25064c1f21d2e6e3bd8ccc17190fd/studies/unified-memory-v0/READINESS.json"
+    },
+    {
+     "label": "studies/unified-memory-v0/executable-cohort.v1.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/667223e8a6e25064c1f21d2e6e3bd8ccc17190fd/studies/unified-memory-v0/executable-cohort.v1.json"
+    },
+    {
+     "label": "studies/unified-memory-v0/dsh/OPERATIONS.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/dca8fd2e572c37fd65593cf033977001f1c7677d/studies/unified-memory-v0/dsh/OPERATIONS.md"
+    },
+    {
+     "label": "studies/unified-memory-v0/manifest.yaml",
+     "url": "https://github.com/kvnloo/z0evals/blob/16b0b133df865d46b2b1a789f68936c189d88f41/studies/unified-memory-v0/manifest.yaml"
+    },
+    {
+     "label": "studies/unified-memory-v0/README.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/16b0b133df865d46b2b1a789f68936c189d88f41/studies/unified-memory-v0/README.md"
+    },
+    {
+     "label": "studies/unified-memory-v0/fleet-mbp-thermal.case.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/16b0b133df865d46b2b1a789f68936c189d88f41/studies/unified-memory-v0/fleet-mbp-thermal.case.json"
+    },
+    {
+     "label": "studies/unified-memory-v0/fleet-mbp-thermal.protocol.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/16b0b133df865d46b2b1a789f68936c189d88f41/studies/unified-memory-v0/fleet-mbp-thermal.protocol.md"
+    },
+    {
+     "label": "studies/unified-memory-v0/fleet-mbp-thermal.receipts.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/16b0b133df865d46b2b1a789f68936c189d88f41/studies/unified-memory-v0/fleet-mbp-thermal.receipts.json"
+    },
+    {
+     "label": "studies/unified-memory-v0/memory_query_replay.py",
+     "url": "https://github.com/kvnloo/z0evals/blob/16b0b133df865d46b2b1a789f68936c189d88f41/studies/unified-memory-v0/memory_query_replay.py"
+    },
+    {
+     "label": "studies/unified-memory-v0/test_memory_query_replay.py",
+     "url": "https://github.com/kvnloo/z0evals/blob/16b0b133df865d46b2b1a789f68936c189d88f41/studies/unified-memory-v0/test_memory_query_replay.py"
+    }
+   ],
+   "interesting": false,
+   "why": "A smaller context and passing capture tests still do not establish source-supported memory; a real producer event broke a fixture-green replay reader.",
+   "post": "unified-memory-v0-october"
+  },
+  {
+   "id": "unified-memory-continuity",
+   "title": "one correction, another client, no recap",
+   "area": "memory",
+   "question": "Can a fresh client continue a workstream using the corrected decision without another explanation?",
+   "status": "in-progress",
+   "date": "2026-10-23",
+   "finding": "The October 23 synthesis reports 41 freshness tests, 81 facade tests and 159 capture tests at separate pinned heads; the frozen study variant has 8 fixture tests and 3 validated manifests.",
+   "caveat": "These counts are not additive independent experiments. The last issue comment predates the later merges of #198, #197 and #194 into preview. The real user-to-user decision/correction pair remains blocked; the frozen alternative is agent-codified policy followed by a user correction. Actual model-input delivery and independent use remain unqualified.",
+   "links": [
+    {
+     "label": "z0intelligence #22 receipt",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/22#issuecomment-6358732148"
+    },
+    {
+     "label": "z0intelligence #194",
+     "url": "https://github.com/kvnloo/z0intelligence/pull/194"
+    },
+    {
+     "label": "z0intelligence #197",
+     "url": "https://github.com/kvnloo/z0intelligence/pull/197"
+    },
+    {
+     "label": "z0intelligence #198",
+     "url": "https://github.com/kvnloo/z0intelligence/pull/198"
+    }
+   ],
+   "interesting": true,
+   "why": "The product test is fewer repeated explanations, not more indexed records or passing transport tests."
+  },
+  {
+   "id": "memory-source-freshness",
+   "title": "freshness binds to the bytes actually read",
+   "area": "memory",
+   "question": "Can same-metadata edits, wrong scope and path races invalidate reuse before source disclosure?",
+   "status": "published",
+   "date": "2026-10-23",
+   "finding": "PR #198 reports 41 passing contract/freshness/reuse tests at 8aac6cf208d6be183332fffec68d64220d497fee; the pre-feature baseline produced 3 collection errors. GitHub records it merged into preview on October 23.",
+   "caveat": "Published means merged source, not installed enforcement. This does not qualify live write-tool interception, authenticated caller identity, semantic sufficiency or cross-client continuity.",
+   "links": [
+    {
+     "label": "z0intelligence #198",
+     "url": "https://github.com/kvnloo/z0intelligence/pull/198"
+    },
+    {
+     "label": "z0intelligence #22",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/22"
+    }
+   ],
+   "interesting": true,
+   "why": "A fresh hash attached to stale excerpt bytes would defeat provenance while appearing correct."
+  },
+  {
+   "id": "memory-scoped-mcp",
+   "title": "one read-only exact-source memory facade",
+   "area": "memory",
+   "question": "Can multiple clients fetch the same authorized native message with current provenance?",
+   "status": "published",
+   "date": "2026-10-23",
+   "finding": "The final #194 integration reports 291 tests passed in 33.20 seconds at d7a1a9770efda36b8fc0fc7894dfec0b20b6cb2c. Its integration RED was 1 failed and 290 passed before a mismatched source-digest fixture was corrected. GitHub records a preview merge on October 23.",
+   "caveat": "AgentsView is the sole qualified exact-source backend. The checked-in ChatGPT grant is empty. Registration, approved corpus grants, host deployment and provenance-bearing queries from each client are separate receipts. The final implementation supersedes the research wave’s earlier cached-snippet characterization.",
+   "links": [
+    {
+     "label": "z0intelligence #194",
+     "url": "https://github.com/kvnloo/z0intelligence/pull/194"
+    },
+    {
+     "label": "z0intelligence #195 receipt",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/195#issuecomment-6356363333"
+    }
+   ],
+   "interesting": true,
+   "why": "This is a bounded common read path rather than another memory store."
+  },
+  {
+   "id": "memory-native-capture",
+   "title": "capture decisions without inventing user evidence",
+   "area": "memory",
+   "question": "Can native decisions and corrections be admitted idempotently while rejecting injected or non-user rows?",
+   "status": "published",
+   "date": "2026-10-23",
+   "finding": "PR #197 reports 159 passing ledger, identity, claim, scoped-capture and native-persistence tests in 49.04 seconds at 3cd637c6ce6cbe21372c166b48899ab2a0336439. GitHub records a preview merge on October 23.",
+   "caveat": "All capture fixtures are synthetic. No authorized live host/session/workstream capture hook is qualified. The accepted explicit native JSON grammar is not general prose extraction or an OMP capture adapter.",
+   "links": [
+    {
+     "label": "z0intelligence #197",
+     "url": "https://github.com/kvnloo/z0intelligence/pull/197"
+    },
+    {
+     "label": "z0intelligence #22 receipt",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/22#issuecomment-6358732148"
+    }
+   ],
+   "interesting": true,
+   "why": "A summary or assistant assertion must not become a new user-authored correction."
+  },
+  {
+   "id": "memory-use-outcomes",
+   "title": "measure use, not just retrieval",
+   "area": "memory",
+   "question": "Which retrieved memories were used, ignored, missed or restated by the user?",
+   "status": "in-progress",
+   "date": "2026-10-23",
+   "finding": "The public contract distinguishes hit_used, hit_ignored, miss and user_restated from denied, unavailable, stale, rate_limited, invalid and error transport states. The merged facade records retrieval dispositions only.",
+   "caveat": "No daily re-explanation count or closed real-miss replay loop is reported. Use requires an explicit client witness; user_restated requires native user-source evidence, not a generated label.",
+   "links": [
+    {
+     "label": "z0intelligence #194 receipt",
+     "url": "https://github.com/kvnloo/z0intelligence/pull/194#issuecomment-6375090545"
+    },
+    {
+     "label": "z0intelligence #194",
+     "url": "https://github.com/kvnloo/z0intelligence/pull/194"
+    }
+   ],
+   "interesting": true,
+   "why": "This supplies the real reward signal needed for memory optimization and the north-star metric."
+  },
+  {
+   "id": "optmem-research-wave",
+   "title": "the OptMem wave produced a roadmap, not a benchmark win",
+   "area": "memory",
+   "question": "Which OptMem ideas survive comparison with the existing source and memory contracts?",
+   "status": "proposal",
+   "date": "2026-10-23",
+   "finding": "The synthesis collected 19 of 20 requested topic artifacts in an 80-minute window: 53,934 whitespace-delimited words and 501,289 UTF-8 bytes. The GraphRAG artifact was absent, not scored as a failure.",
+   "caveat": "These are overlapping research briefs, not independent experiments. The audit ran no compaction or handoff. Later memory PRs supersede its draft-status and cached-fetch observations.",
+   "links": [
+    {
+     "label": "z0intelligence #195 receipt",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/195#issuecomment-6356363333"
+    }
+   ],
+   "interesting": true,
+   "why": "The useful distinction is retained versus discoverable versus current versus authorized."
+  },
+  {
+   "id": "optmem-derived-views",
+   "title": "scope-isolated summaries with exact expansion",
+   "area": "memory",
+   "question": "Can compacted views preserve corrections and source lineage without becoming another truth store?",
+   "status": "proposal",
+   "date": "2026-10-23",
+   "finding": "The synthesis distinguishes standalone OptMem’s 280-byte notes, UniiChat’s 512-byte node target and the local structural tree’s 8-event raw tail. The 512-byte target can be exceeded after up to 5 attempts.",
+   "caveat": "The scoped forest, distributed outboxes, semantic lineage envelope and new adapters are proposals. Local structural nodes summarize counts/types/checksums, not semantic content. Exact expansion alone does not establish discovery.",
+   "links": [
+    {
+     "label": "z0intelligence #195 receipt",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/195#issuecomment-6356363333"
+    },
+    {
+     "label": "z0intelligence #195 receipt",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/195#issuecomment-6355287065"
+    },
+    {
+     "label": "z0intelligence #195 receipt",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/195#issuecomment-6355278917"
+    }
+   ],
+   "interesting": true,
+   "why": "This prevents a tree-shaped UI from being mistaken for complete, current memory."
+  },
+  {
+   "id": "optmem-temporal-forgetting",
+   "title": "corrections and erasure must reach derived context",
+   "area": "memory",
+   "question": "Can as-of claims and deletion closure invalidate summaries, caches and compactor prefixes?",
+   "status": "proposal",
+   "date": "2026-10-23",
+   "finding": "The research identifies compactor context prefixes as deletion dependencies in addition to summary ancestors, and separates valid time from recorded/known time.",
+   "caveat": "No erasure engine, historical-query runtime or cross-host deletion completion is measured. Rebuilding an index cannot recreate missing payload blobs or erase native archives and provider disclosures.",
+   "links": [
+    {
+     "label": "z0intelligence #195 receipt",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/195#issuecomment-6355351897"
+    },
+    {
+     "label": "z0intelligence #195 receipt",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/195#issuecomment-6355352014"
+    },
+    {
+     "label": "z0intelligence #195 receipt",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/195#issuecomment-6356363333"
+    }
+   ],
+   "interesting": true,
+   "why": "Faithful historical recall and current applicability need different tests."
+  },
+  {
+   "id": "optchat-held-trial",
+   "title": "fresh-turn OptChat trial remains on hold",
+   "area": "memory",
+   "question": "Does semantic fresh-turn assembly beat source-backed context after maintenance cost?",
+   "status": "frozen",
+   "date": "2026-10-23",
+   "finding": "The recovery comment preserves an exact local implementation revision and an explicit skip-for-now decision. The OptMem synthesis records #128 and #142 as merged; #142 reported zero cache reads in 6 compactor completions.",
+   "caveat": "The October 4 issue baseline is historical, not proof that no implementation later landed. The held trial was not resumed or rerun. No universal continuity or production cache savings follows.",
+   "links": [
+    {
+     "label": "z0intelligence #120",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/120"
+    },
+    {
+     "label": "z0intelligence #120 receipt",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/120#issuecomment-6355828240"
+    },
+    {
+     "label": "z0intelligence #195 receipt",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/195#issuecomment-6356363333"
+    }
+   ],
+   "interesting": true,
+   "why": "A preserved experiment is not an active priority or authorization to restart it."
+  },
+  {
+   "id": "memory-read-path-health",
+   "title": "archive roots repaired; bounded latency still uneven",
+   "area": "memory",
+   "question": "Does correcting archive environment propagation make original evidence reliably retrievable?",
+   "status": "draft-pr",
+   "date": "2026-10-23",
+   "finding": "PR #45 reports AgentsView CLI FTS returning 4 results in 8.517 seconds and scoped HTTP FTS returning 4 in 0.691 seconds. ctx returned 4 once, then bounded attempts timed out at 45 and 60 seconds. Hybrid search returned 501 without configured embeddings.",
+   "caveat": "Reported provider rechecks, not an independent reproduction here. The later audit is source-only and runtime NOT_RUN. The shell fragment does not automatically cover noninteractive shells, other shells, GUI clients or existing processes. Reliable latency and shared-memory continuity are not repaired merely by environment intent.",
+   "links": [
+    {
+     "label": ".files #45",
+     "url": "https://github.com/kvnloo/.files/pull/45"
+    },
+    {
+     "label": ".files #45 receipt",
+     "url": "https://github.com/kvnloo/.files/pull/45#issuecomment-6375328265"
+    }
+   ],
+   "interesting": false,
+   "why": "A configured archive is not a usable low-latency retrieval path."
+  },
+  {
+   "id": "memory-binding-health",
+   "title": "binding drift stays advisory",
+   "area": "governance",
+   "question": "Can desired memory bindings be inspected without turning configuration drift into CPU admission authority?",
+   "status": "draft-pr",
+   "date": "2026-10-23",
+   "finding": "PR #44 reports 156 tests passed in 3.38 seconds at c5b29eed7c18a247174f704a0482a666283d6f56. A real dry-run reported binding DRIFT and action=none; the live configuration hash was unchanged.",
+   "caveat": "This is desired-state and advisory health evidence, not module installation, handshake or model-visible memory use. GraphRAG remains explicitly blocked. No live profile apply is claimed.",
+   "links": [
+    {
+     "label": ".files #44",
+     "url": "https://github.com/kvnloo/.files/pull/44"
+    }
+   ],
+   "interesting": false,
+   "why": "Configuration, runtime availability and verified use need independent states."
+  },
+  {
+   "id": "unii-native-core",
+   "title": "native Unii conversation surface with terminal fallback",
+   "area": "speed-ux",
+   "question": "Can the existing conversation transport gain a native surface without changing session ownership?",
+   "status": "draft-pr",
+   "date": "2026-10-23",
+   "finding": "The #2 component receipt reports 55 tests passed, 0 failed and 9,762 assertions at 205f6641fdbd385842d0571fa6593614c0f0974a, plus strict TypeScript and a terminal bundle.",
+   "caveat": "Component evidence is preserved in integrated draft #4. The initial PR body says unverified, but its later receipt is more specific. Not an upstream merge or signed-in provider acceptance.",
+   "links": [
+    {
+     "label": "uniichat #2 receipt",
+     "url": "https://github.com/kvnloo/uniichat/pull/2#issuecomment-6356186239"
+    },
+    {
+     "label": "uniichat #4",
+     "url": "https://github.com/kvnloo/uniichat/pull/4"
+    }
+   ],
+   "interesting": true,
+   "why": "The adapter preserves the original backend and fallback instead of rebuilding them."
+  },
+  {
+   "id": "unii-memory-explorer",
+   "title": "inspect actual call context, not reconstructed display history",
+   "area": "memory",
+   "question": "Can the memory inspector show the context the model really received and recover original messages?",
+   "status": "draft-pr",
+   "date": "2026-10-23",
+   "finding": "The #3 component receipt reports 18 focused tests passed, 0 failed and 118 assertions at 7653dd3f3e2012d18816f2aadd416d25be47dd6a. A display-history-versus-call-context defect was corrected with a server-owned snapshot.",
+   "caveat": "This is Unii’s own memory explorer, not proof of cross-harness z0 continuity. The standalone suite once reproduced an existing performance failure; the integrated parent later passes the full suite.",
+   "links": [
+    {
+     "label": "uniichat #3 receipt",
+     "url": "https://github.com/kvnloo/uniichat/pull/3#issuecomment-6356190444"
+    },
+    {
+     "label": "uniichat #4 receipt",
+     "url": "https://github.com/kvnloo/uniichat/pull/4#issuecomment-6357187131"
+    }
+   ],
+   "interesting": true,
+   "why": "Showing a plausible tree is weaker than showing the authoritative context of a particular turn."
+  },
+  {
+   "id": "unii-integrated-native-pty",
+   "title": "native memory explorer passes real PTY and isolated renderer checks",
+   "area": "speed-ux",
+   "question": "Do native input, memory navigation and fallback work together at the integrated revision?",
+   "status": "draft-pr",
+   "date": "2026-10-23",
+   "finding": "Integrated #4 at b6d839005f3500b5258e530accc079f7f6d73492 reports 85 tests passed, 0 failed, 9,971 assertions across 19 files, and 4 real OS PTY input regressions. Both strict profiles and bundles passed. An isolated native renderer and terminal fallback were exercised.",
+   "caveat": "The checks use developer-renderer/loopback and disposable state, not private user memory, ordinary signed-in GUI screenshots or provider inference. The PR remains open and draft.",
+   "links": [
+    {
+     "label": "uniichat #4 receipt",
+     "url": "https://github.com/kvnloo/uniichat/pull/4#issuecomment-6357187131"
+    }
+   ],
+   "interesting": true,
+   "why": "Unicode, paste, duplicate sends and modal ownership are tested through actual input bytes."
+  },
+  {
+   "id": "unii-usage-ledger",
+   "title": "account for every model attempt before claiming savings",
+   "area": "cost-routing",
+   "question": "Can compactor and agent usage be measured without storing prompts or response bodies?",
+   "status": "draft-pr",
+   "date": "2026-10-23",
+   "finding": "PR #5 reports 4 tests passed, 0 failed and 16 assertions. The opt-in ledger records provider usage counters, cached input, roles, retry indices, latency and failure categories; missing usage remains null.",
+   "caveat": "Instrumentation is disabled by default. The public PR does not publish the private replay corpus or its measurement tables. No live binary replacement or universal billing coverage is claimed.",
+   "links": [
+    {
+     "label": "uniichat #5",
+     "url": "https://github.com/kvnloo/uniichat/pull/5"
+    }
+   ],
+   "interesting": true,
+   "why": "A cheaper model label is not a measured lower cost once retries and cache behavior are included."
+  },
+  {
+   "id": "unii-compactor-terra",
+   "title": "Terra qualified for compaction, not a proven quota minimum",
+   "area": "cost-routing",
+   "question": "Can a cheaper-family compactor preserve recall while reducing uncached input?",
+   "status": "frozen-internal",
+   "date": "2026-10-23",
+   "finding": "The internal frozen replay reports the compactor switch from gpt-6.1-sol to gpt-5.6-terra: recall 4/5 versus 5/5; Terra used 8.35% more input-plus-output tokens but 29.05% fewer uncached input tokens. The two Luna variants exceeded the 512-byte target on 83.94% and 84.92% of reported responses, roughly 84%, driving repeated calls.",
+   "caveat": "Numbers are approved internal aggregates, not public PR results. Subscription quota weights and dollar savings are unknown. Luna runs were censored, with recall unscored rather than zero. Loaded-host timings and the resumed control do not establish clean speed or cache-efficiency gains.",
+   "links": [
+    {
+     "label": "uniichat #5",
+     "url": "https://github.com/kvnloo/uniichat/pull/5"
+    }
+   ],
+   "interesting": true,
+   "why": "This reverses the assumption that fewer model dollars, fewer raw tokens and lower quota burn are interchangeable."
+  },
+  {
+   "id": "fleet-admission-repair",
+   "title": "make fleet holds visible without a second build queue",
+   "area": "fleet",
+   "question": "Can CPU jobs respect host health and retry only when execution is known not to have started?",
+   "status": "draft-pr",
+   "date": "2026-10-23",
+   "finding": "PR #41 records a 2% minimum-reclaim setting and the owner-selected 110 C source policy. A later stall receipt reports controller full I/O pressure avg300 of 72.18%, while the build worker had 9,835 MiB available at 67 C; a later bounded smoke exited 0 after controller I/O recovered.",
+   "caveat": "The thermal value is source policy, not a hardware-safety conclusion or direct user quotation. The later stall was controller storage, not worker admission. The branch is draft; reported live source use does not mean default-branch integration. No paired throughput gain is claimed.",
+   "links": [
+    {
+     "label": ".files #41",
+     "url": "https://github.com/kvnloo/.files/pull/41"
+    },
+    {
+     "label": ".files #41 receipt",
+     "url": "https://github.com/kvnloo/.files/pull/41#issuecomment-6372080224"
+    }
+   ],
+   "interesting": true,
+   "why": "A waiting build can be blocked before it even reaches the worker."
+  },
+  {
+   "id": "fleet-steward",
+   "title": "624 job logs become 16 findings",
+   "area": "fleet",
+   "question": "Can the existing health path extract useful evidence without becoming another scheduler?",
+   "status": "draft-pr",
+   "date": "2026-10-23",
+   "finding": "PR #46 reports 62 tests passed in 0.537 seconds and a dry-run over 624 jobs producing 16 findings. Its ledger includes 33 historical DiskPressure observations, 9 repeated missing-tool observations, 54 terminal exit-75 rows and 2 synthetic exit-137 probes.",
+   "caveat": "Historical queue/runtime/peak-memory coverage is mostly missing and remains null. The synthetic exit-137 probes do not identify a production OOM. A native telemetry smoke failed to acquire the quiet lock within 120 seconds and was not admitted. No before/after performance win is measured.",
+   "links": [
+    {
+     "label": ".files #46",
+     "url": "https://github.com/kvnloo/.files/pull/46"
+    },
+    {
+     "label": "kerdoios #50 receipt",
+     "url": "https://github.com/kvnloo/kerdoios/issues/50#issuecomment-6357622892"
+    }
+   ],
+   "interesting": true,
+   "why": "The first payoff is actionable missing evidence and repeated failure classes, not an automated placement win."
+  },
+  {
+   "id": "fleet-lesson-learning",
+   "title": "learn from real attempts, not exit-code folklore",
+   "area": "fleet",
+   "question": "Can job receipts support scoped lessons and shadow placement hints?",
+   "status": "proposal",
+   "date": "2026-10-23",
+   "finding": "The earlier research snapshot reports 557 jobs but its enumerated exit buckets total 544, leaving 13 unclassified. The later steward snapshot has 624 jobs and must not be treated as the same denominator. The proposed fleet projection currently has 4 host observations and zero offers, sessions or leases.",
+   "caveat": "Owner-reported earlier counts were not reconstructed by the research authors. Exit 0 is not verified task success; exit 137 is not confirmed OOM without cgroup evidence. Physical host resources do not establish allocatable lane capacity. No learned policy benefit is measured.",
+   "links": [
+    {
+     "label": "z0intelligence #131 receipt",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/131#issuecomment-6356843385"
+    },
+    {
+     "label": "kerdoios #50 receipt",
+     "url": "https://github.com/kvnloo/kerdoios/issues/50#issuecomment-6357622892"
+    },
+    {
+     "label": ".files #46",
+     "url": "https://github.com/kvnloo/.files/pull/46"
+    }
+   ],
+   "interesting": true,
+   "why": "Identity, stage and outcome coverage must improve before any placement policy can learn honestly."
+  },
+  {
+   "id": "fleet-observability-oss",
+   "title": "small observability stack, only after an I/O budget",
+   "area": "fleet",
+   "question": "Which existing Kubernetes tools are worth adding to a small mixed fleet?",
+   "status": "proposal",
+   "date": "2026-10-23",
+   "finding": "The OSS research ranks physical storage/eviction diagnosis and the existing health gate before new exporters. It proposes a narrow kube-state-metrics pilot and a single-node VictoriaMetrics collector/store; descheduler and provisioning integration are deferred.",
+   "caveat": "Resource budgets and retention settings in the research are proposed pilot values, not measured safe limits. No installation or runtime experiment was run. Earlier thermal and queue descriptions are superseded by the current admission branch.",
+   "links": [
+    {
+     "label": "z0intelligence #131 receipt",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/131#issuecomment-6356877382"
+    },
+    {
+     "label": ".files #41",
+     "url": "https://github.com/kvnloo/.files/pull/41"
+    }
+   ],
+   "interesting": true,
+   "why": "Observability can itself worsen the constrained storage and control-plane path."
+  },
+  {
+   "id": "fleet-kueue-hybrid",
+   "title": "one hermetic Kueue canary, not fleet-wide migration",
+   "area": "fleet",
+   "question": "Can queueable CPU verification benefit from Kueue while phones and interactive work keep native execution?",
+   "status": "proposal",
+   "date": "2026-10-23",
+   "finding": "The migration research selects an opt-in hybrid. The later source audit is native NOT_RUN: the existing smallest placement smoke requests 50m CPU and 32 MiB, but only prints its node. It is not a source-bound evaluation. Current host retry semantics use exit 75 and 60-second pre-start waits.",
+   "caveat": "The desired hermetic evaluation remains blocked by unqualified installed health, task/image provenance and missing machine-readable gate-stage receipts. Phones remain host-lane workers, not Kubernetes nodes. Queue admission and process completion are not independent eval success.",
+   "links": [
+    {
+     "label": "z0intelligence #131 receipt",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/131#issuecomment-6356821555"
+    },
+    {
+     "label": "z0intelligence #131 receipt",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/131#issuecomment-6375347339"
+    },
+    {
+     "label": ".files #41",
+     "url": "https://github.com/kvnloo/.files/pull/41"
+    }
+   ],
+   "interesting": true,
+   "why": "The blocker is a qualified workload and receipt chain, not merely installing a scheduler."
+  },
+  {
+   "id": "federated-capacity-plane",
+   "title": "typed capacity offers, not movable sessions",
+   "area": "fleet",
+   "question": "Can provider quotas and physical resources share a read-only vocabulary without mixing authority?",
+   "status": "proposal",
+   "date": "2026-10-23",
+   "finding": "Issues #131 and #133 define z0.capacity.snapshot.v1 with explicit missing sources and null unknown capacity. Semantic eligibility, placement economics, physical execution and presentation have separate owners; active sessions remain sticky.",
+   "caveat": "Early comments describe concrete P0 wiring, but the later October 23 audit identifies #134 as closed and unmerged. A projected host is not a fresh placement offer or live actuator. This harvest does not certify deployment.",
+   "links": [
+    {
+     "label": "z0intelligence #131",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/131"
+    },
+    {
+     "label": "z0intelligence #133",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/133"
+    },
+    {
+     "label": "z0intelligence #131 receipt",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/131#issuecomment-6375347339"
+    }
+   ],
+   "interesting": true,
+   "why": "The contract can unify inspection while avoiding a second quota ledger or scheduler."
+  },
+  {
+   "id": "provider-capacity-projection",
+   "title": "a green suite had silently omitted the capacity tests",
+   "area": "cost-routing",
+   "question": "Does the provider-capacity export preserve quota dimensions and actually run its tests?",
+   "status": "draft-pr",
+   "date": "2026-10-21",
+   "finding": "PR #57’s qualification found 0 discovered projection tests where 4 were expected. After converting the existing tests to the suite’s runner, 4 focused and 207 total tests passed; the earlier 203-test green suite had excluded all projection cases.",
+   "caveat": "No production implementation changed in this repair. No live provider discovery, timer freshness, consumer integration or adoption was verified. Overlapping capacity CLI paths still need reconciliation.",
+   "links": [
+    {
+     "label": "kerdoios #57",
+     "url": "https://github.com/kvnloo/kerdoios/pull/57"
+    },
+    {
+     "label": "kerdoios #57 receipt",
+     "url": "https://github.com/kvnloo/kerdoios/pull/57#issuecomment-6319688906"
+    }
+   ],
+   "interesting": false,
+   "why": "A passing suite count can hide complete absence of the feature’s own contract checks."
+  },
+  {
+   "id": "local-resource-placement",
+   "title": "measure local model fit before selecting placement",
+   "area": "fleet",
+   "question": "Which allowed local models fit with real context and co-resident services?",
+   "status": "proposal",
+   "date": "2026-10-23",
+   "finding": "Issue #50 targets a 12 GB GPU profile and asks for measured runtime, quantization, context/KV, warm/cold and co-residency evidence. The later steward handoff supplies host observations, not allocatable offers.",
+   "caveat": "No comparative throughput or verified placement result is reported by the issue. z0 selects semantic candidates; Kerdoios ranks only eligible placements. Hardware capacity is not model quality.",
+   "links": [
+    {
+     "label": "kerdoios #50",
+     "url": "https://github.com/kvnloo/kerdoios/issues/50"
+    },
+    {
+     "label": "kerdoios #50 receipt",
+     "url": "https://github.com/kvnloo/kerdoios/issues/50#issuecomment-6357622892"
+    },
+    {
+     "label": "z0intelligence #20",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/20"
+    }
+   ],
+   "interesting": true,
+   "why": "Local inference costs depend on residency and context pressure, not parameter count alone."
+  },
+  {
+   "id": "quota-receipt-validation",
+   "title": "negative usage and false booleans can manufacture quota",
+   "area": "cost-routing",
+   "question": "Can receipt validation keep reconstructed daily capacity and verified outcomes honest?",
+   "status": "frozen",
+   "date": "2026-10-10",
+   "finding": "The public #51 receipts reproduce negative 100 tokens becoming 1,100 remaining against a 1,000 ceiling, and the string false becoming a verified outcome. A local boolean candidate passed 204 tests and 655 assertions in independent checks; the subsequent negative-token candidate passed 205 tests and 297 candidate checks.",
+   "caveat": "Accepted fixes are local/unpublished according to the receipts, not merged or activated. Missing usage, account identity, freshness, alternate aliases and executor no-paid-spill remain unqualified. No live provider calls or savings are established.",
+   "links": [
+    {
+     "label": "kerdoios #51 receipt",
+     "url": "https://github.com/kvnloo/kerdoios/issues/51#issuecomment-6103203424"
+    },
+    {
+     "label": "kerdoios #51 receipt",
+     "url": "https://github.com/kvnloo/kerdoios/issues/51#issuecomment-6103232970"
+    },
+    {
+     "label": "kerdoios #51 receipt",
+     "url": "https://github.com/kvnloo/kerdoios/issues/51#issuecomment-6103288010"
+    }
+   ],
+   "interesting": false,
+   "why": "Accounting validation is a prerequisite to spending expiring free quota safely."
+  },
+  {
+   "id": "usage-schema-boundary",
+   "title": "an empty import is not zero usage",
+   "area": "cost-routing",
+   "question": "Can native usage events be fed directly into the quota receipt loader?",
+   "status": "frozen",
+   "date": "2026-10-10",
+   "finding": "The denied-network contract check emitted a 120-token nested usage event and loaded zero rows through the flat receipt loader. A documented flat-receipt control loaded 1 row and retained 120 tokens.",
+   "caveat": "This falsifies direct raw JSONL wiring only. It does not establish that no converter exists, identify an upstream defect or qualify real integration. No adapter or provider call was exercised.",
+   "links": [
+    {
+     "label": "kerdoios #51 receipt",
+     "url": "https://github.com/kvnloo/kerdoios/issues/51#issuecomment-6103295739"
+    }
+   ],
+   "interesting": false,
+   "why": "Schema mismatch can look like unused quota unless empty coverage stays unknown."
+  },
+  {
+   "id": "local-cognition-shadow",
+   "title": "local models need correlated shadow coverage before routing credit",
+   "area": "cost-routing",
+   "question": "Do local specialists produce bounded, observable decisions on real native tool events?",
+   "status": "in-progress",
+   "date": "2026-10-10",
+   "finding": "The #20 lane reports 3 of 3 observed calls for each of functiongemma_270m and hammer2.1_3b in a bounded native probe. Subsequent timeout repairs report 41 shadow tests, 207 cognition tests and 22 extension tests passed; a cold model load had previously taken about 11 seconds against a 4-second extension budget.",
+   "caveat": "The final small branch was independently verified against fake backends, not live models or a merged multi-feature runtime. The default supervisor was unavailable in the earlier native report. Successful invocation is not decision quality; abandoned never-returning calls retain a known thread-accumulation risk.",
+   "links": [
+    {
+     "label": "z0intelligence #20 receipt",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/20#issuecomment-6092581301"
+    },
+    {
+     "label": "z0intelligence #20 receipt",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/20#issuecomment-6094291139"
+    },
+    {
+     "label": "z0intelligence #20 receipt",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/20#issuecomment-6101866309"
+    }
+   ],
+   "interesting": false,
+   "why": "Timeout and unavailable coverage must not be scored as a fast or correct decision."
+  },
+  {
+   "id": "local-cognition-recovery",
+   "title": "preserve serialized serving and typed outage recovery",
+   "area": "cost-routing",
+   "question": "Can model swapping wait for an upstream response and keep transport failures distinct from parse errors?",
+   "status": "frozen",
+   "date": "2026-10-23",
+   "finding": "Issue #196 identifies source that holds the supervisor lock through the response, serializes challengers, prewarms models and deduplicates outage records.",
+   "caveat": "Source recovery only. Its delayed-transport acceptance test was not run; no live model load, provider call, new benchmark or deployment is claimed. Recovered source is not an active serving guarantee.",
+   "links": [
+    {
+     "label": "z0intelligence #196",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/196"
+    }
+   ],
+   "interesting": false,
+   "why": "Reliable negative evidence is necessary before local-model comparison is meaningful."
+  },
+  {
+   "id": "observer-confirmation-failed",
+   "title": "the local observer lead did not transfer",
+   "area": "research",
+   "question": "Does a semantic observer add information beyond a simple prior on fresh work items?",
+   "status": "frozen",
+   "date": "2026-10-02",
+   "finding": "The public receipt has 105 exploratory and 142 confirmatory turns. julia_1’s preregistered confirmatory Brier difference was +0.0094 with p=0.67; log-loss was +0.052 with p=0.81, so the test was NOT_CONFIRMED. Reported warm p50 latency was 69 ms for julia_1, 421 ms for laya_421m and 28 ms for nanojev and decider_2b. The failure-prediction target had 0 positives in 653 joined attempts.",
+   "caveat": "Fixture-oracle proxy labels, not general real-world task quality. Paid JEV was NOT_RUN. All-safe argmax rows do not prove a lack of probability ranking: the later comment correctly requests AUROC/AUPRC. No backend was promoted.",
+   "links": [
+    {
+     "label": "z0intelligence #14 receipt",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/14#issuecomment-5961789232"
+    },
+    {
+     "label": "z0intelligence #14 receipt",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/14#issuecomment-6207743038"
+    }
+   ],
+   "interesting": true,
+   "why": "A calibration-looking improvement can fail transfer or merely approximate the base rate."
+  },
+  {
+   "id": "adaptive-observer-idea",
+   "title": "separate reasoning-gate changes from label changes",
+   "area": "research",
+   "question": "Would initial and post-reasoning distributions clarify an adaptive observer comparison?",
+   "status": "idea",
+   "date": "2026-10-16",
+   "finding": "The external comment proposes preserving initial, post-reasoning and returned distributions, reasoning frequency and gate flips, alongside probability discrimination and latency.",
+   "caveat": "The commenter explicitly has not evaluated the proposed StartLux/AutoThink comparison on this workload. It is an optional shadow receipt idea, not a local result or endorsement.",
+   "links": [
+    {
+     "label": "z0intelligence #14 receipt",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/14#issuecomment-6207743038"
+    }
+   ],
+   "interesting": true,
+   "why": "It addresses the all-safe-threshold ambiguity without treating reference agreement as truth."
+  },
+  {
+   "id": "autonomous-sft-loop",
+   "title": "verified replay episodes before autonomous fine-tuning",
+   "area": "research",
+   "question": "Can a routing specialist improve through training, replay, shadowing and independent outcome gates?",
+   "status": "proposal",
+   "date": "2026-10-13",
+   "finding": "Issue #143 specifies a canonical episode compiler, temporal/lineage-aware holdouts and progression from offline through replay-green and shadow to verified-outcome eligibility. It retains base, SFT, State Packet, retrieval and verified-label ablations.",
+   "caveat": "No trained checkpoint, held-out win or closed deployed training loop is reported here. Historical actions and synthetic teacher labels cannot silently become optimal gold. Trainer backends do not own evaluation or promotion.",
+   "links": [
+    {
+     "label": "z0intelligence #143",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/143"
+    }
+   ],
+   "interesting": true,
+   "why": "The reward and contamination boundaries matter before adding weight updates."
+  },
+  {
+   "id": "optimizer-before-sft",
+   "title": "prompt and workflow search compete with weight training",
+   "area": "research",
+   "question": "Does GEPA or RSI-style search beat fine-tuning after full optimization cost?",
+   "status": "idea",
+   "date": "2026-10-13",
+   "finding": "The #143 follow-up proposes incumbent, GEPA, RSI, GEPA+RSI, SFT and combined-search-to-SFT arms on the same canonical episodes and untouched temporal holdouts.",
+   "caveat": "Proposed experiment only. Include optimizer evaluations and amortized full-system cost per independently verified success; no prompt-search or training win is claimed.",
+   "links": [
+    {
+     "label": "z0intelligence #143 receipt",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/143#issuecomment-6139105175"
+    }
+   ],
+   "interesting": true,
+   "why": "Training is one intervention, not an assumed destination for every failure."
+  },
+  {
+   "id": "byte-distillation-paper",
+   "title": "exact end-of-token byte distillation",
+   "area": "research",
+   "question": "Can tokenizer-independent byte targets produce an economical bounded local specialist?",
+   "status": "idea",
+   "date": "2026-10-23",
+   "finding": "Issue #203’s paper triage reports roughly 1.28B layer-parameter students, up to 1T text bytes and 64 H200 GPUs per training run. Up to about 4 percentage points of downstream advantage is a scaling-law prediction; about 6.35x unique-text and 5.19x logit-storage savings are paper-regime calculations, not local measurements.",
+   "caveat": "The paper itself was not independently fetched in this gh-only harvest; claims are attributed to the public issue’s triage. End-to-end inference matching is unresolved. Full teacher logits are needed for exact conversion; a local tiny pilot would not replicate the large runs. No structured-output, latency or VRAM win is established.",
+   "links": [
+    {
+     "label": "z0intelligence #203",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/203"
+    },
+    {
+     "label": "paper (linked by the issue)",
+     "url": "https://arxiv.org/abs/2609.12303"
+    }
+   ],
+   "interesting": true,
+   "why": "It suggests a new target representation, but economics must be checked before expensive training."
+  },
+  {
+   "id": "shared-context-write-leases",
+   "title": "shared files need write ownership, not shared confidence",
+   "area": "governance",
+   "question": "Can path-scoped leases prevent overlapping edits among agents sharing a checkout?",
+   "status": "proposal",
+   "date": "2026-10-21",
+   "finding": "Issue #185 proposes E1 with a target of reducing recorded W1 violations from 419 to zero on governed routes and no more than 5% refused or waiting writes.",
+   "caveat": "These are a historical count and proposed targets, not E1 results. E1 is NOT_RUN. Shared filesystem coordination is world-state coherence, not cross-model KV-cache reuse or execution permission.",
+   "links": [
+    {
+     "label": "z0intelligence #185",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/185"
+    }
+   ],
+   "interesting": true,
+   "why": "It separates concurrency control from model-context reuse."
+  },
+  {
+   "id": "per-tool-call-placement",
+   "title": "move expensive calls, not interactive sessions",
+   "area": "speed-ux",
+   "question": "Can bounded heavy tool calls use the fleet without making each turn slower?",
+   "status": "proposal",
+   "date": "2026-10-21",
+   "finding": "The #185 note reports warm transfer observations of 0.62–0.71 seconds for a 33 MB repository on the build worker, about 9.7 seconds on a phone and 242 seconds when the build worker was cordoned. E2 proposes at most 1.5 seconds added latency per call.",
+   "caveat": "Transfer observations are not controlled end-to-end task latency. E2 remains NOT_RUN; its reduced off-fleet-command and lock-wait targets are hypotheses. Current interactive sessions stay sticky.",
+   "links": [
+    {
+     "label": "z0intelligence #185",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/185"
+    },
+    {
+     "label": "z0intelligence #131",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/131"
+    }
+   ],
+   "interesting": true,
+   "why": "An apparently cheap remote call becomes expensive under admission waits."
+  },
+  {
+   "id": "prefix-cache-before-c2c",
+   "title": "test shared-prefix reuse before cross-model cache transfer",
+   "area": "research",
+   "question": "Can existing prompt caching remove repeated shared-context prefill before a custom fuser is needed?",
+   "status": "idea",
+   "date": "2026-10-21",
+   "finding": "E3a proposes at least 4 calls over a shared context of at least 2,000 tokens, targeting at least 50% lower TTFT and 80% lower prompt_n. E3b proposes a 0.6B/4B fuser comparison on 28 local-cognition fixtures only after E3a is positive.",
+   "caveat": "All E3 arms are NOT_RUN. Targets are not savings. Cache-to-Cache shares model state between a fixed model pair; it does not provide file/DOM coherence or replace write leases.",
+   "links": [
+    {
+     "label": "z0intelligence #185",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/185"
+    },
+    {
+     "label": "Cache-to-Cache paper (linked by the issue)",
+     "url": "https://arxiv.org/abs/2510.03215"
+    }
+   ],
+   "interesting": true,
+   "why": "The smallest existing-cache control can falsify the need for a more complex mechanism."
+  },
+  {
+   "id": "outcome-credit-rfc",
+   "title": "completion and repeated receipts are not verified credit",
+   "area": "governance",
+   "question": "Can learning credit survive malformed verifier references, replay and later negative outcomes?",
+   "status": "proposal",
+   "date": "2026-10-10",
+   "finding": "The #54 repair receipts report 41 focused tests for the malformed-reference guard and 44 for receipt replay accounting. The replay repair had 3 behavioral RED failures before the candidate. The RFC requires independently joined outcomes and explicit observational versus causal credit.",
+   "caveat": "Those are bounded branch receipts, not full acceptance of the RFC. The later promotion queue says #153 overlaps #149 and #150 needs separately qualified combination evidence. Do not merge duplicate guards or count append-only receipt revisions as new successes.",
+   "links": [
+    {
+     "label": "z0intelligence #54",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/54"
+    },
+    {
+     "label": "z0intelligence #54 receipt",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/54#issuecomment-6094119439"
+    },
+    {
+     "label": "z0intelligence #54 receipt",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/54#issuecomment-6094190217"
+    },
+    {
+     "label": "z0intelligence #169",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/169"
+    }
+   ],
+   "interesting": true,
+   "why": "An optimizer can otherwise improve its own scoreboard without improving a task."
+  },
+  {
+   "id": "selective-autonomy-rfc",
+   "title": "act, observe, ask, abstain and escalate are different decisions",
+   "area": "governance",
+   "question": "When does learned judgment add held-out value beyond deterministic gates and escalation?",
+   "status": "proposal",
+   "date": "2026-10-20",
+   "finding": "RFC #55 requires per-family risk/coverage, false confidence, versioned calibration and fallback costs. Its October clarification separates deterministic validity checks, admissible agent judgment and explicitly delegated human tradeoffs.",
+   "caveat": "No global confidence threshold or production autonomy win is established. Confidence and learned preferences do not grant authority; even an ACT recommendation can be denied downstream.",
+   "links": [
+    {
+     "label": "z0intelligence #55",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/55"
+    },
+    {
+     "label": "z0intelligence #55 receipt",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/55#issuecomment-6283046472"
+    }
+   ],
+   "interesting": true,
+   "why": "The useful target is safe decision coverage with a costed fallback, not raw agreement."
+  },
+  {
+   "id": "mechanism-neutral-compilation",
+   "title": "compile repeated cognition only while it remains valid",
+   "area": "governance",
+   "question": "Can the cheapest verified mechanism retain outcome quality and deoptimize under drift?",
+   "status": "proposal",
+   "date": "2026-10-20",
+   "finding": "RFC #56 replaces a fixed model ladder with mechanism-neutral promotion, explicit operating regions, invalidators, fallback and maintenance economics. Its October slice proposes extracting deterministic bookkeeping around existing contracts before expanding learned selection.",
+   "caveat": "The self-improving shadow stages have mixed historical implementation states; the RFC does not establish a closed deployed loop. A simpler rule, cache or retrieval control can win. The learner must not edit its sealed judge.",
+   "links": [
+    {
+     "label": "z0intelligence #56",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/56"
+    },
+    {
+     "label": "z0intelligence #56 receipt",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/56#issuecomment-6283042236"
+    }
+   ],
+   "interesting": true,
+   "why": "A specialist that cannot repay discovery and drift cost should be narrowed or removed."
+  },
+  {
+   "id": "promotion-queue-reconciliation",
+   "title": "one readiness queue, separate source and runtime acceptance",
+   "area": "governance",
+   "question": "Can existing work be qualified without duplicating fixes or promoting stale evidence?",
+   "status": "in-progress",
+   "date": "2026-10-20",
+   "finding": "The dated queue snapshot lists 14 open PRs. Its wave reports 1 integration and 3 existing-PR repairs: file-search access tests 36 passed with 2 explicit skips, route-review tests 17/17 and scoreboard tests 21/21. A direct-source rerun passed 1,162 tests with 6 skips and 5 deselections.",
+   "caveat": "This is an October 20 snapshot, not today’s open-PR total. Counts are reported receipts, not reruns by this harvest. Repaired source, exact-head tests, merge and runtime adoption remain distinct; source-head CI and merge-checkout CI are not interchangeable.",
+   "links": [
+    {
+     "label": "z0intelligence #169",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/169"
+    },
+    {
+     "label": "z0intelligence #169 receipt",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/169#issuecomment-6280408448"
+    }
+   ],
+   "interesting": false,
+   "why": "The queue exposes how much unfinished work is acceptance and integration rather than new implementation."
+  },
+  {
+   "id": "mobile-offline-contracts",
+   "title": "mobile work starts with a real offline product gate",
+   "area": "governance",
+   "question": "Can connector-only contributors verify bounded contract patches without implying host acceptance?",
+   "status": "proposal",
+   "date": "2026-10-23",
+   "finding": "The refreshed #177 board prioritizes a secret-free preview CPU job, then receipt and serializer negative controls. The source notes that preview has coordination automation but lacks the proposed product unit workflow.",
+   "caveat": "Cards are assignments and dependencies, not executed tests. Connector-only work does not qualify GPUs, phones, local services, private host data or default-branch promotion.",
+   "links": [
+    {
+     "label": "z0intelligence #177",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/177"
+    },
+    {
+     "label": "z0intelligence #14",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/14"
+    }
+   ],
+   "interesting": true,
+   "why": "Small offline gates can make remote contribution useful without fabricating runtime coverage."
+  },
+  {
+   "id": "bend-autoresearch-artifact",
+   "title": "artifact: let the agent search; keep the laws fixed",
+   "area": "research",
+   "question": "Can executable laws and refusal receipts define a protected search problem?",
+   "status": "published",
+   "date": "2026-10-23",
+   "finding": "The public artifact reports 10/10 law-breaking mutants rejected, parity on 400 seeded tapes and 38,454 state/event/availability parity cases for its compiled work-item subset. Its memory panel cites 28 finite vectors and 84 parity bits.",
+   "caveat": "This is an executable explanatory artifact and linked proof/replay evidence, not universal runtime enforcement. Source translation, backend and adapter remain trusted. The factory autoresearch replay uses a deterministic simulated cost model; weight training, live promotion and learning gains are not established.",
+   "links": [
+    {
+     "label": "artifact: Bend laws to autoresearch story",
+     "url": "https://kvnloo.github.io/z0intelligence/bend-autoresearch/"
+    }
+   ],
+   "interesting": true,
+   "why": "It makes the proposed exact-revision verification and separate owner-acceptance boundary concrete."
+  },
+  {
+   "id": "k3s-fleet-artifact",
+   "title": "artifact: fleet handoff and the layer above Kubernetes",
+   "area": "fleet",
+   "question": "Which mixed-fleet failures should native infrastructure solve instead of custom orchestration?",
+   "status": "published",
+   "date": "2026-10-23",
+   "finding": "The public handoff presents 624 historical job logs, 9 failure topics and 3 named ClusterQueues. It explicitly contrasts the earlier 557-job snapshot and the steward’s 54 terminal exit-75 rows with the handoff’s roughly 41.",
+   "caveat": "The page was not a fresh fleet probe. Its 95% shadow-promotion widget is illustrative, not an accepted global gate; reference agreement is not independent success. Kubernetes-native remedies are research guesses, not deployed fixes. Reconcile per-snapshot denominators before comparing rates.",
+   "links": [
+    {
+     "label": "artifact: k3s fleet handoff",
+     "url": "https://kvnloo.github.io/z0intelligence/k3s-fleet/"
+    },
+    {
+     "label": ".files #46",
+     "url": "https://github.com/kvnloo/.files/pull/46"
+    },
+    {
+     "label": "z0intelligence #14",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/14"
+    }
+   ],
+   "interesting": true,
+   "why": "The handoff turns specific failures into questions for infrastructure expertise without claiming a scheduler win."
+  },
+  {
+   "id": "harness-speed-v1",
+   "title": "same model, different harness overhead",
+   "area": "speed-ux",
+   "question": "How much latency and task overhead comes from the harness rather than the model?",
+   "status": "draft-pr",
+   "date": "2026-10-21",
+   "finding": "In s3, cold TTFT was 11.13 s for hermes-base, 3.18 s for hermes-speed, 2.22 s for fx-cli, 2.00 s for fx-base, 2.09 s for pi-base and 4.07 s for omp-base; all were 32/32 correct. All 168 counted s3/s3h task runs passed runtime verification.",
+   "caveat": "One host and short synthetic tasks; custom libfx is not the fx CLI, 19 contaminated task rows were excluded, and deleted work copies prevent independent patch replay.",
+   "links": [
+    {
+     "label": "study PR",
+     "url": "https://github.com/kvnloo/z0evals/pull/110"
+    },
+    {
+     "label": "studies/harness-speed-v1/manifest.yaml",
+     "url": "https://github.com/kvnloo/z0evals/blob/1ec7c67e36cd6dfa57416b7afdd63ada2805158a/studies/harness-speed-v1/manifest.yaml"
+    },
+    {
+     "label": "studies/harness-speed-v1/analysis/summary.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/1ec7c67e36cd6dfa57416b7afdd63ada2805158a/studies/harness-speed-v1/analysis/summary.md"
+    },
+    {
+     "label": "posts/harness-speed-v1.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/1ec7c67e36cd6dfa57416b7afdd63ada2805158a/posts/harness-speed-v1.md"
+    },
+    {
+     "label": "studies/harness-speed-v1/protocol.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/1ec7c67e36cd6dfa57416b7afdd63ada2805158a/studies/harness-speed-v1/protocol.md"
+    },
+    {
+     "label": "earlier preregistration branch snapshot",
+     "url": "https://github.com/kvnloo/z0evals/blob/cd47ac6765a73308594a603a0b284b2930be7cee/studies/harness-speed-v1/manifest.yaml"
+    }
+   ],
+   "interesting": false,
+   "why": "The speed profile removes much of the apparent Hermes gap; the engine-versus-CLI distinction changes the comparison.",
+   "post": "harness-speed-v1"
+  },
+  {
+   "id": "gui-scripting-speed-z0live-control",
+   "title": "fast phone control still needs confirmation",
+   "area": "speed-ux",
+   "question": "Can in-process accessibility reduce phone-control latency without pretending a tap proves intent?",
+   "status": "draft-pr",
+   "date": "2026-10-20",
+   "finding": "Whole phone_do p50 / p95 was 267 / 477 ms (n=16), with 16/16 landed; warm tree reads were 9.3 / 104 ms versus 98 / 165 ms for u2. On the synthetic chooser set, phone Qwen3-1.7B acted right / wrong 16 / 6 @0.95.",
+   "caveat": "Not preregistered; rules were tuned on the fixture, the real-goal sample is small, and landed means an accessibility event or screen change, not independently verified intent.",
+   "links": [
+    {
+     "label": "study PR",
+     "url": "https://github.com/kvnloo/z0evals/pull/103"
+    },
+    {
+     "label": "studies/gui-scripting-speed/z0live-control/README.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/3809d360790c8e8c2de7c65c796ead9375a77340/studies/gui-scripting-speed/z0live-control/README.md"
+    },
+    {
+     "label": "studies/gui-scripting-speed/z0live-control/data/summary.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/3809d360790c8e8c2de7c65c796ead9375a77340/studies/gui-scripting-speed/z0live-control/data/summary.json"
+    }
+   ],
+   "interesting": false,
+   "why": "Cheap lexical choice beat adding an on-phone language-model tier; waiting for confirmation dominates the fast path.",
+   "post": "z0live-phone-control"
+  },
+  {
+   "id": "z0live-v0",
+   "title": "voice certification without invented actor results",
+   "area": "speed-ux",
+   "question": "What evidence can certify voice-control contracts without confusing replay with hardware performance?",
+   "status": "draft-pr",
+   "date": "2026-10-04",
+   "finding": "Replay-only evidence can produce only PARTIAL, never KEEP; the preregistered prewarm gate requires ≥50 ms p50 useful gain and exactly zero speculative mutations.",
+   "caveat": "The manifest is draft and has no actor measurements; the numbers are acceptance thresholds, not observed gains.",
+   "links": [
+    {
+     "label": "study PR",
+     "url": "https://github.com/kvnloo/z0evals/pull/86"
+    },
+    {
+     "label": "studies/z0live-v0/README.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/804af8fe9561587d6e264fdbd381a40a45cd8594/studies/z0live-v0/README.md"
+    },
+    {
+     "label": "studies/z0live-v0/manifest.yaml",
+     "url": "https://github.com/kvnloo/z0evals/blob/804af8fe9561587d6e264fdbd381a40a45cd8594/studies/z0live-v0/manifest.yaml"
+    }
+   ],
+   "interesting": false,
+   "why": "The wrapper makes missing runtime evidence an explicit partial decision instead of a blended passing score.",
+   "post": null
+  },
+  {
+   "id": "voice-omp-parity-v0",
+   "title": "voice parity did not pass",
+   "area": "speed-ux",
+   "question": "Does z0live meet the preregistered OMP voice-parity gates on output audio?",
+   "status": "draft-pr",
+   "date": "2026-10-20",
+   "finding": "Round 2 direct-turn p50 / p95 was 1,112 / 1,539 ms for OMP, 1,265 / 1,960 ms for z0live-bidi and 1,815 / 2,978 ms for z0live-realtime; both candidates were FAIL. The later bidi subset had 0/15 direct turns with no audible reply but 1 stale resume.",
+   "caveat": "Different products and measurement points; round 2 reuses the earlier OMP control, and the later bidi subset covers only two scenarios.",
+   "links": [
+    {
+     "label": "study PR",
+     "url": "https://github.com/kvnloo/z0evals/pull/101"
+    },
+    {
+     "label": "studies/voice-omp-parity-v0/manifest.yaml",
+     "url": "https://github.com/kvnloo/z0evals/blob/e3c6c2c8cdc2f3b73be8bc3a1a8b9c8e98c07d3c/studies/voice-omp-parity-v0/manifest.yaml"
+    },
+    {
+     "label": "studies/voice-omp-parity-v0/README.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/e3c6c2c8cdc2f3b73be8bc3a1a8b9c8e98c07d3c/studies/voice-omp-parity-v0/README.md"
+    },
+    {
+     "label": "studies/voice-omp-parity-v0/results/voice-parity-20261020.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/e3c6c2c8cdc2f3b73be8bc3a1a8b9c8e98c07d3c/studies/voice-omp-parity-v0/results/voice-parity-20261020.md"
+    },
+    {
+     "label": "studies/voice-omp-parity-v0/results/voice-parity-20261020-r2.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/e3c6c2c8cdc2f3b73be8bc3a1a8b9c8e98c07d3c/studies/voice-omp-parity-v0/results/voice-parity-20261020-r2.md"
+    },
+    {
+     "label": "studies/voice-omp-parity-v0/results/voice-parity-20261020-r2c.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/e3c6c2c8cdc2f3b73be8bc3a1a8b9c8e98c07d3c/studies/voice-omp-parity-v0/results/voice-parity-20261020-r2c.md"
+    }
+   ],
+   "interesting": false,
+   "why": "A quicker result or fixed missing reply does not override blocking interruption and stale-speech failures.",
+   "post": "voice-omp-parity-v0"
+  },
+  {
+   "id": "next-action-v0",
+   "title": "the next-action predictor nobody committed",
+   "area": "speed-ux",
+   "question": "Does a pull-first action panel have a better starting point than the unused push predictor?",
+   "status": "proposal",
+   "date": "2026-10-21",
+   "finding": "The frozen baseline recorded 7,859 shadow predictions, 19 ready-tier surfaces, 0 explicit commits and 0 accept/reject decisions in 30 days. On app-switch outcomes, recency top-1 was 0.771 against the engine’s 0.454; confidence ≥0.82 was correct 22.7% of the time (n=76).",
+   "caveat": "One person and one desktop; the new pull-first design has no data, and recency is reconstructed from prediction-time states.",
+   "links": [
+    {
+     "label": "study PR",
+     "url": "https://github.com/kvnloo/z0evals/pull/112"
+    },
+    {
+     "label": "studies/next-action-v0/README.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/e6549bf5f7c5dcd2485b15457cd6fbaf94703c9c/studies/next-action-v0/README.md"
+    },
+    {
+     "label": "studies/next-action-v0/manifest.yaml",
+     "url": "https://github.com/kvnloo/z0evals/blob/e6549bf5f7c5dcd2485b15457cd6fbaf94703c9c/studies/next-action-v0/manifest.yaml"
+    },
+    {
+     "label": "studies/next-action-v0/data/baseline-desktop-shadow.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/e6549bf5f7c5dcd2485b15457cd6fbaf94703c9c/studies/next-action-v0/data/baseline-desktop-shadow.json"
+    }
+   ],
+   "interesting": false,
+   "why": "A plain recency list beats the predictor while its highest-confidence band is worse; changing the action space matters before adding a model.",
+   "post": "next-action-baseline"
+  },
+  {
+   "id": "agentweb-emma-z0-v0",
+   "title": "agent-web boundaries passed; model evidence was blocked",
+   "area": "speed-ux",
+   "question": "Can deterministic integration evidence establish a safe boundary without being mistaken for live quality evidence?",
+   "status": "draft-pr",
+   "date": "2026-09-30",
+   "finding": "The context campaign recorded n_rows 18 and n_live 0, with eligible_for_assist_review false; reliability recorded 7 observed receipts and passed true. The model-backed smoke recorded credentials_available false and executed false.",
+   "caveat": "Authored deterministic fixtures are not live customer samples or model-quality evidence; active routing and assist promotion remain blocked.",
+   "links": [
+    {
+     "label": "study PR",
+     "url": "https://github.com/kvnloo/z0evals/pull/68"
+    },
+    {
+     "label": "studies/agentweb-emma-z0-v0/README.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/5ba875d99f9e50bbccfaf00c76498ce80e097562/studies/agentweb-emma-z0-v0/README.md"
+    },
+    {
+     "label": "studies/agentweb-emma-z0-v0/manifest.yaml",
+     "url": "https://github.com/kvnloo/z0evals/blob/5ba875d99f9e50bbccfaf00c76498ce80e097562/studies/agentweb-emma-z0-v0/manifest.yaml"
+    },
+    {
+     "label": "studies/agentweb-emma-z0-v0/results/context-e2e-20260930.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/5ba875d99f9e50bbccfaf00c76498ce80e097562/studies/agentweb-emma-z0-v0/results/context-e2e-20260930.json"
+    },
+    {
+     "label": "studies/agentweb-emma-z0-v0/results/reliability-e2e-20260930.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/5ba875d99f9e50bbccfaf00c76498ce80e097562/studies/agentweb-emma-z0-v0/results/reliability-e2e-20260930.json"
+    },
+    {
+     "label": "studies/agentweb-emma-z0-v0/results/model-smoke-blocked-20260930.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/5ba875d99f9e50bbccfaf00c76498ce80e097562/studies/agentweb-emma-z0-v0/results/model-smoke-blocked-20260930.json"
+    }
+   ],
+   "interesting": false,
+   "why": "Green transport and privacy checks coexist with a blocked model study; the evidence classes cannot substitute for each other.",
+   "post": "agentweb-boundary-not-quality"
+  },
+  {
+   "id": "noop-hermes-agent-api",
+   "title": "a scoped agent API on a phone",
+   "area": "speed-ux",
+   "question": "Can Hermes read bounded app summaries and perform allow-listed actions while consent and audit gates hold?",
+   "status": "draft-pr",
+   "date": "2026-10-21",
+   "finding": "The two end-to-end scripts passed 12/12, 12/12; warm data_freshness latency (n=20) was p50 10 ms and p95 14 ms. In the second run, open_screen reported landed: true in 487 ms; background opening posted a notification and left the foreground app unchanged.",
+   "caveat": "One phone and one grant-scope combination on a local integration lineage; advice quality was not evaluated, and installation plus grant UI verification used adb.",
+   "links": [
+    {
+     "label": "study PR",
+     "url": "https://github.com/kvnloo/z0evals/pull/108"
+    },
+    {
+     "label": "studies/noop-hermes-agent-api/README.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/6d48cf9082205f022c909f59b26275f48e02c274/studies/noop-hermes-agent-api/README.md"
+    },
+    {
+     "label": "studies/noop-hermes-agent-api/manifest.yaml",
+     "url": "https://github.com/kvnloo/z0evals/blob/6d48cf9082205f022c909f59b26275f48e02c274/studies/noop-hermes-agent-api/manifest.yaml"
+    },
+    {
+     "label": "studies/noop-hermes-agent-api/data/summary.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/6d48cf9082205f022c909f59b26275f48e02c274/studies/noop-hermes-agent-api/data/summary.json"
+    }
+   ],
+   "interesting": false,
+   "why": "The background result is deliberately a notification, not a stolen foreground; the API distinguishes permission, delivery and landed action.",
+   "post": "noop-hermes-agent-api"
+  },
+  {
+   "id": "breath-phase-camera",
+   "title": "camera breath-phase tests remain synthetic",
+   "area": "speed-ux",
+   "question": "Can a dependency-free camera-motion estimator track breathing phase on-device?",
+   "status": "draft-pr",
+   "date": "2026-10-20",
+   "finding": "Synthetic reproduction reported 26 JVM tests: 25 pass, 1 skipped; the full app suite reported 6755 tests, 0 failures. The recorded-clip result is null: no real-video result yet.",
+   "caveat": "Synthetic signals and rendered frames only; real-video phase accuracy and on-device latency are unmeasured, and literature respiration-rate results are not phase validation.",
+   "links": [
+    {
+     "label": "study PR",
+     "url": "https://github.com/kvnloo/z0evals/pull/107"
+    },
+    {
+     "label": "studies/breath-phase-camera/README.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/47adbc77714b0492ca52f290b92177894c53f8cb/studies/breath-phase-camera/README.md"
+    },
+    {
+     "label": "studies/breath-phase-camera/manifest.yaml",
+     "url": "https://github.com/kvnloo/z0evals/blob/47adbc77714b0492ca52f290b92177894c53f8cb/studies/breath-phase-camera/manifest.yaml"
+    },
+    {
+     "label": "studies/breath-phase-camera/data/synthetic-tests.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/47adbc77714b0492ca52f290b92177894c53f8cb/studies/breath-phase-camera/data/synthetic-tests.json"
+    },
+    {
+     "label": "studies/breath-phase-camera/data/clip-gate.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/47adbc77714b0492ca52f290b92177894c53f8cb/studies/breath-phase-camera/data/clip-gate.json"
+    },
+    {
+     "label": "studies/breath-phase-camera/data/protocol.json",
+     "url": "https://github.com/kvnloo/z0evals/blob/47adbc77714b0492ca52f290b92177894c53f8cb/studies/breath-phase-camera/data/protocol.json"
+    }
+   ],
+   "interesting": false,
+   "why": "The real-clip evaluator is the skipped test, so an otherwise green suite cannot support the intended camera claim.",
+   "post": null
+  },
+  {
+   "id": "turbo-mode-rfc",
+   "title": "bounded turbo orchestration",
+   "area": "speed-ux",
+   "question": "Can parallel lanes improve verified throughput without hiding quotas or worker failures?",
+   "status": "proposal",
+   "date": "2026-10-19",
+   "finding": "The RFC specifies default bounded concurrency 3 and one outstanding request per provider; its matched one-trial A/B is proposed, not a reported speedup.",
+   "caveat": "Open RFC, no frozen result or measured throughput in the issue; worker coordination ownership was subsequently narrowed outside the cognition component.",
+   "links": [
+    {
+     "label": "design issue",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/175"
+    }
+   ],
+   "interesting": false,
+   "why": "The useful target is verified outcomes per bounded run, not launched workers.",
+   "post": null
+  },
+  {
+   "id": "turbo-fanout-now-testing",
+   "title": "fan-out needs a review surface",
+   "area": "speed-ux",
+   "question": "Can fan-out feed a preview card that makes the current acceptance task obvious?",
+   "status": "proposal",
+   "date": "2026-10-22",
+   "finding": "The issue reports 3.4 s edit→screen and turbo motion 0.55× for its preview milestone, while the 5-fix cloud pilot remains proposed. The later ownership decision freezes PR #193 as an offline prototype, not a live deployment.",
+   "caveat": "The preview figures are issue-reported, not a frozen reproduced benchmark; cloud CLI fan-out, consumer-app automation and visible card acceptance are separate unproven lanes.",
+   "links": [
+    {
+     "label": "design issue",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/191"
+    },
+    {
+     "label": "ownership and scope clarification",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/191#issuecomment-6353523941"
+    }
+   ],
+   "interesting": false,
+   "why": "A Now testing card ties a candidate to individually decidable criteria; the ownership correction prevents treating a cognition prototype as deployed orchestration.",
+   "post": null
+  },
+  {
+   "id": "bounded-recommendation-ux",
+   "title": "recommendations with an interruption budget",
+   "area": "speed-ux",
+   "question": "Can bounded recommendations reduce needless prompts without pretending delivery proves benefit?",
+   "status": "proposal",
+   "date": "2026-10-21",
+   "finding": "The issue proposes a no-model deterministic baseline and NO_SUGGESTION on absent or stale evidence; it reports 14 passing local test methods only for a separate synthetic evidence-shape gate, not useful-outcome validation.",
+   "caveat": "Open proposal; no measured decision latency, override rate or independently verified benefit is reported, and the synthetic gate does not validate permission.",
+   "links": [
+    {
+     "label": "design issue",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/181"
+    },
+    {
+     "label": "ownership and scope clarification",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/181#issuecomment-6308167694"
+    }
+   ],
+   "interesting": false,
+   "why": "The baseline can abstain without spending inference or turning uncertain observations into health decisions.",
+   "post": null
+  },
+  {
+   "id": "turbo-app-fanout",
+   "title": "app fan-out passed offline tests, not live qualification",
+   "area": "speed-ux",
+   "question": "Can an opt-in app fan-out prototype preserve stop, admission and rollback boundaries?",
+   "status": "draft-pr",
+   "date": "2026-10-22",
+   "finding": "PR #193 reports 64 passed in 2.00s and synthetic Git success/revert smoke with real ≥20-second waits; no live app launch or actual preview change was performed.",
+   "caveat": "Stub build, fake preview logs and synthetic screen fixtures; later ownership guidance retains this as a prototype draft, and consumer-app account/compliance risk remains unresolved.",
+   "links": [
+    {
+     "label": "draft PR",
+     "url": "https://github.com/kvnloo/z0intelligence/pull/193"
+    },
+    {
+     "label": "pinned prototype documentation",
+     "url": "https://github.com/kvnloo/z0intelligence/blob/5d284b9634bbcb246ddab3d9fc419940807a2c75/docs/turbo-app-fanout.md"
+    },
+    {
+     "label": "later ownership decision",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/191#issuecomment-6353523941"
+    }
+   ],
+   "interesting": false,
+   "why": "Real Git rollback evidence can coexist with no physical-device proof; synthetic qualification must not unlock live automation.",
+   "post": "turbo-app-fanout-offline"
+  }
+ ]
+}

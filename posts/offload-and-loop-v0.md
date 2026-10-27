@@ -33,11 +33,11 @@ tonight we ran five measurements. one local worker class passed our speed-first 
 
 ## two questions {#question}
 
-z0 should do two things for the agents it sits beside. it should move work off the frontier model when a cheaper or faster model gives the same answer. and it should learn, from outcomes that someone or something independently checked, when its own gate is right. tonight asked whether either is ready. every experiment below was pre-registered in its source repository, every pinned commit was pushed, and only aggregates are published. the only runtime change was a shadow-only demotion.
+z0 should do two things for the agents it sits beside. it should move work off the frontier model when a cheaper or faster model gives the same answer. and it should learn, from outcomes that someone or something independently checked, when its own gate is right. tonight asked whether either is ready. the scored offload, faithfulness, verification-density and verified-loop comparisons were pre-registered in their source repositories. utilization is a source-reported baseline, not a pre-registered comparison. cited source revisions are pinned, and only aggregates are published. the only runtime change was a shadow-only demotion.
 
 ## speed-first offload {#offload}
 
-under the burn posture, z0 sends bounded work back to the frontier even when a local model on groot (an rtx 3080 ti running qwen3-8b) would answer as well and sooner. the speed-offload pre-registration (d716a38) defined five worker task classes, built frozen sets from z0 artefacts, and fixed a rule per class: the paired 95% lower bound of local minus the better frontier arm above −0.10, local pass rate at least 0.80, local warm p95 below the faster frontier arm's p95, errors at most 5%.
+under the burn posture, z0 sends bounded work back to the frontier even when a local model on the desktop (an rtx 3080 ti running qwen3-8b) would answer as well and sooner. the speed-offload pre-registration (d716a38) defined five worker task classes, built frozen sets from z0 artefacts, and fixed a rule per class: the paired 95% lower bound of local minus the better frontier arm above −0.10, local pass rate at least 0.80, local warm p95 below the faster frontier arm's p95, errors at most 5%.
 
 <table class="result-table">
 <thead><tr><th>class</th><th>local</th><th>haiku</th><th>sonnet</th><th>lower bound</th><th>p95 local / frontier ms</th><th>status</th></tr></thead>
@@ -61,8 +61,8 @@ decision 20 (pre-registration 2870516) built 160 new items from real invocations
 <table class="result-table">
 <thead><tr><th>arm</th><th>hallucinated items</th><th>contradicted</th><th>critical-fact recall</th><th>p95 ms</th></tr></thead>
 <tbody>
-<tr class="primary"><td>groot qwen3-8b</td><td>42/160 (26.3%)</td><td>23</td><td>0.816</td><td>2233 (wall)</td></tr>
-<tr><td>groot qwen3-14b (exploratory)</td><td>35/160 (21.9%)</td><td>17</td><td>0.860</td><td>2914 (wall)</td></tr>
+<tr class="primary"><td>the desktop qwen3-8b</td><td>42/160 (26.3%)</td><td>23</td><td>0.816</td><td>2233 (wall)</td></tr>
+<tr><td>the desktop qwen3-14b (exploratory)</td><td>35/160 (21.9%)</td><td>17</td><td>0.860</td><td>2914 (wall)</td></tr>
 <tr><td>haiku</td><td>21/159 (13.2%)</td><td>7</td><td>0.893</td><td>20375 (api)</td></tr>
 <tr><td>sonnet (also the judge)</td><td>18/160 (11.3%)</td><td>5</td><td>0.975</td><td>2054 (api)</td></tr>
 </tbody>
@@ -103,10 +103,10 @@ the verified loop (evolution-lab, pre-registration ded915a) would compare the de
 the result (1b80a4e) is **insufficient data**. of 23 exported rows, 16 had no verified label and 1 was not an act, leaving 6 rows, 1 not-success, and one session. grouped cross-validation was impossible. the gate's numbers on those 6 are descriptive only.
 
 <table class="result-table">
-<thead><tr><th>population</th><th>turns/wk</th><th>resolved/wk</th><th>weeks to gate</th><th>weeks to 80% power</th></tr></thead>
+<thead><tr><th>population</th><th>turns/wk</th><th>feature-covered resolved/wk</th><th>weeks to gate</th><th>weeks to 80% power</th></tr></thead>
 <tbody>
 <tr class="primary"><td>live (interactive + agent)</td><td>217</td><td>28</td><td>24.1</td><td>29.6</td></tr>
-<tr><td>all cohorts, current coverage</td><td>2492</td><td>651</td><td>19.8</td><td>24.3</td></tr>
+<tr><td>all cohorts, current coverage</td><td>2492</td><td>34.1</td><td>19.8</td><td>24.3</td></tr>
 <tr><td>all cohorts, if eval harness sessions emitted features</td><td>2492</td><td>651</td><td>1.0</td><td>1.3</td></tr>
 </tbody>
 </table>
@@ -119,7 +119,7 @@ the north-star metric (utilization v0, 5bc290f) counts frontier-bound units of t
 
 ## what we take from it {#lesson}
 
-- **format checks overstate local equivalence.** a check that a summary has the right shape and names a file passed 60/60. a check that its claims are true failed by 13 points. the next offload class needs a faithfulness or semantic bar from the start. typed decisions, where the answer can be checked exactly, look like the better place to look: the same 8b got 43/48 on evidence_sufficiency in logprob mode at about 90 ms on an earlier groot bench, against 31/48 generatively, but that bench is outside this study and was not tested against the frontier here.
+- **format checks overstate local equivalence.** a check that a summary has the right shape and names a file passed 60/60. a check that its claims are true failed by 13 points. the next offload class needs a faithfulness or semantic bar from the start. typed decisions, where the answer can be checked exactly, look like the better place to look: the same 8b got 43/48 on evidence_sufficiency in logprob mode at about 90 ms on an earlier the desktop bench, against 31/48 generatively, but that bench is outside this study and was not tested against the frontier here.
 - **the loop is data-bound by coverage and verification density.** the learner, the exporter and the pre-registered rule exist. what is missing is verified live not-success rows: most live turns are orchestration and ops that no verifier reaches, the new verifiers have not earned their confidence, and the old test signal over-reported passes. more coverage (other harnesses that are built but not installed) and more verified turns per session move the date; tuning the learner does not.
 
 ## what this does not prove {#limits}
@@ -131,11 +131,14 @@ the north-star metric (utilization v0, 5bc290f) counts frontier-bound units of t
 - **a rough projection.** weeks-to-gate rest on one observed live not-success and a pooled base rate.
 - **nothing was promoted.** no routing, capability entry, gate or verifier confidence changed, apart from the shadow-only demotion.
 
-<details>
-<summary><strong>references</strong></summary>
 
-- [z0intelligence](https://github.com/kvnloo/z0intelligence): branches `feat/speed-offload-v0`, `exp/summarize-faithfulness-v0`, `feat/verified-outcomes-v0`, `feat/verification-density-v0`, `integrate/claude-code-z0-stack`, `feat/loop-export-v0` and `feat/utilization-v0`. commits are pinned in the study manifest.
-- [evolution-lab](https://github.com/kvnloo/evolution-lab): branch `exp/verified-loop-v0`.
-- [qwen3](https://huggingface.co/Qwen): the local models under test.
+
+
+<details>
+<summary><strong>frozen study sources</strong></summary>
+
+- [studies/offload-and-loop-v0/README.md](https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/offload-and-loop-v0/README.md)
+- [studies/offload-and-loop-v0/manifest.yaml](https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/offload-and-loop-v0/manifest.yaml)
+- [studies/offload-and-loop-v0/data/summary.json](https://github.com/kvnloo/z0evals/blob/913efb6f4b7b4ea9e318262281b250b3b485278b/studies/offload-and-loop-v0/data/summary.json)
 
 </details>
