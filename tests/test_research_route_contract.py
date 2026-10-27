@@ -197,7 +197,7 @@ class ResearchRouteContractTests(unittest.TestCase):
 <SiteLink href={'/studies/#toc'} />
 <SiteLink href={`/log/#${entry.id}`} />
 <SiteLink href={`/research/?area=${area.id}`} />
-<SiteLink href={`/${entry.slug/`} />
+<SiteLink href={`/${entry.slug}/`} />
 <SiteLink href={dynamicHref} />
 <a href="#local" />
 <a href="https://example.invalid/external" />
