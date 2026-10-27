@@ -23,6 +23,8 @@ toc:
     label: what changed along the way
   - id: pomerado
     label: "this week, pomerado on real machines"
+  - id: h2h
+    label: "head-to-head: cua vs opencli"
   - id: credit
     label: credit and collaboration
   - id: limits
@@ -45,21 +47,22 @@ this page tracks everything we have contributed to cua, the open-source computer
 | upstream prs merged into trycua/cua | 7 |
 | upstream prs open for review | 4 |
 | rfcs (upstream + downstream) | 4 (3 open) |
-| downstream experiments tracked | 5 |
-| remote experiment runs | 7 (5 pass, 1 partial, 1 blocked), latest 2026-10-26 |
-| remote compute so far | 4.4 min, $0.0026 |
+| downstream experiments tracked | 6 |
+| remote experiment runs | 9 (6 pass, 1 partial, 1 blocked), latest 2026-10-27 |
+| remote compute so far | 17.2 min, $0.0099 |
 
 **latest runs**
 
 | run | date | class | result | what it showed |
 |---|---|---|---|---|
+| cua161-h2h-valid | 2026-10-27 | real | pass | CUA (cua-driver 0.38.0, pinned by sha256) vs opencli 2.0.2, 8 cells x n=80, ABBA/BAAB, 640/640 oracle-verified, 0 unsafe effects. Median ms CUA vs opencli: warm read 50.5 vs 778.0; warm write 261.5 vs 918.4; cold read 731.8 vs 1350.3; cold write 2216.6 vs 1528.3. Synthetic loopback fixture only; Pomerado NOT_RUN (no completed mint). |
 | cua161-probe | 2026-10-26 | setup | pass | root cause of the driver refusal: the Boat image ships /opt and /opt/google owned by user; Chrome 151 itself is root-owned; DISPLAY=:0 with a running X server |
 | cua161-b2 | 2026-10-26 | feasibility | pass | pomerado-mcp mint starts in isolation with no API key; MCP 2025-06-18 handshake lists 4 tools: get_job, provide_input, cancel_job, mint |
 | cua161-b | 2026-10-26 | feasibility | pass | Node v24.21.0 checksum-verified; pomerado 0.4.0-canary.399, MIT, Pomerado AI, Inc.; engines node >=24.21 <25; serve needs no model credentials |
+| cua161-ac-readonly | 2026-10-26 | invalid | invalid | INVALID, numbers withdrawn; superseded by cua161-h2h-valid. Stale unpinned cua-driver 0.23.2, CUA cold-started every attempt while opencli reused a warm Chrome, read-only tasks only. |
 | cua161-a4 | 2026-10-26 | setup | partial | after chown root:root /opt /opt/google: verify_setup wrote summary.json and the mock baseline logged 3 events, but with the image's preinstalled cua-driver v0.23.2 (latest v0.38.0), not this branch's driver |
 | cua161-a3 | 2026-10-26 | fixture_browser_only | pass | real Chromium 151 fixture smoke 40/40 PASSED (5 repeats x 8 cases incl. duplicate-target, renamed-target, visual-only and origin-escape refusals, wrong input refuted, uncertain commit reconciled without repeat); no CUA or Pomerado trial |
 | cua161-a2 | 2026-10-26 | setup | blocked | cua-driver refused browser_prepare: browser_route_unavailable (no root-owned, non-writable system Chromium); smoke probe needed playwright 1.57 |
-| cua161-a | 2026-10-26 | fixture_only | pass | experiment unit tests 56/56; Chromium 140 installs; fixture GET / 200 with /state {submitted: null} |
 
 **open review and experiments**
 
@@ -73,12 +76,13 @@ this page tracks everything we have contributed to cua, the open-source computer
 | [kvnloo/cua#107](https://github.com/kvnloo/cua/issues/107) Live state mirror vs scoped reads and checked execution | experiment | open | kvnloo |
 | [kvnloo/cua#161](https://github.com/kvnloo/cua/issues/161) Pomerado MCP as an opt-in website procedure cache for CUA | experiment | open | kvnloo; Pomerado AI, Inc. (MIT) retains credit for Pomerado |
 | [kvnloo/cua#110](https://github.com/kvnloo/cua/pull/110) reduced-motion browser policy (draft) | experiment | open | kvnloo |
+| [kvnloo/cua#166](https://github.com/kvnloo/cua/pull/166) valid warm/cold read/write CUA vs opencli head-to-head (draft) | experiment | open | kvnloo; opencli is jackwener/opencli |
 | [kvnloo/cua#162](https://github.com/kvnloo/cua/pull/162) Pomerado × CUA pre-registration and fixture evidence (draft) | experiment | open | kvnloo |
 | [trycua/cua#5338](https://github.com/trycua/cua/pull/5338) fix(cua-driver): verify foreground Document text insertion (salvage #4836) | collaboration | open | salvage by injaneity of the original #4836 by wszkxlllll; we review, no competing patch |
 
-<p class="small">all states read live from github at build time. runs are counted from studies/cua-trycua/receipts.jsonl.</p><!-- /generated:cua-status -->
+<p class="small">states refresh from github at each site build. runs are counted from studies/cua-trycua/receipts.jsonl.</p><!-- /generated:cua-status -->
 
-the short version: seven fixes and tests are merged upstream. four more prs are waiting for review. the newest experiment, pomerado as an opt-in procedure tool, now runs on real linux machines, but only its fixture and setup checks have run. no a/b timing result exists yet, and every timing cell stays marked not run.[1][2]
+the short version: seven fixes and tests are merged upstream. four more prs are waiting for review. the newest experiment, pomerado as an opt-in procedure tool, now runs on real linux machines, but only its fixture and setup checks have run. pomerado has no timing result yet, and its cells stay marked not run. a separate head-to-head between the cua driver and opencli is now valid, after the first attempt was withdrawn. it is below.[1][2][14]
 
 ## how we work in someone else's repo {#setup}
 
@@ -130,6 +134,24 @@ the earlier attempt stalled in a chat container that blocked localhost in chrome
 
 next is to pin the branch's own driver build on the machine. after that, the read-only a/b blocks can run once a mint budget is approved.[2]
 
+## head-to-head: cua vs opencli {#h2h}
+
+our first cua vs opencli run, on 2026-10-26, is **invalid**, and we withdrew its numbers. it had three problems. the driver was a stale, unpinned 0.23.2. cua started cold on every attempt while opencli reused a warm browser. it ran read-only tasks only.[2]
+
+the rerun fixes all three problems. it pins cua-driver 0.38.0 and opencli 2.0.2 by digest. both tools run warm and cold, and both run a read task and a write task. ten fresh boat.dev machines (2 vcpu, 4 gb) each ran one shard. ABBA/BAAB blocks interleave the two tools on the same machine. that gives 80 attempts per cell and 640 timed attempts. an independent reset and oracle checked every attempt.[14]
+
+| mode | task | cua median / p90 | opencli median / p90 |
+|---|---|---|---|
+| warm | read | 50.5 / 68.7 ms | 778.0 / 866.3 ms |
+| warm | write | 261.5 / 304.5 ms | 918.4 / 1001.3 ms |
+| cold | read | 731.8 / 1068.3 ms | 1350.3 / 1733.3 ms |
+| cold | write | 2216.6 / 2775.0 ms | 1528.3 / 1910.6 ms |
+
+- every timed attempt was verified, 640 of 640. there were no unsafe effects: no unauthorized commits, duplicate commits, wrong targets or uncertain effects.
+- cua was faster warm, for both read and write, and cold for read. opencli was faster cold for write, by a paired median of 660 ms.
+- this is one synthetic loopback page with one read task and one write task, not a real-site benchmark. the warm routes also differ in shape: cua keeps one driver process alive, while opencli starts one cli process per call.
+- pomerado was not run. no full mint has completed, and the mint credential may not go to a public test machine.
+
 ## credit and collaboration {#credit}
 
 - **trycua and f-trycua** reviewed and merged our upstream changes.[7]
@@ -140,6 +162,7 @@ next is to pin the branch's own driver build on the machine. after that, the rea
 ## what this does not claim {#limits}
 
 - no speedup from pomerado. no mint has run and no a/b blocks exist.
+- the 2026-10-26 cua vs opencli numbers are invalid and withdrawn. the 2026-10-27 head-to-head covers one synthetic fixture page only.
 - the 40/40 browser probe exercises the fixture only. it is not a cua or pomerado trial.
 - source and unit proofs are not desktop end-to-end proofs, and local runs are not hosted ci.
 - open upstream prs are proposals until a maintainer decides.
@@ -159,3 +182,4 @@ next is to pin the branch's own driver build on the machine. after that, the rea
 [11] https://github.com/trycua/cua/issues/4557 — rfc: opt-in reduced-motion policy
 [12] https://github.com/kvnloo/z0evals/blob/main/posts/cua-bend-hobbylm-v0.md — the guard passed. the gpu did not help.
 [13] https://github.com/trycua/cua/pull/5338 — salvage of #4836
+[14] https://github.com/kvnloo/cua/pull/166 — valid warm/cold read/write cua vs opencli head-to-head, raw per-attempt data

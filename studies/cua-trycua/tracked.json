@@ -29,6 +29,7 @@
     {"repo": "kvnloo/cua", "kind": "issue", "number": 107, "role": "experiment", "title": "Live state mirror vs scoped reads and checked execution", "state": "OPEN", "credit": "kvnloo"},
     {"repo": "kvnloo/cua", "kind": "issue", "number": 161, "role": "experiment", "title": "Pomerado MCP as an opt-in website procedure cache for CUA", "state": "OPEN", "credit": "kvnloo; Pomerado AI, Inc. (MIT) retains credit for Pomerado"},
     {"repo": "kvnloo/cua", "kind": "pr", "number": 110, "role": "experiment", "title": "reduced-motion browser policy (draft)", "state": "OPEN", "credit": "kvnloo"},
+    {"repo": "kvnloo/cua", "kind": "pr", "number": 166, "role": "experiment", "title": "valid warm/cold read/write CUA vs opencli head-to-head (draft)", "state": "OPEN", "credit": "kvnloo; opencli is jackwener/opencli"},
     {"repo": "kvnloo/cua", "kind": "pr", "number": 162, "role": "experiment", "title": "Pomerado × CUA pre-registration and fixture evidence (draft)", "state": "OPEN", "credit": "kvnloo"}
   ]
 }
