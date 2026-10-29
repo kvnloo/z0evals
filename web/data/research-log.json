@@ -2206,6 +2206,10 @@
    "caveat": "No results yet; the phone-queue API is not live. Local SLM routing through fx is an open question, and unreachable models will be recorded as unavailable, not 0. Prior work: OMP's untracked android-phone-use-v0 draft (source-reported hermes-phone-goal timings) and PR #103 chooser rows.",
    "links": [
     {
+     "label": "kvnloo/z0evals PR #150 (study)",
+     "url": "https://github.com/kvnloo/z0evals/pull/150"
+    },
+    {
      "label": "kvnloo/.files PR #122 (runner)",
      "url": "https://github.com/kvnloo/.files/pull/122"
     },
