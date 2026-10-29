@@ -1,0 +1,383 @@
+{
+ "study": "noop-hermes-agent-api",
+ "run_id": "s25-20261020T2347",
+ "handset": "Galaxy S25 Ultra (owner)",
+ "transport": "MCP JSON-RPC over HTTP on Tailscale (WireGuard); no adb in the agent path",
+ "e2e": {
+  "run1_pre_fix": {
+   "passed": 12,
+   "total": 12,
+   "engine": "presidio-analyzer ?",
+   "checks": [
+    {
+     "check": "transport_is_tailnet_http",
+     "pass": true,
+     "base_host_prefix": "100"
+    },
+    {
+     "check": "wrong_token_refused",
+     "pass": true
+    },
+    {
+     "check": "browser_origin_refused",
+     "pass": true
+    },
+    {
+     "check": "initialize_and_list_tools",
+     "pass": true,
+     "tools": [
+      "health_snapshot",
+      "metric_series",
+      "data_freshness",
+      "sleep_summary",
+      "workout_summary",
+      "open_screen",
+      "show_coach_note"
+     ],
+     "ms": 45
+    },
+    {
+     "check": "read_data_freshness",
+     "pass": true,
+     "ms": 1490,
+     "forbidden_keys": [],
+     "summary_only": true
+    },
+    {
+     "check": "read_health_snapshot",
+     "pass": true,
+     "ms": 107,
+     "forbidden_keys": [],
+     "summary_only": true
+    },
+    {
+     "check": "read_sleep_summary",
+     "pass": true,
+     "ms": 21,
+     "forbidden_keys": [],
+     "summary_only": true
+    },
+    {
+     "check": "read_workout_summary",
+     "pass": true,
+     "ms": 14,
+     "forbidden_keys": [],
+     "summary_only": true
+    },
+    {
+     "check": "read_metric_series",
+     "pass": true,
+     "ms": 12,
+     "forbidden_keys": [],
+     "summary_only": true
+    },
+    {
+     "check": "detail_gate",
+     "pass": true,
+     "state": "refused_scope"
+    },
+    {
+     "check": "action_open_screen",
+     "pass": true,
+     "ms": 2018,
+     "result": {
+      "screen": "sleep",
+      "mode": "in_app",
+      "landed": false
+     }
+    },
+    {
+     "check": "latency_data_freshness",
+     "pass": true,
+     "n": 10,
+     "p50_ms": 18,
+     "p95_ms": 22
+    }
+   ],
+   "reads": {
+    "data_freshness": {
+     "ms": 1490,
+     "isError": false,
+     "top_keys": [
+      "_privacy",
+      "dailyCoverageLast30Days",
+      "generatedAt",
+      "latest",
+      "stale"
+     ],
+     "redactions": 0
+    },
+    "health_snapshot": {
+     "ms": 107,
+     "isError": false,
+     "top_keys": [
+      "_privacy",
+      "daysWithData",
+      "freshness",
+      "granularity",
+      "metrics",
+      "note",
+      "sources",
+      "window"
+     ],
+     "redactions": 1
+    },
+    "sleep_summary": {
+     "ms": 21,
+     "isError": false,
+     "top_keys": [
+      "_privacy",
+      "granularity",
+      "naps",
+      "nights",
+      "note",
+      "window"
+     ],
+     "redactions": 0
+    },
+    "workout_summary": {
+     "ms": 14,
+     "isError": false,
+     "top_keys": [
+      "_privacy",
+      "bySport",
+      "count",
+      "granularity",
+      "totalMinutes",
+      "window"
+     ],
+     "redactions": 0
+    },
+    "metric_series": {
+     "ms": 12,
+     "isError": false,
+     "top_keys": [
+      "_privacy",
+      "granularity",
+      "key",
+      "returned",
+      "unit",
+      "window"
+     ],
+     "redactions": 0
+    }
+   }
+  },
+  "run2": {
+   "passed": 12,
+   "total": 12,
+   "engine": "presidio-analyzer ?",
+   "checks": [
+    {
+     "check": "transport_is_tailnet_http",
+     "pass": true,
+     "base_host_prefix": "100"
+    },
+    {
+     "check": "wrong_token_refused",
+     "pass": true
+    },
+    {
+     "check": "browser_origin_refused",
+     "pass": true
+    },
+    {
+     "check": "initialize_and_list_tools",
+     "pass": true,
+     "tools": [
+      "health_snapshot",
+      "metric_series",
+      "data_freshness",
+      "sleep_summary",
+      "workout_summary",
+      "open_screen",
+      "show_coach_note"
+     ],
+     "ms": 215
+    },
+    {
+     "check": "read_data_freshness",
+     "pass": true,
+     "ms": 1474,
+     "forbidden_keys": [],
+     "summary_only": true
+    },
+    {
+     "check": "read_health_snapshot",
+     "pass": true,
+     "ms": 28,
+     "forbidden_keys": [],
+     "summary_only": true
+    },
+    {
+     "check": "read_sleep_summary",
+     "pass": true,
+     "ms": 14,
+     "forbidden_keys": [],
+     "summary_only": true
+    },
+    {
+     "check": "read_workout_summary",
+     "pass": true,
+     "ms": 14,
+     "forbidden_keys": [],
+     "summary_only": true
+    },
+    {
+     "check": "read_metric_series",
+     "pass": true,
+     "ms": 11,
+     "forbidden_keys": [],
+     "summary_only": true
+    },
+    {
+     "check": "detail_gate",
+     "pass": true,
+     "state": "refused_scope"
+    },
+    {
+     "check": "action_open_screen",
+     "pass": true,
+     "ms": 487,
+     "result": {
+      "screen": "sleep",
+      "mode": "in_app",
+      "landed": true
+     }
+    },
+    {
+     "check": "latency_data_freshness",
+     "pass": true,
+     "n": 20,
+     "p50_ms": 10,
+     "p95_ms": 14
+    }
+   ],
+   "reads": {
+    "data_freshness": {
+     "ms": 1474,
+     "isError": false,
+     "top_keys": [
+      "_privacy",
+      "dailyCoverageLast30Days",
+      "generatedAt",
+      "latest",
+      "stale"
+     ],
+     "redactions": 0
+    },
+    "health_snapshot": {
+     "ms": 28,
+     "isError": false,
+     "top_keys": [
+      "_privacy",
+      "daysWithData",
+      "freshness",
+      "granularity",
+      "metrics",
+      "note",
+      "sources",
+      "window"
+     ],
+     "redactions": 0
+    },
+    "sleep_summary": {
+     "ms": 14,
+     "isError": false,
+     "top_keys": [
+      "_privacy",
+      "granularity",
+      "naps",
+      "nights",
+      "note",
+      "window"
+     ],
+     "redactions": 0
+    },
+    "workout_summary": {
+     "ms": 14,
+     "isError": false,
+     "top_keys": [
+      "_privacy",
+      "bySport",
+      "count",
+      "granularity",
+      "totalMinutes",
+      "window"
+     ],
+     "redactions": 0
+    },
+    "metric_series": {
+     "ms": 11,
+     "isError": false,
+     "top_keys": [
+      "_privacy",
+      "granularity",
+      "key",
+      "returned",
+      "unit",
+      "window"
+     ],
+     "redactions": 0
+    }
+   }
+  }
+ },
+ "open_screen_background": {
+  "mode": "notification",
+  "posted": true,
+  "landed": false,
+  "owner_foreground_app_unchanged": true
+ },
+ "hermes_turn": {
+  "tools_called": [
+   "data_freshness",
+   "health_snapshot",
+   "sleep_summary",
+   "workout_summary",
+   "coach_dashboard",
+   "show_coach_note"
+  ],
+  "all_ok": true,
+  "dashboard": "rendered (content private)",
+  "coach_note_posted": true
+ },
+ "revocation": {
+  "revoked_at": "23:58:46",
+  "first_refusal_at": "00:03:43",
+  "phone_audit_outcome": "refused_broker_unverified",
+  "bound_minutes": 5
+ },
+ "after_repair_grant_state": "off (pairing re-done; grant stopped)",
+ "phone_audit_counts": {
+  "action|open_screen|ok": 3,
+  "action|show_coach_note|ok": 1,
+  "auth|-|refused_bad_token": 2,
+  "auth|-|refused_broker_unverified": 1,
+  "auth|-|refused_origin": 2,
+  "grant|-|granted": 2,
+  "pairing|-|paired": 2,
+  "read|data_freshness|ok": 37,
+  "read|health_snapshot|ok": 5,
+  "read|health_snapshot|refused_scope_required": 2,
+  "read|metric_series|ok": 2,
+  "read|sleep_summary|ok": 4,
+  "read|workout_summary|ok": 4
+ },
+ "jvm_tests": {
+  "suite": "com.noop.agent.AgentApiTest",
+  "tests": 18,
+  "failures": 0,
+  "lineage": "installed integration 7031509a on e12cd056"
+ },
+ "python_tests": {
+  "groot_presidio": "8/8",
+  "mbp_regex_fallback": "7/7 (before the source-kind test was added)"
+ },
+ "privacy_defect_found": "spaCy tagged source kind 'oura' as PERSON; fixed by allow-listing the closed source vocabulary",
+ "sources": {
+  "noop_feature_branch": "feat/android-hermes-agent-api@84048f3b049b",
+  "noop_pr": "https://github.com/kvnloo/noop/pull/95",
+  "installed_apk_sha256_prefix": "see PR"
+ }
+}
