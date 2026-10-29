@@ -137,6 +137,10 @@ def transform(src: str, start_in_text: bool = False) -> str:
         ch = src[i]
 
         if in_text:
+            if src.startswith("</pre>", i):
+                pre_depth = max(0, pre_depth - 1); out.append("</pre>"); i += 6; continue
+            if src.startswith("<pre>", i):
+                pre_depth += 1; out.append("<pre>"); i += 5; continue
             if ch == "<":
                 in_text = False
                 continue
@@ -179,10 +183,6 @@ def transform(src: str, start_in_text: bool = False) -> str:
                 out.append("".join(buf))
                 i = j
                 continue
-            if src.startswith("</pre>", i):
-                pre_depth = max(0, pre_depth - 1); out.append("</pre>"); i += 6; continue
-            if src.startswith("<pre>", i):
-                pre_depth += 1; out.append("<pre>"); i += 5; continue
             out.append(fold(ch)); i += 1
             continue
 
