@@ -1,0 +1,286 @@
+{
+ "groot:qwen3-4b-q4km": [
+  {
+   "set": "heldout-s22",
+   "app": "chrome",
+   "goal": "tap the menu button",
+   "candidates": 5,
+   "right": true,
+   "conf": 0.991,
+   "acted": true,
+   "ms": 95.8
+  },
+  {
+   "set": "heldout-s22",
+   "app": "chrome",
+   "goal": "show my tabs",
+   "candidates": 15,
+   "right": true,
+   "conf": 1.0,
+   "acted": true,
+   "ms": 119.8
+  },
+  {
+   "set": "heldout-s22",
+   "app": "gmail",
+   "goal": "open the menu",
+   "candidates": 13,
+   "right": true,
+   "conf": 1.0,
+   "acted": true,
+   "ms": 219.0
+  },
+  {
+   "set": "heldout-s22",
+   "app": "gmail",
+   "goal": "search my mail",
+   "candidates": 13,
+   "right": false,
+   "conf": 0.998,
+   "acted": true,
+   "ms": 36.6
+  },
+  {
+   "set": "heldout-s22",
+   "app": "gmail",
+   "goal": "write a new email",
+   "candidates": 13,
+   "right": true,
+   "conf": 1.0,
+   "acted": true,
+   "ms": 30.4
+  },
+  {
+   "set": "heldout-s22",
+   "app": "myfiles",
+   "goal": "tap the menu button",
+   "candidates": 16,
+   "right": true,
+   "conf": 1.0,
+   "acted": true,
+   "ms": 102.6
+  },
+  {
+   "set": "heldout-s22",
+   "app": "calendar",
+   "goal": "open the menu",
+   "candidates": 5,
+   "right": true,
+   "conf": 1.0,
+   "acted": true,
+   "ms": 67.3
+  },
+  {
+   "set": "heldout-s22",
+   "app": "photos",
+   "goal": "go to search",
+   "candidates": 16,
+   "right": false,
+   "conf": 1.0,
+   "acted": true,
+   "ms": 103.5
+  },
+  {
+   "set": "heldout-s22-v2",
+   "app": "gmail",
+   "goal": "open the menu",
+   "candidates": 14,
+   "right": true,
+   "conf": 1.0,
+   "acted": true,
+   "ms": 140.3
+  },
+  {
+   "set": "heldout-s22-v2",
+   "app": "gmail",
+   "goal": "search my mail",
+   "candidates": 14,
+   "right": true,
+   "conf": 1.0,
+   "acted": true,
+   "ms": 49.5
+  },
+  {
+   "set": "heldout-s22-v2",
+   "app": "gmail",
+   "goal": "write a new email",
+   "candidates": 14,
+   "right": true,
+   "conf": 1.0,
+   "acted": true,
+   "ms": 68.0
+  },
+  {
+   "set": "heldout-s22-v2",
+   "app": "myfiles",
+   "goal": "tap the menu button",
+   "candidates": 16,
+   "right": true,
+   "conf": 1.0,
+   "acted": true,
+   "ms": 101.7
+  },
+  {
+   "set": "heldout-s22-v2",
+   "app": "calendar",
+   "goal": "open the menu",
+   "candidates": 5,
+   "right": true,
+   "conf": 1.0,
+   "acted": true,
+   "ms": 173.4
+  },
+  {
+   "set": "heldout-s22-v2",
+   "app": "chatgpt",
+   "goal": "skip",
+   "candidates": 3,
+   "right": true,
+   "conf": 1.0,
+   "acted": true,
+   "ms": 71.4
+  }
+ ],
+ "jev": [
+  {
+   "set": "heldout-s22",
+   "app": "chrome",
+   "goal": "tap the menu button",
+   "candidates": 5,
+   "right": true,
+   "conf": 0.99,
+   "acted": true,
+   "ms": 259.3
+  },
+  {
+   "set": "heldout-s22",
+   "app": "chrome",
+   "goal": "show my tabs",
+   "candidates": 15,
+   "right": true,
+   "conf": 0.99,
+   "acted": true,
+   "ms": 209.8
+  },
+  {
+   "set": "heldout-s22",
+   "app": "gmail",
+   "goal": "open the menu",
+   "candidates": 13,
+   "right": true,
+   "conf": 1.0,
+   "acted": true,
+   "ms": 153.4
+  },
+  {
+   "set": "heldout-s22",
+   "app": "gmail",
+   "goal": "search my mail",
+   "candidates": 13,
+   "right": false,
+   "conf": 0.91,
+   "acted": true,
+   "ms": 160.5
+  },
+  {
+   "set": "heldout-s22",
+   "app": "gmail",
+   "goal": "write a new email",
+   "candidates": 13,
+   "right": true,
+   "conf": 1.0,
+   "acted": true,
+   "ms": 138.3
+  },
+  {
+   "set": "heldout-s22",
+   "app": "myfiles",
+   "goal": "tap the menu button",
+   "candidates": 16,
+   "right": true,
+   "conf": 1.0,
+   "acted": true,
+   "ms": 240.0
+  },
+  {
+   "set": "heldout-s22",
+   "app": "calendar",
+   "goal": "open the menu",
+   "candidates": 5,
+   "right": true,
+   "conf": 1.0,
+   "acted": true,
+   "ms": 172.5
+  },
+  {
+   "set": "heldout-s22",
+   "app": "photos",
+   "goal": "go to search",
+   "candidates": 16,
+   "right": false,
+   "conf": 0.27,
+   "acted": false,
+   "ms": 154.1
+  },
+  {
+   "set": "heldout-s22-v2",
+   "app": "gmail",
+   "goal": "open the menu",
+   "candidates": 14,
+   "right": true,
+   "conf": 1.0,
+   "acted": true,
+   "ms": 188.0
+  },
+  {
+   "set": "heldout-s22-v2",
+   "app": "gmail",
+   "goal": "search my mail",
+   "candidates": 14,
+   "right": true,
+   "conf": 1.0,
+   "acted": true,
+   "ms": 182.2
+  },
+  {
+   "set": "heldout-s22-v2",
+   "app": "gmail",
+   "goal": "write a new email",
+   "candidates": 14,
+   "right": true,
+   "conf": 1.0,
+   "acted": true,
+   "ms": 148.4
+  },
+  {
+   "set": "heldout-s22-v2",
+   "app": "myfiles",
+   "goal": "tap the menu button",
+   "candidates": 16,
+   "right": true,
+   "conf": 1.0,
+   "acted": true,
+   "ms": 176.2
+  },
+  {
+   "set": "heldout-s22-v2",
+   "app": "calendar",
+   "goal": "open the menu",
+   "candidates": 5,
+   "right": true,
+   "conf": 1.0,
+   "acted": true,
+   "ms": 200.3
+  },
+  {
+   "set": "heldout-s22-v2",
+   "app": "chatgpt",
+   "goal": "skip",
+   "candidates": 3,
+   "right": true,
+   "conf": 1.0,
+   "acted": true,
+   "ms": 169.4
+  }
+ ]
+}
