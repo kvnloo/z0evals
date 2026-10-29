@@ -1,6 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Hanken_Grotesk, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
+import SiteHeader from "@/components/site/SiteHeader";
+import SiteFooter from "@/components/site/SiteFooter";
+import Haptics from "@/components/site/Haptics";
+import { latest, lite, site, studySlugs } from "@/lib/catalog";
 
 // The reference self-hosts HK Grotesk and Departure Mono. HK Grotesk is a
 // commercial face and Departure Mono's webfont is not fetchable from CI, so we
@@ -33,19 +37,28 @@ const display = Cormorant_Garamond({
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#0c0c0a",
 };
 
 export const metadata: Metadata = {
-  title: "how much of the llm do we actually need? — z0evals",
+  title: "zer0 evals — z0evals",
   description:
-    "phase 1b: why we stopped paying an autoregressive model to make decisions that "
-    + "barely require language. Measured on a local RTX 3080 Ti, not modelled.",
+    "zer0 research measures what agent harnesses actually do — cost, speed, memory, governance — "
+    + "and publishes the receipts, including the negative results.",
+  other: { "view-transition": "same-origin" },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${sans.variable} ${mono.variable} ${display.variable}`}>
-      <body>{children}</body>
+      <body>
+        <a className="skip-link" href="#main">skip to content</a>
+        <SiteHeader latest={latest(3).map(lite)} studySlugs={studySlugs()} repo={site().repo} />
+        <main id="main">{children}</main>
+        <SiteFooter />
+        <Haptics />
+      </body>
     </html>
   );
 }

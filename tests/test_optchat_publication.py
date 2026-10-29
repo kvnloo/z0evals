@@ -84,7 +84,11 @@ class PublicationTests(unittest.TestCase):
         self.assertIn('OPTCHAT_SOURCE', builder)
         self.assertIn('OPTCHAT_SITE_OUT', builder)
         self.assertIn('optchat-long-horizon-v0', builder)
-        self.assertIn('status: "unscored"', source)
+        # the study's meta lives in web/data/site.json (one place for bespoke meta)
+        self.assertIn('studyMeta("optchat-long-horizon-v0")', source)
+        site = json.loads((ROOT / 'web/data/site.json').read_text())
+        study = next(s for s in site['studies'] if s['slug'] == 'optchat-long-horizon-v0')
+        self.assertEqual(study['status'], 'unscored')
         self.assertIn('source-reported', source)
         self.assertIn('uncommitted', source)
         self.assertIn('not a measurement of the tokens', source)
@@ -92,15 +96,18 @@ class PublicationTests(unittest.TestCase):
         self.assertNotIn('"use client"', source)  # keep canonical file data on the server
 
     def test_home_and_shared_navigation_reach_article(self):
-        root = (ROOT / 'web/app/page.tsx').read_text()
-        shared = (ROOT / 'web/components/StoryShell.tsx').read_text()
-        self.assertIn('href="./optchat-long-horizon-v0/"', root)
-        self.assertIn('href="../optchat-long-horizon-v0/"', shared)
+        # the shared nav reaches /studies/, which lists every site.json study
+        nav = (ROOT / 'web/components/site/nav.ts').read_text()
+        studies = (ROOT / 'web/app/studies/page.tsx').read_text()
+        site = json.loads((ROOT / 'web/data/site.json').read_text())
+        self.assertIn('href: "/studies/"', nav)
+        self.assertIn('studies()', studies)
+        self.assertIn('optchat-long-horizon-v0', [s['slug'] for s in site['studies']])
 
     def test_export_requires_optchat_page(self):
         audit = (ROOT / 'scripts/audit_web_export.py').read_text()
         self.assertIn('"optchat": root / "optchat-long-horizon-v0" / "index.html"', audit)
-        self.assertIn('("routing", "research", "memory", "optchat")', audit)
+        self.assertIn('("routing", "research", "memory", "optchat"', audit)
 
     def test_live_smoke_checks_article_title(self):
         workflow = (ROOT / '.github/workflows/pages.yml').read_text()

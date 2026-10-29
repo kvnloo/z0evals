@@ -4,6 +4,10 @@ subtitle: "The research trail behind z0intelligence — and what using LLMs taug
 status: research-synthesis
 author: "Zer0 Research"
 date: "September 29, 2026"
+dek: "the research trail behind z0intelligence, and what using llms taught us about learning to think like a researcher."
+area: research
+published: 2026-09-29
+kind: study
 ---
 
 # How do you learn the frontier fast?

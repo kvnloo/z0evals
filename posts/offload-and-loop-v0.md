@@ -5,6 +5,10 @@ study: offload-and-loop-v0
 status: draft
 author: "zer0 research"
 date: "september 30, 2026"
+dek: "a local worker passed our offload bar, then failed on faithfulness. the learning loop does not have the data yet."
+area: cost-routing
+published: 2026-09-30
+log: [offload-and-loop-v0]
 mock_data: false
 toc:
   - id: question

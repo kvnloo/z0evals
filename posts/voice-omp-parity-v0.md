@@ -5,6 +5,10 @@ study: voice-omp-parity-v0
 status: evidence-local
 author: "zer0 research"
 date: "october 20, 2026"
+dek: "we scored the audio, kept the failures, and did not call a partial rerun a pass."
+area: speed-ux
+published: 2026-10-20
+log: [voice-omp-parity-v0]
 mock_data: false
 toc:
   - id: method

@@ -1,0 +1,70 @@
+{
+  "positioning": "zer0 research measures what agent harnesses actually do — cost, speed, memory, governance — and publishes the receipts, including the negative results.",
+  "repo": "https://github.com/kvnloo/z0evals",
+  "featured": "cua-trycua-contributions",
+  "highlights": ["slm-router-v0", "z0intelligence-function-routing", "unified-memory-v0", "researching-the-frontier"],
+  "latestCount": 6,
+  "studies": [
+    {
+      "slug": "slm-router-v0",
+      "title": "how much of the llm do we actually need?",
+      "subtitle": "phase 1b: why we stopped paying an autoregressive model to make decisions that barely require language.",
+      "dek": "phase 1b: which local model routes best, and why the compiler turned out to be the intelligence.",
+      "lede": "",
+      "author": "kevin rajan",
+      "date": "september 21, 2026",
+      "area": "cost-routing",
+      "published": "2026-09-21",
+      "status": "evidence-local",
+      "kind": "study"
+    },
+    {
+      "slug": "z0intelligence-function-routing",
+      "fromJson": "z0intelligence-function-routing.json#meta",
+      "dek": "we kept trying to make routing smarter. the useful part was learning which decisions should not be model problems.",
+      "area": "cost-routing",
+      "published": "2026-09-29",
+      "kind": "study"
+    },
+    {
+      "slug": "researching-the-frontier",
+      "title": "how do you learn the frontier fast?",
+      "subtitle": "the research trail behind z0intelligence — and what using llms taught me about learning to think like a researcher",
+      "dek": "the research trail behind z0intelligence: classifiers, calibration, routing, conditional compute and tiny specialists.",
+      "lede": "i did not start with a literature review. i started with a practical annoyance: why was i paying an autoregressive language model to make decisions that looked much smaller than language generation? the answer pulled me through classifiers, calibration, selective prediction, routing, conditional compute, systems placement, connectomics, and eventually a different way of using llms for research.",
+      "author": "zer0 research",
+      "date": "september 29, 2026",
+      "area": "research",
+      "published": "2026-09-29",
+      "status": "research-synthesis",
+      "kind": "study"
+    },
+    {
+      "slug": "unified-memory-v0",
+      "title": "can four agents remember the same thing?",
+      "subtitle": "i got tired of every harness having its own half-broken version of memory.",
+      "dek": "optmem foundations landed and optchat split off; the four-harness recall cohort is still partial.",
+      "lede": "optmem's structural foundation is integrated. optchat is a separate harness experiment. the original cohort is still partial, so implementation progress and measured recall stay separate.",
+      "author": "zer0 research",
+      "date": "updated october 5, 2026",
+      "area": "memory",
+      "published": "2026-10-05",
+      "status": "evidence-pending",
+      "kind": "study",
+      "supersededBy": "unified-memory-v0-october"
+    },
+    {
+      "slug": "optchat-long-horizon-v0",
+      "title": "does optchat stay small after fifty tool calls?",
+      "subtitle": "the log kept growing. the view was smaller. that is the result — not a memory victory lap.",
+      "dek": "the transcript kept growing and the derived view stayed smaller. context bytes only, no answer-quality claim.",
+      "lede": "the new optmem / optchat work belongs here too. this follow-up measures the size of a derived view against an accumulated transcript, while keeping answer quality and actual model requests as separate questions.",
+      "author": "zer0 research",
+      "date": "october 5, 2026",
+      "area": "memory",
+      "published": "2026-10-05",
+      "status": "unscored",
+      "kind": "study"
+    }
+  ]
+}

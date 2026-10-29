@@ -5,6 +5,11 @@ study: memory-providers-v0
 status: draft
 author: zer0 research
 date: october 21, 2026
+dek: "three native retrieval surfaces found the fixture. none put the new fact first."
+area: memory
+published: 2026-10-21
+series: memory
+log: [memory-providers-v0]
 mock_data: false
 toc:
 - id: question

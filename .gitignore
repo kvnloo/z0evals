@@ -9,3 +9,9 @@ _channels/
 web/data/posts/
 web/data/research-focus.html
 web/data/generated/
+
+# local screenshots and generated site data
+.ia-shots/
+web/data/optchat-long-horizon-v0.json
+# not the build_site.py output
+!web/components/site/

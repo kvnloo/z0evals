@@ -103,6 +103,7 @@ def check_relative_links(
     root: Path,
     audit: PageAudit,
     errors: list[str],
+    base: str = "",
 ) -> None:
     for href in audit.hrefs:
         if (
@@ -114,10 +115,16 @@ def check_relative_links(
         ):
             continue
         clean = href.split("#", 1)[0].split("?", 1)[0]
-        if not clean or clean.startswith("/"):
+        if not clean or clean.startswith("//"):
             continue
-
-        target = path.parent / clean
+        if clean.startswith("/"):
+            # next/link hrefs are root-absolute under the basePath; anything else escapes
+            if not base or not (clean == base or clean.startswith(base + "/")):
+                errors.append(f"{name}: root-absolute href escapes the project Pages site: {href}")
+                continue
+            target = root / clean[len(base):].lstrip("/")
+        else:
+            target = path.parent / clean
         if clean.endswith("/") or target.suffix == "":
             target = target / "index.html"
         try:
@@ -129,13 +136,15 @@ def check_relative_links(
             errors.append(f"{name}: internal href has no exported target: {href}")
 
 
-def check_story_page(name: str, audit: PageAudit, errors: list[str]) -> None:
+def check_story_page(name: str, audit: PageAudit, errors: list[str], base: str = "") -> None:
     if not any({"article-body", "prose"}.issubset(classes) for classes in audit.classes):
         errors.append(f"{name}: StoryShell article is missing the prose styling class")
 
-    # A Pages project site must not use origin-root anchors for its own pages.
-    # Those escape /z0evals/ and also break /next/, /nightly/ and /dev/.
-    bad_root = [href for href in audit.hrefs if href.startswith("/") and not href.startswith("//")]
+    # A Pages project site must not use origin-root anchors that skip its basePath.
+    # Those escape /z0evals/ and also break /next/, /nightly/ and /dev/. next/link
+    # hrefs carry the basePath the channel was built with, so those are fine.
+    bad_root = [href for href in audit.hrefs if href.startswith("/") and not href.startswith("//")
+                and not (base and (href == base or href.startswith(base + "/")))]
     if bad_root:
         errors.append(
             f"{name}: root-absolute internal anchors escape the project Pages site: "
@@ -162,11 +171,19 @@ def check_memory_progress(audit: PageAudit, errors: list[str]) -> None:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--root", default="web/out", help="Next static export directory")
+    ap.add_argument("--base", default="/z0evals", help="basePath the export was built with")
     args = ap.parse_args()
     root = Path(args.root)
+    base = args.base.rstrip("/")
 
     pages = {
-        "phase1b": root / "index.html",
+        "home": root / "index.html",
+        "research-index": root / "research" / "index.html",
+        "studies": root / "studies" / "index.html",
+        "about": root / "about" / "index.html",
+        "log": root / "log" / "index.html",
+        "cua": root / "cua-trycua-contributions" / "index.html",
+        "phase1b": root / "slm-router-v0" / "index.html",
         "routing": root / "z0intelligence-function-routing" / "index.html",
         "research": root / "researching-the-frontier" / "index.html",
         "memory": root / "unified-memory-v0" / "index.html",
@@ -184,11 +201,28 @@ def main() -> int:
         check_ids_and_aria(name, audit, errors)
         check_fragments(name, audit, errors)
         check_toc_order(name, audit, errors)
-        check_relative_links(name, path, root, audit, errors)
+        check_relative_links(name, path, root, audit, errors, base)
 
-    for name in ("routing", "research", "memory", "optchat"):
+    for name in ("routing", "research", "memory", "optchat", "cua", "phase1b"):
         if name in parsed:
-            check_story_page(name, parsed[name], errors)
+            check_story_page(name, parsed[name], errors, base)
+    if "home" in parsed and any("article-body" in c for c in parsed["home"].classes):
+        errors.append("home: must not render an article body")
+    if "research-index" in parsed:
+        rows = sum(1 for c in parsed["research-index"].classes if "entry-row" in c)
+        if rows < 20:
+            errors.append(f"research-index: expected every entry server-rendered, found {rows}")
+
+    # crawl: every internal <a href> on every exported page resolves
+    crawled = 0
+    for page in sorted(root.rglob("index.html")):
+        rel = page.relative_to(root)
+        if rel.parts and rel.parts[0] in {"next", "nightly", "dev", "_next"}:
+            continue  # other channels are built with their own basePath
+        _, audit = parse(page)
+        check_relative_links(str(rel.parent) or "/", page, root, audit, errors, base)
+        check_fragments(str(rel.parent) or "/", audit, errors)
+        crawled += 1
     if "memory" in parsed:
         check_memory_progress(parsed["memory"], errors)
 
@@ -198,6 +232,7 @@ def main() -> int:
             print(f"  - {error}")
         return 1
 
+    print(f"ok crawl: {crawled} pages, 0 broken internal links")
     for name, audit in parsed.items():
         print(
             f"ok {name}: ids={len(audit.ids)} fragments={len(audit.fragment_hrefs)} "
