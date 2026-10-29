@@ -2194,6 +2194,33 @@
    "interesting": false,
    "why": "Real Git rollback evidence can coexist with no physical-device proof; synthetic qualification must not unlock live automation.",
    "post": "turbo-app-fanout-offline"
+  },
+  {
+   "id": "android-u2-driver-models-v0",
+   "title": "which model should drive the phone",
+   "area": "speed-ux",
+   "question": "on read-only S22+ navigation goals with independent tree-text oracles, how do Luna/Terra/Sol compare with local SLMs (Qwen3 0.6B-14B, Nemotron-Orchestrator-8B, Qwen2.5-VL-3B) driving uiautomator2 through the shared phone queue?",
+   "status": "proposal",
+   "date": "2026-10-28",
+   "finding": "Fixtures only: 18 read-only S22+ goals (15 multi-step), each oracle verified to pass on its evidence screen and fail on home (18/18 over 37 redacted screens). Runner and 11-model matrix are in kvnloo/.files PR #122; no model has run yet.",
+   "caveat": "No results yet; the phone-queue API is not live. Local SLM routing through fx is an open question, and unreachable models will be recorded as unavailable, not 0. Prior work: OMP's untracked android-phone-use-v0 draft (source-reported hermes-phone-goal timings) and PR #103 chooser rows.",
+   "links": [
+    {
+     "label": "kvnloo/z0evals PR #150 (study)",
+     "url": "https://github.com/kvnloo/z0evals/pull/150"
+    },
+    {
+     "label": "kvnloo/.files PR #122 (runner)",
+     "url": "https://github.com/kvnloo/.files/pull/122"
+    },
+    {
+     "label": "kvnloo/z0evals PR #103 (chooser rows)",
+     "url": "https://github.com/kvnloo/z0evals/pull/103"
+    }
+   ],
+   "interesting": false,
+   "why": "Picks the cheapest driver that is still right, with wrong-acts and cold loads measured instead of hidden in a done rate.",
+   "post": null
   }
  ]
 }
