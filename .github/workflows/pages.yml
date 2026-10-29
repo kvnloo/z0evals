@@ -136,6 +136,7 @@ jobs:
                    && { [ ! -f scripts/validate_optchat_publication.py ] || python3 scripts/validate_optchat_publication.py; } \
                    && python3 scripts/build_site_data.py \
                    && { [ ! -f scripts/build_cua_status.py ] || python3 scripts/build_cua_status.py || true; } \
+                   && { [ ! -f scripts/build_sustained_chat_status.py ] || python3 scripts/build_sustained_chat_status.py; } \
                    && { [ ! -f scripts/build_posts.py ] || python3 scripts/build_posts.py; } \
                    && cd web \
                    && npm ci --no-audit --no-fund \

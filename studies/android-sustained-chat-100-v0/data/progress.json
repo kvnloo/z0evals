@@ -1,0 +1,334 @@
+{
+  "schema_version": "z0eval.sustained-chat-progress.v2",
+  "run_id": "z0evals-sustained-100-20261029",
+  "observed_at": "2026-10-29T05:15:53.404481+00:00",
+  "requested": 100,
+  "manifest_sha256": "6899e52f9ea80d5e463a64711033105e45b0a116e1366e481f5097c02f81a511",
+  "driver": "canonical launch_queue.py",
+  "original_manifest_sha256": "51c0c3425a9a8175c309c6687a047b04ef930c1eb78937d0c42ef6027d7f923c",
+  "connector_amendment_sha256": "08d1b9f4ec557c1d4347dcdaec3709cf451325e7b6e5952d402136da6e22e06e",
+  "comparative_speedup_eligible": false,
+  "status": "in_progress",
+  "fx_canary_count": 1,
+  "s25_worker_expires_at": "2026-10-29T05:00:00Z",
+  "chatgpt_result_channel": "github_tracking_issue_comment_and_optional_draft_pr",
+  "chatgpt_clipboard_harvest_allowed": false,
+  "collector_sha256": "60ea977bdaf2f80d772b0c3712ffdab518f69e80deff8dc6011c4107180de54b",
+  "lanes": [
+    {
+      "app": "chatgpt",
+      "device": "s25",
+      "requested": 50,
+      "states": {
+        "claimed_without_receipt": 2,
+        "queued": 14,
+        "sent": 33,
+        "unconfirmed": 1
+      },
+      "tasks_with_dispatch_receipts": 34,
+      "dispatch_receipts": 34,
+      "send_attempted": 33,
+      "prompt_verified": 1,
+      "user_bubble_verified": 1,
+      "replies_captured": 10,
+      "connector_comments_captured": 10,
+      "draft_prs_observed": 5,
+      "reply_chars": {
+        "n": 10,
+        "p50": 9322.0,
+        "p95": 11851.05,
+        "min": 4192,
+        "max": 12252
+      },
+      "verifier_states": {
+        "not_run": 50
+      },
+      "verified_quality_evaluated": 0,
+      "verified_quality_passes": null,
+      "cohorts": [
+        {
+          "harness": "deterministic_uiautomator2",
+          "result_channel": "github_tracking_issue_comment_and_optional_draft_pr",
+          "tasks": 10,
+          "metrics": {
+            "dispatch_wall_ms": {
+              "n": 10,
+              "p50": 25884.929,
+              "p95": 28096.467,
+              "min": 22677.157402038574,
+              "max": 28319.414615631104
+            },
+            "transport_ms": {
+              "n": 10,
+              "p50": 21345.0,
+              "p95": 23758.0,
+              "min": 18620.0,
+              "max": 23830.0
+            },
+            "reply_observed_after_dispatch_ms": {
+              "n": 10,
+              "p50": 509566.807,
+              "p95": 626243.594,
+              "min": 301105.2978038788,
+              "max": 635525.4004001617
+            }
+          }
+        },
+        {
+          "harness": "deterministic_uiautomator2",
+          "result_channel": "legacy_app_reply",
+          "tasks": 23,
+          "metrics": {
+            "dispatch_wall_ms": {
+              "n": 23,
+              "p50": 25273.582,
+              "p95": 27133.173,
+              "min": 0.49304962158203125,
+              "max": 27839.9715423584
+            },
+            "transport_ms": {
+              "n": 22,
+              "p50": 21285.0,
+              "p95": 22110.0,
+              "min": 20110.0,
+              "max": 22410.0
+            },
+            "reply_observed_after_dispatch_ms": {
+              "n": 0,
+              "p50": null,
+              "p95": null,
+              "min": null,
+              "max": null
+            }
+          }
+        },
+        {
+          "harness": "fx",
+          "result_channel": "legacy_app_reply",
+          "tasks": 1,
+          "metrics": {
+            "dispatch_wall_ms": {
+              "n": 1,
+              "p50": 54000.0,
+              "p95": 54000.0,
+              "min": 54000.0,
+              "max": 54000.0
+            },
+            "transport_ms": {
+              "n": 0,
+              "p50": null,
+              "p95": null,
+              "min": null,
+              "max": null
+            },
+            "reply_observed_after_dispatch_ms": {
+              "n": 0,
+              "p50": null,
+              "p95": null,
+              "min": null,
+              "max": null
+            }
+          }
+        }
+      ]
+    },
+    {
+      "app": "deepseek",
+      "device": "s22",
+      "requested": 50,
+      "states": {
+        "failed": 1,
+        "queued": 42,
+        "unconfirmed": 7
+      },
+      "tasks_with_dispatch_receipts": 8,
+      "dispatch_receipts": 8,
+      "send_attempted": 5,
+      "prompt_verified": 5,
+      "user_bubble_verified": 0,
+      "replies_captured": 3,
+      "connector_comments_captured": 0,
+      "draft_prs_observed": 0,
+      "reply_chars": {
+        "n": 3,
+        "p50": 5700.0,
+        "p95": 6008.7,
+        "min": 4746,
+        "max": 6043
+      },
+      "verifier_states": {
+        "not_run": 50
+      },
+      "verified_quality_evaluated": 0,
+      "verified_quality_passes": null,
+      "cohorts": [
+        {
+          "harness": "deterministic_uiautomator2",
+          "result_channel": "deepseek_clipboard",
+          "tasks": 8,
+          "metrics": {
+            "dispatch_wall_ms": {
+              "n": 7,
+              "p50": 16283.277,
+              "p95": 17785.979,
+              "min": 0.33211708068847656,
+              "max": 18070.653438568115
+            },
+            "transport_ms": {
+              "n": 6,
+              "p50": 15935.0,
+              "p95": 16327.5,
+              "min": 3070.0,
+              "max": 16350.000000000002
+            },
+            "reply_observed_after_dispatch_ms": {
+              "n": 3,
+              "p50": 439066.967,
+              "p95": 612269.066,
+              "min": 20482.033491134644,
+              "max": 631513.7438774109
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "phone_telemetry": {
+    "available": true,
+    "read_window_capped": false,
+    "pre_run_baseline_available": true,
+    "devices": {
+      "s25": {
+        "samples": 21,
+        "first_at": "2026-10-28T22:32:11-05:00",
+        "last_at": "2026-10-29T00:12:47-05:00",
+        "numeric": {
+          "skin_c": {
+            "n": 21,
+            "p50": 37.6,
+            "p95": 38.3,
+            "min": 34.8,
+            "max": 38.3
+          },
+          "ap_c": {
+            "n": 21,
+            "p50": 39.8,
+            "p95": 41.5,
+            "min": 35.7,
+            "max": 41.8
+          },
+          "bat_c": {
+            "n": 21,
+            "p50": 36.5,
+            "p95": 37.1,
+            "min": 34.1,
+            "max": 37.2
+          },
+          "battery_pct": {
+            "n": 21,
+            "p50": 79.0,
+            "p95": 80.0,
+            "min": 79,
+            "max": 80
+          },
+          "free_gb": {
+            "n": 21,
+            "p50": 6.5,
+            "p95": 6.5,
+            "min": 6.5,
+            "max": 6.5
+          },
+          "load1": {
+            "n": 21,
+            "p50": 10.32,
+            "p95": 11.95,
+            "min": 9.26,
+            "max": 13.08
+          },
+          "mem_avail_mb": {
+            "n": 21,
+            "p50": 2201.0,
+            "p95": 2505.0,
+            "min": 1777,
+            "max": 2619
+          }
+        },
+        "thermal_status_counts": {
+          "0": 21
+        },
+        "charging_samples": 21,
+        "battery_first": 80,
+        "battery_last": 80
+      },
+      "s22": {
+        "samples": 21,
+        "first_at": "2026-10-28T22:32:11-05:00",
+        "last_at": "2026-10-29T00:12:47-05:00",
+        "numeric": {
+          "skin_c": {
+            "n": 21,
+            "p50": 33.3,
+            "p95": 34.9,
+            "min": 30.8,
+            "max": 35.1
+          },
+          "ap_c": {
+            "n": 21,
+            "p50": 33.8,
+            "p95": 43.3,
+            "min": 30.8,
+            "max": 45.0
+          },
+          "bat_c": {
+            "n": 21,
+            "p50": 32.5,
+            "p95": 34.2,
+            "min": 30.2,
+            "max": 34.5
+          },
+          "battery_pct": {
+            "n": 21,
+            "p50": 72.0,
+            "p95": 74.0,
+            "min": 71,
+            "max": 74
+          },
+          "free_gb": {
+            "n": 21,
+            "p50": 14.6,
+            "p95": 15.1,
+            "min": 14.5,
+            "max": 15.1
+          },
+          "load1": {
+            "n": 21,
+            "p50": 3.79,
+            "p95": 4.59,
+            "min": 2.77,
+            "max": 5.23
+          },
+          "mem_avail_mb": {
+            "n": 21,
+            "p50": 1864.0,
+            "p95": 2166.0,
+            "min": 1602,
+            "max": 2190
+          }
+        },
+        "thermal_status_counts": {
+          "0": 21
+        },
+        "charging_samples": 21,
+        "battery_first": 73,
+        "battery_last": 71
+      }
+    }
+  },
+  "limitations": [
+    "Dispatch, reply capture and verifier outcomes are independent columns.",
+    "Unconfirmed sends remain unconfirmed even if a matching reply is later captured.",
+    "Reply-observed latency includes harvest scheduling; it is not model inference time.",
+    "The fx canary is a separate timing cohort from deterministic dispatch.",
+    "Missing timing/quality observations remain null; no zero filling."
+  ]
+}
