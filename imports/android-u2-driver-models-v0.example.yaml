@@ -1,0 +1,29 @@
+study: android-u2-driver-models-v0
+
+# Copy this file to imports/android-u2-driver-models-v0.local.yaml on groot (gitignored).
+# The runner writes RUN/rows.jsonl and RUN/summary.json outside the repo; commit the
+# exported rows/summary into the source repo first so the import can pin them.
+sources:
+  - name: phone-queue-evals
+    repo: kvnloo/.files
+    root: /ABSOLUTE/PATH/TO/.files-CHECKOUT
+    commit: REPLACE_WITH_FULL_40_CHAR_SHA
+    files:
+      - from: services/phone-queue/evals/tasks.json
+        to: data/tasks.json
+        kind: fixture
+      - from: services/phone-queue/evals/models.json
+        to: data/models.json
+        kind: fixture
+      - from: services/phone-queue/evals/oracle-check-20261028.json
+        to: data/oracle-check-20261028.json
+        kind: analysis
+      - from: services/phone-queue/evals/results/REPLACE_RUN_ID/rows.jsonl
+        to: data/rows.jsonl
+        kind: result
+      - from: services/phone-queue/evals/results/REPLACE_RUN_ID/summary.json
+        to: data/summary.json
+        kind: result
+
+# Never import job transcripts, raw hierarchy dumps or screenshots: they can contain
+# PII. Rows carry transcript_path as a local pointer only.
