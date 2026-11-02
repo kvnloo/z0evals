@@ -379,6 +379,8 @@ def page(title: str, body: str, subtitle: str = "", meta: str = "", fm: dict | N
     )
     author = html.escape(str(fm.get("author", "Zer0 Research")))
     date = html.escape(str(fm.get("date", "")))
+    subtitle_html = f'<p class="subtitle">{html.escape(str(subtitle))}</p>' if subtitle else ""
+    meta_html = f'<p class="meta">{html.escape(str(meta))}</p>' if meta else ""
     return f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{html.escape(title)} · z0evals</title><style>{STYLE}</style></head>
@@ -390,7 +392,9 @@ def page(title: str, body: str, subtitle: str = "", meta: str = "", fm: dict | N
 <main class="page-shell">
   <header class="post-header">
     <h1>{html.escape(title)}</h1>
+    {subtitle_html}
     <p class="meta">{author}·{date}</p>
+    {meta_html}
     {f'<ul class="toc">{toc}</ul>' if toc else ''}
   </header>
   <article>{body}</article>
@@ -418,9 +422,9 @@ def main() -> None:
         manifest = ROOT / "studies" / study / "manifest.yaml"
         if study and manifest.exists():
             m = yaml.safe_load(manifest.read_text()) or {}
-            study_meta = f"study={html.escape(study)} · status={html.escape(str(m.get('status', status)))} · updated={html.escape(str(m.get('updated','')))}"
+            study_meta = f"study={study} · status={m.get('status', status)} · updated={m.get('updated', '')}"
         else:
-            study_meta = f"status={html.escape(str(status))}"
+            study_meta = f"status={status}"
 
         body = markdown.markdown(body_md, extensions=["fenced_code", "tables", "sane_lists", "attr_list"])
         dest = OUT / "posts" / f"{src.stem}.html"
