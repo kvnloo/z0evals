@@ -10,6 +10,7 @@ import argparse
 import re
 from html.parser import HTMLParser
 from pathlib import Path
+from urllib.parse import unquote
 
 
 class PageAudit(HTMLParser):
@@ -107,21 +108,22 @@ def check_relative_links(
     for href in audit.hrefs:
         if (
             href.startswith("#")
+            or href.startswith("//")
             or href.startswith("http://")
             or href.startswith("https://")
             or href.startswith("mailto:")
             or href.startswith("tel:")
         ):
             continue
-        clean = href.split("#", 1)[0].split("?", 1)[0]
-        if not clean or clean.startswith("/"):
+        clean = unquote(href.split("#", 1)[0].split("?", 1)[0]).replace("\\", "/")
+        if not clean:
             continue
 
-        target = path.parent / clean
+        target = (path.parent / clean).resolve()
         if clean.endswith("/") or target.suffix == "":
             target = target / "index.html"
         try:
-            target.relative_to(root)
+            target.relative_to(root.resolve())
         except ValueError:
             errors.append(f"{name}: internal href escapes export root: {href}")
             continue

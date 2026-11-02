@@ -39,6 +39,7 @@ jobs:
       - run: python scripts/build_sustained_chat_status.py
       - run: python scripts/build_posts.py
       - run: python -m unittest discover -s tests -p test_build_posts.py -v
+      - run: python -m unittest discover -s tests -p test_audit_web_export.py -v
       - run: npm ci --no-audit --no-fund
         working-directory: web
       - run: npm run typecheck
