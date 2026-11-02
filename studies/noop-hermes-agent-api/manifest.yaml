@@ -17,14 +17,15 @@ hardware:
 sources:
   - repo: kvnloo/noop
     branch: feat/android-hermes-agent-api
-    commit: 84048f3b049b
+    commit: 84048f3b049ba7c3aa36ef7b96ae6cead3eddace
     pr: https://github.com/kvnloo/noop/pull/95
     role: in-app agent API (Kotlin), Hermes-side MCP client, Presidio layer, e2e script, JVM tests
     visibility: public-fork
-  - repo: kvnloo/noop
-    branch: local/s25-hermes-agent-integration (local only)
-    role: installed lineage = other workers' unpushed stack tip + the feature commits
-    visibility: local-only
+unpublished_integration_lineage:
+  branch: local/s25-hermes-agent-integration
+  role: installed handset build included other workers' unpushed stack tip plus the public feature commits
+  visibility: local-only
+  pin_status: unverified-unpublished
 
 privacy:
   published: structure, check pass/fail, latency, counts of audit entries by kind/tool/outcome
@@ -34,3 +35,16 @@ questions:
   - Can the owner's Hermes read bounded NOOP data and perform an allow-listed in-app action with no adb, only the tailnet?
   - Do the consent, scope, auth and audit gates hold on a real handset?
   - Is per-call latency small enough for an interactive coach turn?
+
+artifacts:
+  - path: README.md
+    kind: analysis
+  - path: data/summary.json
+    kind: result
+  - path: data/coach-dashboard-synthetic.png
+    kind: figure
+
+limitations:
+  - The installed handset APK included unpublished local integration work; its exact source commit is not independently pinned by this public draft.
+  - The public source pin identifies the feature branch, not the complete local installed build.
+  - The published results cover one handset and one grant configuration, not general coach quality or efficacy.
