@@ -21,13 +21,21 @@ sources:
 
 tracker: https://github.com/kvnloo/z0evals/issues/78
 
+questions:
+  - Does the frozen AODL structural cohort enforce bounded spawning and preserve every applicable denial reason?
+  - Does replay preserve the semantic fingerprint, decision, and authored source lineage for identical inputs?
+  - Does the independent Bend verifier agree on representable cases without claiming task success from admission?
+
 artifacts:
   - path: cases.json
-    kind: frozen-cohort
+    kind: fixture
+    role: frozen-cohort
   - path: receipt.schema.json
-    kind: result-schema
+    kind: other
+    role: result-schema
   - path: run.py
-    kind: runner
+    kind: other
+    role: runner
 
 claims: []
 
