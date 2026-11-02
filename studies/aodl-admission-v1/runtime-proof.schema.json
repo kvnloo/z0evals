@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AODL runtime authority proof",
+  "type": "object",
+  "required": ["schema", "z0int_revision", "aodl_revision", "provider_execution", "all_passed", "cases"],
+  "properties": {
+    "schema": {"const": "z0eval.aodl_runtime_proof.v1"},
+    "z0int_revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "aodl_revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "provider_execution": {"const": false},
+    "all_passed": {"type": "boolean"},
+    "cases": {
+      "type": "array",
+      "minItems": 4,
+      "items": {
+        "type": "object",
+        "required": ["id", "pass"],
+        "properties": {
+          "id": {"type": "string"},
+          "pass": {"type": "boolean"}
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": false
+}
