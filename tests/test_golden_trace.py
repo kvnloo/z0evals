@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import importlib.util
+import inspect
+import tempfile
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -275,7 +277,15 @@ def _main():
     failed=0
     for name,fn in tests:
         try:
-            fn();print("PASS",name)
+            with tempfile.TemporaryDirectory(prefix="z0evals-golden-") as scratch:
+                signature = inspect.signature(fn)
+                if not signature.parameters:
+                    fn()
+                elif tuple(signature.parameters) == ("tmp_path",):
+                    fn(Path(scratch))
+                else:
+                    raise TypeError(f"unsupported test fixture for {name}: {signature}")
+            print("PASS", name)
         except Exception as exc:
             failed+=1;print("FAIL",name,type(exc).__name__,exc)
     print(f"{len(tests)-failed}/{len(tests)} passed")
