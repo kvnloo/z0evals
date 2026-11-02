@@ -67,8 +67,13 @@ class BuildSiteTest(unittest.TestCase):
         rendered = build_site.page("T", "b")
         self.assertNotIn('class="toc"', rendered)
         self.assertIn("Zer0 Research", rendered)
-        # Current legacy behavior: the subtitle and meta arguments are not rendered.
-        self.assertNotIn("META", build_site.page("T", "b", meta="META"))
+        with_metadata = build_site.page(
+            "T", "b", subtitle="Sub <b> &", meta="META <i> &"
+        )
+        self.assertIn('<p class="subtitle">Sub &lt;b&gt; &amp;</p>', with_metadata)
+        self.assertIn('<p class="meta">META &lt;i&gt; &amp;</p>', with_metadata)
+        self.assertNotIn("<b>", with_metadata)
+        self.assertNotIn("<i>", with_metadata)
 
     def test_main_builds_into_temp_root(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -89,6 +94,10 @@ class BuildSiteTest(unittest.TestCase):
 
             post = (root / "site" / "posts" / "a.html").read_text(encoding="utf-8")
             self.assertIn("<h1>Alpha</h1>", post)
+            self.assertIn('<p class="subtitle">Sub</p>', post)
+            self.assertIn(
+                '<p class="meta">study=s1 · status=frozen · updated=2026-02-02</p>', post
+            )
             index = (root / "site" / "index.html").read_text(encoding="utf-8")
             self.assertIn('href="posts/a.html"', index)
             self.assertIn("Alpha", index)
