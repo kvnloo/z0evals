@@ -5,6 +5,10 @@ study: agentweb-emma-z0-v0
 status: evidence-local
 author: "zer0 research"
 date: "september 30, 2026"
+dek: "deterministic integration evidence is useful. it is not an answer-quality result."
+area: device-use
+published: 2026-09-30
+log: [agentweb-emma-z0-v0]
 mock_data: false
 tldr: |
   privacy, byte-budget, required-term and non-application gates passed on 18 fixture rows and 0 live rows.

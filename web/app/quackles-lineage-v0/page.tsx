@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import StoryShell, { type StoryMeta, type StoryBanner } from "@/components/StoryShell";
+import { studyMeta } from "@/lib/catalog";
 import type { TocItem } from "@/components/Toc";
 import { Tldr, ExpHead, Evidence, Teaser, SetupFigure, TracePages, Citation, type TraceItem } from "@/components/essay/Essay";
 import LineageSwimlane from "@/components/quackles/LineageSwimlane";
@@ -36,14 +37,7 @@ export const metadata: Metadata = {
     "an agent render loop, read from its own archive: how often the two-reviewer gate said no, and why a 1 gp export of the current scenes is not 1 gp of detail.",
 };
 
-const meta: StoryMeta = {
-  title: "quackles, in 665 renders",
-  subtitle: "an agent loop rendered five robot scenes for a month. the archive shows how often the gate said no, and why a gigapixel export is not a gigapixel of detail.",
-  author: "zer0 research",
-  date: "november 2, 2026",
-  status: "source-reported",
-  lede: "",
-};
+const meta: StoryMeta = studyMeta("quackles-lineage-v0");
 
 const banner: StoryBanner = {
   tag: "source-reported · no owner approval",

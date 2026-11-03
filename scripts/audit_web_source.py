@@ -17,17 +17,35 @@ def main() -> int:
     errors: list[str] = []
 
     shell = read("web/components/StoryShell.tsx")
-    require('href="/"' not in shell, "StoryShell must not escape a project Pages site with href=/", errors)
-    require('className="article-body prose"' in shell, "StoryShell must opt into shared prose typography", errors)
-    require("hashchange" in shell and "closest('[data-mode=\"explore\"]')" in shell,
-            "StoryShell must switch reading mode for hash/TOC navigation", errors)
+    frame = read("web/components/post/ArticleFrame.tsx")
+    story = read("web/components/post/StoryClient.tsx")
+    require('href="/"' not in shell + frame + story, "story pages must not hard-code href=/ (use SiteLink)", errors)
+    require('className="article-body prose"' in frame, "ArticleFrame must opt into shared prose typography", errors)
+    require("hashchange" in story and "closest('[data-mode=\"explore\"]')" in story,
+            "StoryClient must switch reading mode for hash/TOC navigation", errors)
+    require("scrollIntoView" not in story + frame, "anchor jumps must use scrollToId (scroll-padding aware)", errors)
 
-    mobile = read("web/components/MobileToc.tsx")
-    require("item.depth ?? 0" in mobile, "Mobile TOC must use TocItem.depth", errors)
-    require('document.body.style.overflow = "hidden"' in mobile,
-            "Mobile drawer must lock background scrolling", errors)
+    sheet = read("web/components/site/Sheet.tsx")
+    toc_sheet = read("web/components/post/TocSheet.tsx")
+    require("it.depth ?? 0" in toc_sheet, "TOC sheet must use TocItem.depth", errors)
+    require('document.documentElement.style.overflow = "hidden"' in sheet,
+            "Bottom sheets must lock background scrolling", errors)
+    require("Escape" in sheet and '"Tab"' in sheet, "Bottom sheets must close on Esc and trap focus", errors)
+    require(not (ROOT / "web/components/MobileToc.tsx").exists(), "the frog FAB (MobileToc) is gone", errors)
+
+    # haptics: navigator.vibrate lives in exactly one module
+    vib = [str(p.relative_to(ROOT)) for p in (ROOT / "web").rglob("*.ts*")
+           if "node_modules" not in p.parts and ".next" not in p.parts and "out" not in p.parts
+           and "vibrate" in p.read_text(encoding="utf-8")]
+    require(vib == ["web/lib/ux/haptics.ts"], f"vibrate() must only appear in web/lib/ux/haptics.ts, found {vib}", errors)
 
     css = read("web/app/globals.css")
+    require("scroll-behavior: smooth" not in css, "no global smooth scrolling (find/back must stay instant)", errors)
+    require("mobile-toc-fab" not in css, "FAB styles must be removed", errors)
+    require(".shell { display: block; overflow-x: hidden; }" not in css and ".story-shell { overflow-x: hidden; }" not in css,
+            "nothing may rely on overflow-x:hidden on .shell/.story-shell", errors)
+    require(css.count("@media (prefers-reduced-motion: reduce)") == 1, "one merged reduced-motion block", errors)
+    require("@view-transition" in css and "view-transition-name: site-header" in css, "route changes use view transitions", errors)
     require("@media (max-width: 959px)" in css, "Mobile shell breakpoint must be explicit at 959px", errors)
     for token in ("border", "bg-muted", "secondary", "text", "text-light", "highlight-soft", "error"):
         require(
@@ -50,15 +68,12 @@ def main() -> int:
     require("@media (max-width: 1199px) {\n  .rail { display: none; }" not in css,
             "Desktop rail must not collapse to the mobile FAB at 1199px", errors)
 
-    phase1 = read("web/app/page.tsx")
-    require('className="shell story-grid"' in phase1,
-            "Phase 1B must use the same responsive story grid as newer posts", errors)
-    require('<main className="article">' in phase1 and 'article article-shell' not in phase1,
-            "Phase 1B must not nest its header inside the legacy article-shell", errors)
-    phase1_header = phase1.find('<header className="article-header">')
-    phase1_grid = phase1.find('<div className="shell story-grid">')
-    require(0 <= phase1_header < phase1_grid,
-            "Phase 1B article header must sit outside the padded article column", errors)
+    phase1 = read("web/app/slm-router-v0/page.tsx")
+    require('<StoryShell slug="slm-router-v0"' in phase1,
+            "Phase 1B must use the shared post frame at /slm-router-v0/", errors)
+    home = read("web/app/page.tsx")
+    require("article-body" not in home and "<HashForward" in home,
+            "Home must not render an article body and must forward old phase-1b anchors", errors)
 
     reveal = read("web/components/charts/useReveal.ts")
     require("rootMargin" in reveal and "getClientRects" in reveal,

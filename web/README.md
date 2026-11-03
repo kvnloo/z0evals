@@ -33,12 +33,14 @@ rather than copying licensed files:
 
 | Reference | Here | Why |
 |---|---|---|
-| HK Grotesk (sans) | **Hanken Grotesk** (Google, OFL) | same designer lineage, near-identical metrics |
-| Departure Mono (mono) | **JetBrains Mono** (Google, OFL) | technical mono covers the label/number/code role |
+| HK Grotesk (sans) | **Hanken Grotesk** (OFL) | same designer lineage, near-identical metrics |
+| Departure Mono (mono) | **IBM Plex Mono** (OFL) | technical mono covers the label/number/code role |
 | Iowan Old Style (serif) | system stack `Iowan Old Style, Georgia, serif` | the reference's own fallback chain |
 
-Swap in the real faces by dropping woff2 files into `public/fonts/` and pointing
-`next/font/local` at them.
+The display face is **Cormorant Garamond** (OFL). All faces are self-hosted from
+`app/fonts/` (latin subset woff2 from @fontsource 5.3.0, OFL licence files next to
+them) through `next/font/local`, so `next build` needs no network. Swap in the
+real faces by replacing those woff2 files.
 
 ## Data
 

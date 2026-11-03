@@ -30,7 +30,7 @@ name: pages
 
 on:
   push:
-    branches: [main, dev, nightly, preview]
+    branches: [main, dev, nightly, preview, "pr-*"]
 
   # The promote/automerge workflows merge with secrets.GITHUB_TOKEN, and GitHub
   # does not trigger workflows from a push made with the default token. Without
@@ -101,7 +101,10 @@ jobs:
           built=""
           paths=""
 
-          for BRANCH in main nightly preview dev; do
+          # PR previews: every `pr-<n>` branch publishes under /wip/pr-<n>/ (pages-url-map
+          # feature prefix). Listing them here keeps them alive across every deploy.
+          PR_BRANCHES=$(git for-each-ref --format='%(refname:lstrip=3)' 'refs/remotes/origin/pr-*')
+          for BRANCH in main nightly preview dev $PR_BRANCHES; do
             if ! git rev-parse --verify -q "origin/$BRANCH" >/dev/null; then
               echo "::warning::channel $BRANCH has no origin branch — skipped"
               continue
@@ -220,10 +223,10 @@ jobs:
           path: site
 
   deploy:
-    # Channel branches only. Kept in step with the github-pages environment
-    # branch policy, which admits exactly these. `schedule` and `workflow_run`
+    # Channel branches plus `pr-*` preview branches. Kept in step with the
+    # github-pages environment branch policy, which admits exactly these. `schedule` and `workflow_run`
     # resolve to the default branch, so both deploy.
-    if: contains(fromJSON('["main","dev","nightly","preview"]'), github.ref_name)
+    if: contains(fromJSON('["main","dev","nightly","preview"]'), github.ref_name) || startsWith(github.ref_name, 'pr-')
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

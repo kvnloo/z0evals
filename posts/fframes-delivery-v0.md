@@ -5,6 +5,10 @@ study: fframes-delivery-v0
 status: source-reported
 author: "zer0 research"
 date: "november 2, 2026"
+published: 2026-11-02
+area: research
+kind: study
+dek: "fframestudio export recipes against naive x264 after five simulated platform re-encodes."
 mock_data: false
 toc:
   - id: result

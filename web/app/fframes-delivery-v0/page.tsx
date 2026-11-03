@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import StoryShell, { type StoryMeta, type StoryBanner } from "@/components/StoryShell";
+import { studyMeta } from "@/lib/catalog";
 import type { TocItem } from "@/components/Toc";
 import Callout from "@/components/Callout";
 import { Tldr, ExpHead, Evidence, Teaser, GrowBars, SetupFigure, TracePages, Citation, type TraceItem } from "@/components/essay/Essay";
@@ -65,15 +66,7 @@ export const metadata: Metadata = {
     "fframestudio's platform export recipes beat a naive x264 upload in five playback simulators. the uploads are 3 to 4 times larger, the clips were also the tuning set, and a synthetic gradient goes the other way.",
 };
 
-const meta: StoryMeta = {
-  title: "a bigger upload scores higher in a simulator",
-  subtitle: "fframestudio's delivery recipes, five playback simulators, four short clips, and one gradient where we lose.",
-  author: "zer0 research",
-  date: "november 2, 2026",
-  status: "source-reported",
-  lede:
-    "fframes renders a film. the question here is what happens after: does the export recipe change what a viewer sees once a platform re-encodes the upload? fframestudio built simulators for that and scored them. this post freezes that report and lets you look at every frame it scored.",
-};
+const meta: StoryMeta = studyMeta("fframes-delivery-v0");
 
 const banner: StoryBanner = {
   tag: "simulator only · source-reported",

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import re
 import tempfile
 import unittest
 from pathlib import Path
@@ -28,7 +29,7 @@ class BuildPostsTest(unittest.TestCase):
 
     def test_heading_ids_lede_and_wide_tables(self):
         src = (
-            "---\ntitle: t\ntoc:\n  - id: a\n    label: A\n---\n\n"
+            "---\ntitle: t\ndate: october 5, 2026\narea: memory\ntoc:\n  - id: a\n    label: A\n---\n\n"
             '<div class="lede">\nthe **lede**\n</div>\n\n## first *thing* {#a}\n\n| x | y |\n|---|---|\n| 1 | 2 |\n'
         )
         with tempfile.TemporaryDirectory() as d:
@@ -41,21 +42,60 @@ class BuildPostsTest(unittest.TestCase):
         self.assertNotIn('class="lede"', p["html"])
         self.assertEqual(p["toc"], [{"id": "a", "label": "A"}])
 
-    def _build(self, src: str) -> dict:
+    def _build(self, front: str, body: str = "## a {#a}\n\ntext\n"):
+        with tempfile.TemporaryDirectory() as d:
+            f = Path(d) / "x.md"
+            f.write_text(f"---\n{front}\n---\n\n{body}")
+            return build_posts.build_post(f)
+
+    def test_catalog_fields_and_iso_fallback(self):
+        p = self._build('title: t\ndate: "updated October 5, 2026"\narea: memory\nseries: memory\nlog: [x]')
+        self.assertEqual(p["published"], "2026-10-05")
+        self.assertEqual(p["area"], "memory")
+        self.assertEqual(p["kind"], "post")
+        self.assertEqual(p["series"], "memory")
+        self.assertEqual(p["log"], ["x"])
+        p = self._build("title: t\ndate: whenever\npublished: 2026-09-21\narea: research\nkind: study")
+        self.assertEqual((p["published"], p["kind"]), ("2026-09-21", "study"))
+
+    def test_invalid_metadata_fails(self):
+        with self.assertRaises(build_posts.PostError):
+            self._build("title: t\ndate: october 5, 2026\narea: vibes")
+        with self.assertRaises(build_posts.PostError):
+            self._build("title: t\ndate: not a date\narea: memory")
+        with self.assertRaises(build_posts.PostError):
+            self._build('title: t\ndate: october 5, 2026\narea: memory\ndek: "' + "x" * 141 + '"')
+
+    def test_long_posts_are_sectioned_at_top_level_h2(self):
+        p = self._build("title: t\ndate: october 5, 2026\narea: memory", "intro\n\n## a {#a}\n\none\n\n## b {#b}\n\ntwo\n")
+        self.assertEqual(p["html"].count('<section class="post-sec">'), 2)
+        self.assertTrue(p["html"].startswith("<p>intro</p>"))
+
+    def test_every_post_is_catalogued(self):
+        index = []
+        for path in sorted((ROOT / "posts").glob("*.md")):
+            with self.subTest(post=path.name):
+                p = build_posts.build_post(path)
+                self.assertIn(p["area"], build_posts.AREAS)
+                self.assertTrue(p["dek"] and len(p["dek"]) <= 140)
+                index.append(p)
+        self.assertLessEqual(sum(1 for p in index if p["featured"]), 1)
+
+    def _build_src(self, src: str) -> dict:
         with tempfile.TemporaryDirectory() as d:
             f = Path(d) / "x.md"
             f.write_text(src)
             return build_posts.build_post(f)
 
     def test_tldr_front_matter_is_rendered_and_optional(self):
-        p = self._build("---\ntitle: t\ntldr: |\n  the view was **smaller**.\n---\n\nbody\n")
+        p = self._build_src("---\ntitle: t\ndate: october 5, 2026\narea: memory\ntldr: |\n  the view was **smaller**.\n---\n\nbody\n")
         self.assertEqual(p["tldr"], "<p>the view was <strong>smaller</strong>.</p>")
         self.assertNotIn("smaller", p["html"])
-        self.assertEqual(self._build("---\ntitle: t\n---\n\nbody\n")["tldr"], "")
+        self.assertEqual(self._build_src("---\ntitle: t\ndate: october 5, 2026\narea: memory\n---\n\nbody\n")["tldr"], "")
 
     def test_setup_block_folds_onto_the_next_table(self):
-        p = self._build(
-            "---\ntitle: t\n---\n\nbefore\n\n```setup\neight **synthetic** docs.\n```\n"
+        p = self._build_src(
+            "---\ntitle: t\ndate: october 5, 2026\narea: memory\n---\n\nbefore\n\n```setup\neight **synthetic** docs.\n```\n"
             "| x | y |\n|---|---|\n| 1 | 2 |\n\nafter\n"
         )
         html = p["html"]
@@ -69,14 +109,14 @@ class BuildPostsTest(unittest.TestCase):
         self.assertNotIn("es-setup-slot", html)
 
     def test_setup_block_takes_a_whole_code_fence_or_figure(self):
-        fence = self._build("---\ntitle: t\n---\n\n```setup\nhow\n```\n\n```text\na\n\nb\n```\n\nafter\n")["html"]
+        fence = self._build_src("---\ntitle: t\ndate: october 5, 2026\narea: memory\n---\n\n```setup\nhow\n```\n\n```text\na\n\nb\n```\n\nafter\n")["html"]
         self.assertIn("<pre><code class=\"language-text\">a\n\nb\n</code></pre></figure>", fence)
-        fig = self._build("---\ntitle: t\n---\n\n```setup\nhow\n```\n<figure>\n<img src=\"a.png\">\n\n<figcaption>c</figcaption>\n</figure>\n\nafter\n")["html"]
+        fig = self._build_src("---\ntitle: t\ndate: october 5, 2026\narea: memory\n---\n\n```setup\nhow\n```\n<figure>\n<img src=\"a.png\">\n\n<figcaption>c</figcaption>\n</figure>\n\nafter\n")["html"]
         self.assertIn("<figcaption>c</figcaption>\n</figure></figure>", fig)
 
     def test_setup_block_without_a_figure_is_an_error(self):
         with self.assertRaises(ValueError):
-            self._build("---\ntitle: t\n---\n\n```setup\nhow\n```\n")
+            self._build_src("---\ntitle: t\ndate: october 5, 2026\narea: memory\n---\n\n```setup\nhow\n```\n")
 
     def test_research_log_entries_are_complete(self):
         doc = json.loads((ROOT / "web" / "data" / "research-log.json").read_text())
@@ -87,10 +127,16 @@ class BuildPostsTest(unittest.TestCase):
             with self.subTest(entry=e["id"]):
                 for k in ("title", "area", "question", "status", "date", "finding", "caveat", "links"):
                     self.assertIn(k, e)
+                self.assertIn(e["area"], build_posts.AREAS)
                 if e.get("post"):
                     self.assertIn(e["post"], posts, "entry links a post that does not exist")
                 for link in e["links"]:
                     self.assertTrue(link["url"].startswith("https://"))
+
+    def test_area_list_matches_the_site(self):
+        source = (ROOT / "web" / "lib" / "areas.ts").read_text()
+        site_ids = re.findall(r'\{ id: "([a-z-]+)"', source)
+        self.assertEqual(tuple(site_ids), build_posts.AREAS)
 
 
 if __name__ == "__main__":
