@@ -6,7 +6,7 @@ status: draft
 author: "zer0 research"
 date: "november 3, 2026"
 published: '2026-11-03'
-area: research
+area: hermes
 kind: study
 tags: [t3code, sqlite, storage]
 featured: false

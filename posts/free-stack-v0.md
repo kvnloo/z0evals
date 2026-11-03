@@ -5,6 +5,8 @@ study: free-stack-v0
 status: evidence-local
 author: "zer0 research"
 date: "november 2, 2026"
+area: small-models
+published: 2026-11-02
 mock_data: false
 toc:
   - id: signup
