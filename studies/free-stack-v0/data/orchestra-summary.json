@@ -1,0 +1,149 @@
+{
+ "wall_s": 151.04,
+ "calls": 220,
+ "ok": 214,
+ "completion_tokens": 60628,
+ "aggregate_tok_s": 401.4,
+ "providers_used": [
+  "cerebras",
+  "gemini",
+  "groq",
+  "nim",
+  "openrouter",
+  "vercel"
+ ],
+ "lanes_used": 15,
+ "fanout": {
+  "n": 149,
+  "wall_s": 1.44,
+  "tokens": 7757,
+  "tok_s": 5386.6,
+  "serial_estimate_s": 54.6
+ },
+ "by_tag": {
+  "fanout": {
+   "calls": 150,
+   "ok": 149,
+   "tokens": 7757,
+   "lanes": 7,
+   "wall_s": 1.44,
+   "tok_s": 5386.6
+  },
+  "bulk": {
+   "calls": 40,
+   "ok": 38,
+   "tokens": 36141,
+   "lanes": 4,
+   "wall_s": 2.26,
+   "tok_s": 15995.7
+  },
+  "background": {
+   "calls": 3,
+   "ok": 2,
+   "tokens": 1483,
+   "lanes": 3,
+   "wall_s": 150.06,
+   "tok_s": 9.9
+  },
+  "draft": {
+   "calls": 8,
+   "ok": 7,
+   "tokens": 5566,
+   "lanes": 7,
+   "wall_s": 2.55,
+   "tok_s": 2184.5
+  },
+  "check": {
+   "calls": 7,
+   "ok": 6,
+   "tokens": 7598,
+   "lanes": 7,
+   "wall_s": 34.61,
+   "tok_s": 219.5
+  },
+  "hedge": {
+   "calls": 12,
+   "ok": 12,
+   "tokens": 2083,
+   "lanes": 6,
+   "wall_s": 18.67,
+   "tok_s": 111.6
+  }
+ },
+ "plan": {
+  "fast": [
+   [
+    "groq",
+    "openai/gpt-oss-20b"
+   ],
+   [
+    "groq",
+    "openai/gpt-oss-120b"
+   ],
+   [
+    "groq",
+    "qwen/qwen3.8-27b"
+   ],
+   [
+    "cerebras",
+    "gpt-oss-120b"
+   ],
+   [
+    "cerebras",
+    "qwen-3.8-27b"
+   ],
+   [
+    "vercel",
+    "nvidia/nemotron-3.5-lightning-free"
+   ],
+   [
+    "gemini",
+    "gemini-3.5-flash-lite"
+   ]
+  ],
+  "medium": [
+   [
+    "openrouter",
+    "nvidia/nemotron-3.5-lightning:free"
+   ],
+   [
+    "openrouter",
+    "nvidia/nemotron-3.5-super-vl:free"
+   ],
+   [
+    "openrouter",
+    "dots-studio/dots-3-note-preview:free"
+   ],
+   [
+    "openrouter",
+    "cohere/north-mini-code:free"
+   ],
+   [
+    "vercel",
+    "inclusionai/ling-3.1-flash-1019"
+   ],
+   [
+    "nim",
+    "nvidia/nemotron-3.5-lightning-30b-a3b"
+   ],
+   [
+    "nim",
+    "nvidia/nemotron-3.5-super-vl-120b-a12b"
+   ]
+  ],
+  "slow": [
+   [
+    "openrouter",
+    "nvidia/nemotron-3-ultra-550b-a55b:free"
+   ],
+   [
+    "openrouter",
+    "xingchen-agi/xing4.0-29b-a4b:free"
+   ],
+   [
+    "nim",
+    "nvidia/nemotron-3-ultra-550b-a55b"
+   ]
+  ]
+ }
+}
