@@ -2083,3 +2083,32 @@ html[data-header-hidden] .section-bar { transform: translateY(calc(-1 * var(--he
 .prose details.more .table-wrap { margin: 1rem 0; }
 /* Narrow tables fit the column; only tables with four or more columns keep the scrolling minimum. */
 .prose .table-wrap table:not(:has(tr > :nth-child(4))) { min-width: 0; }
+
+/* ------------------------------------------------ phone reading fixes */
+/* Byte units keep their case inside lowercase posts (build_posts.py wraps them in .u). */
+.story-shell .u, .story-shell svg text, .story-shell svg tspan { text-transform: none !important; }
+/* A figure is one card: its chart sits inside the card's padding, not in a second card. */
+.prose .figure { padding: 14px 14px 12px; }
+.prose .figure .chart-svg { background: none !important; border: 0 !important; box-shadow: none; border-radius: 0; }
+/* The section bar is opaque enough that text scrolling under it does not show through. */
+.section-bar { background: rgba(14,14,12,.94); }
+/* The heading scrubber stays out of the text gutter until it is touched. */
+.heading-rail[data-visible="1"] { opacity: .18; }
+.heading-rail-slot i { width: 8px; }
+/* Shell commands in prose and callouts read as blocks, not wrapped inline chips. */
+.prose .callout pre { margin: .6rem 0; padding: 10px 12px; font-size: .8rem; white-space: pre-wrap; word-break: break-all; }
+@media (max-width: 600px) {
+  /* Chart labels stay readable when a 420-unit chart is drawn ~330 px wide. */
+  .prose .chart-svg text { font-size: 14px; }
+  /* Tables with four or more columns stack each row as label/value pairs. */
+  .prose .table-wrap:has(table.stack) { overflow: visible; border: 0; background: none; }
+  .prose .table-wrap table.stack { min-width: 0; }
+  .prose table.stack thead { display: none; }
+  .prose table.stack tr { display: block; margin: 0 0 10px; padding: 6px 14px; border: 1px solid var(--hair); border-radius: 12px; background: var(--glass-fill); }
+  .prose table.stack td { display: grid; grid-template-columns: minmax(96px, 38%) 1fr; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--hair); }
+  .prose table.stack td:last-child { border-bottom: 0; }
+  .prose table.stack td::before { content: attr(data-label); font: 600 11px/16px var(--font-sans); letter-spacing: .4px; text-transform: uppercase; color: #837F74; }
+  .prose table.stack td:first-child { font-weight: 600; color: var(--color-sb-text); }
+  .prose table.stack td:first-child::before { display: none; }
+  .prose table.stack td:first-child { display: block; }
+}

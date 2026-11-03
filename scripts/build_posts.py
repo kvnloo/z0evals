@@ -10,6 +10,7 @@ itself. Nothing is invented: every field comes from the post.
 from __future__ import annotations
 
 import datetime as dt
+import html as html_lib
 import json
 import re
 import sys
@@ -63,8 +64,50 @@ LEDE = re.compile(r'<div class="lede">\s*(.*?)\s*</div>', re.S)
 def render(md: str) -> str:
     md = HEADING_ID.sub(lambda m: f"{m.group(1)} {m.group(2)} {{: #{m.group(3)} }}", md)
     html = markdown.markdown(md, extensions=["attr_list", "tables", "fenced_code", "md_in_html", "sane_lists"])
-    # wide tables scroll inside their own box on phones instead of crushing their columns
-    return re.sub(r"<table>(.*?)</table>", r'<div class="table-wrap"><table>\1</table></div>', html, flags=re.S)
+    html = re.sub(r"<table>(.*?)</table>", label_table, html, flags=re.S)
+    return keep_unit_case(html)
+
+
+def label_table(m: re.Match) -> str:
+    """Wrap a table so it scrolls in its own box. Tables with four or more columns, or with
+    code in their cells, also get a data-label on every cell, so phones can stack each row
+    as label/value pairs instead of scrolling sideways."""
+    inner = m.group(1)
+    heads = [html_lib.escape(re.sub(r"<[^>]+>", "", h).strip(), quote=True)
+             for h in re.findall(r"<th\b[^>]*>(.*?)</th>", inner, flags=re.S)]
+    if len(heads) < 4 and "<code>" not in inner:
+        return f'<div class="table-wrap"><table>{inner}</table></div>'
+
+    def label_row(row: re.Match) -> str:
+        cells = iter(heads)
+        return re.sub(
+            r"<td(\b[^>]*)>",
+            lambda c: f'<td{c.group(1)} data-label="{next(cells, "")}">',
+            row.group(0),
+        )
+
+    inner = re.sub(r"<tr>.*?</tr>", label_row, inner, flags=re.S)
+    return f'<div class="table-wrap"><table class="stack">{inner}</table></div>'
+
+
+UNIT = re.compile(r"\b(\d[\d.,]*\s?)?(KiB|MiB|GiB|TiB|KB|MB|GB|TB)\b")
+
+
+def keep_unit_case(html: str) -> str:
+    """Posts render lowercase; mark byte units so CSS keeps them as written (MiB, not mib).
+    Text inside <code>, <pre> and tag attributes is left alone."""
+    out, depth = [], 0
+    for part in re.split(r"(<[^>]+>)", html):
+        if part.startswith("<"):
+            tag = re.match(r"</?\s*(\w+)", part)
+            if tag and tag.group(1).lower() in ("code", "pre", "svg"):
+                depth += -1 if part.startswith("</") else 1
+            out.append(part)
+        elif depth > 0:
+            out.append(part)
+        else:
+            out.append(UNIT.sub(lambda u: f'{u.group(1) or ""}<span class="u">{u.group(2)}</span>', part))
+    return "".join(out)
 
 
 BLOCK_TAG = re.compile(r"<(/?)(div|section|details|blockquote|figure|aside|table|ul|ol)\b[^>]*>", re.I)

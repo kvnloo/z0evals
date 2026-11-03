@@ -42,7 +42,14 @@ toc:
 <div class="callout" markdown="1">
 <div class="callout-title">where this stands</div>
 
-we asked the t3 code maintainers whether they want this, opt-in or on by default, in [discussion 29954](https://github.com/pingdotgg/t3code/discussions/29954). if you run t3 code, you can check what it would do for your own traffic with a read-only script: `python3 commit_window_estimate.py ~/.t3/userdata/statev2.sqlite 2` ([source](https://github.com/kvnloo/t3code/blob/45f2edca913aaa03b68ff1c5c8c2a72c78d5ae45/bench/poh/commit_window_estimate.py)). numbers from busy installs are the most useful thing to post there.
+we asked the t3 code maintainers whether they want this, opt-in or on by default, in [discussion 29954](https://github.com/pingdotgg/t3code/discussions/29954). if you run t3 code, you can check what it would do for your own traffic with a read-only [script](https://github.com/kvnloo/t3code/blob/45f2edca913aaa03b68ff1c5c8c2a72c78d5ae45/bench/poh/commit_window_estimate.py):
+
+```
+python3 commit_window_estimate.py \
+  ~/.t3/userdata/statev2.sqlite 2
+```
+
+numbers from busy installs are the most useful thing to post there.
 </div>
 
 ## the short version {#summary}
