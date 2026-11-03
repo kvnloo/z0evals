@@ -1,0 +1,580 @@
+{
+ "schema": "z0eval.external-benchmark-snapshot.v1",
+ "benchmark": "Hermes Index",
+ "source_url": "https://portal.nousresearch.com/bench",
+ "publisher": "Nous Research",
+ "captured_at": "2026-11-03T20:32:51Z",
+ "published_at": null,
+ "published_at_note": "The page shows no publication or update date; captured_at is the only time bound.",
+ "raw_sha256": "75e80754e88f0fe80af4822edcb0fdd95602ed6e46a701bbeb7a557f263f73bb",
+ "evidence_status": "source-reported",
+ "z0evals_measured": false,
+ "harness": "Hermes Agent (reasoning effort high where offered), pass@1, per the page notes",
+ "suites": {
+  "hermes_bench": "Hermes Bench",
+  "terminalbench_4": "TerminalBench 4",
+  "terminalbench_science": "TerminalBench Science",
+  "skillsbench": "SkillsBench"
+ },
+ "suite_public_status": {
+  "hermes_bench": "not public: no task set, grader or harness command published by Nous Research",
+  "terminalbench_4": "public: Harbor dataset terminal-bench/terminal-bench@4.0.0",
+  "terminalbench_science": "public: Harbor dataset terminal-bench-science/terminal-bench-science",
+  "skillsbench": "public: github.com/benchflow-ai/skillsbench (Apache-2.0), BenchFlow CLI"
+ },
+ "use_rule": "Prior only. A Hermes Index or suite score is never p_accept for a routing task class; it is an external_benchmark row with its source and capture time.",
+ "rows": [
+  {
+   "rank": 1,
+   "model": "Claude Opus 5.5",
+   "vendor": "Anthropic",
+   "hermes_index": 63.31,
+   "usd_per_task": 4.99,
+   "cost_provisional": true,
+   "suites": {
+    "hermes_bench": {
+     "score": 76.73,
+     "usd_per_task": 0.516,
+     "provisional": false
+    },
+    "terminalbench_4": {
+     "score": 54.0,
+     "usd_per_task": 6.27,
+     "provisional": true
+    },
+    "terminalbench_science": {
+     "score": 52.9,
+     "usd_per_task": 12.65,
+     "provisional": false
+    },
+    "skillsbench": {
+     "score": 69.6,
+     "usd_per_task": 0.51,
+     "provisional": false
+    }
+   }
+  },
+  {
+   "rank": 2,
+   "model": "GPT 6.1 Sol",
+   "vendor": "OpenAI",
+   "hermes_index": 57.09,
+   "usd_per_task": 1.19,
+   "cost_provisional": false,
+   "suites": {
+    "hermes_bench": {
+     "score": 73.93,
+     "usd_per_task": 0.26,
+     "provisional": false
+    },
+    "terminalbench_4": {
+     "score": 50.8,
+     "usd_per_task": 1.62,
+     "provisional": false
+    },
+    "terminalbench_science": {
+     "score": 51.4,
+     "usd_per_task": 2.46,
+     "provisional": false
+    },
+    "skillsbench": {
+     "score": 52.3,
+     "usd_per_task": 0.417,
+     "provisional": false,
+     "raw_score": 53.0
+    }
+   }
+  },
+  {
+   "rank": 3,
+   "model": "GPT 6 Astra",
+   "vendor": "OpenAI",
+   "hermes_index": 56.25,
+   "usd_per_task": 11.61,
+   "cost_provisional": false,
+   "suites": {
+    "hermes_bench": {
+     "score": 73.67,
+     "usd_per_task": 1.52,
+     "provisional": false
+    },
+    "terminalbench_4": {
+     "score": 41.3,
+     "usd_per_task": 12.66,
+     "provisional": false
+    },
+    "terminalbench_science": {
+     "score": 57.1,
+     "usd_per_task": 29.84,
+     "provisional": false
+    },
+    "skillsbench": {
+     "score": 52.9,
+     "usd_per_task": 2.44,
+     "provisional": false
+    }
+   }
+  },
+  {
+   "rank": 4,
+   "model": "Claude Sonnet 5.5",
+   "vendor": "Anthropic",
+   "hermes_index": 53.14,
+   "usd_per_task": 2.82,
+   "cost_provisional": true,
+   "suites": {
+    "hermes_bench": {
+     "score": 73.46,
+     "usd_per_task": 0.25,
+     "provisional": false
+    },
+    "terminalbench_4": {
+     "score": 36.5,
+     "usd_per_task": 2.77,
+     "provisional": true
+    },
+    "terminalbench_science": {
+     "score": 35.7,
+     "usd_per_task": 8.02,
+     "provisional": false
+    },
+    "skillsbench": {
+     "score": 66.9,
+     "usd_per_task": 0.23,
+     "provisional": false
+    }
+   }
+  },
+  {
+   "rank": 5,
+   "model": "GPT 6 Sol",
+   "vendor": "OpenAI",
+   "hermes_index": 44.1,
+   "usd_per_task": 2.23,
+   "cost_provisional": false,
+   "suites": {
+    "hermes_bench": {
+     "score": 73.5,
+     "usd_per_task": 0.263,
+     "provisional": false
+    },
+    "terminalbench_4": {
+     "score": 23.8,
+     "usd_per_task": 2.53,
+     "provisional": false
+    },
+    "terminalbench_science": {
+     "score": 18.6,
+     "usd_per_task": 5.7,
+     "provisional": false
+    },
+    "skillsbench": {
+     "score": 60.5,
+     "usd_per_task": 0.42,
+     "provisional": false
+    }
+   }
+  },
+  {
+   "rank": 6,
+   "model": "Grok 4.7",
+   "vendor": "xAI",
+   "hermes_index": 39.32,
+   "usd_per_task": 10.77,
+   "cost_provisional": false,
+   "suites": {
+    "hermes_bench": {
+     "score": 74.38,
+     "usd_per_task": 0.69,
+     "provisional": false
+    },
+    "terminalbench_4": {
+     "score": 12.7,
+     "usd_per_task": 23.0,
+     "provisional": false
+    },
+    "terminalbench_science": {
+     "score": 1.4,
+     "usd_per_task": 18.41,
+     "provisional": false
+    },
+    "skillsbench": {
+     "score": 68.8,
+     "usd_per_task": 0.99,
+     "provisional": false,
+     "raw_score": 71.9
+    }
+   }
+  },
+  {
+   "rank": 7,
+   "model": "GLM 5.3",
+   "vendor": "Z.ai",
+   "hermes_index": 39.23,
+   "usd_per_task": 3.78,
+   "cost_provisional": false,
+   "suites": {
+    "hermes_bench": {
+     "score": 71.82,
+     "usd_per_task": 0.18,
+     "provisional": false
+    },
+    "terminalbench_4": {
+     "score": 38.1,
+     "usd_per_task": 7.68,
+     "provisional": false
+    },
+    "terminalbench_science": {
+     "score": 1.4,
+     "usd_per_task": 6.82,
+     "provisional": false
+    },
+    "skillsbench": {
+     "score": 45.6,
+     "usd_per_task": 0.44,
+     "provisional": false
+    }
+   }
+  },
+  {
+   "rank": 8,
+   "model": "Kimi K3",
+   "vendor": "Moonshot",
+   "hermes_index": 39.16,
+   "usd_per_task": 6.5,
+   "cost_provisional": false,
+   "suites": {
+    "hermes_bench": {
+     "score": 71.52,
+     "usd_per_task": 0.176,
+     "provisional": false
+    },
+    "terminalbench_4": {
+     "score": 19.0,
+     "usd_per_task": 8.57,
+     "provisional": false
+    },
+    "terminalbench_science": {
+     "score": 8.6,
+     "usd_per_task": 16.74,
+     "provisional": false
+    },
+    "skillsbench": {
+     "score": 57.5,
+     "usd_per_task": 0.53,
+     "provisional": false
+    }
+   }
+  },
+  {
+   "rank": 9,
+   "model": "Gemini Flash 3.8",
+   "vendor": "Google",
+   "hermes_index": 38.12,
+   "usd_per_task": 3.17,
+   "cost_provisional": false,
+   "suites": {
+    "hermes_bench": {
+     "score": 62.19,
+     "usd_per_task": 0.64,
+     "provisional": false
+    },
+    "terminalbench_4": {
+     "score": 23.8,
+     "usd_per_task": 5.94,
+     "provisional": false
+    },
+    "terminalbench_science": {
+     "score": 8.6,
+     "usd_per_task": 5.15,
+     "provisional": false
+    },
+    "skillsbench": {
+     "score": 57.9,
+     "usd_per_task": 0.94,
+     "provisional": false,
+     "raw_score": 67.7
+    }
+   }
+  },
+  {
+   "rank": 10,
+   "model": "Claude Haiku 5.5",
+   "vendor": "Anthropic",
+   "hermes_index": 37.0,
+   "usd_per_task": 0.488,
+   "cost_provisional": false,
+   "suites": {
+    "hermes_bench": {
+     "score": 70.97,
+     "usd_per_task": 0.015,
+     "provisional": false
+    },
+    "terminalbench_4": {
+     "score": 13.6,
+     "usd_per_task": 0.24,
+     "provisional": false
+    },
+    "terminalbench_science": {
+     "score": 8.6,
+     "usd_per_task": 1.64,
+     "provisional": false
+    },
+    "skillsbench": {
+     "score": 54.8,
+     "usd_per_task": 0.058,
+     "provisional": false
+    }
+   }
+  },
+  {
+   "rank": 11,
+   "model": "DeepSeek V4.1 Flash",
+   "vendor": "DeepSeek",
+   "hermes_index": 36.91,
+   "usd_per_task": 0.259,
+   "cost_provisional": false,
+   "suites": {
+    "hermes_bench": {
+     "score": 70.74,
+     "usd_per_task": 0.019,
+     "provisional": false
+    },
+    "terminalbench_4": {
+     "score": 17.5,
+     "usd_per_task": 0.62,
+     "provisional": false
+    },
+    "terminalbench_science": {
+     "score": 2.9,
+     "usd_per_task": 0.38,
+     "provisional": false
+    },
+    "skillsbench": {
+     "score": 56.5,
+     "usd_per_task": 0.016,
+     "provisional": false,
+     "raw_score": 61.1
+    }
+   }
+  },
+  {
+   "rank": 12,
+   "model": "Qwen 3.8 Max",
+   "vendor": "Alibaba",
+   "hermes_index": 36.17,
+   "usd_per_task": 6.69,
+   "cost_provisional": false,
+   "suites": {
+    "hermes_bench": {
+     "score": 70.5,
+     "usd_per_task": 0.322,
+     "provisional": false
+    },
+    "terminalbench_4": {
+     "score": 17.5,
+     "usd_per_task": 6.84,
+     "provisional": false
+    },
+    "terminalbench_science": {
+     "score": 5.7,
+     "usd_per_task": 19.09,
+     "provisional": false
+    },
+    "skillsbench": {
+     "score": 51.0,
+     "usd_per_task": 0.52,
+     "provisional": false
+    }
+   }
+  },
+  {
+   "rank": 13,
+   "model": "GLM 5.3 Flash",
+   "vendor": "Z.ai",
+   "hermes_index": 34.95,
+   "usd_per_task": 0.497,
+   "cost_provisional": false,
+   "suites": {
+    "hermes_bench": {
+     "score": 68.88,
+     "usd_per_task": 0.019,
+     "provisional": false
+    },
+    "terminalbench_4": {
+     "score": 25.4,
+     "usd_per_task": 0.6,
+     "provisional": false
+    },
+    "terminalbench_science": {
+     "score": 2.9,
+     "usd_per_task": 1.31,
+     "provisional": false
+    },
+    "skillsbench": {
+     "score": 42.6,
+     "usd_per_task": 0.058,
+     "provisional": false
+    }
+   }
+  },
+  {
+   "rank": 14,
+   "model": "GPT 6 Luna",
+   "vendor": "OpenAI",
+   "hermes_index": 33.89,
+   "usd_per_task": 0.141,
+   "cost_provisional": false,
+   "suites": {
+    "hermes_bench": {
+     "score": 70.47,
+     "usd_per_task": 0.015,
+     "provisional": false
+    },
+    "terminalbench_4": {
+     "score": 6.3,
+     "usd_per_task": 0.24,
+     "provisional": false
+    },
+    "terminalbench_science": {
+     "score": 4.8,
+     "usd_per_task": 0.28,
+     "provisional": false
+    },
+    "skillsbench": {
+     "score": 54.0,
+     "usd_per_task": 0.03,
+     "provisional": false
+    }
+   }
+  },
+  {
+   "rank": 15,
+   "model": "Step 5 Preview",
+   "vendor": "StepFun",
+   "hermes_index": 32.83,
+   "usd_per_task": 1.75,
+   "cost_provisional": false,
+   "suites": {
+    "hermes_bench": {
+     "score": 69.2,
+     "usd_per_task": 0.17,
+     "provisional": false
+    },
+    "terminalbench_4": {
+     "score": 12.7,
+     "usd_per_task": 2.63,
+     "provisional": false
+    },
+    "terminalbench_science": {
+     "score": 7.1,
+     "usd_per_task": 3.84,
+     "provisional": false
+    },
+    "skillsbench": {
+     "score": 42.3,
+     "usd_per_task": 0.35,
+     "provisional": false,
+     "raw_score": 46.6
+    }
+   }
+  },
+  {
+   "rank": 16,
+   "model": "Hy4 Preview",
+   "vendor": "Tencent",
+   "hermes_index": 26.13,
+   "usd_per_task": 0.482,
+   "cost_provisional": false,
+   "suites": {
+    "hermes_bench": {
+     "score": 58.6,
+     "usd_per_task": 0.09,
+     "provisional": false
+    },
+    "terminalbench_4": {
+     "score": 12.7,
+     "usd_per_task": 0.7,
+     "provisional": false
+    },
+    "terminalbench_science": {
+     "score": 1.4,
+     "usd_per_task": 0.98,
+     "provisional": false
+    },
+    "skillsbench": {
+     "score": 31.8,
+     "usd_per_task": 0.16,
+     "provisional": false
+    }
+   }
+  },
+  {
+   "rank": 17,
+   "model": "Nemotron Super 3.5",
+   "vendor": "NVIDIA",
+   "hermes_index": 24.1,
+   "usd_per_task": 0.467,
+   "cost_provisional": false,
+   "suites": {
+    "hermes_bench": {
+     "score": 63.44,
+     "usd_per_task": 0.02,
+     "provisional": false
+    },
+    "terminalbench_4": {
+     "score": 0.0,
+     "usd_per_task": 0.78,
+     "provisional": false
+    },
+    "terminalbench_science": {
+     "score": 1.4,
+     "usd_per_task": 1.0,
+     "provisional": false
+    },
+    "skillsbench": {
+     "score": 31.6,
+     "usd_per_task": 0.066,
+     "provisional": false
+    }
+   }
+  },
+  {
+   "rank": 18,
+   "model": "Ling 3.0 Flash",
+   "vendor": "inclusionAI",
+   "hermes_index": 21.56,
+   "usd_per_task": 0.054,
+   "cost_provisional": false,
+   "suites": {
+    "hermes_bench": {
+     "score": 53.83,
+     "usd_per_task": 0.0036,
+     "provisional": false
+    },
+    "terminalbench_4": {
+     "score": 0.0,
+     "usd_per_task": 0.08,
+     "provisional": false
+    },
+    "terminalbench_science": {
+     "score": 0.0,
+     "usd_per_task": 0.12,
+     "provisional": false
+    },
+    "skillsbench": {
+     "score": 32.4,
+     "usd_per_task": 0.013,
+     "provisional": false
+    }
+   }
+  }
+ ],
+ "page_notes": [
+  "* Provisional: partial run or cost estimate, pending a full rerun.",
+  "All evaluations are pass@1. Every run uses the Hermes Agent harness, with reasoning effort set to high where the model offers it.",
+  "Clean / raw: some SkillsBench runs found the suite's public repo and used its solutions. The clean score drops those tasks and is the one that counts; the raw score sits beneath it.",
+  "Hermes Index is the mean score and mean cost per task across the four suites. Higher scores are better.",
+  "TerminalBench 4 runs without its 4 GPU tasks."
+ ]
+}

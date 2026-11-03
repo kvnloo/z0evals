@@ -1,0 +1,30 @@
+{
+ "schema": "z0eval.identity-map.v1",
+ "purpose": "Map Hermes Index display names to z0intelligence model-routing catalog (provider, model) rows. Exact model family only; a row here is a name match, not proof that the served alias is the checkpoint Nous evaluated.",
+ "catalog_source": "kvnloo/z0intelligence operations/model-routing/catalog.json @ 56b80a7ae50cdc80da18a8408130116e4ad47e5e (2,109 rows)",
+ "rule": "Batch/fast/pro/flex/region variants are excluded. Free variants are listed separately with alias_kind=free_variant because they are served by a different endpoint whose weights/quantization are not verified.",
+ "families": {
+  "Claude Opus 5.5": {"aliases": [["anthropic", "claude-opus-5-5"], ["nous", "anthropic/claude-opus-5.5"], ["openrouter", "anthropic/claude-opus-5.5"], ["vercel", "anthropic/claude-opus-5.5"]]},
+  "GPT 6.1 Sol": {"aliases": [["openai-codex", "gpt-6.1-sol"], ["nous", "openai/gpt-6.1-sol"], ["openrouter", "openai/gpt-6.1-sol"]]},
+  "GPT 6 Astra": {"aliases": [["nous", "openai/gpt-6-astra"]], "note": "openai-codex serves Astra in the owner's harness, but the committed catalog has no openai-codex:gpt-6-astra row"},
+  "Claude Sonnet 5.5": {"aliases": [["anthropic", "claude-sonnet-5-5"], ["nous", "anthropic/claude-sonnet-5.5"], ["openrouter", "anthropic/claude-sonnet-5.5"], ["vercel", "anthropic/claude-sonnet-5.5"]]},
+  "GPT 6 Sol": {"aliases": [["openai-codex", "gpt-6-sol"], ["nous", "openai/gpt-6-sol"], ["openrouter", "openai/gpt-6-sol"]]},
+  "Grok 4.7": {"aliases": [["nous", "x-ai/grok-4.7"], ["openrouter", "x-ai/grok-4.7"], ["vercel", "spacexai/grok-4.7"]]},
+  "GLM 5.3": {"aliases": [["nous", "z-ai/glm-5.3"], ["openrouter", "z-ai/glm-5.3"], ["vercel", "zai/glm-5.3"]]},
+  "Kimi K3": {"aliases": [["nous", "moonshotai/kimi-k3"], ["openrouter", "moonshotai/kimi-k3"], ["vercel", "moonshotai/kimi-k3"]]},
+  "Gemini Flash 3.8": {"aliases": [["nous", "google/gemini-3.8-flash"], ["openrouter", "google/gemini-3.8-flash"], ["vercel", "google/gemini-3.8-flash"]]},
+  "Claude Haiku 5.5": {"aliases": [["anthropic", "claude-haiku-5-5"], ["nous", "anthropic/claude-haiku-5.5"], ["openrouter", "anthropic/claude-haiku-5.5"], ["vercel", "anthropic/claude-haiku-5.5"]]},
+  "DeepSeek V4.1 Flash": {"aliases": [["nous", "deepseek/deepseek-v4.1-flash"], ["openrouter", "deepseek/deepseek-v4.1-flash"], ["vercel", "deepseek/deepseek-v4.1-flash"]],
+                          "free_variants": [["opencode-zen", "deepseek-v4.1-flash-free"]]},
+  "Qwen 3.8 Max": {"aliases": [["nous", "qwen/qwen3.8-max"], ["vercel", "alibaba/qwen3.8-max"]]},
+  "GLM 5.3 Flash": {"aliases": [["nous", "z-ai/glm-5.3-flash"], ["openrouter", "z-ai/glm-5.3-flash"], ["vercel", "zai/glm-5.3-flash"]],
+                    "free_variants": [["opencode-zen", "glm-5.3-flash-free"]]},
+  "GPT 6 Luna": {"aliases": [["openai-codex", "gpt-6-luna"], ["nous", "openai/gpt-6-luna"], ["openrouter", "openai/gpt-6-luna"]]},
+  "Step 5 Preview": {"aliases": [["nous", "stepfun/step-5-preview"], ["openrouter", "stepfun/step-5-preview"], ["vercel", "stepfun/step-5-preview"]],
+                     "free_variants": [["opencode-zen", "step-5-preview-free"], ["nous", "stepfun/step-5-preview:free"]]},
+  "Hy4 Preview": {"aliases": [["nous", "tencent/hy4-preview"], ["openrouter", "tencent/hy4-preview"], ["vercel", "tencent/hy4-preview"]]},
+  "Nemotron Super 3.5": {"aliases": [], "unmapped_reason": "catalog lists only nemotron-3.5-super-vl; whether the page's 'Nemotron Super 3.5' is the -vl checkpoint is not stated"},
+  "Ling 3.0 Flash": {"aliases": [["nous", "inclusionai/ling-3.0-flash"], ["openrouter", "inclusionai/ling-3.0-flash"], ["vercel", "inclusionai/ling-3.0-flash"]],
+                     "free_variants": [["opencode-zen", "ling-3.0-flash-free"]]}
+ }
+}
