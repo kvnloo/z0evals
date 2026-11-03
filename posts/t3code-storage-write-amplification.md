@@ -1,6 +1,6 @@
 ---
-title: "where a t3 code database's bytes and writes go"
-subtitle: "seven experiments on one real 655 MiB database: what upstream's pruning already fixes, and the per-turn write amplification it leaves."
+title: "a 25 ms commit window for t3 code: fewer sqlite commits, same latency"
+subtitle: "t3 code commits once per streamed event. grouping plain provider updates for up to 25 ms cut commits per simulated turn by 43%, and a replay of 2 hours of live traffic estimates 41% fewer."
 study: t3code-storage-write-amplification
 status: draft
 author: "zer0 research"
@@ -14,20 +14,18 @@ mock_data: false
 toc:
   - id: summary
     label: the short version
-  - id: setup
-    label: what we measured
-  - id: bytes
-    label: where the bytes sit
-  - id: fold
-    label: our fold, and the pruning that supersedes it
-  - id: writes
-    label: where a turn's writes go
+  - id: problem
+    label: one commit per event
+  - id: change
+    label: the change
+  - id: group-commit
+    label: a/b on simulated turns
+  - id: live
+    label: live-traffic estimate
   - id: page-size
     label: the page size trade
-  - id: group-commit
-    label: a 25 ms group-commit window
-  - id: provider-history
-    label: what is left for provider-owned history
+  - id: background
+    label: "background: where the bytes sit"
   - id: limits
     label: what this does not show
   - id: sources
@@ -35,114 +33,66 @@ toc:
 ---
 
 <div class="lede">
-we asked whether t3 code could stop storing transcripts that a provider can serve again. to answer it we accounted for every byte and every write in one real t3 code database. the answer for bytes is mostly no: the transcript is a small slice. upstream's new event pruning already removes the biggest waste we found. what it leaves is per-turn write amplification: about 52 small commits per turn, each rewriting the same hot pages.
+the t3 code server commits once per event, and each commit rewrites about 29 pages. we tried a 25 ms group-commit window for plain provider updates. on simulated turns it cut commits per turn by 43% and sqlite bytes written per turn by 21%, with no latency regression beyond noise. replaying 2 hours of a real event log through the same rule estimates 41% fewer commits on live traffic.
 </div>
 
 ## the short version {#summary}
 
-- **upstream already fixed the biggest byte problem we found.** our experiment 02 folded superseded snapshot bodies in the event log and cut the file 20.1% after `VACUUM`. julius's [pr 29806](https://github.com/pingdotgg/t3code/pull/29806) goes further: projections become the source of truth once applied, and events older than about a day are pruned. [pr 29811](https://github.com/pingdotgg/t3code/pull/29811) returns the freed pages to the filesystem. our fold ran into the same two races that 29806 handles. we read that as independent confirmation of their design, not as a competing proposal.
-- **the writes remain.** a simulated turn makes about 52 sqlite commits. at 4 KiB pages each commit writes about 29 wal frames, mostly the same hot pages. 83% of the sqlite bytes a turn writes are wal frames. a turn writes 7.1 MiB to add about a quarter of a MiB to the database.
-- **a 25 ms group-commit window** cuts commits per turn by 43% and sqlite bytes per turn by 21%. we saw no latency regression beyond noise at n = 8 slots (16 turns) per arm, but the p95 tails are wide. a 150 ms window saves no more and adds 150 ms of event lag, so we rejected it.
-- **page size is a trade, not a win.** 16 KiB pages shrink the file 14.7% and write 3.1× the bytes per turn. 8 KiB pages shrink it 8.4% for 1.67× the writes.
-- **provider-owned history is a small byte lever.** tool output is 42.2 MiB of a 619 MiB file. evicting it saves 37.9 MiB (6.1%), and no provider can serve any of it back today. the case for provider-owned history is freshness: turns run in another client would show up in t3 code. it is not bytes.
+- **the problem already has an upstream venue.** [issue 24003](https://github.com/pingdotgg/t3code/issues/24003) (by @simasrazinskas) tracks it: the server commits once per event, and its first suggested fix is to group a streamed turn's events into one commit. [pr 24145](https://github.com/pingdotgg/t3code/pull/24145) (by @Zheruel) tried batching queued snapshots and was closed. in review, simas found that queued-snapshot batching rarely applies to live traffic, because events arrive one at a time. he suggested grouping commits across threads in `EventSink` instead.
+- **that is what we built,** with a time window as the trigger. plain `node`, `message`, `turn-item` and `plan` updates wait up to 25 ms and then commit together. any other write commits the queue first.
+- **simulated turns (a/b, 8 interleaved slots per arm):** commits per turn 51.5 → 29.5 (−43%). sqlite bytes written per turn 7.79 → 6.17 MiB (−21%). wire bytes are identical. event lag is the only latency metric with a tight interval, and it stays under the window. the other latency intervals are wide and rule out only large shifts.
+- **live traffic (replay estimate):** 2 hours of a real event log (9,292 events, 21 threads, mostly the hermes acp agent) give 41.1% fewer commits at 25 ms, 34.3% at 10 ms and 45.6% at 50 ms. this is an estimate, not a measured a/b.
+- **we asked upstream** whether they want this direction, and whether opt-in or default-on, before opening a focused pr: [discussion 29954](https://github.com/pingdotgg/t3code/discussions/29954), plus a [comment on issue 24003](https://github.com/pingdotgg/t3code/issues/24003#issuecomment-6596275747).
 
-## what we measured {#setup}
+## one commit per event {#problem}
 
-- **one database, one user.** a `VACUUM INTO` copy of one real t3 code database (654.6 MiB after the measured build's migrations, 232 live threads). every run used a copy; the live install was never opened read-write.
-- **simulated turns.** turns are the repo's `devReplay` acp agent, which drives the real adapter, orchestration, projections and checkpoints. they are not live provider turns, and real codex, claude or acp turns write a different mix of items.
-- **one fork, one branch per experiment.** all code is on [kvnloo/t3code](https://github.com/kvnloo/t3code) under `exp/poh/*`, pinned in [sources](#sources). every change sits behind an opt-in flag, and every a/b runs both arms at the same sha.
-- **bytes and counts are the primary evidence.** they are deterministic for a given database and sha. latency ran on a shared, memory-tight host and is noisy. the latency results say "no regression beyond noise", which is weaker than "no regression".
-- **1,599 receipt rows** (one per metric per run) back the tables below. the study's [data](https://github.com/kvnloo/z0evals/tree/main/studies/t3code-storage-write-amplification/data) holds the aggregates; no thread ids, titles or message text left the machine.
+experiment 03b preloaded a small shim that counts the server's write syscalls per file and parses wal frame headers. the counts cover the server process only. turns are the repo's `devReplay` acp agent, driven through the real adapter, orchestration, projections and checkpoints. medians over 10 tapped turns, on a 654.6 MiB copy of one real database at 4 KiB pages:
 
-## where the bytes sit {#bytes}
+| per turn | 4 KiB pages |
+|---|---|
+| commits | 52 |
+| wal frames | 1,524 (29 per commit, 297 distinct pages) |
+| wal bytes | 5.99 MiB |
+| checkpoint copy-back | 1.19 MiB |
+| sqlite bytes written | 7.1 MiB, 83% of it wal frames |
 
-experiment 01 classified every page of the database: payload by event type and json key, plus indexes and unused space from `dbstat`. it then simulated three eviction policies on copies of the post-doctor database and vacuumed each one.
-
-<figure class="figure">
-<!-- figure:bytes-by-class -->
-<svg class="chart-svg" viewBox="0 0 420 242" role="img" aria-label="durable bytes by class for five database states"><rect x="96.0" y="8" width="8.9" height="22" fill="#98cf8b"><title>text (messages, reasoning, tool input): 18.6 MiB</title></rect><rect x="104.9" y="8" width="20.2" height="22" fill="#7fb2d9"><title>tool output: 42.2 MiB</title></rect><rect x="125.2" y="8" width="40.9" height="22" fill="#e37f65"><title>superseded snapshot bodies: 85.3 MiB</title></rect><rect x="166.1" y="8" width="7.0" height="22" fill="#c9a0dc"><title>t3-owned state: 14.6 MiB</title></rect><rect x="173.1" y="8" width="114.8" height="22" fill="#d7b986"><title>ids and metadata: 239.4 MiB</title></rect><rect x="287.9" y="8" width="58.7" height="22" fill="#8a8577"><title>indexes (incl. search): 122.3 MiB</title></rect><rect x="346.6" y="8" width="63.4" height="22" fill="#4a4740"><title>page slack: 132.2 MiB</title></rect><text x="0" y="17" font-size="10" fill="#ECE8DF">base · 655 MiB</text><text x="0" y="28" font-size="8.5" fill="#B4AFA3">after migrations</text><rect x="96.0" y="42" width="8.9" height="22" fill="#98cf8b"><title>text (messages, reasoning, tool input): 18.6 MiB</title></rect><rect x="104.9" y="42" width="20.2" height="22" fill="#7fb2d9"><title>tool output: 42.2 MiB</title></rect><rect x="125.2" y="42" width="29.1" height="22" fill="#e37f65"><title>superseded snapshot bodies: 60.6 MiB</title></rect><rect x="154.2" y="42" width="7.0" height="22" fill="#c9a0dc"><title>t3-owned state: 14.5 MiB</title></rect><rect x="161.2" y="42" width="112.7" height="22" fill="#d7b986"><title>ids and metadata: 235.0 MiB</title></rect><rect x="273.9" y="42" width="57.0" height="22" fill="#8a8577"><title>indexes (incl. search): 118.8 MiB</title></rect><rect x="330.9" y="42" width="61.7" height="22" fill="#4a4740"><title>page slack: 128.6 MiB</title></rect><text x="0" y="51" font-size="10" fill="#ECE8DF">doctor · 619 MiB</text><text x="0" y="62" font-size="8.5" fill="#B4AFA3">t3 doctor --fix</text><rect x="96.0" y="76" width="8.9" height="22" fill="#98cf8b"><title>text (messages, reasoning, tool input): 18.6 MiB</title></rect><rect x="104.9" y="76" width="20.2" height="22" fill="#7fb2d9"><title>tool output: 42.2 MiB</title></rect><rect x="125.2" y="76" width="8.6" height="22" fill="#e37f65"><title>superseded snapshot bodies: 18.0 MiB</title></rect><rect x="133.8" y="76" width="7.0" height="22" fill="#c9a0dc"><title>t3-owned state: 14.5 MiB</title></rect><rect x="140.8" y="76" width="112.6" height="22" fill="#d7b986"><title>ids and metadata: 234.7 MiB</title></rect><rect x="253.3" y="76" width="57.0" height="22" fill="#8a8577"><title>indexes (incl. search): 118.8 MiB</title></rect><rect x="310.3" y="76" width="50.9" height="22" fill="#4a4740"><title>page slack: 106.2 MiB</title></rect><text x="0" y="85" font-size="10" fill="#ECE8DF">D · 554 MiB</text><text x="0" y="96" font-size="8.5" fill="#B4AFA3">drop superseded</text><rect x="96.0" y="110" width="8.9" height="22" fill="#98cf8b"><title>text (messages, reasoning, tool input): 18.6 MiB</title></rect><rect x="104.9" y="110" width="1.3" height="22" fill="#7fb2d9"><title>tool output: 2.8 MiB</title></rect><rect x="106.3" y="110" width="8.6" height="22" fill="#e37f65"><title>superseded snapshot bodies: 18.0 MiB</title></rect><rect x="114.9" y="110" width="7.0" height="22" fill="#c9a0dc"><title>t3-owned state: 14.5 MiB</title></rect><rect x="121.9" y="110" width="112.6" height="22" fill="#d7b986"><title>ids and metadata: 234.7 MiB</title></rect><rect x="234.4" y="110" width="57.0" height="22" fill="#8a8577"><title>indexes (incl. search): 118.8 MiB</title></rect><rect x="291.4" y="110" width="51.7" height="22" fill="#4a4740"><title>page slack: 107.8 MiB</title></rect><text x="0" y="119" font-size="10" fill="#ECE8DF">A · 516 MiB</text><text x="0" y="130" font-size="8.5" fill="#B4AFA3">evict tool output</text><rect x="96.0" y="144" width="8.6" height="22" fill="#e37f65"><title>superseded snapshot bodies: 18.0 MiB</title></rect><rect x="104.6" y="144" width="7.0" height="22" fill="#c9a0dc"><title>t3-owned state: 14.5 MiB</title></rect><rect x="111.6" y="144" width="94.9" height="22" fill="#d7b986"><title>ids and metadata: 197.9 MiB</title></rect><rect x="206.5" y="144" width="53.4" height="22" fill="#8a8577"><title>indexes (incl. search): 111.3 MiB</title></rect><rect x="259.9" y="144" width="33.9" height="22" fill="#4a4740"><title>page slack: 70.7 MiB</title></rect><text x="0" y="153" font-size="10" fill="#ECE8DF">B · 413 MiB</text><text x="0" y="164" font-size="8.5" fill="#B4AFA3">provider owns all</text><rect x="0" y="182" width="9" height="9" fill="#98cf8b"/><text x="13" y="190" font-size="9" fill="#B4AFA3">text (messages, reasoning, tool input)</text><rect x="212" y="182" width="9" height="9" fill="#7fb2d9"/><text x="225" y="190" font-size="9" fill="#B4AFA3">tool output</text><rect x="0" y="197" width="9" height="9" fill="#e37f65"/><text x="13" y="205" font-size="9" fill="#B4AFA3">superseded snapshot bodies</text><rect x="212" y="197" width="9" height="9" fill="#c9a0dc"/><text x="225" y="205" font-size="9" fill="#B4AFA3">t3-owned state</text><rect x="0" y="212" width="9" height="9" fill="#d7b986"/><text x="13" y="220" font-size="9" fill="#B4AFA3">ids and metadata</text><rect x="212" y="212" width="9" height="9" fill="#8a8577"/><text x="225" y="220" font-size="9" fill="#B4AFA3">indexes (incl. search)</text><rect x="0" y="227" width="9" height="9" fill="#4a4740"/><text x="13" y="235" font-size="9" fill="#B4AFA3">page slack</text></svg>
-<!-- /figure:bytes-by-class -->
-<figcaption><span class="fig-n">fig. 1</span>durable bytes by class for the database as migrated, after the shipped <code>t3 doctor --fix</code>, and under three simulated policies, each vacuumed. ids and metadata include record headers. source: <a href="https://github.com/kvnloo/z0evals/blob/main/studies/t3code-storage-write-amplification/data/bytes-by-class.json">bytes-by-class.json</a>.</figcaption>
-</figure>
-
-| state | file | vs doctor | per-thread p50 | per-thread max |
-|---|---|---|---|---|
-| after migrations | 654.6 MiB | +5.7% | 0.99 MiB | 43.6 MiB |
-| `t3 doctor --fix` (shipped) | 619.1 MiB | | 0.95 MiB | 43.3 MiB |
-| D: drop superseded snapshot bodies (no provider needed) | 553.7 MiB | −10.6% | 0.84 MiB | 37.4 MiB |
-| A: D + evict tool output, keep all text | 515.8 MiB | −16.7% | 0.71 MiB | 33.9 MiB |
-| B: provider owns every transcript byte | 413.0 MiB | −33.3% | 0.44 MiB | 27.9 MiB |
-
-what the classes say:
-
-- **text is small.** message text, reasoning and tool input together are 18.6 MiB, 3% of the file.
-- **duplicates were the biggest waste.** after doctor, 60.6 MiB of superseded snapshot bodies remain: turn items and nodes re-sent with their full ids on every status change. doctor keeps the first and the latest row for each entity. dropping the rest (policy D) saves 65.4 MiB with no provider involved. that is about two thirds of policy A's 103.2 MiB.
-- **even full provider ownership leaves two thirds of the file.** in policy B, ids and metadata, indexes and page slack make up 91% of the remaining 413 MiB. the event id alone averages 299 bytes and carries a 30.6 MiB unique index. ids cross the wire (streamed events, receipts, mcp output), so we did not shorten them.
-
-## our fold, and the pruning that supersedes it {#fold}
-
-experiment 02 built policy D for real, behind `T3CODE_EXPERIMENTAL_SNAPSHOT_FOLD`. for each settled entity it moved the newest body into the entity's first row and deleted the rest. it then went through two rounds of adversarial review.
-
-| | without fold | with fold |
-|---|---|---|
-| events in the log | 97,784 | 65,406 |
-| file after `VACUUM` | 617.6 MiB | 493.6 MiB (−20.1%) |
-| file in place (`auto_vacuum` none) | 654.6 MiB | 654.6 MiB (no change; used space −100.4 MB) |
-| projection tables equal after rebuild | | 18/18 |
-| transactions / longest | | 575 / 49.8 ms |
-
-the review found the races any log pruning has to handle:
-
-1. **resume check vs replay read.** a client resumes from a cursor. the server checks the cursor, then reads the replay. a fold that commits between those two steps leaves the client with only the tail, so it misses the final body. the fix re-checks after the read. the same check is needed on the lazy live tail.
-2. **a stale cursor needs a snapshot.** a cursor inside a folded range cannot be replayed; it has to load a snapshot. on the largest thread that is a 733 KiB snapshot instead of a 40 KiB replay, and the stale-reconnect p50 went from 8.8 ms to 118 ms. this cost is by design.
-
-[pr 29806](https://github.com/pingdotgg/t3code/pull/29806) makes a stronger maintainer decision: once a projection has applied an event, nothing needs that event again. it prunes everything at or below a day-old mark, except each stream's newest event and a few rows that are always kept. a cursor below the pruned-through sequence loads a snapshot, which is the same fallback we arrived at. on a maintainer's 12.4 GB database, the first pass deletes 92% of events. [pr 29811](https://github.com/pingdotgg/t3code/pull/29811) handles the other thing we hit: on an `auto_vacuum` none database, freed pages are reused but never given back. it converts small databases to incremental on open and leaves large ones to `t3 doctor`.
-
-so experiment 02 is superseded. the fold kept the full log shape; pruning drops it, and that is simpler and saves more. what our fold adds to the record is that two independent attempts landed on the same races and the same snapshot fallback. merged [pr 23211](https://github.com/pingdotgg/t3code/pull/23211) also dropped the unused correlation index. our `idx` arm below tested that index trim, and it showed no measurable per-turn effect.
-
-## where a turn's writes go {#writes}
-
-pruning fixes what the database holds. it does not change what a turn writes. experiment 03b preloaded a small shim that counts the server's write syscalls per file and parses wal frame headers. that gives exact per-turn counts, 10 tapped turns per arm:
-
-| page size | commits | wal frames | frames per commit | distinct pages | wal | checkpoint copy-back | sqlite total |
-|---|---|---|---|---|---|---|---|
-| 4 KiB (today) | 52 | 1,524 | 29 | 297 | 5.99 MiB | 1.19 MiB | 7.1 MiB |
-| 8 KiB | 52 | 1,288 | 25 | 224 | 10.09 MiB | 2.04 MiB | 11.8 MiB |
-| 16 KiB | 52 | 1,171 | 23 | 187 | 18.21 MiB | 3.55 MiB | 21.9 MiB |
-
-- **83% of a turn's sqlite bytes are wal frames** at 4 KiB. checkpoint copy-back is the other 17%.
 - **each commit rewrites the same hot pages.** these are the right-edge leaf of `orchestration_events` and of each of its indexes (together 42.5% of frames), `sqlite_sequence`, the projection metadata row, the thread row and its `project_updated` index. each is one page, rewritten about 46 times per turn.
-- **a turn writes about 29× what it adds.** at 4 KiB it writes 7.1 MiB to grow the database by about 242 KiB.
-- **checkpoint tuning cannot fix this.** a smaller checkpoint threshold raises copy-back. a larger one bottoms out at 2.9 MiB of copy-back at 16 KiB, while the wal alone is 18.2 MiB. the lever is the number of commits.
+- **a turn writes about 29× what it adds.** it writes 7.1 MiB to grow the database by about 242 KiB.
+- **checkpoint tuning does not help.** a smaller checkpoint threshold raises copy-back. a larger one cannot touch the wal frames, which are paid on every commit. the lever is the number of commits.
 
-## the page size trade {#page-size}
+## the change {#change}
 
-experiment 03 found that most of the "ids, metadata and indexes" overhead is page slack. at 4 KiB, a 1–3 KiB event row often sits alone on a leaf page. bigger pages pack rows better, but each commit then writes bigger frames:
+fork branch [`exp/poh/04-commit-batching`](https://github.com/kvnloo/t3code/tree/ea608f3764b00090e12a10543d3739104a2e2623), based on upstream main `5b9731ce`. the feature is [one commit](https://github.com/kvnloo/t3code/commit/d443d211c9560267902c4f48ff5d95bd000cc39d) behind `T3CODE_EXPERIMENTAL_COMMIT_WINDOW_MS`, off by default.
 
-| page size | file (doctor-compacted) | saved | sqlite writes per turn | vs 4 KiB |
-|---|---|---|---|---|
-| 4 KiB (today) | 618.8 MiB | | 7.1 MiB | |
-| 8 KiB | 566.6 MiB | −8.4% | 11.8 MiB | 1.67× |
-| 16 KiB | 527.9 MiB | −14.7% | 21.9 MiB | 3.1× |
+- **one queue for all runs and threads.** a single `EventSink` queue holds the plain node, message, turn-item and plan updates from every run and thread. it commits as one transaction at most N ms after its first entry.
+- **order is preserved.** any other `EventSink` write commits the queue first, so commit order and sequence order stay arrival order. an event whose normalization compares against a pending entity commits that entity first.
+- **clients never see unstored events.** publication follows the commit.
+- **graceful shutdown flushes the queue.**
 
-wire bytes were identical in every arm, and no latency, rss or cpu metric moved beyond noise for 8 or 16 KiB at n = 10 boots per arm. the cost is ssd write volume. we would keep 8 KiB as an opt-in at most, and only after commit batching. 16 KiB becomes affordable only if turns commit far less often. the flag is `T3CODE_EXPERIMENTAL_PAGE_SIZE`; [design note](https://github.com/kvnloo/t3code/blob/3676fef04b58844605728973ea8c92b6de1236d1/docs/internals/sqlite-page-size.md).
+the failure modes are the part we asked upstream about:
 
-the first page-size a/b measured `/proc` `write_bytes` and reported 2.1× at 16 KiB. on that host's filesystem, that counter had 16 MiB of round-to-round noise. the syscall tap above replaced it, and the tap's noise is under 0.7 MiB.
+- **hard crash:** up to one window of events that were never published is lost.
+- **batch write fails** (disk full, or a lock timeout that outlasts 2 retries): the error is logged, the window's events are dropped, and that thread's next deferred write fails with the cause. without the flag, the single write fails at its call site.
 
-## a 25 ms group-commit window {#group-commit}
+## a/b on simulated turns {#group-commit}
 
-experiment 04 added `T3CODE_EXPERIMENTAL_COMMIT_WINDOW_MS`. provider events that arrive within the window share one commit. we ran four arms at the same sha, interleaved: `off`, `w25` (25 ms), `idx` (no flag, on a seed with the correlation index dropped and the command index partial), and `w150` (150 ms, pilot only). off, w25 and idx each got 8 slots (16 tapped turns). w150 got 2 slots (4 turns).
+four arms, interleaved a b c / c b a. pilot slots 1–3 ran at `fc7cfbeb` and slots 4–8 at `be02c345`; the diff between the two touches only the pooling script, so the slots pool. each slot is one boot with 2 tapped turns.
+
+- `off`: no flags. 8 slots, 16 turns.
+- `w25`: 25 ms window. 8 slots, 16 turns.
+- `idx`: no flags, on a seed with the correlation index dropped and the command index partial. 8 slots, 16 turns.
+- `w150`: 150 ms window. pilot only: 2 slots, 4 turns.
 
 <figure class="figure">
 <!-- figure:group-commit -->
-<svg class="chart-svg" viewBox="0 0 420 192" role="img" aria-label="per-turn writes with and without a 25 ms group-commit window"><text x="0" y="13" font-size="10" fill="#ECE8DF">commits per turn</text><rect x="0" y="17" width="330" height="9" fill="#8a8577"/><text x="336" y="25" font-size="9" fill="#B4AFA3">off 51.5</text><rect x="0" y="28" width="189.0" height="9" fill="#d7b986"/><line x1="182.6" x2="195.4" y1="32.5" y2="32.5" stroke="#ECE8DF" stroke-width="1.2"/><text x="336" y="36" font-size="9" fill="#d7b986">25 ms 29.5</text><text x="0" y="57" font-size="10" fill="#ECE8DF">wal frames per turn</text><rect x="0" y="61" width="330" height="9" fill="#8a8577"/><text x="336" y="69" font-size="9" fill="#B4AFA3">off 1580</text><rect x="0" y="72" width="252.2" height="9" fill="#d7b986"/><line x1="233.7" x2="280.7" y1="76.5" y2="76.5" stroke="#ECE8DF" stroke-width="1.2"/><text x="336" y="80" font-size="9" fill="#d7b986">25 ms 1207</text><text x="0" y="101" font-size="10" fill="#ECE8DF">sqlite MiB per turn</text><rect x="0" y="105" width="330" height="9" fill="#8a8577"/><text x="336" y="113" font-size="9" fill="#B4AFA3">off 7.79</text><rect x="0" y="116" width="261.4" height="9" fill="#d7b986"/><line x1="207.2" x2="309.2" y1="120.5" y2="120.5" stroke="#ECE8DF" stroke-width="1.2"/><text x="336" y="124" font-size="9" fill="#d7b986">25 ms 6.17</text><text x="0" y="145" font-size="10" fill="#ECE8DF">live ws frames per turn</text><rect x="0" y="149" width="330" height="9" fill="#8a8577"/><text x="336" y="157" font-size="9" fill="#B4AFA3">off 25</text><rect x="0" y="160" width="290.4" height="9" fill="#d7b986"/><line x1="277.2" x2="303.6" y1="164.5" y2="164.5" stroke="#ECE8DF" stroke-width="1.2"/><text x="336" y="168" font-size="9" fill="#d7b986">25 ms 22</text><text x="0" y="186" font-size="8.5" fill="#B4AFA3">bars are p50 per tapped turn (n = 16 per arm), scaled to off; whisker = bootstrap 95% ci of the shift</text></svg>
+<svg class="chart-svg" viewBox="0 0 420 212" role="img" aria-label="per-turn writes with and without a 25 ms group-commit window"><text x="0" y="12" font-size="12" fill="#ECE8DF">commits per turn</text><rect x="0" y="17" width="300" height="12" fill="#8a8577"/><text x="308" y="27" font-size="11" fill="#B4AFA3">off 51.5</text><rect x="0" y="31" width="171.8" height="12" fill="#d7b986"/><line x1="166.0" x2="177.7" y1="37" y2="37" stroke="#ECE8DF" stroke-width="1.5"/><text x="308" y="41" font-size="11" fill="#d7b986">25 ms 29.5</text><text x="0" y="67" font-size="12" fill="#ECE8DF">wal frames per turn</text><rect x="0" y="72" width="300" height="12" fill="#8a8577"/><text x="308" y="82" font-size="11" fill="#B4AFA3">off 1580</text><rect x="0" y="86" width="229.2" height="12" fill="#d7b986"/><line x1="212.4" x2="255.2" y1="92" y2="92" stroke="#ECE8DF" stroke-width="1.5"/><text x="308" y="96" font-size="11" fill="#d7b986">25 ms 1207</text><text x="0" y="122" font-size="12" fill="#ECE8DF">sqlite MiB per turn</text><rect x="0" y="127" width="300" height="12" fill="#8a8577"/><text x="308" y="137" font-size="11" fill="#B4AFA3">off 7.79</text><rect x="0" y="141" width="237.6" height="12" fill="#d7b986"/><line x1="188.3" x2="281.1" y1="147" y2="147" stroke="#ECE8DF" stroke-width="1.5"/><text x="308" y="151" font-size="11" fill="#d7b986">25 ms 6.17</text><text x="0" y="177" font-size="12" fill="#ECE8DF">live ws frames per turn</text><rect x="0" y="182" width="300" height="12" fill="#8a8577"/><text x="308" y="192" font-size="11" fill="#B4AFA3">off 25</text><rect x="0" y="196" width="264.0" height="12" fill="#d7b986"/><line x1="252.0" x2="276.0" y1="202" y2="202" stroke="#ECE8DF" stroke-width="1.5"/><text x="308" y="206" font-size="11" fill="#d7b986">25 ms 22</text></svg>
 <!-- /figure:group-commit -->
-<figcaption><span class="fig-n">fig. 2</span>per-turn writes, off vs a 25 ms window. this harness runs 2 tapped turns per boot with no warm phase, so its off baseline (7.79 MiB) differs from the page-size runs (7.1 MiB); compare arms only within one a/b. source: <a href="https://github.com/kvnloo/z0evals/blob/main/studies/t3code-storage-write-amplification/data/group-commit-ab.json">group-commit-ab.json</a>.</figcaption>
+<figcaption><span class="fig-n">fig. 1</span>per-turn writes, off vs a 25 ms window. bars are the p50 over 16 tapped turns per arm, scaled to off; the white whisker is the bootstrap 95% interval of the shift. this harness runs 2 tapped turns per boot with no warm phase, so its off baseline (7.79 MiB) differs from the 7.1 MiB above; compare arms only within one a/b. source: <a href="https://github.com/kvnloo/z0evals/blob/main/studies/t3code-storage-write-amplification/data/group-commit-ab.json">group-commit-ab.json</a>.</figcaption>
 </figure>
 
 the median shift vs off, with a bootstrap 95% interval:
 
-| metric | off p50 / p95 | Δ 25 ms | Δ idx | Δ 150 ms |
+| metric | off p50 / p95 | Δ 25 ms | Δ idx | Δ 150 ms (pilot) |
 |---|---|---|---|---|
 | sqlite MiB per turn | 7.79 / 8.99 | **−1.62 [−2.90, −0.49]** | −0.76 [−1.90, +0.53] | −1.64 [−3.10, −0.47] |
 | commits per turn | 51.5 / 52 | **−22 [−23, −21]** | 0 [−1, +1] | −22 [−23, −21] |
@@ -161,45 +111,79 @@ the median shift vs off, with a bootstrap 95% interval:
 how we read it:
 
 - **25 ms cuts commits by 43%, wal frames by 24% and sqlite bytes by 21%.** reconnect wire bytes do not change.
-- **no user-facing latency metric regressed beyond noise.** every interval for first live event, first assistant delta, turn wall, cpu and peak rss includes zero. event lag p50 moves +15.5 ms, and its upper bound (+20 ms) stays under the 25 ms window that caps it by design.
-- **the one real shift is expected.** the window merges ws frames, so each turn sends 3 fewer, and the frame gap grows 27.5 ms. assistant text keeps the same cadence.
-- **the p95 tails are wide.** the event lag p95 interval spans about ±130 ms. this rules out a p50 regression, not small tail effects.
-- **150 ms saves nothing more and adds 150 ms of lag.** that also shows the latency metrics catch a real delay.
-- **the index trim has no measurable per-turn effect** at 16 turns. upstream has since merged it for its own reasons ([pr 23211](https://github.com/pingdotgg/t3code/pull/23211)); our data neither argues for nor against it.
+- **event lag p50 is the only latency metric with a tight interval.** it moves +15.5 ms [−14, +20], and the upper bound stays under the 25 ms window that caps it by design. the other latency intervals (first live event, first assistant delta, turn wall, event lag p95) are wide. they rule out large regressions, not small ones.
+- **the window merges ws frames.** each turn sends 3 fewer, and the frame gap grows by 27.5 ms. assistant text keeps the same cadence.
+- **150 ms saves no more and adds 150 ms of event lag** in the 4-turn pilot, so the window has to stay short. it also shows the latency metrics catch a real delay.
+- **the index trim had no measurable per-turn effect** at 16 turns. upstream has since merged it for its own reasons ([pr 23211](https://github.com/pingdotgg/t3code/pull/23211)), so the a/b's seeds predate it.
 
-## what is left for provider-owned history {#provider-history}
+## live-traffic estimate {#live}
 
-once [pr 29806](https://github.com/pingdotgg/t3code/pull/29806) prunes the log, most of what stays is the projections plus the ids, indexes and page slack around them. the transcript part that a provider could own is small:
+the simulated turns are one agent on one thread. to see what the rule does on real traffic, the [estimator](https://github.com/kvnloo/t3code/blob/45f2edca913aaa03b68ff1c5c8c2a72c78d5ae45/bench/poh/commit_window_estimate.py) replays `orchestration_events` in sequence order, read-only, using the ingestion timestamps (`occurred_at`). it counts commits under the same window rule. the baseline is one commit per event.
 
-- **tool output** is 42.2 MiB of the 619 MiB post-doctor file. evicting it and leaving tombstones saves 37.9 MiB (6.1%).
-- **none of it can be re-served today.** no production code calls an adapter's `readThreadSnapshot`. after adapter work, the acp hermes agent (26.7 MiB here) and codex (3.2 MiB) could serve tool results back, at most 71% of the total. the other acp agents in this database (12.2 MiB) have no verified re-serve path.
-- **so the argument for provider-owned history is freshness, not bytes.** a user who drives the same session from another client should see those turns on the next open. that is a correctness and drift question, and it needs its own experiment.
+one install, 2026-11-03 03:30–05:28 utc, 9,292 events across 21 threads, mostly the hermes acp agent with delegated subagents:
 
-what we would bring upstream, in a [new discussion with fresh numbers](DISCUSSION_URL): commit batching per turn, the page-size trade once batching lands, and the freshness case for provider history.
+| window | commits | fewer than one per event |
+|---|---|---|
+| 10 ms | 6,109 | 34.3% |
+| 25 ms | 5,471 | 41.1% |
+| 50 ms | 5,051 | 45.6% |
+
+this is an estimate. it assumes one commit per event, treats ingestion time as commit time, and does not model the extra flushes forced when a pending entity is compared against. we transcribed these numbers from the [posted discussion](https://github.com/pingdotgg/t3code/discussions/29954); the source database keeps changing, so we did not re-run them for this study ([data](https://github.com/kvnloo/z0evals/blob/main/studies/t3code-storage-write-amplification/data/live-window-estimate.json)).
+
+## the page size trade {#page-size}
+
+the same tap measured bigger pages. they pack the event rows better, but each commit then writes bigger frames:
+
+| page size | file (doctor-compacted) | saved | sqlite writes per turn | vs 4 KiB |
+|---|---|---|---|---|
+| 4 KiB (default) | 618.8 MiB | | 7.1 MiB | |
+| 8 KiB | 566.6 MiB | −8.4% | 11.8 MiB | 1.67× |
+| 16 KiB | 527.9 MiB | −14.7% | 21.9 MiB | 3.1× |
+
+wire bytes were identical, and no latency, rss or cpu metric moved beyond noise at n = 10 boots per arm. the cost is ssd write volume, so page size only becomes worth it once turns commit far less often. an earlier a/b measured `/proc` `write_bytes` and reported 2.1× at 16 KiB. on that host's filesystem that counter had 16 MiB of round-to-round noise, so the syscall tap replaced it (noise under 0.7 MiB). flag: `T3CODE_EXPERIMENTAL_PAGE_SIZE`; [design note](https://github.com/kvnloo/t3code/blob/3676fef04b58844605728973ea8c92b6de1236d1/docs/internals/sqlite-page-size.md).
+
+## background: where the bytes sit {#background}
+
+we started from a different question: could the provider own the transcript, with t3 code keeping only a cache? byte accounting on the same 654.6 MiB database said that is the small lever.
+
+<figure class="figure">
+<!-- figure:bytes-by-class -->
+<svg class="chart-svg" viewBox="0 0 420 348" role="img" aria-label="durable bytes by class for five database states"><text x="0" y="12" font-size="12" fill="#ECE8DF">base · 655 MiB <tspan fill="#B4AFA3" font-size="11">after migrations</tspan></text><rect x="0.0" y="17" width="11.9" height="18" fill="#98cf8b"><title>text (messages, reasoning, tool input): 18.6 MiB</title></rect><rect x="11.9" y="17" width="27.1" height="18" fill="#7fb2d9"><title>tool output: 42.2 MiB</title></rect><rect x="39.0" y="17" width="54.7" height="18" fill="#e37f65"><title>superseded snapshot bodies: 85.3 MiB</title></rect><rect x="93.7" y="17" width="9.4" height="18" fill="#c9a0dc"><title>t3-owned state: 14.6 MiB</title></rect><rect x="103.1" y="17" width="153.6" height="18" fill="#d7b986"><title>ids and metadata: 239.4 MiB</title></rect><rect x="256.7" y="17" width="78.5" height="18" fill="#8a8577"><title>indexes (incl. search): 122.3 MiB</title></rect><rect x="335.2" y="17" width="84.8" height="18" fill="#4a4740"><title>page slack: 132.2 MiB</title></rect><text x="0" y="57" font-size="12" fill="#ECE8DF">doctor · 619 MiB <tspan fill="#B4AFA3" font-size="11">t3 doctor --fix</tspan></text><rect x="0.0" y="62" width="11.9" height="18" fill="#98cf8b"><title>text (messages, reasoning, tool input): 18.6 MiB</title></rect><rect x="11.9" y="62" width="27.1" height="18" fill="#7fb2d9"><title>tool output: 42.2 MiB</title></rect><rect x="39.0" y="62" width="38.9" height="18" fill="#e37f65"><title>superseded snapshot bodies: 60.6 MiB</title></rect><rect x="77.9" y="62" width="9.3" height="18" fill="#c9a0dc"><title>t3-owned state: 14.5 MiB</title></rect><rect x="87.2" y="62" width="150.8" height="18" fill="#d7b986"><title>ids and metadata: 235.0 MiB</title></rect><rect x="238.0" y="62" width="76.2" height="18" fill="#8a8577"><title>indexes (incl. search): 118.8 MiB</title></rect><rect x="314.2" y="62" width="82.5" height="18" fill="#4a4740"><title>page slack: 128.6 MiB</title></rect><text x="0" y="102" font-size="12" fill="#ECE8DF">D · 554 MiB <tspan fill="#B4AFA3" font-size="11">drop superseded</tspan></text><rect x="0.0" y="107" width="11.9" height="18" fill="#98cf8b"><title>text (messages, reasoning, tool input): 18.6 MiB</title></rect><rect x="11.9" y="107" width="27.1" height="18" fill="#7fb2d9"><title>tool output: 42.2 MiB</title></rect><rect x="39.0" y="107" width="11.5" height="18" fill="#e37f65"><title>superseded snapshot bodies: 18.0 MiB</title></rect><rect x="50.6" y="107" width="9.3" height="18" fill="#c9a0dc"><title>t3-owned state: 14.5 MiB</title></rect><rect x="59.9" y="107" width="150.6" height="18" fill="#d7b986"><title>ids and metadata: 234.7 MiB</title></rect><rect x="210.4" y="107" width="76.2" height="18" fill="#8a8577"><title>indexes (incl. search): 118.8 MiB</title></rect><rect x="286.7" y="107" width="68.1" height="18" fill="#4a4740"><title>page slack: 106.2 MiB</title></rect><text x="0" y="147" font-size="12" fill="#ECE8DF">A · 516 MiB <tspan fill="#B4AFA3" font-size="11">evict tool output</tspan></text><rect x="0.0" y="152" width="11.9" height="18" fill="#98cf8b"><title>text (messages, reasoning, tool input): 18.6 MiB</title></rect><rect x="11.9" y="152" width="1.8" height="18" fill="#7fb2d9"><title>tool output: 2.8 MiB</title></rect><rect x="13.7" y="152" width="11.5" height="18" fill="#e37f65"><title>superseded snapshot bodies: 18.0 MiB</title></rect><rect x="25.3" y="152" width="9.3" height="18" fill="#c9a0dc"><title>t3-owned state: 14.5 MiB</title></rect><rect x="34.6" y="152" width="150.6" height="18" fill="#d7b986"><title>ids and metadata: 234.7 MiB</title></rect><rect x="185.2" y="152" width="76.2" height="18" fill="#8a8577"><title>indexes (incl. search): 118.8 MiB</title></rect><rect x="261.4" y="152" width="69.2" height="18" fill="#4a4740"><title>page slack: 107.8 MiB</title></rect><text x="0" y="192" font-size="12" fill="#ECE8DF">B · 413 MiB <tspan fill="#B4AFA3" font-size="11">provider owns all</tspan></text><rect x="0.0" y="197" width="11.5" height="18" fill="#e37f65"><title>superseded snapshot bodies: 18.0 MiB</title></rect><rect x="11.5" y="197" width="9.3" height="18" fill="#c9a0dc"><title>t3-owned state: 14.5 MiB</title></rect><rect x="20.9" y="197" width="127.0" height="18" fill="#d7b986"><title>ids and metadata: 197.9 MiB</title></rect><rect x="147.8" y="197" width="71.4" height="18" fill="#8a8577"><title>indexes (incl. search): 111.3 MiB</title></rect><rect x="219.2" y="197" width="45.4" height="18" fill="#4a4740"><title>page slack: 70.7 MiB</title></rect><rect x="0" y="229" width="11" height="11" fill="#98cf8b"/><text x="17" y="239" font-size="11.5" fill="#B4AFA3">text (messages, reasoning, tool input)</text><rect x="0" y="246" width="11" height="11" fill="#7fb2d9"/><text x="17" y="256" font-size="11.5" fill="#B4AFA3">tool output</text><rect x="0" y="263" width="11" height="11" fill="#e37f65"/><text x="17" y="273" font-size="11.5" fill="#B4AFA3">superseded snapshot bodies</text><rect x="0" y="280" width="11" height="11" fill="#c9a0dc"/><text x="17" y="290" font-size="11.5" fill="#B4AFA3">t3-owned state</text><rect x="0" y="297" width="11" height="11" fill="#d7b986"/><text x="17" y="307" font-size="11.5" fill="#B4AFA3">ids and metadata</text><rect x="0" y="314" width="11" height="11" fill="#8a8577"/><text x="17" y="324" font-size="11.5" fill="#B4AFA3">indexes (incl. search)</text><rect x="0" y="331" width="11" height="11" fill="#4a4740"/><text x="17" y="341" font-size="11.5" fill="#B4AFA3">page slack</text></svg>
+<!-- /figure:bytes-by-class -->
+<figcaption><span class="fig-n">fig. 2</span>durable bytes by class for the database as migrated, after the shipped <code>t3 doctor --fix</code>, and under three simulated policies, each vacuumed. D drops superseded snapshot bodies, A also evicts tool output, B lets the provider own every transcript byte. source: <a href="https://github.com/kvnloo/z0evals/blob/main/studies/t3code-storage-write-amplification/data/bytes-by-class.json">bytes-by-class.json</a>.</figcaption>
+</figure>
+
+- **text is 3% of the file.** messages, reasoning and tool input total 18.6 MiB.
+- **tool output is 42.2 MiB (6.8% of the 619.1 MiB post-doctor file).** evicting it saves 37.9 MiB (6.1%), and no adapter can serve it back today. even full provider ownership (policy B) removes only a third. ids and metadata, indexes and page slack are 91% of what remains.
+- **superseded snapshot bodies were the biggest waste.** we built a fold for them (experiment 02, flag `T3CODE_EXPERIMENTAL_SNAPSHOT_FOLD`): −20.1% after `VACUUM`, 18/18 projection tables equal after rebuild. its review found one race (resume check vs replay read) that [pr 29806](https://github.com/pingdotgg/t3code/pull/29806) also handles. both fall back to a snapshot for a cursor in removed history. the designs differ: our fold kept a per-thread watermark, while 29806 prunes everything below a global boundary.
+- **29806 and 29811 are open prs.** [29806](https://github.com/pingdotgg/t3code/pull/29806) prunes events the projections already cover. [29811](https://github.com/pingdotgg/t3code/pull/29811) returns freed pages to the filesystem. if they land, they cover the event-log bytes, which is why we dropped the fold. on this database the event log is 408 of 654.6 MiB including indexes. pruning shrinks the tail pages each commit touches, so the per-commit cost should be re-measured on top of it.
+
+the case for provider-owned history is freshness: turns run in another client would show up on the next open. it is not bytes.
 
 ## what this does not show {#limits}
 
-- **one database, one user.** in this database the hermes acp agent owns 63% of tool output. codex- or claude-heavy users will have a different mix. the accounting script reruns on any seed.
-- **simulated turns, not live provider turns.** `devReplay` drives the real server paths, but real providers stream different item mixes and timings.
-- **n per arm is small.** page size: 10 boots and 10 tapped turns per arm. group commit: 8 slots (16 turns) for off, 25 ms and idx, 2 slots (4 turns) for 150 ms. the host was memory-tight and shared.
-- **the fold's in-pass latency was never measured.** the host's memory-pressure guard stopped every bench server before the fold window. the only bound is the longest fold transaction, 49.8 ms.
-- **the tap counts write syscalls, not device writes.** filesystem copy-on-write, compression and journaling sit below it and add to every arm.
-- **no client-side cost.** browser, desktop and mobile decode and render times were out of scope. wire bytes were identical in every arm, so clients receive the same data.
+- **one install, one user, linux, under memory pressure.** bytes and commit counts are deterministic. latency intervals are wide except event lag.
+- **simulated turns.** the a/b used `devReplay` turns, not live provider turns. the live number is a replay estimate, not a measured a/b.
+- **small n.** 16 tapped turns per arm for off, 25 ms and idx; the 150 ms arm is a 4-turn pilot. page size: 10 tapped turns per arm.
+- **different bases.** each experiment was cut from the upstream main of its day (listed in [sources](#sources)); none of these numbers describe a later main.
+- **only the sqlite share.** the tap counts the server's write syscalls, not device writes. issue 24003's macos data shows the per-commit cost explains only part of the disk writes there.
+- **the fold's in-pass latency was never measured.** host memory pressure stopped every bench server before the fold window; the only bound is the longest fold transaction, 49.8 ms.
 
 ## sources {#sources}
 
-fork branches on [kvnloo/t3code](https://github.com/kvnloo/t3code), each pinned to the sha the results came from:
+fork branches on [kvnloo/t3code](https://github.com/kvnloo/t3code), each pinned to the sha the results came from, with the upstream main it was cut from:
 
-| experiment | branch @ sha |
-|---|---|
-| 00 baseline harness | [`exp/poh/00-baseline` @ 258d7a4e](https://github.com/kvnloo/t3code/tree/258d7a4edc571b0b3aa6d99b81f7dc38bf670dab) |
-| 01 byte accounting | [`exp/poh/01-byte-accounting` @ e17f68ce](https://github.com/kvnloo/t3code/tree/e17f68cebb45c95a7d11461b3a3550b3a4d7cbfb) |
-| 02 snapshot fold | [`exp/poh/02-snapshot-dedupe` @ e3155fc4](https://github.com/kvnloo/t3code/tree/e3155fc400fce4536f9ad9ec05e881a5adeb144e) |
-| 02b rebuild divergence | [`exp/poh/02b-rebuild-divergence` @ 3b263def](https://github.com/kvnloo/t3code/tree/3b263defba036730160a3f2451b84bfd26c3dd4b) |
-| 03 ids, indexes, page size | [`exp/poh/03-id-index` @ 93e43918](https://github.com/kvnloo/t3code/tree/93e439187bec68d9229c3c486bc1517e38679bb9) |
-| 03b page-size writes | [`exp/poh/03b-page-writes` @ 3676fef0](https://github.com/kvnloo/t3code/tree/3676fef04b58844605728973ea8c92b6de1236d1) |
-| 04 commit batching | [`exp/poh/04-commit-batching` @ ea608f37](https://github.com/kvnloo/t3code/tree/ea608f3764b00090e12a10543d3739104a2e2623) |
+| experiment | branch @ sha | upstream base |
+|---|---|---|
+| 00 baseline harness | [`exp/poh/00-baseline` @ 258d7a4e](https://github.com/kvnloo/t3code/tree/258d7a4edc571b0b3aa6d99b81f7dc38bf670dab) | `9bcf7533` |
+| 01 byte accounting | [`exp/poh/01-byte-accounting` @ e17f68ce](https://github.com/kvnloo/t3code/tree/e17f68cebb45c95a7d11461b3a3550b3a4d7cbfb) | `84537c4d` |
+| 02 snapshot fold | [`exp/poh/02-snapshot-dedupe` @ e3155fc4](https://github.com/kvnloo/t3code/tree/e3155fc400fce4536f9ad9ec05e881a5adeb144e) | `6f413648` |
+| 02b rebuild divergence | [`exp/poh/02b-rebuild-divergence` @ 3b263def](https://github.com/kvnloo/t3code/tree/3b263defba036730160a3f2451b84bfd26c3dd4b) | `30b9c4a9` |
+| 03 ids, indexes, page size | [`exp/poh/03-id-index` @ 93e43918](https://github.com/kvnloo/t3code/tree/93e439187bec68d9229c3c486bc1517e38679bb9) | `065a4335` |
+| 03b page-size writes | [`exp/poh/03b-page-writes` @ 3676fef0](https://github.com/kvnloo/t3code/tree/3676fef04b58844605728973ea8c92b6de1236d1) | `065a4335` |
+| 04 commit window (a/b code) | [`exp/poh/04-commit-batching` @ ea608f37](https://github.com/kvnloo/t3code/tree/ea608f3764b00090e12a10543d3739104a2e2623) | `5b9731ce` |
+| 04 live estimator | [`exp/poh/04-commit-batching` @ 45f2edca](https://github.com/kvnloo/t3code/tree/45f2edca913aaa03b68ff1c5c8c2a72c78d5ae45) | `5b9731ce` |
 
-upstream: [pr 29806](https://github.com/pingdotgg/t3code/pull/29806) (prune events the projections cover), [pr 29811](https://github.com/pingdotgg/t3code/pull/29811) (return freed pages), [pr 23211](https://github.com/pingdotgg/t3code/pull/23211) (drop the unused correlation index, merged), [discussion 6897](https://github.com/pingdotgg/t3code/discussions/6897) (retention and compaction, closed) and [discussion 15122](https://github.com/pingdotgg/t3code/discussions/15122) (archive compression). our new discussion: [DISCUSSION_URL](DISCUSSION_URL).
+upstream: [discussion 29954](https://github.com/pingdotgg/t3code/discussions/29954) (our proposal), [issue 24003](https://github.com/pingdotgg/t3code/issues/24003) and [our comment there](https://github.com/pingdotgg/t3code/issues/24003#issuecomment-6596275747), [pr 24145](https://github.com/pingdotgg/t3code/pull/24145) (queued-snapshot batching, closed), [pr 29806](https://github.com/pingdotgg/t3code/pull/29806) and [pr 29811](https://github.com/pingdotgg/t3code/pull/29811) (pruning and page reclaim, open), [pr 23211](https://github.com/pingdotgg/t3code/pull/23211) (unused correlation index, merged), [discussion 6897](https://github.com/pingdotgg/t3code/discussions/6897) (retention and compaction, closed).
 
 study files: [manifest](https://github.com/kvnloo/z0evals/blob/main/studies/t3code-storage-write-amplification/manifest.yaml), [readme](https://github.com/kvnloo/z0evals/blob/main/studies/t3code-storage-write-amplification/README.md), [data](https://github.com/kvnloo/z0evals/tree/main/studies/t3code-storage-write-amplification/data), [scripts](https://github.com/kvnloo/z0evals/tree/main/studies/t3code-storage-write-amplification/scripts).

@@ -117,6 +117,11 @@ def derive() -> dict:
             r[a + "_delta"] = [d["p50"] / scale, d["ci95"][0] / scale, d["ci95"][1] / scale]
         rows[m] = {k: ([round(v, 2) for v in val] if isinstance(val, list) else val) for k, val in r.items()}
     out["group_commit"] = rows
+    live = load("live-window-estimate.json")
+    out["live_estimate"] = {
+        "events": live["events"], "threads": live["threads"],
+        **{f"w{w}_fewer_pct": round(100 * (1 - v["commits"] / live["events"]), 1) for w, v in live["windows_ms"].items()},
+    }
     for m in ("commits", "frames", "sqliteBytes"):
         out["group_commit"][m]["w25_pct"] = round(100 * arms["w25"][m]["deltaVsOff"]["p50"] / arms["off"][m]["p50"], 1)
     return out
@@ -127,29 +132,27 @@ def esc(s: str) -> str:
 
 
 def svg_bytes(d: dict) -> str:
-    W, left, right, top, row, gap = 420, 96, 410, 8, 22, 12
-    scale = (right - left) / d["bytes"]["base"]["file_mib"]
+    W, row = 420, 18
+    scale = W / d["bytes"]["base"]["file_mib"]
     parts = []
-    y = top
+    y = 0
     for key, sub in DB_LABELS:
-        x = left
         b = d["bytes"][key]
+        parts.append(f'<text x="0" y="{y + 12}" font-size="12" fill="#ECE8DF">{key} · {b["file_mib"]:.0f} MiB <tspan fill="#B4AFA3" font-size="11">{esc(sub)}</tspan></text>')
+        y += 17
+        x = 0.0
         for (g, _, fill) in GROUPS:
             w = b["groups_mib"][g] * scale
             if w > 0:
                 parts.append(f'<rect x="{x:.1f}" y="{y}" width="{w:.1f}" height="{row}" fill="{fill}"><title>{esc(g)}: {b["groups_mib"][g]} MiB</title></rect>')
             x += w
-        parts.append(f'<text x="0" y="{y + 9}" font-size="10" fill="#ECE8DF">{key} · {b["file_mib"]:.0f} MiB</text>')
-        parts.append(f'<text x="0" y="{y + 20}" font-size="8.5" fill="#B4AFA3">{esc(sub)}</text>')
-        y += row + gap
-    ly = y + 4
-    for i, (g, _, fill) in enumerate(GROUPS):
-        cx = 0 if i % 2 == 0 else 212
-        cy = ly + (i // 2) * 15
-        parts.append(f'<rect x="{cx}" y="{cy}" width="9" height="9" fill="{fill}"/>')
-        parts.append(f'<text x="{cx + 13}" y="{cy + 8}" font-size="9" fill="#B4AFA3">{esc(g)}</text>')
-    H = ly + 4 * 15
-    return (f'<svg class="chart-svg" viewBox="0 0 {W} {H}" role="img" aria-label="durable bytes by class for five database states">'
+        y += row + 10
+    y += 4
+    for g, _, fill in GROUPS:
+        parts.append(f'<rect x="0" y="{y}" width="11" height="11" fill="{fill}"/>')
+        parts.append(f'<text x="17" y="{y + 10}" font-size="11.5" fill="#B4AFA3">{esc(g)}</text>')
+        y += 17
+    return (f'<svg class="chart-svg" viewBox="0 0 {W} {y}" role="img" aria-label="durable bytes by class for five database states">'
             + "".join(parts) + "</svg>")
 
 
@@ -157,35 +160,31 @@ def svg_group_commit(d: dict) -> str:
     gc = d["group_commit"]
     rows = [("commits per turn", "commits", "{:.1f}"), ("wal frames per turn", "frames", "{:.0f}"),
             ("sqlite MiB per turn", "sqliteBytes", "{:.2f}"), ("live ws frames per turn", "liveFrames", "{:.0f}")]
-    W, left, right, top = 420, 0, 330, 4
-    span = right - left
+    W, span = 420, 300
     parts = []
-    y = top
+    y = 0
     for label, m, fmt in rows:
         r = gc[m]
         off, w25 = r["off"][0], r["w25"][0]
         lo, hi = (off + r["w25_delta"][1]) / off, (off + r["w25_delta"][2]) / off
-        parts.append(f'<text x="0" y="{y + 9}" font-size="10" fill="#ECE8DF">{label}</text>')
-        y += 13
-        parts.append(f'<rect x="{left}" y="{y}" width="{span}" height="9" fill="#8a8577"/>')
-        parts.append(f'<text x="{right + 6}" y="{y + 8}" font-size="9" fill="#B4AFA3">off {fmt.format(off)}</text>')
-        y += 11
-        ww = span * w25 / off
-        parts.append(f'<rect x="{left}" y="{y}" width="{ww:.1f}" height="9" fill="#d7b986"/>')
-        parts.append(f'<line x1="{left + span * lo:.1f}" x2="{left + span * hi:.1f}" y1="{y + 4.5}" y2="{y + 4.5}" stroke="#ECE8DF" stroke-width="1.2"/>')
-        parts.append(f'<text x="{right + 6}" y="{y + 8}" font-size="9" fill="#d7b986">25 ms {fmt.format(w25)}</text>')
-        y += 20
-    parts.append(f'<text x="0" y="{y + 6}" font-size="8.5" fill="#B4AFA3">bars are p50 per tapped turn (n = 16 per arm), scaled to off; whisker = bootstrap 95% ci of the shift</text>')
-    H = y + 12
-    return (f'<svg class="chart-svg" viewBox="0 0 {W} {H}" role="img" aria-label="per-turn writes with and without a 25 ms group-commit window">'
+        parts.append(f'<text x="0" y="{y + 12}" font-size="12" fill="#ECE8DF">{label}</text>')
+        y += 17
+        parts.append(f'<rect x="0" y="{y}" width="{span}" height="12" fill="#8a8577"/>')
+        parts.append(f'<text x="{span + 8}" y="{y + 10}" font-size="11" fill="#B4AFA3">off {fmt.format(off)}</text>')
+        y += 14
+        parts.append(f'<rect x="0" y="{y}" width="{span * w25 / off:.1f}" height="12" fill="#d7b986"/>')
+        parts.append(f'<line x1="{span * lo:.1f}" x2="{span * hi:.1f}" y1="{y + 6}" y2="{y + 6}" stroke="#ECE8DF" stroke-width="1.5"/>')
+        parts.append(f'<text x="{span + 8}" y="{y + 10}" font-size="11" fill="#d7b986">25 ms {fmt.format(w25)}</text>')
+        y += 24
+    return (f'<svg class="chart-svg" viewBox="0 0 {W} {y - 8}" role="img" aria-label="per-turn writes with and without a 25 ms group-commit window">'
             + "".join(parts) + "</svg>")
 
 
 def splice(text: str, name: str, svg: str) -> str:
-    pat = re.compile(rf"(<!-- figure:{name} -->\n)(.*?)(\n<!-- /figure:{name} -->)", re.S)
+    pat = re.compile(rf"(<!-- figure:{name} -->\n)(.*?)(<!-- /figure:{name} -->)", re.S)
     if not pat.search(text):
         raise SystemExit(f"post has no figure:{name} block")
-    return pat.sub(lambda m: m.group(1) + svg + m.group(3), text)
+    return pat.sub(lambda m: m.group(1) + svg + "\n" + m.group(3), text)
 
 
 def main() -> int:

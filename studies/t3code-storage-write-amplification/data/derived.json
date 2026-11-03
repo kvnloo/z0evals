@@ -696,5 +696,12 @@
    ]
   }
  },
- "ledger_rows": 1599
+ "ledger_rows": 1599,
+ "live_estimate": {
+  "events": 9292,
+  "threads": 21,
+  "w10_fewer_pct": 34.3,
+  "w25_fewer_pct": 41.1,
+  "w50_fewer_pct": 45.6
+ }
 }
