@@ -1,0 +1,16 @@
+Running as unit: zha-probe-unit.service
+test_masked_gqa_all_keys_equals_sdpa (test_zha_probe.ProbeTests.test_masked_gqa_all_keys_equals_sdpa) ... ok
+test_oracle_meets_mass (test_zha_probe.ProbeTests.test_oracle_meets_mass) ... ok
+test_ragged_tree_p_one_keeps_every_key (test_zha_probe.ProbeTests.test_ragged_tree_p_one_keeps_every_key) ... ok
+test_top_p_minimal_mass_and_no_candidates (test_zha_probe.ProbeTests.test_top_p_minimal_mass_and_no_candidates) ... ok
+test_window_control_exactly_sinks_and_window (test_zha_probe.ProbeTests.test_window_control_exactly_sinks_and_window) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 7.116s
+
+OK
+          Finished with result: success
+Main processes terminated with: code=exited, status=0/SUCCESS
+               Service runtime: 27.980s
+             CPU time consumed: 19.444s
+                   Memory peak: 1G (swap: 933.4M)
