@@ -54,3 +54,11 @@ This repository is onboarded with the mature-layout Verified OSS Loop kit under 
 - independent review precedes maintainer merge
 
 Run `python3 .verified-oss-loop/rollout.py show` before branching. The z0evals evidence/privacy invariants above remain authoritative if the generic kit is less strict.
+
+## Rule -> enforcer
+
+| Rule | Enforced by |
+|---|---|
+| Never send a free-lane request the known per-model limits (TPM, context, max request, RPD/TPD) reject, and never count its 413/429 as a model failure | `studies/free-taskfit-v0/scripts/plan_taskfit.py` (plans out as `not_eligible`), `certify.py` (fails runs with 413 or ruled-out rows), `tests/test_routing_evidence.py` in CI |
+| Don't re-measure a (lane, family) already in an unexpired receipt | `plan_taskfit.measured_pairs` (`--force` to override) |
+| Free-model batteries run in GitHub Actions with repo-secret keys, one run at a time | `.github/workflows/free-taskfit.yml`, `scripts/dispatch_taskfit.sh` |
