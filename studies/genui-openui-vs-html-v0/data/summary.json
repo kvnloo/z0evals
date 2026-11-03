@@ -1,0 +1,89 @@
+{
+ "ab": {
+  "model": "gpt-6.1-sol",
+  "html": {
+   "runs": 10,
+   "passed": 10,
+   "output_tokens_total": 26951,
+   "output_tokens_mean": 2695,
+   "input_tokens_mean": 21759,
+   "artifact_chars_mean": 8579,
+   "total_s_mean": 52.7,
+   "total_s_median": 52.8,
+   "first_text_s_mean": 19.6,
+   "after_first_text_s_mean": 33.1
+  },
+  "openui": {
+   "runs": 10,
+   "passed": 10,
+   "output_tokens_total": 3748,
+   "output_tokens_mean": 375,
+   "input_tokens_mean": 22681,
+   "artifact_chars_mean": 664,
+   "total_s_mean": 20.7,
+   "total_s_median": 20.9,
+   "first_text_s_mean": 18.1,
+   "after_first_text_s_mean": 2.6
+  },
+  "output_token_ratio": 7.2,
+  "total_time_ratio": 2.5,
+  "input_token_overhead_mean": 922,
+  "cases": [
+   {
+    "id": "activity-heatmap",
+    "html_output_tokens_mean": 2062,
+    "openui_output_tokens_mean": 282,
+    "html_total_s_mean": 44.0,
+    "openui_total_s_mean": 22.5
+   },
+   {
+    "id": "disk-usage",
+    "html_output_tokens_mean": 3372,
+    "openui_output_tokens_mean": 586,
+    "html_total_s_mean": 63.4,
+    "openui_total_s_mean": 21.1
+   },
+   {
+    "id": "model-stacked-area",
+    "html_output_tokens_mean": 2080,
+    "openui_output_tokens_mean": 186,
+    "html_total_s_mean": 41.4,
+    "openui_total_s_mean": 21.7
+   },
+   {
+    "id": "repo-treemap",
+    "html_output_tokens_mean": 2880,
+    "openui_output_tokens_mean": 287,
+    "html_total_s_mean": 54.4,
+    "openui_total_s_mean": 17.2
+   },
+   {
+    "id": "review-load-dense",
+    "html_output_tokens_mean": 3080,
+    "openui_output_tokens_mean": 534,
+    "html_total_s_mean": 60.2,
+    "openui_total_s_mean": 20.9
+   }
+  ]
+ },
+ "generation": {
+  "default": {
+   "runs": 10,
+   "passed": 9,
+   "output_tokens_mean": 762,
+   "total_s_mean": 14.2,
+   "passed_after_rescore": 10
+  },
+  "gpt-6.1-sol": {
+   "runs": 10,
+   "passed": 9,
+   "output_tokens_mean": 337,
+   "total_s_mean": 25.9,
+   "passed_after_rescore": 10
+  }
+ },
+ "t3_live": {
+  "runs": 9,
+  "passed": 9
+ }
+}

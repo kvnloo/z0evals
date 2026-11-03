@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-23",
+ "updated": "2026-11-02",
  "entries": [
   {
    "id": "fsm-work-item-v0",
@@ -2194,6 +2194,29 @@
    "interesting": false,
    "why": "Real Git rollback evidence can coexist with no physical-device proof; synthetic qualification must not unlock live automation.",
    "post": "turbo-app-fanout-offline"
+  },
+  {
+   "id": "genui-openui-vs-html-v0",
+   "title": "a chart is not a web page",
+   "area": "generative-ui",
+   "question": "Does answering an inline chart as an openui-v2 program instead of an HTML page save output tokens and time, without losing validity?",
+   "status": "frozen",
+   "date": "2026-11-02",
+   "finding": "Source-reported, same model and harness: 10/10 valid in both formats; openui used 3,748 output tokens versus 26,951 for HTML (7.2× fewer) and finished in 20.7 s versus 52.7 s on average (2.5× sooner), for about 922 extra input tokens. A 10-case openui sweep passed 10/10 on two models after a weekday-label oracle fix (9/10 before), and 9/9 inside a real T3 Code thread.",
+   "caveat": "One model, one harness, two repetitions. The HTML arm is an unbounded interactive page checked only for the expected numbers; openui is a bounded four-chart catalog checked by a strict oracle. T3 Code does not yet instruct agents to use openui.",
+   "links": [
+    {
+     "label": "studies/genui-openui-vs-html-v0/README.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/main/studies/genui-openui-vs-html-v0/README.md"
+    },
+    {
+     "label": "kvnloo/t3code experiment/openui-chart-catalog",
+     "url": "https://github.com/kvnloo/t3code/tree/d5627b91afe5bf2b1d7411185282f284e7b783a6"
+    }
+   ],
+   "interesting": true,
+   "why": "The cheapest measured lever on agent UI answers so far: shorter output, same validity, and a client that already renders it.",
+   "post": "genui-openui-vs-html-v0"
   }
  ]
 }
