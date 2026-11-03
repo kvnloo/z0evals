@@ -45,7 +45,7 @@ artifacts:
 
   - path: scripts/hermes_harbor_agent.py
     kind: other
-    sha256: 2df75573be09635d18bf0dbc19f802beff0434019c55f99a0687278674d975f9
+    sha256: b99e46ab98c4b8929797825d0101c04404f8d781266b7dd2abd74e6ecf8846e6
 
 limitations:
   - The Index is Nous Research's measurement in their harness configuration; z0evals did not reproduce it.
