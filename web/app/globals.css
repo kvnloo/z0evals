@@ -2114,4 +2114,8 @@ html[data-header-hidden] .section-bar { transform: translateY(calc(-1 * var(--he
     font: 600 11px/15px var(--font-sans); letter-spacing: .4px; text-transform: uppercase; color: #837F74; }
   .prose table.stack td:first-child { padding-left: 0; font-weight: 600; color: var(--color-sb-text); }
   .prose table.stack td:first-child::before { display: none; }
+  /* Long branch names and paths wrap inside the value column instead of clipping. */
+  .prose table.stack td code { white-space: normal; overflow-wrap: anywhere; }
+  /* Stacked tables never scroll sideways, so no swipe hint or edge fade. */
+  .prose .table-wrap:has(table.stack)::before, .prose .table-wrap:has(table.stack)::after { display: none !important; }
 }
