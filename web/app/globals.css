@@ -2107,7 +2107,8 @@ html[data-header-hidden] .section-bar { transform: translateY(calc(-1 * var(--he
   .prose table.stack tr { display: block; margin: 0 0 10px; padding: 6px 14px; border: 1px solid var(--hair); border-radius: 12px; background: var(--glass-fill); }
   /* Block cells keep their inline content (numbers, units, code) on one flowing line; the
      label sits in the left gutter. */
-  .prose table.stack td { display: block; position: relative; min-height: 20px; padding: 8px 0 8px 40%;
+  .prose table.stack, .prose table.stack tbody, .prose table.stack tr { display: block; width: 100%; }
+  .prose table.stack td { display: block; position: relative !important; left: auto; width: auto !important; min-width: 0 !important; max-width: none !important; box-shadow: none !important; min-height: 20px; padding: 8px 0 8px 40%;
     border: 0 !important; border-bottom: 1px solid var(--hair) !important; background: none !important; }
   .prose table.stack td:last-child { border-bottom: 0 !important; }
   .prose table.stack td::before { content: attr(data-label); position: absolute; left: 0; top: 9px; width: calc(40% - 12px);
