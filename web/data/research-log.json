@@ -2694,6 +2694,2040 @@
     }
    ],
    "post": null
+  },
+  {
+   "id": "agent-outcomes-by-lane",
+   "title": "which agent lanes actually succeed, and at what cost?",
+   "area": "fleet",
+   "techniques": [
+    "measurement",
+    "model-routing"
+   ],
+   "question": "Which agent lanes and task kinds actually succeed, what do they cost in fresh tokens and time, and where is effort wasted?",
+   "status": "frozen-internal",
+   "date": "2026-10-20",
+   "finding": "A ledger built from local traces covered 8,539 de-duplicated runs. In the last 7 days, the paid sol lane's 110 code runs were 36% verified, 71% finished ok and 18% failed, with p50 17 minutes and 213k fresh tokens per run. Its 87 verify runs were 45% verified, and the free deepseek lane's 744 code runs were 0% verified with 73% failed, mostly from daily quota exhaustion.",
+   "caveat": "Data comes from one host's local traces and is a single snapshot. Task kind is a keyword heuristic on the first instruction. Verified success needs a passing test, PR URL or push in tool output, so it undercounts work checked elsewhere. Read-only kinds are scored on finished-without-failure instead. Later regenerated tables show different figures.",
+   "why": "Routing work by measured verified-success rate and waste, not by assumption, can save paid tokens and avoid lanes that fail on a cap.",
+   "interesting": true,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "aodl-intent-gate-golden-canary",
+   "title": "does the aodl intent gate hold up in a golden canary run",
+   "area": "governance",
+   "techniques": [
+    "formal-methods",
+    "measurement"
+   ],
+   "question": "Does the AODL intent gate bind approved contracts, refuse conflicting or uncertain work, and replay after restart in a golden canary run, and what does one remote call cost?",
+   "status": "frozen-internal",
+   "date": "2026-10-25",
+   "finding": "In the final golden canary, a small hosted model (claude-haiku-5-5) made one remote physical call and the parent model was not called. The call used 3384 input tokens (2929 of them cached) and 11 output tokens. Restart replay, conflict rejection, uncertain refusal and cap refusal were all true. The provider reported no cost, and the catalog-estimated cost was 0.00012539000000000002 USD.",
+   "caveat": "This is one synthetic run with an exact-string check (CANONICAL_OK), not a general quality claim. Earlier attempts through other routes failed on provider errors before this pass, and the report says the gate's fleet jobs on the laptop were still suspended and never ran. The cost is a catalog estimate, and the actual billed cost is unknown.",
+   "why": "A governance gate is only useful if it refuses uncertain or conflicting work and replays cleanly, and the cost of that check has to stay small.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "ask-audit-instruction-failures",
+   "title": "how often do user messages show an agent failing an instruction?",
+   "area": "hermes",
+   "techniques": [
+    "measurement"
+   ],
+   "question": "How often do eligible user messages in OMP and Hermes sessions carry evidence of an agent failing a user instruction?",
+   "status": "frozen-internal",
+   "date": "2026-10-24",
+   "finding": "Of 3,021 eligible user messages (2026-07-13 to 2026-10-24), 402 (13.3%) were flagged by a deterministic correction lexicon. Reviewing 295 of them found 103 evidence-supported instruction failures and 192 other or unsupported flags. A stratified estimate puts 16.7% of eligible messages at evidence of an instruction failure (rough 95% CI 11.2%–22.1%).",
+   "caveat": "The reviewing agent produced all labels itself, with no independent judge. The data covers one user's sessions on one stack, and the unflagged stratum was sampled at only 100 messages. Flagged messages are not confirmed misses, and this is not the share of all asks ignored.",
+   "why": "It gives a rough baseline for how often agents miss explicit instructions, and it points to checks (open-ask ledger, done-claim gate) that could be tested against it.",
+   "interesting": true,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "dash-cursorwindow-monitor-gap",
+   "title": "does the dash log watcher catch cursorwindow errors?",
+   "area": "hermes",
+   "techniques": [
+    "measurement"
+   ],
+   "question": "Does the Dash log watcher catch CursorWindow unhandled-promise errors that appear in the app's Metro journal?",
+   "status": "frozen-internal",
+   "date": "2026-10-25",
+   "finding": "The watcher reported incidents=0 while a bounded six-hour Metro journal read matched eight CursorWindow unhandled-promise log lines. Its classifier recognizes only uncaughtException and UnhandledPromiseRejection, so it misses 'Uncaught (in promise', which makes this a monitoring gap. A read-only copy of the app storage passed SQLite quick_check, and the largest stored value was 4539971 bytes, which is consistent with an oversized single-row write.",
+   "caveat": "This is a single live observation on one machine with no control. The eight matches are log lines, not distinct incidents. The oversized-row cause is inferred from the source code and was not reproduced, and no fix or monitoring upgrade was made.",
+   "why": "A report-only watcher that shows zero incidents can give false confidence while the app is failing.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "four-workers-false-green-no-speedup",
+   "title": "did four test workers hide a regression and save time?",
+   "area": "hermes",
+   "techniques": [
+    "measurement",
+    "scheduling"
+   ],
+   "question": "Does an end-to-end browser suite for a chat app pass at one, four and eight workers, and does parallel timing hide a real app regression or give a speedup on an old laptop?",
+   "status": "frozen-internal",
+   "date": "2026-10-25",
+   "finding": "The one-worker run went 15 passed / 1 failed, with the failure being the active-ACP/ended-chat defect, while four workers went 16 passed / 0 failed. The report attributes the four-worker false green to an old fixed sleep that could miss the real 10-second roster poll. After the test was changed to wait for an actual roster response, the focused check gave 1 pass / 1 fail, so the bug is no longer masked. Four workers took 617.58 s against 616.77 s for one worker, a 0.999× speedup. The eight-worker probe gave 0 passed / 8 failed or timed out / 8 not started and was backed off to four.",
+   "caveat": "Each worker count was run once on a heavily loaded shared laptop with deterministic fixture agents rather than real model turns, so the timing is descriptive, not causal. The eight-worker probe predates a fixture repair and is not a clean scaling point. The post-fix regression check was run at one worker, not four.",
+   "why": "Parallel test runs can turn timing-sensitive tests into false greens and may not save any wall time on a loaded host.",
+   "interesting": true,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "js-cache-fix-retained-heap",
+   "title": "does fixing the js cache leak stop the phone's memory growth?",
+   "area": "hermes",
+   "techniques": [
+    "measurement",
+    "caching-reuse"
+   ],
+   "question": "Does repairing the JavaScript cache retention in the app stores stop the memory growth seen on the phone?",
+   "status": "frozen-internal",
+   "date": "2026-10-25",
+   "finding": "In a synthetic browser workload of 384 completed and deleted replies, the repaired store cut retained JS heap growth from 77.495 MiB to 0.156 MiB (a 99.80% reduction), and cached characters after deletion fell from 168,147,456 to 0. Separately, on an unchanged build, the phone's native malloc allocation rose from 2,179,049 KiB to 2,533,219 KiB, or 196.61 MiB/min. The dominant native growth is therefore neither attributed to this leak nor verified fixed.",
+   "caveat": "The browser workload is synthetic, with inert storage fixtures and a single run per arm. No repaired build was ever loaded on the phone, so there is no after-fix native measurement. The phone rate comes from one process over under two minutes and cannot separate Hermes from other C++ allocations.",
+   "why": "A real, reproducible JS leak can be fixed and still leave the main phone memory growth unexplained, so a browser win must not be reported as a phone win.",
+   "interesting": true,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "free-model-triage-cards-pointers",
+   "title": "are free-model triage cards pointers or diagnoses?",
+   "area": "small-models",
+   "techniques": [
+    "measurement",
+    "model-routing"
+   ],
+   "question": "Do free-model triage cards for open PRs and failing CI agree with a stronger model's QA review, and are they fit to publish?",
+   "status": "frozen-internal",
+   "date": "2026-11-02",
+   "finding": "Free lanes proposed 92 cards across 18 public repos, and 75 were kept after checks in code. A stronger model's QA on a 6-card sample gave a mean agreement of 0.175. The stated cause was wrong in 6 of 6 cases because the lanes never saw CI logs, and in 3 of 6 the card repeated work the PR already contained. So the cards are treated as pointers, not diagnoses, and only 3 were published, after a dry-run diff review.",
+   "caveat": "The QA sample is only 6 cards from one run, and the reviewing model is a judge, not ground truth. The lanes had no CI log excerpts, so this may not hold once logs are added.",
+   "why": "It shows that cheap free models can find the right PR and failing check, but they need CI logs before their causes can be trusted.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "nim-lane-120-repo-scan-no-quota-stops",
+   "title": "can the nim lane scan 120 repos with no throttling?",
+   "area": "small-models",
+   "techniques": [
+    "model-routing",
+    "scheduling",
+    "measurement"
+   ],
+   "question": "Does routing repo scans through the NIM lane via the dispatcher finish a 120-repo batch without provider throttling or quota stops?",
+   "status": "frozen-internal",
+   "date": "2026-10-20",
+   "finding": "All 120 public-repo scans finished on the NIM lane in 541 s (13.3 scans/min) across two cluster nodes, with 0 HTTP 429 and 0 quota stops. The 173 relay 503s were dispatcher backpressure, not provider throttling. A 12-item Opus re-ask QA batch had mean agreement 0.917, and the NIM AGENTS.md fact matched pod facts on 118/120 scans.",
+   "caveat": "This is a single batch on one setup with no control lane. The QA sample is only 12 items, and Opus is used as a reference rather than ground truth. The 118/120 match covers the AGENTS.md field only.",
+   "why": "It shows whether a free-tier-style provider lane can absorb bulk scan work without quota trouble, which decides how much work can be offloaded from paid frontier models.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "fettl-local-scan-source-review",
+   "title": "which fettl scan findings survive source review?",
+   "area": "research",
+   "techniques": [
+    "measurement"
+   ],
+   "question": "When a static scanner (fettl 0.19.78) is run locally on two private repos, does its output run cleanly, and which findings hold up on source review?",
+   "status": "frozen-internal",
+   "date": "2026-10-23",
+   "finding": "Both full scans exited with code 1 but returned all 167 checks, in 0.39 s and 1.69 s, with 337 and 3069 findings, every one labelled medium severity. In the larger repo 1295 of the 3069 findings were in generated cache code. A source review of the top five findings found five silent-fallback defects, ranked high or medium by the reviewer, and rejected several flagged items as false positives.",
+   "caveat": "The review is by source reading only. Nothing was reproduced or run, so the consequences are inferred. It covers two private repos on one machine, and the scanner's severity field is unreliable in this release. There is no false-positive rate.",
+   "why": "It shows that raw scanner counts and severity labels need triage before anyone acts on them.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "fettl-shadow-detection-accuracy",
+   "title": "does a code scanner in shadow mode catch real defects, and how noisy is it?",
+   "area": "research",
+   "techniques": [
+    "measurement"
+   ],
+   "question": "Do a code scanner's shadow-mode hooks catch real defects in live coding-agent file writes, and how many of its findings are real?",
+   "status": "frozen-internal",
+   "date": "2026-10-24",
+   "finding": "In throwaway repositories, three agent CLIs each triggered the same four target detections (AI003, EV005, CQ003 and DC008 for an explicit placeholder stub) and received no blocking context. A TypeScript pass-through wrapper was a DC009 miss. In a fixed-seed sample of 50 findings from each of three repositories, 15 were labeled real and 135 noise across 150 labels, so noise was 90% in this sample.",
+   "caveat": "Labels are single-reviewer judgments, per-rule samples are small (often one finding), the detection test used one controlled fixture per agent, and the Claude native hook install status was reported stale.",
+   "why": "A scanner that is mostly noise on real code can be wired into agent loops only if its findings stay non-blocking or are filtered first.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "fff-memory-shadow-integration-probe",
+   "title": "does file search feed memory recall and shadow decisions automatically?",
+   "area": "memory",
+   "techniques": [
+    "measurement",
+    "search-optimization"
+   ],
+   "question": "Do shared file search (FFF), unified-memory recall and ContextPacket-to-shadow-decision consumption work together on the executed path?",
+   "status": "frozen-internal",
+   "date": "2026-10-07",
+   "finding": "File search retrieval and canonical observation persistence worked: 6 live HTTP controls ran, and the five successful searches left exact ledger events 687, 688, 689, 690 and 691. Combined file-search plus memory recall and automatic ContextPacket-to-shadow decision consumption were not found on the inspected or executed path. A required memory need with allow_memory=True was silently left without an unresolved-gap entry. Across 32 isolated trace cases, 55/55 probe assertions passed, but several are negative controls that confirm the missing behavior.",
+   "caveat": "Small sequential traces on one desktop checkout with a synthetic, controller-authored fixture. No model backend ran, and the result covers only the inspected source tree, not other repositories or a deployed integration.",
+   "why": "It shows that a passing retrieval layer does not mean memory recall or decision consumption is wired up, and it names a concrete silent-gap defect.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "free-tier-published-vs-measured",
+   "title": "do free llm limits on this host match what providers publish?",
+   "area": "small-models",
+   "techniques": [
+    "measurement",
+    "model-routing"
+   ],
+   "question": "Do the rate limits observed on this host for free-tier LLM lanes match the limits the providers publish?",
+   "status": "frozen-internal",
+   "date": "2026-10-20",
+   "finding": "Groq headers matched the published figures (1000 requests, 8,000 tokens). Cerebras published a free-trial limit of 5 RPM and 30K TPM, but this account's headers showed 1000 RPM and 500K TPM, which indicates a higher paid or developer tier. The OpenCode Zen free DeepSeek model has no published limit; it ran about 30–35 long scan jobs and then returned rate-limit errors at both 2 and 4 concurrent jobs, which points to a quota rather than a concurrency cap.",
+   "caveat": "Single host and single account. Most values are response headers or an informal job count, not repeated controlled measurements, and several lanes were not measured at all.",
+   "why": "Published free-tier limits can be wrong for a given account in either direction, so a routing catalog needs measured values to override them.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "factory-dispatch-reply-and-pacing-audit",
+   "title": "do dispatched phone briefs get replies, and does pacing hold?",
+   "area": "fleet",
+   "techniques": [
+    "measurement",
+    "scheduling"
+   ],
+   "question": "Over 48 hours, what fraction of sent phone-factory briefs received a tagged reply, and did dispatch pacing stay within the account cap?",
+   "status": "frozen-internal",
+   "date": "2026-10-26",
+   "finding": "Of 73 distinct sent tags in 48h, 53 had an exact-first-line reply and 20 were unmatched. The 24h dispatch logs show 63 sent-or-unconfirmed attempts in the final rolling hour against a cap of 60, and 101 adjacent gaps below 20 seconds (minimum 14.653s). The audit was read-only: the queue census found 38 eligible briefs among 219 queue files, and nothing was changed.",
+   "caveat": "This is a single timestamped snapshot from one machine while the queue loops were still running. The reply counts are reply observations, not implementation, acceptance or merge rates. Logged attempt start times precede the UI send, so the pacing gaps are indicative only.",
+   "why": "Replies are the only visible sign that a dispatched brief did something. A pacing source gap, with pace.py applied only to one device, could risk provider throttling.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "gdp-wired-control-decision-laws",
+   "title": "does gdp-wired find new weaknesses in already-checked decision tables?",
+   "area": "governance",
+   "techniques": [
+    "formal-methods",
+    "measurement"
+   ],
+   "question": "When laws for finite decision tables are re-proved with gdp-wired and checked against Python references, does it find new real weaknesses, and is it faster than native Bend?",
+   "status": "frozen-internal",
+   "date": "2026-10-25",
+   "finding": "In the ops-decisions family, 38/38 original laws were proven, 42/42 source Bend mutants were killed, and 228,518 production parity cases showed zero divergences. The report lists proposed real weaknesses as zero in both families, which fits a control on tables that were already finite and checked. Cold proof time was mixed: root-cause took 5045.685 ms for gdp against 4584.504 ms for native Bend, while lease took 1237.197 ms against 3716.411 ms and placement 895.135 ms against 3096.972 ms.",
+   "caveat": "All runs were on one shared host with 1 CPU and 2G, the timings are medians of three cold runs, and independent adjudication of the findings is still pending. The per-law Bend timing is amortized, and the real incident histories could not be replayed in full.",
+   "why": "It shows that proof tooling mostly confirms already-checked decision logic here, and that a general speed advantage is not supported.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "count-table-vs-live-06b-scorer",
+   "title": "does a zero-cost count table beat the live 0.6b shadow scorer?",
+   "area": "small-models",
+   "techniques": [
+    "measurement",
+    "algorithmic"
+   ],
+   "question": "Does a zero-cost count-table or kNN rule predict the next tool better than the live qwen3-0.6b shadow scorer on the same frozen rows and candidate sets?",
+   "status": "frozen-internal",
+   "date": "2026-10-25",
+   "finding": "On identical frozen rows, the live 0.6B incumbent scored 0.254 on the GEPA metric on test_live, against 0.403 for the rule n-gram and 0.407 for kNN TF-IDF, neither of which uses a model. Rule minus incumbent was +0.148 on cal, +0.129 on test_hist and +0.149 on test_live, with all 95% session-bootstrap CIs excluding 0. The incumbent accepted 623 decisions at 0.25 precision, so it was wrong on about 3 of 4 accepted calls. It stayed shadow-only, so no action was taken on those answers.",
+   "caveat": "One dataset from a single agent harness, scored with the project's own GEPA metric. Only 70 sessions in test_live. No arm passed the 0.95 precision gate, so this shows the incumbent is weak, not that the rule is good enough to act on.",
+   "why": "A cheap count table is a baseline that any learned next-tool scorer has to beat before it earns a place in the loop.",
+   "interesting": true,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "paired-harness-fx-vs-omp-review",
+   "title": "fx vs OMP on the same review task: faster or better?",
+   "area": "research",
+   "techniques": [
+    "measurement",
+    "model-routing"
+   ],
+   "question": "On one source-review task with the same brief and model, how do two agent harnesses (fx and OMP) compare on wall time, tokens and review quality?",
+   "status": "frozen-internal",
+   "date": "2026-10-23",
+   "finding": "On the same brief and model, fx finished in 54 seconds with a quality score of 4, and OMP finished in 244 seconds with a score of 5. The fx run needed 1 intervention after a failed first launch, and OMP needed 0. Reported tokens are not comparable: fx reported 368083 input and 1184 output, and OMP reported 107766 input and 7203 output. Neither run has a recorded cost.",
+   "caveat": "This is a single pair of runs. The fx output was graded by the OMP-side lab reviewer and the OMP output by the task owner, so the graders differ and may favor OMP. The fx and OMP token figures are reported differently, and cost_usd is null for both.",
+   "why": "It shows that harness choice can trade speed against review depth, and that fair comparisons need independent graders and a consistent cost record.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "ci-gate-wait-last-lane",
+   "title": "is ci gate wait set by the last lane, not runtime alone?",
+   "area": "fleet",
+   "techniques": [
+    "measurement",
+    "scheduling"
+   ],
+   "question": "Which CI lanes and setup costs set the gate wait for PR runs, and does cutting runtime in one lane move it?",
+   "status": "in-progress",
+   "date": "2026-11-02",
+   "finding": "A replay of 169 gated PR runs gives a gate wait p50 of 456 s. The last lane to finish was Python in 65 runs, Windows arm64 in 56 and JS in 43. In the model, taking Python runtime to zero only moves p50 to 426 s, and cutting Python and Windows by 60 s each gives 397 s. Windows-last runs have a queue p50 of 84 s, and setup cost is mostly cache extract and git unpack I/O (tool discovery is 0.78 s median). Separately, one JS job went from 304 s to 170 s on 32 vCPU fresh VMs, kept with an open flake risk.",
+   "caveat": "The gate-wait reductions are replay-model estimates, not live changes. The JS speedup rests on a handful of runs on a hosted runner, and a 30 ms timing test failed once in the faster arm, so its flake rate is unmeasured.",
+   "why": "If the gate waits on whichever lane finishes last and on queueing, speeding up one lane's runtime barely moves it, so effort should go to the other lanes and to setup cost.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "hermes-unattended-window-audit",
+   "title": "did hermes work continuously during a 4.5-hour unattended window?",
+   "area": "hermes",
+   "techniques": [
+    "measurement",
+    "scheduling"
+   ],
+   "question": "When told to keep working continuously while the owner was away, did the Hermes agent actually work on the top priorities for the whole 11:00 to 15:30 window?",
+   "status": "frozen-internal",
+   "date": "2026-10-28",
+   "finding": "No. Turn envelopes covered only 69.23 of 270 minutes (25.64%). The scheduled continuation ran five times and paused itself at 13:27:40, and the last run finished at 13:28:23. It produced two live configuration fixes and one source-only resource-QoS change, but it did not deliver the requested end-to-end voice, annotation and turbo workflow, restore build admission, or prove cluster recovery.",
+   "caveat": "This is a single retrospective audit of one window on one fleet. Envelope time excludes asynchronous subprocesses and a second profile's work, and the stores were read live, not as an atomic snapshot. The contention explanation is corroborating evidence, not a controlled estimate.",
+   "why": "Periodic bounded jobs and a scheduler that reports success per run can look like continuous ownership while delivering little, so unattended-agent claims need outcome checks.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "readme-labels-vs-agentic-scans",
+   "title": "do one-shot readme labels match agentic repo scans?",
+   "area": "fleet",
+   "techniques": [
+    "model-routing",
+    "measurement"
+   ],
+   "question": "Can cheap one-shot README labels reproduce the kind label from a read-only agentic repo scan, and does a QA re-scan on a different model family agree with the scan?",
+   "status": "in-progress",
+   "date": "2026-10-20",
+   "finding": "One-shot README labels matched the Opus scan's kind in only 4/17 (Groq), 4/10 (NIM) and 2/5 (MiniMax) cases, so README-only labels do not reproduce an agentic scan. A different-family QA re-scan of 6 Opus scans had mean agreement 0.83 on factual fields. Re-scans carried all four sections in 30/34 repos vs 25/34 in the earlier wave.",
+   "caveat": "This is a mid-run snapshot: the last 6 scans were still pending and the end state was not recorded. Samples are small, kind is a soft label, and QA used a single model on one batch.",
+   "why": "It shows whether cheap label lanes can replace costly agentic scans when routing work across free and paid models.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "lfm3-eval-blocked-preflight",
+   "title": "could we run the lfm3 eval locally? not yet",
+   "area": "small-models",
+   "techniques": [
+    "local-inference",
+    "measurement"
+   ],
+   "question": "Can LFM3-1.7B be evaluated locally against its preregistered bar (IFEval and IFBench, 200 items each, versus Qwen3-1.7B) on the available GPU and runtime?",
+   "status": "proposal",
+   "date": "2026-10-27",
+   "finding": "No model ran. A preflight on the desktop found 1,125 MiB free of 12,288 MiB GPU memory, with resident services holding the rest. The installed llama.cpp build has no lfm3 architecture mapping, so a compatible runtime must be pinned separately. The preregistered design (200 items per benchmark, paired against Qwen3-1.7B) is frozen, and there is no adoption recommendation.",
+   "caveat": "Single-machine, single-moment capacity snapshot, not a current admission decision. The runtime finding covers only the installed build, not current upstream. No outputs exist, so the vendor scores (IFEval 96.66, IFBench 73.03) are unreproduced vendor claims.",
+   "why": "It shows that vendor benchmark claims for small models often cannot be checked on shared local hardware without a free GPU window and a matching runtime, and it fixes the pass/fail design before any outcome is seen.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "live-surface-vs-hermes-latency",
+   "title": "is a live surface faster than a plain hermes call for short prompts?",
+   "area": "generative-ui",
+   "techniques": [
+    "measurement",
+    "output-format"
+   ],
+   "question": "Does the live surface answer a short one-sentence prompt faster than a plain hermes call, and how long does the first generated HTML take?",
+   "status": "frozen-internal",
+   "date": "2026-10-20",
+   "finding": "Over 10 runs each, the live surface had a lower median total time than plain hermes (1917.3582440000027 ms vs 3127.137563999997 ms) and a lower median time to first token (1665.117133000007 ms vs 2512.1594509999995 ms). The p95 totals were close (5864.513006999998 ms vs 6203.059935999998 ms). The first generated HTML was slow, with a median of 18490.68031499999 ms over 3 runs, and one run took 63702.373088999986 ms.",
+   "caveat": "Only 10 runs per arm and 3 first-HTML runs, on one machine against a local server. The tail latencies overlap, and two end-to-end demo runs showed first HTML at 16.0 s and 89.3 s, so first-HTML time varies a lot.",
+   "why": "A live surface only helps if it responds quickly, and the slow first HTML shows where the wait is.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "memory-recall-eval-before-after",
+   "title": "did the memory recall change fix questions the baseline gave up on?",
+   "area": "memory",
+   "techniques": [
+    "measurement",
+    "search-optimization"
+   ],
+   "question": "On a fixed set of memory-recall questions with known gold sessions, does the changed recall setup answer questions that the saved baseline answered UNKNOWN?",
+   "status": "in-progress",
+   "date": "2026-10-26",
+   "finding": "In the baseline run, most visible questions ended in UNKNOWN, including q02, q03, q04 and q07, each marked correct: false. In the later after runs, the same questions q02, q03, q04 and q07 were marked correct: true, with a handle given. q01 also moved from UNKNOWN to a specific firmware-file answer by the second after run. No overall accuracy was computed, because the files are truncated.",
+   "caveat": "The evidence is truncated, so there are no totals. The visible rows are a subset, scoring flags come from the harness, and each run was a single pass. Some answers rest on search previews, and the changes between the after variants are not described.",
+   "why": "It shows whether a memory-recall change turns honest UNKNOWN answers into correct, cited ones without raising false-confident answers.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "recall-probes-pass-sources-stale",
+   "title": "recall probes pass while source freshness fails the check",
+   "area": "memory",
+   "techniques": [
+    "measurement"
+   ],
+   "question": "Does the memory recall check pass all its probes and also keep its session sources fresh against disk?",
+   "status": "frozen-internal",
+   "date": "2026-10-27",
+   "finding": "Every recall probe in the first run passed with packet and MCP status ok, but the unit still exited with status 1 after 28.0 seconds because the overall pass flag and sources.ok were false. Four session sources were reported behind disk by 8 h, 10 h, 985 h and 26 h. The same failure repeated in later runs that day, and the 985 h and 10 h sources never cleared.",
+   "caveat": "One day on one machine, with a small fixed probe set and no control. The failure comes from the freshness check, not from recall quality, and the receipts do not say why the sync lagged.",
+   "why": "A recall check that passes its probes can hide stale indexed sources, so the pass flag has to cover freshness too.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "slm-capacity-needs-measured-cost",
+   "title": "does a small model beat the frontier on measured cost, by risk class?",
+   "area": "small-models",
+   "techniques": [
+    "model-routing",
+    "formal-methods",
+    "measurement"
+   ],
+   "question": "When economics are measured, does a small local model's expected cost beat the frontier call's cost for each risk class, and what capacity does it earn?",
+   "status": "frozen-internal",
+   "date": "2026-10-24",
+   "finding": "Under a latency-only proxy, the qwen2.5-0.5b example compiled to read allowed_k=10, reversible-mutation allowed_k=0 and destructive allowed_k=0. The hardest required cell (T4 k10) had an expected cost of 7028.912 ms for reads, below the 7999.089 ms frontier baseline. For mutations its expected cost was 11393.709 ms, above that baseline. Missing, expired or assumed costs grant no capacity.",
+   "caveat": "This is one small model on one device with a latency-only proxy. The error costs come from observed frontier recoveries, not from executed small-model errors. The sample was selected, and no destructive-risk cost was measured. The result is capacity eligibility, not deployment authority.",
+   "why": "Capacity is granted only where measured costs beat the frontier, so a small model is not trusted with risky actions on assumed economics.",
+   "interesting": true,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "qwythos-9b-vs-qwen-base-budget",
+   "title": "does qwythos-9b finish more reasoning cases than its qwen base?",
+   "area": "small-models",
+   "techniques": [
+    "local-inference",
+    "measurement"
+   ],
+   "question": "Under the same local protocol and a fixed 2048-token response budget, does Qwythos-9B (Q4_K_M) complete more reasoning and JSON-format cases than the existing Qwen3.5-9B Q4_K_M baseline?",
+   "status": "frozen-internal",
+   "date": "2026-10-25",
+   "finding": "Qwythos completed 11 of 12 reasoning cases correctly with 1 token-limit truncation, against 6 of 12 and 6 truncations for the Qwen3.5-9B base; strict JSON finals were 11 vs 4. Neither model gave a completed incorrect answer, so the gap is mostly completion efficiency under the token budget. Median decode speed was similar (77.62 vs 74.88 tokens/s), and the median request time was 7.73s vs 25.40s because Qwythos generated shorter responses.",
+   "caveat": "One seed, a small hand-generated suite with easy controls, no counterbalanced order, and two separately converted Q4_K_M files with different provenance; the 2048-token budget is well below the publisher's 16384 recommendation, so truncated runs do not show lack of reasoning ability.",
+   "why": "It shows that a local 9B model's usable accuracy under a fixed token budget can depend on how concisely it reasons, not only on decode speed.",
+   "interesting": true,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "rate-limit-traces-vs-exact-ceilings",
+   "title": "can old traces recover exact provider rate limits?",
+   "area": "fleet",
+   "techniques": [
+    "measurement",
+    "scheduling"
+   ],
+   "question": "Can retained local traces recover every provider's exact RPM, TPM, RPD, or concurrency ceiling?",
+   "status": "frozen-internal",
+   "date": "2026-10-19",
+   "finding": "No. The traces explain several limit mechanisms, such as plan windows, credit exhaustion, adaptive waits and oversized-request rejections. They do not give every provider's exact ceiling. Saved Cerebras gpt-oss-120b headers show 1000 RPM, 500,000 TPM, 1,440,000 RPD and 720,000,000 TPD as historical observations, and small adapter runs had zero reported 429s. The proposed starting policy of concurrency 1 with 10s spacing, and a 60s cooldown after an unhinted 429, is a heuristic and not a measured provider maximum.",
+   "caveat": "The analysis uses retained traces only. No provider was probed, the quota database was damaged, and the header values are historical and not proof of current entitlement. Concurrency and pacing values are untested proposals.",
+   "why": "It stops historical headers and heuristics from being treated as real quota limits when scheduling requests across providers.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "rfc143379-consent-rename-probe",
+   "title": "does the memory consent gate survive renaming the test identifier?",
+   "area": "hermes",
+   "techniques": [
+    "measurement"
+   ],
+   "question": "Does the RFC 143379 candidate's no-retain consent gate still block writes when only the fixture identifier is renamed, and is the candidate ready to deploy?",
+   "status": "frozen-internal",
+   "date": "2026-10-30",
+   "finding": "No. On a hosted runner, the original consent challenges gave 12 passes and 0 failures. The same 12 scenarios with only the identifier renamed gave 0 passes and 12 failures, and every renamed identifier landed directly in USER.md or MEMORY.md. The original shared probe file gave 22 passes / 1 skip, and the skipped orphan-recovery probe means that invariant is unverified. The full real-model A/B/C experiment was not run.",
+   "caveat": "This is a write-boundary test on one candidate build with a compatibility dependency environment, not the canonical lockfile/CI setup. It is not an end-to-end model consent experiment, because the no-save metadata stays in the fixture. The 297-case author battery was not independently executed.",
+   "why": "It shows the candidate's consent gate matches the fixture's exact identifier prefix, so passing the original tests overstates its safety.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "summary-truncation-not-length-caps",
+   "title": "are truncated summaries hitting their length caps?",
+   "area": "memory",
+   "techniques": [
+    "measurement"
+   ],
+   "question": "Do real-data replay summaries that look truncated actually hit one of the configured length caps?",
+   "status": "frozen-internal",
+   "date": "2026-11-03",
+   "finding": "Of 526 summaries, 479 had a null finish_reason and 415 ended with an unterminated tail. Zero summaries had a length at any of the caps (4000, 8000, 12000, 16000, 20000), so the length caps do not explain the apparent truncation.",
+   "caveat": "Null finish_reason and an unterminated tail are proxies for truncation, not confirmed truncation. This is a single dataset with no control, and the cause was not identified.",
+   "why": "Raising length caps would not fix these summaries, so the real cause must be found elsewhere.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "shadow-judge-calibration-incomplete",
+   "title": "has the shadow judge been calibrated yet? not so far",
+   "area": "small-models",
+   "techniques": [
+    "measurement"
+   ],
+   "question": "Can the shadow judge's failure calls be calibrated against a 40-case reviewed cohort before any model gets credit from it?",
+   "status": "in-progress",
+   "date": "2026-10-25",
+   "finding": "The cohort selected 40 cases (27 reviewed failures, 13 reviewed negatives), but only 1 was evaluated and 2 judgments were recorded, and both are marked unknown. Precision is null and recall reads 0.0, with a 95% Wilson interval of 0.0 to 0.6576197724933469, so there is no usable estimate. Scores stay disabled and nothing is used for model credit.",
+   "caveat": "The run is incomplete: both recorded judgments were unparsed (unknown), so the 0.0 recall reflects missing results, not judge quality. It is a single judge model on one cohort, with no comparison arm.",
+   "why": "Judge-based routing credit is only trustworthy once the judge's precision and recall are measured against reviewed labels.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "legacy-label-timestamp-recovery",
+   "title": "can timestamps recover labels for legacy tool-call rows?",
+   "area": "small-models",
+   "techniques": [
+    "measurement",
+    "algorithmic"
+   ],
+   "question": "Can legacy shadow-learner rows that lack session and tool-call IDs be turned into trustworthy labels by matching on a plus or minus 2 second timestamp window and tool name?",
+   "status": "frozen-internal",
+   "date": "2026-10-24",
+   "finding": "Of 70551 eligible legacy rows, only 32672 had a single candidate match, 34211 were ambiguous and 3668 had none. The collision rate among matched rows was 51.15%. The recovery tier was dropped and 0 rows were added to the gold or training labels.",
+   "caveat": "One recovery attempt with a single window and only tool name plus timestamp as keys. The correctness of the unique matches was never checked against ground truth, which is why they stayed non-gold. Single machine, internal evidence only.",
+   "why": "It shows that old logs which discarded identity cannot be honestly relabelled after the fact, so label quality has to be enforced when the data is written.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "trace-census-recarried-context",
+   "title": "how much context is re-carried in agent traces, and can a cheaper rung take over?",
+   "area": "small-models",
+   "techniques": [
+    "context-reduction",
+    "model-routing",
+    "measurement"
+   ],
+   "question": "How much inferred prefix is re-carried across OMP and Hermes agent traces, and can a cheaper model rung take over those decisions without losing correctness?",
+   "status": "frozen-internal",
+   "date": "2026-10-24",
+   "finding": "The census scanned 3,261 OMP JSONL files and 12 database sources. It reports re-carried context as observed character counts, not billing or proven savings. Only 1850 of 72563 receipt rows could be joined to an actual call (1838 unique keys across 29 sessions), and executed_action was null on every row. The cheapest-rung question is therefore unresolved, and no Qwen/SLM inference was run.",
+   "caveat": "Re-carried figures are character counts of an inferred prefix, with approximate tokens as characters divided by 4. They include repeated content and are not provider payloads or cache misses. Hermes history is an upper-envelope reconstruction. The answer key is thin, with only 1850 joinable rows. This is a single run with no control.",
+   "why": "Without an answer key, any claim that a smaller model can handle these decisions cannot be checked, so the join coverage has to be fixed before routing work continues.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "slm-context-injection-baselines",
+   "title": "does bounded context injection help small models? baselines done, replay partial",
+   "area": "small-models",
+   "techniques": [
+    "context-reduction",
+    "measurement"
+   ],
+   "question": "Does bounded context injection change small-model decisions on a frozen replay, compared with model-free baselines?",
+   "status": "in-progress",
+   "date": "2026-10-24",
+   "finding": "On the held-out test split, a dev-selected nearest-neighbour baseline reached 83.0% agreement on router model choice (majority 67.9%) and 80.7% on the first-tool proxy (majority 50.9%). Neither reaches the predeclared 95% agreement threshold. The model replay is incomplete: only 245 of the 2,370 requests per model reached durable completion (Qwen2.5 only), so there is no variant comparison and no quality null result yet.",
+   "caveat": "Model arms have no usable result yet. The memory and skill arms are empty-context controls. Tool labels are a weak behavioral proxy, the router labels measure teacher imitation, and the test splits have only 10 router task groups.",
+   "why": "It sets the model-free bar that any context-injected small model must beat before injection is worth adding.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "slm-router-per-decision",
+   "title": "does picking a small model per decision beat a fixed model?",
+   "area": "small-models",
+   "techniques": [
+    "model-routing",
+    "measurement"
+   ],
+   "question": "Does selecting a local small model before each computer-use decision improve independently scored task success at measured wall-clock latency, compared with a fixed model and a confidence cascade?",
+   "status": "in-progress",
+   "date": "2026-10-23",
+   "finding": "The native run of the learned-tree router (R2) on the 11 held-out tasks passed 4 of them over 37 decisions, while the other policies were still running. The frozen static corpus has 163 decision nodes; on the old laptop the 1B model got 71 of 163 correct (31 of 63 held-out) with a warm p50 latency of 2.9450016629416496 s. No router win is established yet.",
+   "caveat": "Partial results only: the fixed-model and cascade comparison arms have not finished natively, and the static replay is a proxy rather than live task success. The warm latency is from a single machine.",
+   "why": "Routing among small local models only pays off if it beats the best fixed model after counting overhead, and this run is built to test that.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "state-laws-live-check",
+   "title": "most state-law claims hold on live probes, five fail",
+   "area": "governance",
+   "techniques": [
+    "measurement",
+    "formal-methods"
+   ],
+   "question": "Do the written state laws match the live system when each claim is checked with read-only probes?",
+   "status": "frozen-internal",
+   "date": "2026-10-24",
+   "finding": "A read-only live check of 57 state-law claims found 47 live-true, 5 live-false and 5 unknown. The probes made no synthetic sends and no model calls, and changed no services or branches.",
+   "caveat": "This is a single point-in-time snapshot on one machine with no repeat run. The 5 unknown results could not be resolved, for example because no loaded-source attestation was available or access was denied. Only the summary counts are cited here; the per-claim detail file was not fully reviewed.",
+   "why": "Laws that are written down but not true of the running system give false confidence, so checking them against live state shows where the rules and reality have drifted apart.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "json-render-readonly-smoke",
+   "title": "does json-render work as a read-only renderer for t3?",
+   "area": "generative-ui",
+   "techniques": [
+    "output-format",
+    "measurement"
+   ],
+   "question": "Does the stock json-render package, with a custom read-only component registry, behave as an isolated renderer candidate for T3 generative UI?",
+   "status": "frozen-internal",
+   "date": "2026-11-02",
+   "finding": "Six tests passed and zero failed. The catalog accepted the declared fixture and rejected an unregistered component, and the stock React renderer produced semantic HTML through the read-only registry. One-character chunk delivery compiled to the same spec as whole-stream replay, and an interrupted prefix rendered with a missing-child warning and then resumed. Verdict: proceed as an isolated candidate, do not adopt in T3 yet.",
+   "caveat": "Authored fixture data on one machine, not model-generated output, not a speed benchmark, and not a T3 integration. Hydration, native mobile, accessibility, and adversarial limits were not tested, and OpenUI was not run.",
+   "why": "It shows whether a schema-constrained renderer is safe to explore for generated UI before spending effort on live model comparisons.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "t3code-front-of-house-rfc",
+   "title": "can one agent front end replace the side loops that keep failing?",
+   "area": "hermes",
+   "techniques": [
+    "measurement",
+    "scheduling"
+   ],
+   "question": "If one agent front end owns orchestration, scheduling and usage data instead of several competing layers, do agent claims, capacity use and memory capture improve against the audited baselines?",
+   "status": "proposal",
+   "date": "2026-11-02",
+   "finding": "Proposal, not yet run. The RFC's own failure audit gives baselines: 523 runs claimed success with failing tests, the Claude pace was 0.27, and a replay eval scored 0.24 for the current memory system against 0.71 for a correction-capture arm. The planned tests are an overnight window with per-hour tick receipts and zero red-test results reported as success, and a Claude pace of at least 0.8 over a week without manual model picking.",
+   "caveat": "The baselines are the RFC's own audit numbers, which I could not independently re-check. Nothing in the RFC has been implemented or re-measured, it is one operator's setup, and several layers have no numeric pass criterion.",
+   "why": "It sets baselines and pass criteria before the work starts, so the later result can be judged against them.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "tern-omp-resume-test",
+   "title": "does tern restore omp panes after a crash, and which ones fail?",
+   "area": "research",
+   "techniques": [
+    "measurement"
+   ],
+   "question": "Does Tern 0.9.5 automatically restore an interactive OMP pane after daemon death and after an isolated display or daemon restart, and does closing only the window keep the agent process alive?",
+   "status": "frozen-internal",
+   "date": "2026-10-25",
+   "finding": "On a private headless display, Tern 0.9.5 restored a prompt-free interactive OMP pane after daemon kill and after a full display and daemon restart, with the earlier turn visible, and closing only the window kept the same agent process alive. One failure was reproduced: two panes launched with an initial positional prompt did not restart, because Tern appends --restore and OMP rejects it with '--restore takes no prompt' (both exited with code 2).",
+   "caveat": "Single machine, one prompt-free pane and two prompt-launched panes, OMP only; Hermes resume and restore of interrupted tool or subagent work were not tested.",
+   "why": "Restore that silently fails for prompt-launched panes would lose agent sessions after a crash, so the relaunch command needs fixing.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "ctx-memory-projection-peak-rss",
+   "title": "does projecting the oversized cell avoid the gigabyte memory peak?",
+   "area": "memory",
+   "techniques": [
+    "measurement",
+    "context-reduction"
+   ],
+   "question": "Does a projected read path that copies only the needed bytes avoid the large memory and scratch use that the current path shows on a database with one oversized cell?",
+   "status": "in-progress",
+   "date": "2026-10-25",
+   "finding": "In the baseline, a database with a 387973120-byte oversized cell peaked at 1142484 KiB RSS and 387940352 bytes of scratch. The same cases with no oversized cell peaked at 15784 KiB. The projected path stayed at 15768 KiB RSS with 0 sampled scratch bytes, copying only 265 bytes. In the 6400 case it took 0.11836541793309152 s against 1.7850085829850286 s at baseline.",
+   "caveat": "Single machine, one run per case and four synthetic databases. The projected result is a projection or prototype, not a deployed repair. The separate before/after pressure captures did not show recovery: the baseline query timed out and the pressure figures rose slightly after the changes.",
+   "why": "Memory spikes from oversized cells can starve other work, so knowing whether a projection removes them guides the repair.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "zig-pair-avrea-vs-github-runner",
+   "title": "did the avrea runner beat github on the zig benchmark? no gate passed",
+   "area": "fleet",
+   "techniques": [
+    "measurement"
+   ],
+   "question": "Does the Avrea 4-vCPU runner finish the paired Zig benchmark faster than the GitHub standard runner, with both passing the full six-step gate?",
+   "status": "frozen-internal",
+   "date": "2026-10-24",
+   "finding": "All four samples failed the full gate, so no speedup is accepted. Avrea job seconds were 578 and 587 against 1005 and 1234 on the GitHub standard runner. Avrea failed 38 tests with 13 crashed, while the standard runner failed 1.",
+   "caveat": "Only two samples per provider, and none passed. The gate outcomes differ between providers, so the shorter Avrea time on a failing run is not performance evidence. Cache and harness differences also rule out a strict cold-versus-cold comparison. The Avrea permissions cause is an inference, not a diagnosed syscall.",
+   "why": "A faster runner that fails the test gate has not shown it is faster, so the failures must be fixed before any speed claim is made.",
+   "interesting": true,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "local-model-skill-draft-validity",
+   "title": "can a small local model draft skills as valid output?",
+   "area": "hermes",
+   "techniques": [
+    "local-inference",
+    "measurement"
+   ],
+   "question": "Can a local model turn isolated agent sessions into installable skill drafts with valid structured output, and do those drafts then pass independent qualification?",
+   "status": "in-progress",
+   "date": "2026-10-10",
+   "finding": "A 3b local model exited 1 and wrote 0 of 2 expected skill files because its output was not a valid JSON object. A 7b coder model exited 0 and wrote 2 of 2 expected skill files, both runs at $0 API cost on 1 sampled record out of 9. Neither set of drafts was installed and independent qualification is recorded as not_run, so draft quality is unmeasured.",
+   "caveat": "One run per model on a single sampled record out of 9, with no repeats. Run 001 does not record the seed or corpus hash, so the two runs may not have had identical input. Output validity says nothing about skill usefulness, and the receipts disclaim any efficacy claim.",
+   "why": "Whether small local models can produce well-formed skill drafts is the first gate before spending effort on qualifying them.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "photo-grounded-pbr-heldout-benchmark",
+   "title": "can real photos improve generated pbr textures under held-out judging?",
+   "area": "research",
+   "techniques": [
+    "measurement"
+   ],
+   "question": "Can smartphone or DSLR photos improve generated PBR material textures, judged on held-out cameras and lighting, without breaking projection or geometry?",
+   "status": "proposal",
+   "date": "2026-11-02",
+   "finding": "The design compares three variants (baseline, photo-conditioned, refined) on the same locked mesh. Held-out views and lights are used only for scoring, and spatial error and multi-light response error are reported separately. An offline evaluation harness exists as a draft with 11 synthetic contract tests passing in CI, but no real photos have been measured and every experiment item is still unchecked.",
+   "caveat": "Only synthetic contract tests have run. This is not a material benchmark, physical reflectance is marked unverified, and no consented photo captures exist yet.",
+   "why": "Without independent held-out judging, a sharper-looking texture could be mistaken for a more accurate material.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/StableGen#1",
+     "url": "https://github.com/kvnloo/StableGen/issues/1"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "worker-handoff-reobserve-changed-source",
+   "title": "does worker b keep intent and re-observe changed source before editing?",
+   "area": "hermes",
+   "techniques": [
+    "context-reduction",
+    "measurement"
+   ],
+   "question": "When a persisted worker A hands off to worker B across two runtimes, does B keep the same intent revision and evidence identity, and does it re-observe changed or unavailable source before its first dependent edit?",
+   "status": "proposal",
+   "date": "2026-10-26",
+   "finding": "Designed but not run, and on hold. It depends on a prior work item's first-write fixture and gate, and that item's own receipt marks its red/green tests, typecheck, lint and runtime first-write enforcement as unverified. The only exact-head CI run found (40287937343) is a docs-drift success that does not exercise the handoff. No read-count, token or usage numbers exist, so savings are unknown. The planned pass criteria are an unchanged-source control with no unrelated rereads or restated goal, and a changed-source case that forces a re-observe before the first dependent edit.",
+   "caveat": "Nothing has been run. The test depends on an unverified upstream fixture, and a scripted provider would weaken the proof compared with a real second runtime.",
+   "why": "If handoffs are shown to keep intent and re-observe only when the source changed, agents can skip redundant rereads without writing against stale state.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/o8#77",
+     "url": "https://github.com/kvnloo/o8/issues/77"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "pomerado-vs-cua-repeat-site-tasks",
+   "title": "repeat website tasks: can a minted procedure beat plain cua?",
+   "area": "device-use",
+   "techniques": [
+    "caching-reuse",
+    "measurement"
+   ],
+   "question": "Can a locally minted, site-specific Pomerado MCP procedure reduce CUA caller planning and observation work on repeat website tasks without losing correctness, authorization, safe fallback or traceability, compared with CUA Driver and opencli?",
+   "status": "proposal",
+   "date": "2026-10-26",
+   "finding": "Nothing has been measured yet. The design is a randomized, counterbalanced three-arm comparison with at least 30 eligible paired blocks per workflow condition, testing one cold mint and 1, 5, 20 and 100 reuses, and every timing cell stays NOT_RUN until receipts exist. Only the fixture checks have run: 9/9 original fixture HTTP tests and 9/9 audited HTTP tests passed, and no Pomerado mint or A/B trial has been run.",
+   "caveat": "Design only. The passing tests cover the synthetic fixture server, not any arm. Chrome localhost navigation was blocked by policy in the test container (24/24 attempts), and no paid mint budget is authorized.",
+   "why": "It would show whether compiling a repeat web task once beats re-planning it on every run, counting mint cost and failures.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/cua#161",
+     "url": "https://github.com/kvnloo/cua/issues/161"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "local-inference-stack-3080ti",
+   "title": "which local inference stack wins per workload on a 12 gb gpu",
+   "area": "small-models",
+   "techniques": [
+    "local-inference",
+    "measurement",
+    "model-routing"
+   ],
+   "question": "Which reproducible local inference stack (standard GGUF on llama.cpp, Unsloth Dynamic GGUF, EXL3 via ExLlamaV3 and TabbyAPI, or llama.cpp MoE CPU offload) is Pareto-best per workload and quality floor on a desktop with a 12 GB RTX 3080 Ti?",
+   "status": "proposal",
+   "date": "2026-10-25",
+   "finding": "This is a design only, and nothing has been run. The bounded first phase probes hardware and engines, pins one 3–4B dense model, one 8–9B dense or tool-calling model and optionally a MoE model, then A/B tests the four stacks on fixed fixtures (an 8K coding prompt, an optional 32K context, and JSON and tool correctness). It requires reporting cold load, prefill, time to first token, decode speed, peak VRAM and RAM, and failures, and it produces a Pareto-ranked report rather than a single winner. The default is a read-only recommendation with no automatic model switching.",
+   "caveat": "No measurements exist yet. The plan covers a single host, and quants of different bit widths will not have identical quality, so results will not generalize to other GPUs.",
+   "why": "Choosing a runtime and quantization from benchmarks on unrelated GPUs can mislead, so measuring on the actual 12 GB card shows which stack really fits each workload.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/z0intelligence#231",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/231"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "chatgpt-effort-level-experiment-01",
+   "title": "which chatgpt effort level suits which worker job",
+   "area": "fleet",
+   "techniques": [
+    "model-routing",
+    "measurement"
+   ],
+   "question": "Which ChatGPT app effort level (Instant, Medium, High, Extra High, Pro) suits which worker job in turbo mode, judged by duration and blind rubric quality on one read-only analysis task?",
+   "status": "proposal",
+   "date": "2026-10-23",
+   "finding": "No result yet. The design sends the same read-only analysis task to 5 fresh chats, one per effort level, and measures duration (comment time minus send time) and blind rubric quality (correct citations, a working diff, behavior-change completeness, calibrated confidence). The real fix for the task already exists and serves as the reference answer. Answers are being posted but none has been scored.",
+   "caveat": "One task, one run per level, a single judge, and no repeats, so any ranking would be anecdotal. Results are not in yet.",
+   "why": "Choosing the cheapest effort level that still does a worker job well would cut cost and wait time for routine factory work.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "adreno-gemv-gated-overnight-search",
+   "title": "can a correctness-gated overnight search speed up the adreno gemv kernel?",
+   "area": "device-use",
+   "techniques": [
+    "search-optimization",
+    "measurement"
+   ],
+   "question": "Can a correctness-gated overnight physical search find a faster Adreno OpenCL GEMV kernel for real SmolLM2 weights without relaxing numerical acceptance?",
+   "status": "frozen-internal",
+   "date": "2026-10-16",
+   "finding": "An eight-hour physical search retained 1,049 evaluations across 201 distinct non-control configurations. The best cooperative kernel scored 12.595419x against the initial scalar control in resident 576x576 GPU-event measurements. All 31,610 parsed cases passed the unchanged all-row numerical gate, with a maximum absolute error of 1.9073486328125e-6, so results are not bit-exact.",
+   "caveat": "These are kernel-level results on one device with a single search session. They are not whole-call or inference speedups, and they make no claim of global optimality or energy savings. The new on-device acceptance of the integrated consumer is blocked, and the raw receipts are private.",
+   "why": "It shows how much a kernel search can gain on a phone GPU when the correctness gate is never relaxed.",
+   "interesting": true,
+   "links": [
+    {
+     "label": "kvnloo/llama.bend#13",
+     "url": "https://github.com/kvnloo/llama.bend/issues/13"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "adreno-gemv-bend-oracle",
+   "title": "does an adreno gpu gemv match the bend cpu oracle?",
+   "area": "device-use",
+   "techniques": [
+    "local-inference",
+    "measurement"
+   ],
+   "question": "Does a checked F32 GEMV run GPU-only on an Adreno 830 through a Bend foreign-C OpenCL effect and match the existing Bend CPU matvec oracle?",
+   "status": "frozen-internal",
+   "date": "2026-10-16",
+   "finding": "On a newer phone, all three real-weight vector patterns (ones, alternating-sign, final-basis) on the pinned SmolLM2-135M w/h0.q.bin tensor checked 576 rows each against production Bend M.mv, with maximum absolute and relative errors of 0. Enqueue, completion and readback ran GPU-only with no CPU fallback. 35 new regressions and make check passed, and seven native error cases passed; FIFO creation was denied by Android and left unexercised.",
+   "caveat": "Self-reported from one phone, one tensor and three vector patterns. It shows numerical agreement only: no inference, speedup, native-bang or upstream-promotion claim, and raw receipts stay private.",
+   "why": "It shows a Bend effect can drive a mobile GPU for a numerically checked matvec, which is a prerequisite for any later GPU inference work.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/llama.bend#10",
+     "url": "https://github.com/kvnloo/llama.bend/issues/10"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "mojo-max-ideas-for-llama-bend-cpu",
+   "title": "can mojo/max scheduling ideas speed up llama.bend cpu inference?",
+   "area": "small-models",
+   "techniques": [
+    "scheduling",
+    "local-inference",
+    "measurement"
+   ],
+   "question": "Can adaptive grain-size dispatch, dense owned memory layout, and typed prefill, borrowed from Mojo/MAX, speed up llama.bend CPU inference without breaking proofs or bit-for-bit output?",
+   "status": "in-progress",
+   "date": "2026-10-14",
+   "finding": "The plan has six experiments (M0 to M5) with a paired A/B protocol and a stop rule of under 5% improvement. So far a pinned 135M baseline finished all 20 long-decode calls with exact token IDs and text, and 224 synthetic kernel configurations passed numerical and bit gates. No runtime winner is selected, and the independent prefill replication missed the 5% lower-bound gate.",
+   "caveat": "Kernel results use synthetic operands rather than full 360M or 1.7B inference, and everything ran on one sandbox host with nine logical CPUs, so no end-to-end speedup is established.",
+   "why": "If scheduling and layout ideas from compiled-kernel runtimes carry over, they could cut CPU decode latency in a proof-bearing language without changing outputs.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/llama.bend#3",
+     "url": "https://github.com/kvnloo/llama.bend/issues/3"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "llama-bend-latency-experiments",
+   "title": "which llama.bend cpu latency bottlenecks are worth an upstream fix?",
+   "area": "small-models",
+   "techniques": [
+    "local-inference",
+    "measurement"
+   ],
+   "question": "Which CPU inference latency bottlenecks in llama.bend (startup, serial prefill, matvec, loader layout) are real enough to justify a narrow upstream PR?",
+   "status": "proposal",
+   "date": "2026-10-14",
+   "finding": "Proposal only: no experiment has been run. The upstream maintainer's baseline for the three SmolLM2 sizes at 16 threads is 76.7 ms and 133 ms per decode token for the two smaller models and about 423–426 ms for the largest, with 66.4 s startup for the largest. The plan lists priority-ordered experiments (profiling harness, serial prefill, matvec hotspots, dense loader, data layout, inference-only path, overlap, quantized weights). A performance PR needs at least 5% improvement outside A/B variation over at least 5 paired runs.",
+   "caveat": "All baseline numbers are source-reported by the upstream maintainer and not reproduced here. Every experiment checkbox is still unchecked.",
+   "why": "It fixes the evidence bar before any performance change is proposed upstream, so speedup claims have to be measured rather than assumed.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/llama.bend#1",
+     "url": "https://github.com/kvnloo/llama.bend/issues/1"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "agentrun-workflows-in-hermes-plugin",
+   "title": "can agentrun workflows run in hermes without a second execution authority?",
+   "area": "hermes",
+   "techniques": [
+    "measurement",
+    "scheduling"
+   ],
+   "question": "Can AgentRun reusable workflows run as an optional Hermes plugin without core edits, implicit tool grants, or a second execution authority, and is that justified over the existing hermes-workflows plugin?",
+   "status": "proposal",
+   "date": "2026-10-12",
+   "finding": "Designed but not run. The plan first requires choosing REUSE, INTEROPERATE, or DISCARD against the existing hermes-workflows DAG plugin before building a second runner. If justified, the first slice is a fixed read-only triage workflow with no provider key or side effects, then a comparison of baseline, hermes-workflows, and AgentRun on one approved task for full-turn p95, token spend, completion verification, and interruption reconciliation.",
+   "caveat": "Nothing has been built or measured. The issue itself notes there is no evidence yet that Hermes needs a second durable workflow engine, and the comparison covers only one task.",
+   "why": "It tests whether a new workflow engine adds value over an existing plugin, or just adds a second authority over execution.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/hermes-agent#490",
+     "url": "https://github.com/kvnloo/hermes-agent/issues/490"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "fft-kernel-fixed-quality-study",
+   "title": "does a finite-size fft or convolution kernel beat incumbents at fixed numerical quality?",
+   "area": "applied-math",
+   "techniques": [
+    "algorithmic",
+    "measurement"
+   ],
+   "question": "Does a finite-size FFT or convolution kernel from the math372 family #130 make a supported radar, weather, or scientific adapter faster end to end at fixed numerical quality?",
+   "status": "proposal",
+   "date": "2026-10-12",
+   "finding": "Work order only, not run, and deferred unless an FFT-heavy external adapter exists. The #130 result concerns exact complex arithmetic with unrestricted scalar coefficients (an exponent improvement of order 10⁻¹³) and does not imply floating-point FFT throughput, SIMD, GPU fusion or transfer gains. Acceptance requires repeatable full-workload p50/p95 timing, max/RMS error, a crossover by length and device, and a stop gate if no hot path exists.",
+   "caveat": "Nothing has been measured. The study depends on an FFT-heavy adapter existing and on an implementable finite circuit being available, and the work order was prepared by an AI with no independent review.",
+   "why": "It tests whether a theoretical arithmetic saving gives any real end-to-end speedup, and it treats a negative result as a valid outcome.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/gods-eye-view#215",
+     "url": "https://github.com/kvnloo/gods-eye-view/issues/215"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "exact-relief-matching-synthetic",
+   "title": "does exact relief matching hold on synthetic tests?",
+   "area": "applied-math",
+   "techniques": [
+    "algorithmic",
+    "measurement"
+   ],
+   "question": "Does an exact one-to-one relief matcher, with unknown access kept out of supported solutions, hold on small synthetic fixtures, and where does plain matching stop being enough?",
+   "status": "frozen-internal",
+   "date": "2026-10-13",
+   "finding": "A tiny exact 8×8 synthetic matcher passed 13/13 focused tests on Node 22.16, including checks on all 81 three-state 2×2 graphs and 100 deterministic 3×3 graphs. A capacity-aware follow-up reached 29/29 (16 new + 13 inherited; an interim run was 27/27) and, on a synthetic counterexample, nearest-first served 2 units while exact capacity-aware search served 4. A 4×4 stress run returned 16 units served in about 22.5 ms in a single local run.",
+   "caveat": "All results are local and synthetic, from one machine and one Node version. The code is an elementary exhaustive reference, not the near-linear algorithm. Node 24/26, hosted CI, full build and real-world accuracy were not verified, so the status is LIMITED/HOLD and it is not approved for field use.",
+   "why": "It shows that exact matching alone is not capacity-aware logistics, and that a simple exact reference is a usable baseline for testing any faster matcher.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/gods-eye-view#207",
+     "url": "https://github.com/kvnloo/gods-eye-view/issues/207"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "agentrun-over-cua-jev-use",
+   "title": "does agentrun over cua beat plain jev-use? (not yet run)",
+   "area": "device-use",
+   "techniques": [
+    "measurement",
+    "model-routing"
+   ],
+   "question": "Can AgentRun orchestrate one bounded observe, select, verify desktop task through the existing jev-use reference without changing the Cua Driver, and does it beat the plain jev-use baseline?",
+   "status": "proposal",
+   "date": "2026-10-12",
+   "finding": "This is a designed experiment, not a result. The first slice is plan-only with no desktop mutation: a fixed workflow over one jev-use fixture, using read-only observations, local candidate construction and verifier reads, with fake model answers (including ambiguous, abstain and stale capture) for control-flow tests. The acceptance items are all unchecked: refusal paths, Python/TypeScript parity, and an A/B comparison of latency, cost and completion against baseline jev-use, with a rule to remove the abstraction if it only adds overhead.",
+   "caveat": "Nothing has been run. There are no measurements, and the A/B outcome is unknown. Any live action is gated on proof and explicit authorization.",
+   "why": "It tests whether a general agent orchestration layer adds value over a purpose-built desktop-control reference, or only adds overhead.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/cua#140",
+     "url": "https://github.com/kvnloo/cua/issues/140"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "bend-kernels-trackinizer-e2e",
+   "title": "can bend kernels speed up trackinizer end-to-end?",
+   "area": "applied-math",
+   "techniques": [
+    "measurement",
+    "algorithmic"
+   ],
+   "question": "Can Bend kernels accelerate specific CPU-bound Trackinizer stages without changing its data model, API, or storage semantics, and does the gain survive end-to-end?",
+   "status": "proposal",
+   "date": "2026-10-08",
+   "finding": "Planned, not run: isolate pure batch kernels and time DB fetch, Python compute, Bend boundary, Bend compute, persistence and total wall time separately. Integrate only if the isolated kernel is at least 2x faster and representative end-to-end wall time improves by at least 20%, with identical semantics and a Python fallback. If the profile shows the system is DB-bound, optimize SQL and batching instead and keep Bend out of the hot path.",
+   "caveat": "Design only with no measurements; the prior note that a small serial Bend validator did not beat Python on latency is source-reported from an earlier experiment, not measured here.",
+   "why": "A kernel speedup is irrelevant if that kernel is a small share of the request, so the gate tests whether parallel runtimes help a mostly database-bound system.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/bend#5",
+     "url": "https://github.com/kvnloo/bend/issues/5"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "change-packet-vs-stale-diff-replay",
+   "title": "does a durable change packet beat replaying stale diffs?",
+   "area": "hermes",
+   "techniques": [
+    "context-reduction",
+    "measurement"
+   ],
+   "question": "Can a durable change description preserve intent across stale PR drift, classify aging operations independently, and shrink the review context needed to refresh them?",
+   "status": "frozen-internal",
+   "date": "2026-10-06",
+   "finding": "On one real stale-PR fixture, rematerializing the smallest implementation against current main cut changed lines from 824 to 82 and measured review context from 67,555 to 12,540 chars (5.39× smaller). A second old PR split into three independently aging outcomes (already on main and moved, invalidated, needs a decision). Of 17 PRs that were all green on 2026-08-04, 0/17 were safely replayable as-is by 2026-10-06 (8 implemented or superseded, 2 mixed, 7 needing a fresh decision).",
+   "caveat": "Only a few hand-picked fixtures on one fork, with no control; the rematerialized branch's targeted test run was still queued, so no passing execution receipt exists.",
+   "why": "It suggests keeping stale contributions as durable intent plus current-main checks, rather than continually rebasing every open PR.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/hermes-agent#453",
+     "url": "https://github.com/kvnloo/hermes-agent/issues/453"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "hermes-tern-attention-model",
+   "title": "what should hermes feel like inside tern before the native surface freezes?",
+   "area": "hermes",
+   "techniques": [
+    "measurement"
+   ],
+   "question": "What presentation and attention contract should Hermes follow inside Tern before the native surface design is frozen, and which of three variants gives the lowest attention cost?",
+   "status": "in-progress",
+   "date": "2026-10-06",
+   "finding": "The team built a deterministic 14-step fixture, an attention taxonomy and an OMP-native control (Variant A). It captured 42 real Tern screenshots of the authored fixture on an isolated headless compositor at narrow, normal and wide sizes. Variants B and C, glance-test timing, live Hermes in Tern and any attention result were never produced, and the issue was closed in favour of a later RFC.",
+   "caveat": "The screenshots replay an authored preview, not live Hermes. No glance test or other attention measurement was taken, and only the control variant was built.",
+   "why": "It shows how far a terminal-native UX experiment got before it was folded into a design RFC, and that the attention question stayed unanswered.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/hermes-agent#436",
+     "url": "https://github.com/kvnloo/hermes-agent/issues/436"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "training-provider-dry-run-probes",
+   "title": "is an external training repo's dry-run really read-only, and does its data fit our trainer?",
+   "area": "hermes",
+   "techniques": [
+    "measurement",
+    "formal-methods"
+   ],
+   "question": "Can Evolution Lab use an external evolutionary-training repo as a protocol-adapter training provider, given that its dry-run must make no inference calls and its extractor output must reach the trainer without silent loss?",
+   "status": "in-progress",
+   "date": "2026-10-10",
+   "finding": "Two bounded probes of the unmodified external libraries both failed their hypotheses. The extractor's output was accepted 1/1 by the skill sampler, but the trainer formatter produced zero conversations from it. The provider's --dry-run attempted one completions POST after a health GET returned 503, and a local test fixture refused that POST with 405 before any inference. A separate reuse control found an existing converter in the provider that maps the record, so no new converter is needed.",
+   "caveat": "These are fixture observations on synthetic data, on one machine, with the provider and extractor at pinned revisions. They say nothing about model quality or savings. The full provider adapter, protected-split negatives and any real training are not yet done, and total model cost is unknown.",
+   "why": "A training provider that can trigger inference during a dry-run, or silently drops samples, would break the fail-closed guarantee that protected eval data never enters training.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/evolution-lab#31",
+     "url": "https://github.com/kvnloo/evolution-lab/issues/31"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "lean-proof-binds-runtime-result",
+   "title": "can a machine-checked proof bind the exact runtime result?",
+   "area": "governance",
+   "techniques": [
+    "formal-methods",
+    "measurement"
+   ],
+   "question": "Can a Lean-based verification layer add value beyond deterministic validation and hash checks by binding an execution receipt to the exact claimed task, attempt, artifact, and evidence?",
+   "status": "proposal",
+   "date": "2026-10-05",
+   "finding": "Designed but not run, so there are no results. The plan is a small versioned witness built from existing identities, a deterministic emitter that generates Lean propositions with concrete values, and five invariants: no evidence means not verified, declared metric must match measured metric, exact result binding, unknown or conflicting evidence fails closed, and execution is not verified success. It requires eight negative fixtures that must each fail for the intended reason.",
+   "caveat": "Nothing has been measured; the design stops or reduces to plain receipt validation if Lean only restates schema or hash checks, or if the witness emitter becomes a larger trusted codebase than the invariant it protects.",
+   "why": "A proof that typechecks means little unless it is tied to the exact result being claimed, so this tests whether formal checking catches false claims that simpler checks miss.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/aodl#43",
+     "url": "https://github.com/kvnloo/aodl/issues/43"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "immich-zoom-promotion-debounce",
+   "title": "does delaying full-size image loading during zoom help, and what does it cost?",
+   "area": "research",
+   "techniques": [
+    "scheduling",
+    "measurement"
+   ],
+   "question": "Does deferring Immich's web original-image promotion until zoom settles reduce frame gaps during zoom, and what does it cost in sharpness?",
+   "status": "frozen-internal",
+   "date": "2026-10-11",
+   "finding": "In a headless Chromium Canvas 2D surrogate, a 180 ms restartable debounce removed all >33 ms frame gaps at every size tested (3.84 MP: 3 → 0, 8.64 MP: 6 → 0, 11.76 MP: 11 → 0, 34.56 MP: 36 → 0). At 34.56 MP, immediate promotion had a 105.84 ms p95 versus 16.70 ms with the debounce, but sharpness arrived +675 ms after the gesture. At 3.84 MP immediate promotion was already about 16.7 ms p95 with original-quality frames during about 98% of gesture frames, so the debounce only added a +233 ms sharpness delay.",
+   "caveat": "Synthetic JPEGs in a headless Chromium Canvas 2D surrogate with 2 to 4 complete runs per policy; not the real Immich app, a hardware GPU, a network, or a user-quality test, and no size threshold was set.",
+   "why": "It shows that delaying full-size loading is a speed versus clarity tradeoff that pays off only for large images, which argues for a size-aware rule rather than an unconditional one.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/immich#3",
+     "url": "https://github.com/kvnloo/immich/issues/3"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "nested-scroll-targets-decision-executor",
+   "title": "can the decision model target nested scroll containers?",
+   "area": "device-use",
+   "techniques": [
+    "measurement",
+    "output-format"
+   ],
+   "question": "Can the decision executor scroll nested overflow containers, offered only when the engine proves the target is a scroll surface, without changing viewport scrolling?",
+   "status": "proposal",
+   "date": "2026-10-03",
+   "finding": "This is a design for engine-owned scrollability evidence: an optional scrollable state on executor nodes, so the decision model can target nested scroll containers. Acceptance criteria and a before/after benchmark of three currently failing scroll scenarios are planned. Nothing has been implemented or measured yet, and mobile parity is explicitly unclaimed.",
+   "caveat": "Design only: no implementation and no measurement, so the approach may not fix the three failing scenarios. Web only; mobile evidence of scrollability may not exist.",
+   "why": "Agents stall on pages with nested scroll containers because viewport scrolling moves nothing, so safe target discovery decides whether those flows can be completed.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/e2e#4",
+     "url": "https://github.com/kvnloo/e2e/issues/4"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "evidence-bundle-vs-reference-only",
+   "title": "does a bounded evidence bundle beat reference-only img2threejs?",
+   "area": "generative-ui",
+   "techniques": [
+    "measurement",
+    "search-optimization"
+   ],
+   "question": "Does a bounded ComfyUI evidence bundle (depth, foreground mask, optional material masks) improve img2threejs reconstruction over the reference-only pipeline at identical fitting budgets?",
+   "status": "proposal",
+   "date": "2026-10-03",
+   "finding": "Designed but not run. The A/B compares reference-only img2threejs against the same pipeline plus an external evidence bundle, measured on silhouette IoU, landmark reprojection error, depth-order violations, material-region agreement, render budget, wall-clock time and hard-gate failures. The bundle wins only if it improves holdout quality or reaches equivalent quality at lower render/search cost. A draft producer PR exists, but the first real-reference run and the equal-budget A/B are still pending.",
+   "caveat": "No measurements exist yet; the design has no stated sample size, and the first run will use a single reference image.",
+   "why": "It tests whether cheap external depth and mask evidence can cut render and search cost in image-to-3D reconstruction, before building a generic workflow compiler.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/ComfyUI#4",
+     "url": "https://github.com/kvnloo/ComfyUI/issues/4"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "thermo-evidence-selection-kill",
+   "title": "does thermodynamic sampling beat plain selection for picking context evidence?",
+   "area": "memory",
+   "techniques": [
+    "context-reduction",
+    "search-optimization",
+    "algorithmic"
+   ],
+   "question": "Can THRML sampling select verifier-valid context packs near the exact optimum, and does that cut context tokens without losing verified correctness?",
+   "status": "frozen-internal",
+   "date": "2026-10-02",
+   "finding": "The fixed THRML arm had 288/288 verifier successes across N8/12/16, but only 80/96 exact-optimum matches at N16. With adaptive pricing at partial N32, THRML selected 48/80 verifier-valid packs versus 73/80 for an any-valid baseline, and one task with 0/8 triggered the stop, so N64 and N128 were not run. An exact component-DP baseline verified 46/46 attempted tasks at the same or better frontier much more cheaply, so the decision was to kill further sampling investment on this cohort.",
+   "caveat": "The cohort is engineered (a small core plus disconnected noise) and the runs were on shared CPU, so the result may not carry over to real evidence pools. No context-token saving was demonstrated, and N64 and N128 were never run.",
+   "why": "It shows a cheap deterministic selector can match a more complex sampler on this kind of task, so thermodynamic complexity needs a landscape where simple methods fail.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/z0intelligence#106",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/106"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "perception-aware-latency-wave-plan",
+   "title": "what must be calibrated before the perception-aware latency wave can run?",
+   "area": "research",
+   "techniques": [
+    "measurement"
+   ],
+   "question": "Can perception-aware latency experiments (photon-referenced choice reaction time, motion orientation, frame-generation freshness, gaze age) be run separately for physical latency, motion clarity and human performance once the photon rig is calibrated?",
+   "status": "proposal",
+   "date": "2026-10-02",
+   "finding": "This is a plan, not a result: no experiment has been run. It lists seven research lanes and four ready test scripts, and it requires keeping physical latency (photon t10/t50/t90), reaction-time distribution, accuracy, motion accuracy by speed, frame deadline misses, and real versus generated frame state as separate measures instead of one score. Before any algorithm change, it asks to identify which limit dominates: stale software information, panel timing, motion persistence, generated-frame queueing, gaze staleness, or the human speed/accuracy tradeoff.",
+   "caveat": "Nothing is measured yet and the plan depends on a photon rig that is not yet calibrated; there are no explicit pass/fail thresholds, only a stop condition on identifying the limiting factor.",
+   "why": "Keeping latency, motion clarity and human performance separate avoids tuning an algorithm against a single score that hides which limit actually matters.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/frontier-kb#41",
+     "url": "https://github.com/kvnloo/frontier-kb/issues/41"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "live-mirror-vs-scoped-reads",
+   "title": "does a live state mirror beat scoped fresh reads?",
+   "area": "device-use",
+   "techniques": [
+    "caching-reuse",
+    "context-reduction",
+    "measurement"
+   ],
+   "question": "In a browser agent, which expensive operation actually disappears when state or procedure is retained: observation reads (scoped reads or an incremental mirror) or model decisions (checked execution)?",
+   "status": "frozen-internal",
+   "date": "2026-10-02",
+   "finding": "No arm removed real work on the tested fixture. The current contract's scoped reads are fetch-then-filter (identical CDP requests on 90/90 pairs), saving only payload (−2.7 kB per task on a quiet page, −94 kB on a churning page). The incremental mirror had 0 false-current in 90,659 covered-field checks but deleted no work, and checked execution deleted one decision per task (2 → 1) with no meaningful latency benefit. On 500-node pages the dominant cost is whole-page composition of about 245 ms per snapshot, which neither scoping nor a mirror can remove.",
+   "caveat": "One admitted browser fixture on Linux with a scripted chooser, no live-provider cells, 30 paired trials per comparison, and every timed block run under heavy machine load, so absolute times are inflated and the latency verdicts are inconclusive. Wrong-target effects were also not zero in the baseline and checked-execution arms.",
+   "why": "It shows that a persistent cache or a checked continuation has to beat simpler reads on removed work, not just on fidelity, before it is worth building.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/cua#107",
+     "url": "https://github.com/kvnloo/cua/issues/107"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "content-free-interaction-event-stream",
+   "title": "could a content-free interaction stream mine routines locally?",
+   "area": "research",
+   "techniques": [
+    "measurement",
+    "local-inference"
+   ],
+   "question": "Can a local-first event stream that records only actions, timing and outcomes, with no note content, support routine mining, UX benchmarks and optional prediction?",
+   "status": "proposal",
+   "date": "2026-10-01",
+   "finding": "An RFC proposes logging keyboard, pointer, command-palette and voice actions as content-free events carrying latency, success/failure and previous/next action ids. The events would feed routine mining, time-to-complete style benchmarks, shortcut suggestions and regression checks, with local-first storage, opt-in export, bounded retention and deletion. All seven acceptance criteria are unchecked, so nothing has been built or measured.",
+   "caveat": "Design only: no prototype, no data, no baseline and no stated threshold for what counts as successful routine detection.",
+   "why": "If routines and UX regressions can be found without storing document content, usage measurement becomes possible without a privacy cost.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "appflowy-interaction-cost-bench",
+   "title": "how much interaction cost do appflowy database tasks carry?",
+   "area": "device-use",
+   "techniques": [
+    "measurement"
+   ],
+   "question": "Can AppFlowy productivity be measured as observable interaction cost, especially for structured database work, with a fixed fixture benchmark?",
+   "status": "proposal",
+   "date": "2026-10-01",
+   "finding": "Nothing has been measured yet. The proposal is a desktop-first benchmark covering command palette, page open, keydown-to-paint, grid navigation, cell edit, multi-cell operations, view switching and row/property/filter work. It would record p50/p95 latency, keystrokes, pointer interactions, focus losses and completion time on fixed fixtures, check correctness before scoring latency, and set explicit regression thresholds.",
+   "caveat": "Design only: no benchmark has been built or run, no thresholds are chosen, and no baseline exists yet.",
+   "why": "Structured database work in note apps is often keyboard-poor, and a fixed benchmark would let keyboard and pointer workflows be compared on cost.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "relief-outage-capacity-replay",
+   "title": "does a road outage change a capacity-aware relief plan?",
+   "area": "applied-math",
+   "techniques": [
+    "algorithmic",
+    "measurement"
+   ],
+   "question": "On a fictional two-vehicle, two-zone fixture, does a new blocked-access evidence revision change a capacity-aware relief allocation while unknown access stays out of the selected routes?",
+   "status": "in-progress",
+   "date": "2026-10-14",
+   "finding": "After one supported route was closed by a new synthetic blocked-access revision, the capacity-aware optimizer's service fell from 4 to 2 synthetic units, while nearest-first stayed at 2→2. A non-critical closure kept 4→4. Unknown routes stayed limited, were never selected, and did not authorize route safety or dispatch.",
+   "caveat": "Entirely fictional fixture of two vehicles and two zones, tested locally on an unsupported Node version only, with no hosted CI, external data, practitioner comparison or real-world outcomes. Advisory only.",
+   "why": "It checks that a relief planner invalidates old plans and treats unknown access as unknown rather than open when conditions change.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/gods-eye-view#152",
+     "url": "https://github.com/kvnloo/gods-eye-view/issues/152"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "disaster-access-workspace-falsification",
+   "title": "does a provenance-aware disaster-access workspace beat a map and document baseline?",
+   "area": "research",
+   "techniques": [
+    "measurement"
+   ],
+   "question": "Does a provenance-aware disaster-access workspace help humanitarian practitioners answer fixed historical access questions with fewer epistemic errors and faster evidence verification than a conventional map plus source-document workflow?",
+   "status": "proposal",
+   "date": "2026-10-01",
+   "finding": "No study has been run. The preregistered design is a crossover test with about 10–12 domain practitioners using identical evidence, with two mid-task mutations (one blocked segment, one stale-open observation). The success gate requires zero application-generated unsupported safe/open claims, at least 90% recognition that a changed route needs re-evaluation, and a meaningful drop in time or navigation steps without worse correctness.",
+   "caveat": "Nothing is measured yet; the sample is small and is a product usability falsification pass, not population-level evidence. The replay and receipt layer drafted so far is pure data and does not show the hypothesis holds.",
+   "why": "It sets stop criteria in advance, so the product can be dropped if provenance does not improve correctness over existing tools.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/gods-eye-view#148",
+     "url": "https://github.com/kvnloo/gods-eye-view/issues/148"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "high-polling-input-latency-wave3",
+   "title": "does high-polling input get fresher, or only cheaper?",
+   "area": "research",
+   "techniques": [
+    "measurement"
+   ],
+   "question": "Across the input path from Linux evdev through SDL, Hyprland, Godot and the other layers, where do event age or per-event cost first scale badly with report rate?",
+   "status": "proposal",
+   "date": "2026-10-01",
+   "finding": "Nothing has been run yet. This is a planned set of input-latency experiments on five ready branches, to run once hardware and runtime are available. The pass rule is that a lower-CPU result counts as a latency win only if the newest usable input stays at least as fresh, and the first layer where event age or per-event cost scales badly must be found before any algorithm change.",
+   "caveat": "Design only: no measurements exist, and results will depend on the specific hardware and runtime used.",
+   "why": "High report-rate input devices cost more CPU, and it is unclear whether that cost buys fresher input or just more work.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/frontier-kb#39",
+     "url": "https://github.com/kvnloo/frontier-kb/issues/39"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "latency-wave2-information-age",
+   "title": "latency wave 2: measure information age before touching upstream",
+   "area": "research",
+   "techniques": [
+    "measurement",
+    "scheduling"
+   ],
+   "question": "Can a queued set of end-to-end latency experiments show where delay first diverges, using information age at display as the metric, before any upstream algorithm is changed?",
+   "status": "proposal",
+   "date": "2026-10-01",
+   "finding": "No runs yet: this is a preregistered plan of seven prioritized packets, starting with a wgpu #9559 cross-vendor fence-wait reproduction and a wgpu #9937 29/30 A-B-B-A present regression check, then vkd3d-proton, ALVR #3393, LatencyFleX, Mesa WSI and Monado packets. Each packet must keep raw frame samples, p50/p95/p99/p99.9, queue depth or deadline misses where available, an environment receipt and a repeated A/B or A-B-B-A result. No upstream algorithm changes until a first divergent timestamp is found or an offline policy wins across more than one workload family.",
+   "caveat": "Nothing has been measured; execution depends on hardware and runtime availability, and the 29/30 figure is only named in the plan, not reproduced.",
+   "why": "Fixing the metric (information age, not FPS) and the stop rule in advance keeps later latency claims from being tuned after the fact.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/frontier-kb#38",
+     "url": "https://github.com/kvnloo/frontier-kb/issues/38"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "session-aware-replay-benchmark-rfc",
+   "title": "session-aware replay separates model time from tool waiting",
+   "area": "fleet",
+   "techniques": [
+    "measurement",
+    "caching-reuse"
+   ],
+   "question": "Does ATOM need a session-aware agentic replay benchmark, rather than chat-completion microbenchmarks, to judge inference infrastructure for Hermes-style multi-turn, tool-heavy, cache-sensitive workloads?",
+   "status": "proposal",
+   "date": "2026-10-01",
+   "finding": "An RFC designs a synthetic, session-aware replay benchmark with four scenarios (interactive coding, research fan-out, scheduled durable agent, failure/recovery). It keeps inference time separate from tool-pause time, attributes prefix hits to HBM versus an external tier, and reuses ATOM's strict benchmark bundle. It lists acceptance criteria but has no implementation, run, or performance result.",
+   "caveat": "Design only: nothing has been built or measured, and the claim that microbenchmarks are insufficient is asserted, not tested against a baseline.",
+   "why": "Agent workloads with tool pauses and long-lived sessions stress caching and scheduling in ways single-request benchmarks hide, so the metric design decides what gets measured.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/ATOM#15",
+     "url": "https://github.com/kvnloo/ATOM/issues/15"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "frontier-offload-cost-displacement",
+   "title": "does frontier offload cut cost or just move it?",
+   "area": "small-models",
+   "techniques": [
+    "model-routing",
+    "measurement"
+   ],
+   "question": "When a path removes frontier calls or tokens, did it reduce scarce cognition cost, or only move work into local compute, retries, latency, tooling, or human correction?",
+   "status": "proposal",
+   "date": "2026-09-30",
+   "finding": "No results yet: this is a study design. It compares a baseline path against an offload path on the same work items, records a cost vector (frontier tokens, local compute, wall time, tool calls, retries, human correction) instead of one scalar, and treats missing telemetry as unknown rather than zero. Success is counted against an explicit verified-success denominator, and existing receipts cover token attribution and completeness but not a paired cost vector.",
+   "caveat": "Nothing has been measured; the planned first slice is an offline report on two synthetic examples, so it cannot show real cognition savings.",
+   "why": "Offload claims that only count frontier tokens can look like savings while the cost has moved elsewhere.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/tokenomics#20",
+     "url": "https://github.com/kvnloo/tokenomics/issues/20"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "usd-evidence-portable-receipts",
+   "title": "can usd evidence become one portable receipt?",
+   "area": "governance",
+   "techniques": [
+    "output-format",
+    "measurement"
+   ],
+   "question": "Can usdview Labs receipts and BuildUSD CI evidence be normalized into one portable z0.evidence.v0 receipt without changing either source?",
+   "status": "proposal",
+   "date": "2026-09-30",
+   "finding": "Nothing has been built or run. The design is a thin normalizer that leaves the Labs JSONL unchanged, records the repo and exact 40-char head SHA, maps safety abstentions and dropped stale actions to abstain (never pass), maps missing job or result evidence to unknown, and lists BuildUSD jobs as evidence items without rerunning CI. Planned tests cover all-green, failed-job, stale/abstain and missing-result cases.",
+   "caveat": "Design only: all requirement boxes are unchecked, no fixture exists, and the work is blocked on the v0 contract shape in a separate repo.",
+   "why": "A single receipt format that never turns an abstention or missing result into a pass makes evidence from different producers comparable and safer to trust.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/OpenUSD#17",
+     "url": "https://github.com/kvnloo/OpenUSD/issues/17"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "agency-long-horizon-proposal",
+   "title": "immediate approval can diverge from durable human agency",
+   "area": "research",
+   "techniques": [
+    "measurement"
+   ],
+   "question": "Does a predeclared viability/empowerment measure track durable material human agency better than immediate user preference in multi-stage simulated-human tasks?",
+   "status": "proposal",
+   "date": "2026-09-30",
+   "finding": "Preregistered design only, not run, so there are no results. It proposes long-horizon simulated-human tasks where delegation raises short-term convenience while possibly reducing later skill, choice, information, or control. Kill criteria: the proxy merely encodes 'ask the human more', cannot separate material from perceived agency, or lowers task utility without a measurable long-horizon benefit. The required output is a short-vs-long-horizon tradeoff table.",
+   "caveat": "Nothing has been run. The design relies on simulated humans, and the empowerment proxy must be fixed before any run for the comparison to be valid.",
+   "why": "If user approval is a poor stand-in for lasting agency, agents tuned to be liked could quietly erode human skill and control.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/hermes-agent#377",
+     "url": "https://github.com/kvnloo/hermes-agent/issues/377"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "asymptotic-scaling-thought-experiment",
+   "title": "which expensive quantity can actually approach zero?",
+   "area": "research",
+   "techniques": [
+    "algorithmic"
+   ],
+   "question": "Does any frontier mechanism change the asymptotic scaling of an expensive quantity as experience accumulates, or only its constant factor?",
+   "status": "proposal",
+   "date": "2026-09-30",
+   "finding": "Nothing has been measured yet. This is a preregistered design. For each candidate mechanism it names the asymptotic variable, such as frontier calls, recomputation, retained state, replans or human queries. It then writes a minimal cost model, lists the assumptions needed for vanishing marginal cost, and builds a counter-world that breaks each assumption. Any mechanism whose best model only changes a constant factor is dropped from the 'orders of magnitude' set.",
+   "caveat": "This is a paper thought experiment with no runs, no results and no comments. Its conclusions will depend on how well the cost models and counter-worlds are written, not on any measurement.",
+   "why": "It tests whether claimed large efficiency gains from new agent architectures are real scaling changes or only better constants.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/hermes-agent#371",
+     "url": "https://github.com/kvnloo/hermes-agent/issues/371"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "causal-renormalization-macro-vs-micro",
+   "title": "causal renormalization: do macro representations beat micro state?",
+   "area": "research",
+   "techniques": [
+    "measurement",
+    "context-reduction"
+   ],
+   "question": "Do some macro representations preserve intervention-relevant behavior while requiring materially less state than micro representations, and does the best scale depend on the intervention?",
+   "status": "proposal",
+   "date": "2026-09-30",
+   "finding": "Preregistered benchmark design only, with no results yet. It specifies 12 small synthetic causal systems, a fixed micro-level baseline plus a hand-authored hierarchy, and a kill criterion: stop if the finest state is always best or if macro choices are equivalent to ordinary hand-authored summarization.",
+   "caveat": "Nothing has been run; the systems are synthetic and small, so even a positive result would not show that macro representations help in real workloads.",
+   "why": "It tests whether coarser state can cut context and state size without losing the ability to predict the effects of interventions.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/hermes-agent#360",
+     "url": "https://github.com/kvnloo/hermes-agent/issues/360"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "decision-value-vs-relevance-observations",
+   "title": "does choosing observations by decision value beat relevance when evidence is costly?",
+   "area": "small-models",
+   "techniques": [
+    "search-optimization",
+    "measurement"
+   ],
+   "question": "Does selecting observations for expected decision change beat relevance-ranked retrieval when evidence is costly?",
+   "status": "proposal",
+   "date": "2026-09-30",
+   "finding": "Nothing has been measured yet. The design is an adversarial kill-test with 25 partially observed tasks, each offering 4–8 possible observations with explicit costs. It compares relevance, random, information-gain proxy and decision-directed selection, and includes relevant but decision-irrelevant distractors. The test is killed if relevance or information gain performs equivalently, or if estimating decision value costs as much as taking all observations.",
+   "caveat": "This is a design only. No fixtures, policies or results exist, so the hypothesis is untested. The tasks are synthetic and have a known hidden state.",
+   "why": "If agents can spend evidence budget on the observations that can change the decision, they could cut retrieval cost without losing decision quality.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/hermes-agent#359",
+     "url": "https://github.com/kvnloo/hermes-agent/issues/359"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "hindsight-value-of-computation-bound",
+   "title": "can hindsight value-of-computation bound avoidable reasoning steps?",
+   "area": "research",
+   "techniques": [
+    "measurement",
+    "search-optimization"
+   ],
+   "question": "Across 30 frozen tasks with verified outcomes, can an oracle hindsight analysis of per-step marginal value bound how much reasoning, search, verification or observation compute a rational metareasoner could avoid?",
+   "status": "proposal",
+   "date": "2026-09-30",
+   "finding": "Not yet run: this is a designed synthetic-discriminator study. It would estimate the hindsight marginal value of each optional step by replay or removal, price tokens, latency, source reads and human queries separately, and find points where stopping earlier keeps the outcome. It would be killed if step values are too entangled to estimate or almost every step is necessary. An external 2024 paper reports 20–37% fewer generated reasoning tokens, and the issue treats that as a baseline, not as evidence of novelty.",
+   "caveat": "Nothing has been measured. The 20–37% figure is source-reported from a different paper and setting, and the 30 tasks are a planned sample.",
+   "why": "If many steps turn out to have negative realized value, that would put a ceiling on how much compute a metareasoner could save. If almost every step is needed, the idea can be dropped early.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/hermes-agent#357",
+     "url": "https://github.com/kvnloo/hermes-agent/issues/357"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "delta-dag-vs-full-rebuild",
+   "title": "does a delta dag recompute fewer nodes than a full rebuild?",
+   "area": "memory",
+   "techniques": [
+    "caching-reuse",
+    "measurement"
+   ],
+   "question": "Can a dependency-aware cognitive DAG update a sparse world change by recomputing materially fewer derived nodes than full episode recomputation, without changing the derived answer?",
+   "status": "proposal",
+   "date": "2026-09-30",
+   "finding": "Preregistered synthetic benchmark, not yet run: 3 frozen toy worlds (repo state, calendar/workflow state, UI state) and 20 mutations (edit, deletion, contradiction, dependency change, noise). Each mutation is compared between a full rebuild, an exact dependency-propagated rebuild and a memoized-output baseline. The claim is killed if sparse mutations invalidate most nodes, dependency metadata approaches the cost of recomputation, or memoization matches the result.",
+   "caveat": "Nothing has been measured yet; no results or comments are recorded, and the toy worlds are synthetic with no LLM involved, so results may not transfer to real agent memory.",
+   "why": "It tests cheaply whether incremental updates to derived agent state are worth the bookkeeping before any architecture is built.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/hermes-agent#342",
+     "url": "https://github.com/kvnloo/hermes-agent/issues/342"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "beyond-agent-falsification-queue",
+   "title": "a worker-sized falsification queue for beyond-agent hypotheses",
+   "area": "research",
+   "techniques": [
+    "measurement"
+   ],
+   "question": "Can beyond-agent hypotheses be split into independent, falsifiable leaves that workers can claim without inventing scope?",
+   "status": "proposal",
+   "date": "2026-09-30",
+   "finding": "The issue defines a standard evidence bundle for every leaf, an E0 synthetic discriminator, E1 replay and E2 adversarial kill pattern per hypothesis family, and a later E-1 evidence-reconciliation step with scheduling by expected decision impact times information gain. It is a planning board: no leaves have been executed and nothing has been measured. A clean falsification or null counts as a successful leaf.",
+   "caveat": "Design only. There are no results, so it is untested whether the leaves are truly independent or whether workers can claim them without inventing scope.",
+   "why": "Making kill tests and null results count as success, and requiring a named decision the result could change, guards against implementation completion being mistaken for architectural evidence.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/hermes-agent#341",
+     "url": "https://github.com/kvnloo/hermes-agent/issues/341"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "factorized-z0-stack-singleton-first",
+   "title": "factorized z0 stack: qualify each factor alone before composing",
+   "area": "research",
+   "techniques": [
+    "measurement",
+    "context-reduction",
+    "model-routing"
+   ],
+   "question": "Does each mechanism (observation packing, evidence addressing, state packets, a local small-model portfolio, structural verification) help on its own against a native control over the same frozen work-item groups, before any pairwise or full-stack composition?",
+   "status": "proposal",
+   "date": "2026-09-30",
+   "finding": "Designed but not run. The plan is a control plus one-factor-at-a-time first phase, and pairwise composition is blocked until each factor clears its frozen gate. Shared metrics include verified outcome, policy violations, context bytes and tokens, latency p50/p95, and retries. The design bars two heavyweight local small models from sharing the 12 GB target.",
+   "caveat": "No arms have been run, and the acceptance items, including first real receipts from at least two factors, are unchecked. The design has no results to support any claim yet.",
+   "why": "Testing each mechanism alone first keeps credit assignable and avoids an opaque stack whose gains cannot be attributed.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/evolution-lab#27",
+     "url": "https://github.com/kvnloo/evolution-lab/issues/27"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "ladder-vs-neutral-portfolio",
+   "title": "does a fixed model ladder beat a mechanism-neutral portfolio?",
+   "area": "small-models",
+   "techniques": [
+    "model-routing",
+    "measurement"
+   ],
+   "question": "Does a fixed specialist/model ladder outperform a mechanism-neutral portfolio once training, verification, drift, fallback, and maintenance costs are included?",
+   "status": "proposal",
+   "date": "2026-09-30",
+   "finding": "No run is reported; this is a preregistered design. It compares a deterministic rule, a statistical baseline, a learned tiny specialist, an optional MB/fly candidate, a local small language model and a stronger fallback on one or two bounded decision families with existing data. It requires frozen work-item groups shared by all candidates, simple controls, at least one deliberate distribution-shift slice, demotion of an invalid candidate with observed fallback, and a result that can reject the fixed-ladder hypothesis.",
+   "caveat": "Nothing has been measured yet; the design depends on choosing decision families where data already exists, and the cost accounting (training, drift, fallback) is not yet quantified.",
+   "why": "It tests whether a hand-built model ladder is actually better than letting candidates compete once the full lifecycle costs are counted.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/evolution-lab#25",
+     "url": "https://github.com/kvnloo/evolution-lab/issues/25"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "bend-aodl-structural-gate-parity",
+   "title": "does a bend kernel match the aodl structural validator?",
+   "area": "governance",
+   "techniques": [
+    "formal-methods",
+    "measurement"
+   ],
+   "question": "Can a Bend proof kernel agree with the canonical AODL Python validator on pure structural policy checks, and does it give a latency benefit as a fast filter?",
+   "status": "in-progress",
+   "date": "2026-10-04",
+   "finding": "The CPU-only Bend kernel had 0 unexplained verdict disagreements with the canonical AODL validator on the frozen corpus. That is a correctness result only. The earlier CPU latency numbers do not cover the GPU path, and no GPU-path latency measurement of this gate has been published, so the latency question is open. Canonical AODL stays authoritative, and the gate is neither promoted nor rejected on latency.",
+   "caveat": "The parity result is self-reported in an issue correction with no raw output attached. It covers the CPU kernel on a single older machine, and the GPU path has not been measured for this gate.",
+   "why": "A fast structural filter is only safe to adopt if it matches the canonical validator, and it is only worth adopting if it is faster. Only the first of those two has been checked so far.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/z0intelligence#48",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/48"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "bend-hvm-vs-typescript-batch-sim",
+   "title": "does bend/hvm beat typescript for batch simulation?",
+   "area": "applied-math",
+   "techniques": [
+    "measurement",
+    "algorithmic"
+   ],
+   "question": "Does Bend/HVM give a meaningful throughput advantage over the TypeScript pure simulation core for realistic batch sizes, with semantically identical results on the same seed and tape?",
+   "status": "proposal",
+   "date": "2026-09-29",
+   "finding": "Designed but not run: no results yet. The plan generates deterministic random and event tapes, runs identical workloads through the TypeScript pure core and a Bend/HVM batch runner, checks parity first, then compares warm vs cold, single vs multicore, and GPU only if the toolchain supports it cleanly. Kill criterion: if Bend/HVM shows no meaningful advantage after warm-up, or parity costs dominate, keep TypeScript and close the runtime experiment.",
+   "caveat": "Nothing has been measured; 'meaningful advantage' and 'realistic batch sizes' are not given numeric thresholds in the plan, and the work is blocked by an earlier task.",
+   "why": "It decides whether a parallel functional runtime is worth adding to a simulator, while keeping it out of the interactive 60 Hz path.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "pure-rules-core-parity-first",
+   "title": "a pure rules core must reach parity before any bend implementation",
+   "area": "governance",
+   "techniques": [
+    "formal-methods",
+    "measurement"
+   ],
+   "question": "Can the pickleball engine be split into a pure, sport-agnostic transition core that keeps parity with the green 2026 suite, with Bend limited to scoring and lifecycle laws and a second sport used as a falsifier?",
+   "status": "proposal",
+   "date": "2026-09-29",
+   "finding": "Planned, not run: a seven-step ordered stack (#101 to #107) would freeze a verified 2026 pickleball rule profile, extract a pure transition seam without behavior change, and define a minimal SportRuleProfile. It would then add differential and property tests against the current engine, run a Bend laws spike and a badminton falsifier slice, and optionally benchmark Bend/HVM batch simulation. The stated baseline is 1,773 engine tests passed and 2,940 full-suite tests passed, with 12 skipped in each, and Bend implementation is explicitly forbidden until parity is shown.",
+   "caveat": "Nothing has been run. The baseline counts are self-reported test totals from the issue, and the design has no measured comparison yet.",
+   "why": "It sets a parity-first gate and a falsifier sport before committing to a new language for rules logic.",
+   "interesting": false,
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "split-lens-one-camera",
+   "title": "can one camera with a movable split replace two viewers for evidence comparison?",
+   "area": "generative-ui",
+   "techniques": [
+    "measurement"
+   ],
+   "question": "Can one synchronized camera with a movable split or wipe compare two spatial evidence states without opening two control stacks or dual Cesium viewers?",
+   "status": "proposal",
+   "date": "2026-09-28",
+   "finding": "Design only, nothing has been run. The proposal compares imagery time A vs B, map source A vs B, radar/satellite time A vs B, and an annotated scene vs live state through one synchronized camera with a movable split or wipe, before considering dual viewers. Planned measurements are GPU cost, interaction clarity, and camera desynchronization.",
+   "caveat": "No measurement exists yet and no pass/fail thresholds or baseline are stated, so the single-camera approach is only a preference.",
+   "why": "If one camera works, evidence comparison needs less UI and GPU than two full viewers.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/gods-eye-view#60",
+     "url": "https://github.com/kvnloo/gods-eye-view/issues/60"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "nanojev-abstentionbench-pilot",
+   "title": "does nanojev give a usable probability signal on abstentionbench",
+   "area": "small-models",
+   "techniques": [
+    "measurement"
+   ],
+   "question": "Can the NanoJev backend produce a usable probability signal on one full RLCDAlignBench benchmark (abstentionbench, 150 rows), and if not, where does it fail?",
+   "status": "proposal",
+   "date": "2026-09-26",
+   "finding": "Not yet run: this is a pilot plan. It asks for one run of the 150-row abstentionbench file through the NanoJev backend, reporting AUROC, F1 at 0.5, Brier, ECE, p50/p95 latency and failed-row count, with receipts for the code revision, checkpoint revision and input hash. It stops if the gated dataset or checkpoint is unavailable, if more than 20% of rows fail, or if the runner has a bug; a weak signal triggers inspection of state construction or backend semantics before more benchmarks.",
+   "caveat": "Design only, with no results, no baseline yet (direct Qwen/OpenJev comparison is a later step), and no numeric threshold defining 'usable'.",
+   "why": "It gives a cheap first real number and clear stop rules before investing in more integration code.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/z0intelligence#31",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/31"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "rlcdalignbench-external-detector-gate",
+   "title": "can an external alignment benchmark test our detector probabilities?",
+   "area": "small-models",
+   "techniques": [
+    "measurement"
+   ],
+   "question": "Can the gated RLCDAlignBench release serve as a licence-safe external battery for testing whether decision-backend probabilities are useful for detection, thresholding and escalation?",
+   "status": "proposal",
+   "date": "2026-09-26",
+   "finding": "Not run. The design adds a benchmark-only external lane covering 7,193 labelled instances across 44 benchmarks and 10 failure families, scored with AUROC, F1 at 0.5, F1 under a fitted threshold, Brier/ECE and risk/coverage. The generic detector-metrics slice has landed, and the next gate is a 20-row pilot from one benchmark through a small local model. The full battery is only built if that pilot shows signal.",
+   "caveat": "Nothing has been measured yet: the numbers describe the benchmark's size, not any result, and the 20-row pilot is too small to say more than whether there is any signal at all.",
+   "why": "The project lacks external gold tasks and an operational calibration target, so this tests whether its probabilities can be trusted for thresholding.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/z0intelligence#24",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/24"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "interaction-lab-attention-ux",
+   "title": "can desktop, tui and web share one attention state without a second status store?",
+   "area": "hermes",
+   "techniques": [
+    "measurement"
+   ],
+   "question": "Can Hermes Desktop, TUI, and Web share one attention and voice-intent semantic without adding a second status store?",
+   "status": "proposal",
+   "date": "2026-09-25",
+   "finding": "This is a design, not a result. The plan allows a maximum of 3 active experiments, each starting from a concrete user failure, an invariant, and a falsifying control. Wave 1 covers attention state, voice intent and pane intent. Every item is unchecked, and work is split into follow-up issues #14, #15 and #16.",
+   "caveat": "Nothing has been run. No experiment results exist, and upstream changes are switched off until receipts exist.",
+   "why": "It sets the pass/fail discipline for human-agent coordination UX before any code is changed upstream.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/hermes-maintainer#13",
+     "url": "https://github.com/kvnloo/hermes-maintainer/issues/13"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "list-apps-cache-exact-head-ab",
+   "title": "does the list_apps cache remove the latency concern?",
+   "area": "device-use",
+   "techniques": [
+    "caching-reuse",
+    "measurement"
+   ],
+   "question": "Does upstream trycua/cua#3492 (installed-app scan memoization) fully absorb the remaining list_apps latency concern in trycua/cua#4055, so that a running-only enumeration option can be de-scoped?",
+   "status": "proposal",
+   "date": "2026-09-25",
+   "finding": "Not yet measured. The planned test is a same-machine, exact-head Rust A/B of current main against #3492 on macOS: cold miss and warm hit, with 1 and 8 concurrent callers, reporting p50/p95 and scan count, plus install/uninstall invalidation and live running-app correctness. The decision rule is that if warm and concurrent behavior removes the practical critical-path cost and running-app results stay live, the running-only option is de-scoped; otherwise cold discovery for running-only callers becomes a separate measured requirement.",
+   "caveat": "No macOS run has happened; only Linux source review was possible, and Linux timing is explicitly not accepted as evidence for this question.",
+   "why": "It decides whether a new public API option is needed or an existing cache already covers the latency problem.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/cua#72",
+     "url": "https://github.com/kvnloo/cua/issues/72"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "whole-task-accounting-browser-gui-routes",
+   "title": "do browser and gui routes really save time once every cost is counted?",
+   "area": "device-use",
+   "techniques": [
+    "measurement"
+   ],
+   "question": "Do browser and GUI routes save elapsed time once every phase, failure, fallback and retry is counted against independently verified outcomes?",
+   "status": "proposal",
+   "date": "2026-10-01",
+   "finding": "This is a round-2 measurement plan with five P0 experiments: a causal A/B of cursor feedback, a real CDP event wake, a real-provider guarded completion with at least 30 AB/BA-interleaved pairs, route diagnostics, and acknowledgement-loss faults. P1 adds compiled-routine accounting with at least 20 warm attempts per arm, plus matched-surface comparisons. A latency claim needs named spans to explain more than 90% of verified outcome time. All attempts must be kept, with denominators and paired uncertainty, and cold and warm timings kept apart. Earlier simulated and fixture numbers, such as medians of 7.459 → 7.718 ms and 102.628 → 16.580 ms, are cited only as motivation and are not expected production savings.",
+   "caveat": "This entry is the design, not a result. Later comments in the issue report some executed lanes, and each is from a single run with no transfer across sources, providers or machines.",
+   "why": "Counting only the successful fast path can make a route look faster than it is once failures and retries are included.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/cua#10",
+     "url": "https://github.com/kvnloo/cua/issues/10"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "guarded-second-action-provider-calls",
+   "title": "does a guarded second action cut provider decisions?",
+   "area": "device-use",
+   "techniques": [
+    "model-routing",
+    "measurement"
+   ],
+   "question": "Can a caller-side guarded continuation admit a second action from a fresh post-mutation target, cutting provider decisions and task time with no success regression and no unauthorized second dispatch?",
+   "status": "frozen-internal",
+   "date": "2026-09-25",
+   "finding": "On a type-then-submit fixture in an isolated real browser session, the guarded arm used 1 provider call against 2 for the baseline, and both arms were verified as submitted by an independent oracle. Wall time to the verified submit was 1073.78 ms guarded against 1129.91 ms baseline, a marginal gain. An earlier run had stopped at a submit-ref mismatch because the ref is re-minted after typing. Binding the second click to the ref resolved from the post-mutation snapshot fixed that. Every negative control (refuted, unknown, stale, rebound, refused, missing capture, missing observation, old-ref reuse) had second_dispatch 0.",
+   "caveat": "One fixture run once on one machine. The wall-time difference is small and could be noise. Multi-task batteries and replay of may-have-landed actions were not covered.",
+   "why": "Skipping a model call between two predictable steps saves cost and latency, but only if it never fires a stale or unauthorized second action.",
+   "interesting": true,
+   "links": [
+    {
+     "label": "kvnloo/cua#5",
+     "url": "https://github.com/kvnloo/cua/issues/5"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "single-candidate-fast-path-authority",
+   "title": "does one executable candidate justify skipping the chooser?",
+   "area": "device-use",
+   "techniques": [
+    "model-routing",
+    "measurement"
+   ],
+   "question": "Does skipping the provider when exactly one executable candidate exists speed up verified UI actions without removing the chooser's abstention or reobserve option?",
+   "status": "frozen-internal",
+   "date": "2026-09-25",
+   "finding": "In 12/12 verified normal trials the fast path made 0 provider calls versus 12 for baseline, but median verified-outcome latency was 371.26 ms versus 346.66 ms, so no latency benefit was shown. In forced trial 999, with one executable candidate, the baseline chose reobserve (3 provider calls) and verified, while the generic fast path skipped the provider, acted immediately and also verified, so it removed a valid abstention that final success hid. The generic rule was rejected; a narrower rule (skip only when a bound completion id names the single candidate as the required completion of a locally proven obligation) was adopted but not yet measured.",
+   "caveat": "Mock provider time is negligible, so the latency comparison says nothing about a real model provider; only 12 normal trials and one authority counterexample on a single hosted runner, and the narrow rule is untested live.",
+   "why": "Success of the final outcome can mask a lost option to abstain or reobserve, so routing shortcuts need an authority check, not just an outcome check.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/cua#4",
+     "url": "https://github.com/kvnloo/cua/issues/4"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "screenshot-only-verify-skips-ax-walk",
+   "title": "does screenshot-only verification skip the accessibility walk?",
+   "area": "device-use",
+   "techniques": [
+    "measurement",
+    "algorithmic"
+   ],
+   "question": "When verify_state takes its final screenshot read with include_screenshot:true, does it skip the accessibility-tree walk without changing screenshot output?",
+   "status": "in-progress",
+   "date": "2026-09-25",
+   "finding": "On macOS with Calculator, at the exact pull-request head, element plus screenshot verification dropped from 2 accessibility walks to 1. Window-only plus screenshot went from 1 to 0, and the element-only control with no screenshot stayed at 1. Screenshot dimensions and encoded size were unchanged.",
+   "caveat": "Only macOS with one app was measured, and the counts were reported in an upstream comment by an outside tracer. The Linux and Windows walker counts were never measured, and the requested trace logs are not stored in the repo.",
+   "why": "Skipping a needless accessibility-tree walk on every screenshot-evidence read could cut verification cost, but only if each platform honors the selector.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/cua#3",
+     "url": "https://github.com/kvnloo/cua/issues/3"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "observation-reuse-false-reuse-gate",
+   "title": "does skipping observation recaptures pass a false-reuse gate?",
+   "area": "device-use",
+   "techniques": [
+    "caching-reuse",
+    "measurement"
+   ],
+   "question": "Can revision-aware conditional observation skip recaptures safely, with a skip rate and break-even measured from real invalidation traces?",
+   "status": "in-progress",
+   "date": "2026-09-25",
+   "finding": "A replay tool on synthetic traces produced a false reuse on a recorded GTK text change. Under the hard correctness gate, that kills the reuse policy that produced it. The synthetic skips were not treated as a real skip rate, so no real skip rate or break-even was measured. The simulator was closed, Phase 2B stays off, and always-observe is retained.",
+   "caveat": "Only synthetic traces were replayed, so there is no real skip rate, no break-even and no per-platform data. Real invalidation traces from the platform and browser census work are still missing.",
+   "why": "Skipping captures could save time, but one false reuse could authorize a wrong action. This shows the correctness gate matters more than the average skip rate.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/cua#21",
+     "url": "https://github.com/kvnloo/cua/issues/21"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "typed-outcomes-stop-unsafe-replay",
+   "title": "can typed action outcomes stop unsafe replays?",
+   "area": "device-use",
+   "techniques": [
+    "output-format",
+    "measurement"
+   ],
+   "question": "Can a consumer use typed action outcomes (action effect, post-dispatch observation, refusal) to observe or stop instead of blindly replaying an action that may have already landed?",
+   "status": "proposal",
+   "date": "2026-09-25",
+   "finding": "No measured run exists. The design compares a naive policy (retry when an action is unverifiable) against a typed policy (skipped or unavailable observation means observe before replay, refusal means stop) on a Calculator-shaped fixture. Planned metrics are duplicate harmful mutations, extra observations, task success and false completion. Comments state no fixture was driven; the policy is only encoded, and the runtime proof was moved to a separate live failure-injection issue.",
+   "caveat": "Nothing was measured: the typed policy behavior is encoded but never run against a fixture, so there are no results for either policy.",
+   "why": "Blind replay of an action that may have already landed can duplicate harmful mutations, so knowing whether typed outcomes prevent that shapes how agents handle uncertain actions.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/cua#12",
+     "url": "https://github.com/kvnloo/cua/issues/12"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "learned-observe-vs-act-selector",
+   "title": "does a learned observe-vs-act selector beat deterministic gates?",
+   "area": "small-models",
+   "techniques": [
+    "model-routing",
+    "measurement"
+   ],
+   "question": "Does a learned risk/coverage selector over ACT / OBSERVE_MORE / ESCALATE add value beyond deterministic gates plus unconditional escalation?",
+   "status": "proposal",
+   "date": "2026-09-22",
+   "finding": "Designed but not run. The plan is a shadow-only learned selector over a bounded legal action set, compared against a deterministic rule baseline, lexical/metadata routing, a simple ranking or logistic model, and a frontier teacher, using grouped held-out splits by project and work lineage. It would be scored on verified transition success and on system cost such as tokens, latency and frontier calls avoided, and no results exist yet.",
+   "caveat": "Nothing has been measured. The experiment waits on a frozen State Packet cohort, and teacher agreement is explicitly not ground truth, so outcomes must be joined independently.",
+   "why": "If a small learned selector cannot beat plain rules plus escalation, expensive frontier-model calls cannot be safely cut this way.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/evolution-lab#24",
+     "url": "https://github.com/kvnloo/evolution-lab/issues/24"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "bend-proof-kernel-under-aodl",
+   "title": "can bend prove a few aodl compiler invariants?",
+   "area": "governance",
+   "techniques": [
+    "formal-methods"
+   ],
+   "question": "Can Bend laws and affine types express a few AODL compilation invariants without moving parsing, effects, persistence, or runtime into Bend?",
+   "status": "proposal",
+   "date": "2026-09-20",
+   "finding": "This is a design only, with nothing implemented or measured. It proposes a small opt-in Bend proof kernel on a feature branch, with six targets: no invented authority, gate witness preservation, fail-closed lowering, determinism, intent immutability and affine capability semantics. A 2026-09-29 status refresh says default-branch code has no Bend integration, and a comment sets a kill criterion: keep Bend experimental if parsing, effects or runtime must move into Bend, or if the proofs add nothing beyond the existing fail-closed fixtures.",
+   "caveat": "Nothing has been built or run, so there is no evidence yet that Bend can express these invariants or that the proofs add value over the existing fixtures. The success criteria are only planned.",
+   "why": "It tests whether machine-checked proofs can strengthen a compiler's safety guarantees while keeping effects and authority under host control.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/aodl#19",
+     "url": "https://github.com/kvnloo/aodl/issues/19"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "ab-testing-gate-for-research",
+   "title": "can a/b tests validate research findings before integration?",
+   "area": "research",
+   "techniques": [
+    "measurement"
+   ],
+   "question": "Can research findings be validated against real user data with cohort A/B tests before they are integrated?",
+   "status": "proposal",
+   "date": "2025-11-09",
+   "finding": "This is a design for an A/B testing framework with cohort assignment (50/50 split), experiment configuration, intervention tracking, significance testing (p-value, effect size), and automatic halting of harmful experiments. All deliverables are unchecked, and no experiment has been run or measured.",
+   "caveat": "Planning issue only: no code, data or results exist, so nothing about effectiveness is known.",
+   "why": "A validation gate would show whether research ideas help real users before they ship.",
+   "interesting": false,
+   "links": [
+    {
+     "label": "kvnloo/FlowState#31",
+     "url": "https://github.com/kvnloo/FlowState/issues/31"
+    }
+   ],
+   "post": null
   }
  ]
 }
