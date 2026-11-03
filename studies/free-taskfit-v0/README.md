@@ -13,15 +13,12 @@ kerdoios plan_routing (O14)                                    -> ranks lanes on
 
 z0evals owns the frozen task set and the grading. z0intelligence consumes the certified receipt; Kerdoios owns the objective. Nothing here routes traffic.
 
-## Pilot, 2026-11-03 (rows.jsonl, 160 calls, 4 lanes × 20 tasks × 2 repeats, 20:39–20:48 UTC)
+## Known limits are enforced, not remembered
 
-| lane | extract | classify | format | reason | verify | longctx | TTFT p50 | decode tok/s p50 |
-|---|---|---|---|---|---|---|---|---|
-| groq openai/gpt-oss-20b | 6/6 | 2/2 | 6/6 | 14/14 | 6/6 | **1/6** | 303 ms | 888 |
-| groq openai/gpt-oss-120b | 6/6 | 2/2 | 6/6 | 14/14 | 6/6 | **1/6** | 287 ms | 483 |
-| openrouter nvidia/nemotron-3.5-super-vl:free | 6/6 | 2/2 | 6/6 | 14/14 | 6/6 | 6/6 | 452 ms | 227 |
-| nvidia (NIM) nemotron-3-ultra-550b-a55b | 6/6 | 2/2 | 5/6 | 10/14 | 3/6 | 4/6 | 615 ms | 84 |
+`frozen/limits.json` (built by `scripts/freeze_limits.py` from z0intelligence `deploy/vllm-sr/limits.json` + `profiles/catalog.json` at a pinned commit) is the only place limits live. `scripts/plan_taskfit.py` estimates every request as `ceil(len(prompt)/3.5) + max_tokens` (max_tokens floored at 4096 for reasoning models) and plans out any (task, lane) above the lane's TPM, context or max request size, and anything past its daily RPD/TPD budget. `run_taskfit.py` writes those as `not_eligible:<reason>` and never sends them, stops a lane on a daily-quota 429 or on a 413, and skips (lane, family) pairs already measured in an unexpired committed receipt unless `--force`. `certify.py` keeps `not_eligible` and quota-stopped rows out of every p_accept denominator (reported under `evidence.not_eligible`) and fails any run that contains a 413 or a sent row the limits rule out.
 
-What limits these numbers: every non-accepted call was a transport failure, not a wrong answer. Groq's free plan returned 413 on the 32k-token needle tasks (8K TPM per model) and one 429 on needle-8k; NIM returned ten 429s at a 2 s request gap. All 140 answered rows were re-graded from their full text and the runner's own flag disagreed on none. So in this pilot `p_accept` is "did the route answer and was it right", dominated by the first half. The easy tier saturates; the hard tier has 8 tasks.
+Run it in GitHub Actions, not on groot: `scripts/dispatch_taskfit.sh` (repo root) triggers `.github/workflows/free-taskfit.yml` and downloads rows + receipt into `data/runs/<run>/`.
 
-Fed through z0int's ingest and catalog generator and then Kerdoios `plan_routing`, these priors change the longctx order: with the pace term held neutral, OpenRouter nemotron ranks first and both Groq lanes last, because a 1/6 acceptance multiplies their latency term by 6. Without burn/remaining/reset (Kerdoios capacity), every lane is still unscored.
+## Pilot, 2026-11-03: withdrawn
+
+The pilot (rows.jsonl, 160 calls, 4 lanes × 20 tasks × 2 repeats) sent the 8k/32k/multi-needle tasks to Groq gpt-oss-20b/120b, whose free plan allows 8K tokens per minute per model. Eight came back 413 and two 429; the receipt counted them as wrong answers and reported Groq longctx as 1/6. That number measured our request sizing, not the models. `python3 scripts/plan_taskfit.py --rows data/runs/pilot-20261103/rows.jsonl` lists the 12 rows the frozen limits rule out, and `certify.py` now refuses the run. The receipt is deleted; rows.jsonl stays as the record of the mistake.

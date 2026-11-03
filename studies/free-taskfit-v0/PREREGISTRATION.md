@@ -8,6 +8,8 @@
 
 **Protocol.** Streaming, temperature 0, `max_tokens` 4096, one worker per lane, per-provider gap inside published RPM, repeats ≥ 2. Every call is a trial: HTTP error, timeout or empty content counts as not accepted, because that is what the router sees.
 
+**Amendment 2026-11-03 (before any counted run).** A request the known per-model limits rule out is not a trial. `scripts/plan_taskfit.py` plans every (task, lane) against `frozen/limits.json` before any call; ineligible pairs are recorded as `not_eligible:<reason>`, never sent, and excluded from p_accept denominators (p_accept stays unknown, not 0). Reasoning models get `max_tokens` ≥ 4096. A daily-quota 429 stops the lane and its rows are excluded as `quota_stopped`. A run with any 413/request-too-large row fails certification.
+
 **Grading authority.** `scripts/certify.py` re-grades every row from its full answer text with the frozen graders, rejects rows from another task set or without full text, and reports how often the runner's own flag disagreed. The runner's `correct` field is never trusted.
 
 **Output.** One `z0eval.result.v1` receipt per run, verdict `PARTIAL` (a measured prior, not a promotion). Findings:

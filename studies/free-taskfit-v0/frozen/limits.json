@@ -1,0 +1,123 @@
+{
+ "captured_at": "2026-11-03T23:05:38Z",
+ "lanes": {
+  "groq/openai/gpt-oss-120b": {
+   "basis": {
+    "rpd": "header",
+    "rpm": "docs",
+    "tpd": "docs",
+    "tpm": "header"
+   },
+   "context": 131072,
+   "max_request_tokens": 8000,
+   "reasoning": true,
+   "rpd": 1000,
+   "rpm": 30,
+   "scope": "per model",
+   "tpd": 200000,
+   "tpm": 8000
+  },
+  "groq/openai/gpt-oss-20b": {
+   "basis": {
+    "rpd": "header",
+    "rpm": "docs",
+    "tpd": "docs",
+    "tpm": "header"
+   },
+   "context": 131072,
+   "max_request_tokens": 8000,
+   "reasoning": true,
+   "rpd": 1000,
+   "rpm": 30,
+   "scope": "per model",
+   "tpd": 200000,
+   "tpm": 8000
+  },
+  "groq/qwen/qwen3.8-27b": {
+   "basis": {
+    "rpd": "header",
+    "rpm": "docs",
+    "tpd": "docs",
+    "tpm": "header"
+   },
+   "context": 131072,
+   "max_request_tokens": 8000,
+   "reasoning": true,
+   "rpd": 1000,
+   "rpm": 30,
+   "scope": "per model",
+   "tpd": 200000,
+   "tpm": 8000
+  },
+  "nvidia/nvidia/nemotron-3-ultra-550b-a55b": {
+   "basis": {
+    "all": "docs: build.nvidia.com rateLimits.requestsPerMinute; offline-rate-limit-catalog free-tier-providers.md"
+   },
+   "context": null,
+   "max_request_tokens": null,
+   "reasoning": true,
+   "rpd": 10000,
+   "rpm": 40,
+   "scope": "account-wide, shared across models",
+   "tpd": null,
+   "tpm": null
+  },
+  "nvidia/nvidia/nemotron-3.5-super-vl-120b-a12b": {
+   "basis": {
+    "all": "docs: build.nvidia.com rateLimits.requestsPerMinute; offline-rate-limit-catalog free-tier-providers.md"
+   },
+   "context": null,
+   "max_request_tokens": null,
+   "reasoning": true,
+   "rpd": 10000,
+   "rpm": 40,
+   "scope": "account-wide, shared across models",
+   "tpd": null,
+   "tpm": null
+  },
+  "openrouter/nvidia/nemotron-3-ultra-550b-a55b:free": {
+   "basis": {
+    "all": "docs: openrouter.ai/docs/api-reference/limits (key credit limit 0 -> 50/day)"
+   },
+   "context": 1000000,
+   "max_request_tokens": null,
+   "reasoning": true,
+   "rpd": 50,
+   "rpm": 20,
+   "scope": "per key, all :free models; rpd 1000 after >=10 credits",
+   "tpd": null,
+   "tpm": null
+  },
+  "openrouter/nvidia/nemotron-3.5-super-vl:free": {
+   "basis": {
+    "all": "docs: openrouter.ai/docs/api-reference/limits (key credit limit 0 -> 50/day)"
+   },
+   "context": 1000000,
+   "max_request_tokens": null,
+   "reasoning": true,
+   "rpd": 50,
+   "rpm": 20,
+   "scope": "per key, all :free models; rpd 1000 after >=10 credits",
+   "tpd": null,
+   "tpm": null
+  }
+ },
+ "rule": "run_taskfit.py plans every (task, lane) before sending: estimated request tokens = ceil(len(prompt)/3.5) + max_tokens; a request above tpm, context or max_request_tokens is written as not_eligible and never sent. null = unknown (unchecked), never unlimited.",
+ "schema": "z0evals.free-taskfit.limits.v1",
+ "sources": [
+  {
+   "commit": "ab33e23a11af286e15b512d96361d0b2fc2efce4",
+   "observed_at": "2026-11-02T15:20:42Z",
+   "path": "deploy/vllm-sr/limits.json",
+   "repo": "kvnloo/z0intelligence",
+   "sha256": "c46fe55046c2dfad5f8ed2bb6e23a20f52dc6f669d4c0434bac39b3257561a00"
+  },
+  {
+   "commit": "ab33e23a11af286e15b512d96361d0b2fc2efce4",
+   "observed_at": "2026-11-03T00:47:23Z",
+   "path": "deploy/vllm-sr/profiles/catalog.json",
+   "repo": "kvnloo/z0intelligence",
+   "sha256": "599c05a7ade462754cd9b98171fd82f8c026afd9e6e3905d9bb95d8dd0f78f9a"
+  }
+ ]
+}
