@@ -1,0 +1,61 @@
+schema_version: z0eval.study.v1
+id: free-taskfit-v0
+title: Free-lane task fit for router task classes (O14 p_accept priors)
+status: draft
+created: "2026-11-03"
+updated: "2026-11-03"
+
+run_id: free-taskfit-pilot-20261103
+evidence_status: reproduced-measurement
+external_inference_spend_usd: 0.0
+spend_note: Groq free plan, NVIDIA NIM free and OpenRouter :free only (max_price 0, no fallbacks). The OpenRouter key reported a 0 USD credit limit.
+
+sources:
+  - repo: kvnloo/z0intelligence
+    commit: f12b926e79e17308859b1ae0b6cc68de5a5c5a5b
+    branch: feat/vllm-sr-turbo-router
+    role: origin of the frozen task set (deploy/vllm-sr/profiles/tasks.py) and the eval_free.py call semantics (PR 289)
+  - repo: kvnloo/z0intelligence
+    commit: 56b80a7ae50cdc80da18a8408130116e4ad47e5e
+    branch: feat/model-routing-o14
+    role: consumer; policy ingest (z0eval_result) and the model-routing catalog that turns findings into p_accept (PR 222)
+  - repo: kvnloo/kerdoios
+    commit: c513e9eeb6eefad47079d263650b7d1c831b08f1
+    branch: feat/routing-objective-o14
+    role: O14 plan_routing, the only optimizer that reads p_accept (PR 69)
+
+questions:
+  - For each free lane and router task family, what share of calls does the frozen grader accept?
+  - Which O14 inputs does a certified battery fill, and which stay unknown?
+
+artifacts:
+  - path: frozen/tasks.py
+    kind: fixture
+    sha256: 119209b5c61d07c8ebf109aeb995b778e58fc0cd49ec6f04fa90df4b90ed987b
+  - path: scripts/run_taskfit.py
+    kind: other
+    sha256: 858243ee316721885d504ed89b5284b02134d00a701922ac58cf7d087e301e05
+  - path: scripts/certify.py
+    kind: other
+    sha256: 3b1494e89b185219865df7ec0b0a80739a2fb2f5efac779e844f424fef3e56e4
+  - path: data/runs/pilot-20261103/rows.jsonl
+    kind: dataset
+    sha256: 788066d30209c2b29c12047bc94ce5b42957896dec2dd323bac61d3268fd332c
+  - path: data/runs/pilot-20261103/result.json
+    kind: receipt
+    sha256: 653a5c5c015dc19a1a57851d6f99a963007b8180ae301aa2d5f627e82436ace6
+
+limitations:
+  - The pilot ran before PREREGISTRATION.md was committed; it is labelled pilot and is not the counted run.
+  - Every non-accepted pilot call was a transport failure (Groq 413 on 32k inputs, 429s); no answer was graded wrong, so this pilot measures route reliability per task class more than answer quality.
+  - n per family is tasks x 2 repeats (classify 2, reason 14, the rest 6); one task is worth up to 50 points on classify.
+  - Client TTFT measured from groot includes network RTT; decode tok/s on short answers understates sustained throughput.
+  - NVIDIA NIM is outside the z0int model-routing catalog's provider scope, so its findings are certified here but dropped at catalog import.
+
+claims:
+  - id: longctx-flip
+    text: On taskfit.longctx Groq gpt-oss-20b and 120b were accepted 1/6 (five 413/429 failures) while OpenRouter nemotron-3.5-super-vl:free was accepted 6/6.
+    evidence: [data/runs/pilot-20261103/result.json]
+  - id: regrade-agreement
+    text: All 140 answered pilot rows were re-graded from full text with the frozen graders; the runner's own flag disagreed on 0.
+    evidence: [data/runs/pilot-20261103/result.json]
