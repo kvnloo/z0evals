@@ -5,6 +5,11 @@ study: unified-memory-v0
 status: evidence-pending
 author: "zer0 research"
 date: "october 23, 2026"
+dek: "we got tired of every harness having its own half-broken version of memory."
+area: memory
+published: 2026-10-05
+kind: study
+series: memory
 mock_data: false
 toc:
   - id: question

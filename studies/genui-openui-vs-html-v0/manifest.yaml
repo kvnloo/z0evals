@@ -1,0 +1,74 @@
+schema_version: z0eval.study.v1
+id: genui-openui-vs-html-v0
+title: "Inline charts as OpenUI programs versus HTML pages: tokens, time and validity"
+status: frozen
+created: '2026-11-02'
+updated: '2026-11-02'
+protocol:
+  model: gpt-6.1-sol
+  harness: hermes chat (stream-json), tools disabled by instruction
+  ab_cases: 5
+  ab_repetitions: 2
+  order: alternated per repetition
+  generation_cases: 10
+  t3_live_cases: 9
+sources:
+  - repo: kvnloo/t3code
+    commit: d5627b91afe5bf2b1d7411185282f284e7b783a6
+    branch: experiment/openui-chart-catalog
+    role: openui-v2 chart catalog, renderer and validation module used by the oracle
+questions:
+  - How many output tokens and how much wall time does an inline chart answer cost as an openui-v2 program versus a self-contained HTML page, same model and harness?
+  - Do generated openui-v2 boards pass a strict schema and data-fidelity oracle across chart types and edge cases?
+  - Do the same requests produce valid boards inside a real T3 Code thread?
+artifacts:
+  - path: data/ab-rows.json
+    kind: result
+    sha256: dd8e02adb35ec4037826f203aca65b6cfd8ad97098cf77a241a022be9f9ab421
+  - path: data/generation-rows.json
+    kind: result
+    sha256: ab32cbba40be63bcc3d56480090d50eebe764e70f1d5d620c390d1632fd64e0f
+  - path: data/generation-rescore.json
+    kind: receipt
+    sha256: 26df9656bc6d6ad35e498d0100a3f9dadbbb48f88302789caab6591006e60030
+  - path: data/t3-live-verdicts.json
+    kind: result
+    sha256: d1584568ea60eb249ad07cb7d3a044bb809dd622a2ca3533c38839cdeebe3d88
+  - path: data/catalog-prompt.txt
+    kind: fixture
+    sha256: d16b7f61755ec9a7fbcac9d152971ba6a7e4f75d321fbf3ac3e5fd34572b9c5a
+  - path: data/summary.json
+    kind: analysis
+    sha256: 4a69069defdbb4ed20cc9cf7af7ea5d56f0fdd93244cff6305cbe3de1435150b
+  - path: scripts/analyze.py
+    kind: other
+    sha256: e3faba0540cb4bde81d8e19855e3395268c1fcf3482a704e2f7def9cf503b8f7
+  - path: scripts/ab.ts
+    kind: other
+    sha256: 343aa549dadf4fa8689c5adc17fd5ca8942c355c78f37beb0775e95b33c537a9
+  - path: scripts/generate.ts
+    kind: other
+    sha256: e2ad5f8e96812ada8c1ba93200bb2fbb91f7539971ac599a1a78c35ab8cd971a
+  - path: scripts/oracle.ts
+    kind: other
+    sha256: 82f27d1d098b76968fb487572a45aa5fd62969cbab8849aaaba120faf505dd12
+  - path: scripts/judge-t3.ts
+    kind: other
+    sha256: 34158e009239908ab86f43efa44f186d522294475d637a9c09a986ca29b8b0c1
+  - path: scripts/rescore.ts
+    kind: other
+    sha256: 9013d897ee3f537d322a09db33fa52e3fa6044333fddaaf241e7f54509bcca0e
+  - path: scripts/cases.mjs
+    kind: fixture
+    sha256: 6e0f0a82bf971482c79374ffa2c1aed113c084ec5bc17adb10ce573b0c7b2463
+  - path: README.md
+    kind: analysis
+limitations:
+  - Source-reported local measurement; not independently reproduced.
+  - One model, one harness, one provider account, two repetitions per case.
+  - The HTML arm is an unbounded interactive page; the openui arm is a bounded four-chart catalog. Formats are not equal-capability.
+  - The HTML check only confirms a fence and the expected numbers; it does not render or grade the chart.
+  - The generation sweep's default model id was not recorded.
+  - The in-T3 run pasted catalog instructions into each message; T3 Code did not supply them.
+  - Synthetic fixtures; file paths in fixtures and stored programs are anonymized.
+claims: []

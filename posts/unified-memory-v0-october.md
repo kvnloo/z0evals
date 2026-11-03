@@ -5,6 +5,11 @@ study: unified-memory-v0
 status: evidence-pending
 author: "zer0 research"
 date: "october 23, 2026"
+dek: "the real-source gate stayed closed, the handoff froze, and the replay caught a real error."
+area: memory
+published: 2026-10-23
+series: memory
+log: [unified-memory-v0]
 toc:
   - id: source-gate
     label: the real-source gate stayed closed

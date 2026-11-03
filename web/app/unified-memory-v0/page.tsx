@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import StoryShell, { type StoryMeta, type StoryBanner } from "@/components/StoryShell";
 import type { TocItem } from "@/components/Toc";
+import { studyMeta } from "@/lib/catalog";
 import MetricRow from "@/components/MetricRow";
 import Callout from "@/components/Callout";
 
@@ -9,14 +10,7 @@ export const metadata: Metadata = {
   description: "unified-memory v0, updated october 5: integrated OptMem foundations, separate OptChat experiments, and the unchanged four-harness evidence boundary.",
 };
 
-const meta: StoryMeta = {
-  title: "can four agents remember the same thing?",
-  subtitle: "i got tired of every harness having its own half-broken version of memory.",
-  author: "zer0 research",
-  date: "updated october 5, 2026",
-  status: "evidence-pending",
-  lede: "optmem's structural foundation is integrated. optchat is a separate harness experiment. the original cohort is still partial, so implementation progress and measured recall stay separate.",
-};
+const meta: StoryMeta = studyMeta("unified-memory-v0");
 
 const banner: StoryBanner = {
   tag: "implementation update · original cohort still partial",
@@ -216,5 +210,5 @@ const explore = (
 );
 
 export default function Page() {
-  return <StoryShell meta={meta} toc={toc} banner={banner} story={story} explore={explore} />;
+  return <StoryShell slug="unified-memory-v0" meta={meta} toc={toc} banner={banner} story={story} explore={explore} />;
 }

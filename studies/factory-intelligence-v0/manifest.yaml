@@ -1,0 +1,159 @@
+schema_version: z0eval.study.v1
+id: factory-intelligence-v0
+title: Small tool-callers, a recovery controller, and an auto-merge rule replayed on real history
+status: draft
+created: "2026-09-30"
+updated: "2026-09-30"
+
+evidence_status: pre-registered-local-runs-aggregated; request text, Hermes episode text, private-repo titles/branches/paths and per-event rows are private or hashed upstream; only aggregates are published here
+external_inference_spend_usd: 0.0  # tool-calling arms ran on local GPU; T3b and the promotion simulator make no model calls
+
+hardware:
+  bench_host:
+    name: groot
+    gpu: NVIDIA RTX 3080 Ti
+    vram_gb: 12
+    server: llama.cpp b11270 (farm binary), bench-only router, -ngl 99 -c 8192 --parallel 2 --reasoning off, --models-max 1; GPU shared with Ollama, the farm and Blender during the run
+  client_host:
+    name: mbp (MacBook Pro 2015, CachyOS)
+    note: tool-calling client wall-clock latency is mbp -> groot over the tailnet
+
+sources:
+  - repo: kvnloo/z0intelligence
+    commit: 6d564167ce612f6860d5f5cea1840c2f4a23631f
+    branch: exp/tool-calling-portfolio-v0
+    role: tool-calling portfolio v0 pre-registration (benchmarks/tool_calling_portfolio/PREREG.md), frozen item set (items_public_v0.json), adapters, scorer and runner, before any candidate was scored (z0intelligence#20)
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: 01c6dd927c5966a3f4e17a2cf7fb03922c55751b
+    branch: exp/tool-calling-portfolio-v0
+    role: deviation - smoke-run adapter fixes (FunctionGemma turn boundary, Hammer Python-literal lists), committed before the scored run
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: b3a5fb0c15169990fd37fc22ac9fc959c607e15c
+    branch: exp/tool-calling-portfolio-v0
+    role: tool-calling results (results_v0.json, rows_v0.jsonl with pass flags only, PREREG.md results section, post-hoc delegate_worker sensitivity)
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: 1f9473ff4c82d0435f526624418afa8c098d6ce8
+    branch: exp/tool-calling-portfolio-v0
+    role: correction to the results note (Qwen3.5-9B delegate_worker count 24/43); data files identical to b3a5fb0; the pin read by summarize.py
+    visibility: pushed
+  - repo: kvnloo/evolution-lab
+    commit: 3cb0e508114c33200d9b4613ef1d053b3d7b0bba
+    branch: exp/t3b-action-space-v1
+    role: T3b action-space v1 pre-registration (docs/t3b-action-space-v1-prereg.md), labelling rule, outcome verifier, cost matrix and comparison plan, before labels were mined
+    visibility: pushed
+  - repo: kvnloo/evolution-lab
+    commit: 4b1015b705f90be0e4a5e3837e25796a0f2e817e
+    branch: exp/t3b-action-space-v1
+    role: label stats, blind structural audit, and the eval harness committed before the single test read
+    visibility: pushed
+  - repo: kvnloo/evolution-lab
+    commit: ebb2e7188f04bc9e08ee45d648e5228331c9b0c2
+    branch: exp/t3b-action-space-v1
+    role: T3b results (results/t3b-v1as-eval.json) and prereg deviations/results addendum
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: 37b5678756bfbe6e3e4604a27fc81b9035dc7107
+    branch: feat/promotion-sim-v0
+    role: promotion replay simulator v0 (src/z0int/promotion_sim.py, `z0int promote sim`)
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: fa8de232a64c77aaf693a772fe11c172fb07b1a7
+    branch: feat/promotion-sim-v0
+    role: promotion-sim pre-registration (benchmarks/promotion_sim/prereg.json, dataset.json with private-repo fields hashed), pick and holdout pass rule pinned before the holdout was scored
+    visibility: pushed
+  - repo: kvnloo/z0intelligence
+    commit: 11506a959ffb3e1f8b7eba9a03666069fd9b2430
+    branch: feat/promotion-sim-v0
+    role: promotion-sim holdout results (results_holdout.json)
+    visibility: pushed
+
+private_inputs:
+  - what: tool-calling raw replies (model text) and serving metadata; z0_route request text and author function labels' source turns
+    location: operator host (private research store; not published)
+  - what: T3b episodes (Hermes state.db reduced to structural skeletons) and the audit key
+    location: operator host (0600 private store; not published)
+  - what: promotion-sim raw gh JSON and bare clones; the operator's write-up of the exploratory rules
+    location: operator host (cache and research notes; not published). Exploratory numbers in this study are recomputed from the pinned public dataset.json, not copied from the note.
+
+questions:
+  - Does any small local model on groot form z0's own route_worker / delegate_worker calls (and BFCL v4 calls) better than, or as a cheaper substitute for, the farm default Qwen3-8B?
+  - With an action space that matches what agents actually do after a tool failure, does a local-plasticity mushroom-body controller beat a trivial constant controller on expected recovery cost, and is it competitive with an MLP?
+  - Replayed over every promotion the z0 factory made in September, which auto-merge rule would have held up on a time-split holdout?
+
+pre_registrations:
+  - experiment: tool-calling-portfolio-v0 (z0intelligence#20)
+    prereg: 6d56416
+    deviations: 01c6dd9  # adapter fixes from smoke, before scoring
+    results: b3a5fb0
+    correction: 1f9473f
+    verdict: null for every candidate - none better than qwen3_8b (rule 1), none eligible as a cheaper substitute (rule 2); qwen3_14b and nemotron not distinguishable; all four new candidates significantly worse pooled
+  - experiment: t3b-action-space-v1
+    prereg: 3cb0e50
+    frozen_harness: 4b1015b
+    results: ebb2e71
+    verdict: primary pass (MB beats best constant on cost, delta CI [-0.131, -0.030]); secondary fail by 0.006 (MB vs MLP upper bound 0.056, bar < 0.05); ask/abort untested (n=1 each in test)
+  - experiment: promotion-sim-v0
+    prereg: fa8de23
+    results: 11506a9
+    verdict: H1 (primary) fail - pick auto-merged 65/91 with 11 bad (0.169 vs bar 0.115); H2 true; H3 unscorable; H4 true (pa_v0_auto 0/14 holdout)
+
+artifacts:
+  - path: data/summary.json
+    kind: result
+    provenance: summarize.py over the pinned source files (git show at the commits above); aggregates only. Tool-calling pooled counts and McNemar tests are re-derived from rows_v0.jsonl; promotion-sim train/holdout tables are re-scored from dataset.json and match the source tables
+  - path: summarize.py
+    kind: analysis
+    provenance: public aggregation code
+
+limitations:
+  - Single principal. The z0_route items are one operator's Claude Code turns; the T3b episodes are one operator's Hermes agent history (mostly cron sources); the promotion history is one operator's nine repos over four weeks.
+  - Tool-calling gold is partly author-labelled (the acceptable route_worker `function` set) and the 5 delegate_worker items carry a gold defect found while scoring (full request line vs subtask), which capped z0 form_exact at 43/48 = 0.896 and made the pre-registered >= 0.90 gate unreachable for every arm; a post-hoc sensitivity changes no verdict.
+  - Tool-calling ran with thinking off, temperature 0, one sample per item, through one shared parser chain; BFCL is public and Hammer is tuned on BFCL-style tasks, so its BFCL numbers are an upper bound; FunctionGemma was run zero-shot although its card expects fine-tuning; VRAM is the bench process only on a shared GPU.
+  - The action-selector suite has n=11 with 3 non-ACT items and is descriptive only.
+  - T3b labels come from a structural rule over the next three turns, with recovery judged by a heuristic verifier; the blind audit (n=67, kappa 0.964) checked the rule against the definitions on structural skeletons, not the semantics in the text; the content-level owner audit has not been done.
+  - T3b test has 1 ask and 1 abort, so the asymmetric parts of the cost matrix (missed ask = 4, wrong abort = 5) are essentially untested; no model predicts abort. 297 of 2,340 episodes were excluded as unverified.
+  - Promotion-sim outcomes rest almost entirely on an SZZ "fix within 3 days" label (61 of 63 bad events on the 305 scorable; 0 reverts; 2 CI breaks, with post-merge code CI observable for only 115 events); the label counts some normal iteration as bad and misses add-only fixes.
+  - Promotion-sim history is short and lumpy - z0evals is 36 of 91 holdout events, mostly one site sprint; agent attribution is unreliable (34 of 324 events tagged agent), which left H3 unscorable; `tested` is a static import proxy, not Promotion Authority v0's coverage rule, and judges Python only.
+  - The promotion-sim exploratory rules were chosen after the holdout was seen; their zero-bad counts are upper-bounded (Wilson) at roughly 5-10%, not shown to be safe.
+  - Nothing here changed runtime behaviour - no routing config, local_order, role default, controller, or merge policy was changed by these experiments.
+
+claims:
+  - id: toolcall-null
+    text: On 184 frozen items (48 z0 route_worker/delegate_worker, 125 BFCL v4, 11 action-selector), no candidate beat the farm default Qwen3-8B (152/184) and none met the cheaper-substitute gates; Qwen3-14B (150, p=0.86) and Nemotron-Orchestrator-8B (148, p=0.39) were not distinguishable, and Qwen3.5-4B (137, p=0.028), Qwen3.5-9B (121), Hammer2.1-7B (86), Hammer2.1-3B (81) and zero-shot FunctionGemma-270M (63) were significantly worse (exact McNemar, re-derived from the committed pass flags).
+    evidence:
+      - data/summary.json
+  - id: toolcall-z0-discriminates
+    text: z0 route_worker formation separated the arms while the BFCL subset was close to saturated for the Qwen-family arms (103-114/125); Qwen3.5-9B called delegate_worker instead of route_worker on 24 of 43 route_worker items (no-think), and Hammer 2.1 formed almost no valid z0 calls (0/48 and 3/48 exact).
+    evidence:
+      - data/summary.json
+  - id: toolcall-gate-defect
+    text: The pre-registered z0 form_exact >= 0.90 gate was unreachable for every arm because of a delegate_worker gold defect; a labelled post-hoc sensitivity (Qwen3-8B 157/184) leaves the ranking and every eligibility verdict unchanged.
+    evidence:
+      - data/summary.json
+  - id: t3b-primary
+    text: On a frozen lineage split of real Hermes failure episodes (test n=379) with a six-action recovery space, the retrained mushroom-body controller (cost-decoded) had mean cost 0.288 vs 0.368 for the best constant (edit_retry), paired delta 95% CI [-0.131, -0.030] - the pre-registered primary endpoint passed.
+    evidence:
+      - data/summary.json
+  - id: t3b-secondary
+    text: The mushroom body was not shown competitive with an MLP under the pre-registered bar (delta -0.007, CI [-0.069, +0.056], bar upper < 0.05); ridge regression was the best single model (0.252), and the hand-written a-priori rule was worse than the constant (0.433, delta CI [+0.008, +0.119]).
+    evidence:
+      - data/summary.json
+  - id: t3b-ask-abort-untested
+    text: With 1 ask and 1 abort in test and no model ever predicting abort, the result speaks to noop / retry / edit_retry / switch_tool only.
+    evidence:
+      - data/summary.json
+  - id: promotion-h1-fail
+    text: Replayed over 324 promotion events (305 scorable) with a pre-registered time split, the train-picked rule auto[all,<=inf,nonsrc] auto-merged 65 of 91 holdout events with 11 bad (0.169; bar 0.115 = 0.5 x base 0.231), so H1 failed; 32 of the 71 all-green scorable PRs had no code check, only the receipt/label workflows.
+    evidence:
+      - data/summary.json
+  - id: promotion-h2-h4
+    text: Promotion Authority v0 ABSTAIN was weakly discriminative (10 bad of 39 across all scorable vs a 0.21 base; 1 of 4 on holdout), and pa_v0_auto (clean PA pass plus green code CI) auto-merged 14 holdout events with 0 bad (0/35 across train and holdout, Wilson upper bound 0.099).
+    evidence:
+      - data/summary.json
+  - id: promotion-exploratory
+    text: Exploratory, chosen after the holdout was seen and not pre-registered - docs-only changes with nothing red had 0 bad in 40 (13% of events), and pa_v0_auto with ABSTAIN sent to a human plus docs-only had 0 bad in 74 (24%, Wilson upper bound 0.049); auto_on_code_green had 3 in 52.
+    evidence:
+      - data/summary.json
