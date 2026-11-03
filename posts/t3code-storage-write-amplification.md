@@ -1,5 +1,5 @@
 ---
-title: "a 25 ms commit window for t3 code: fewer sqlite commits, same latency"
+title: "a 25 ms commit window for t3 code: 43% fewer sqlite commits per turn"
 subtitle: "t3 code commits once per streamed event. grouping plain provider updates for up to 25 ms cut commits per simulated turn by 43%, and a replay of 2 hours of live traffic estimates 41% fewer."
 study: t3code-storage-write-amplification
 status: draft
@@ -33,20 +33,20 @@ toc:
 ---
 
 <div class="lede">
-the t3 code server commits once per event, and each commit rewrites about 29 pages. we tried a 25 ms group-commit window for plain provider updates. on simulated turns it cut commits per turn by 43% and sqlite bytes written per turn by 21%, with no latency regression beyond noise. replaying 2 hours of a real event log through the same rule estimates 41% fewer commits on live traffic.
+the t3 code server commits once per event, and each commit rewrites about 29 pages. we tried a 25 ms group-commit window for plain provider updates. on simulated turns it cut commits per turn by 43% and sqlite bytes written per turn by 21%. we detected no latency regression, though most latency intervals are wide. replaying 2 hours of a real event log through the same rule estimates 41% fewer commits on live traffic.
 </div>
 
 ## the short version {#summary}
 
 - **the problem already has an upstream venue.** [issue 24003](https://github.com/pingdotgg/t3code/issues/24003) (by @simasrazinskas) tracks it: the server commits once per event, and its first suggested fix is to group a streamed turn's events into one commit. [pr 24145](https://github.com/pingdotgg/t3code/pull/24145) (by @Zheruel) tried batching queued snapshots and was closed. in review, simas found that queued-snapshot batching rarely applies to live traffic, because events arrive one at a time. he suggested grouping commits across threads in `EventSink` instead.
 - **that is what we built,** with a time window as the trigger. plain `node`, `message`, `turn-item` and `plan` updates wait up to 25 ms and then commit together. any other write commits the queue first.
-- **simulated turns (a/b, 8 interleaved slots per arm):** commits per turn 51.5 → 29.5 (−43%). sqlite bytes written per turn 7.79 → 6.17 MiB (−21%). wire bytes are identical. event lag is the only latency metric with a tight interval, and it stays under the window. the other latency intervals are wide and rule out only large shifts.
+- **simulated turns (a/b, 8 interleaved slots per arm):** commits per turn 51.5 → 29.5 (−43%). sqlite bytes written per turn 7.79 → 6.17 MiB (−21%). reconnect replay wire bytes are unchanged. event lag is the only latency metric with a tight interval: its median rises 15.5 ms [−14, +20]. the other latency intervals are wide and rule out only large shifts.
 - **live traffic (replay estimate):** 2 hours of a real event log (9,292 events, 21 threads, mostly the hermes acp agent) give 41.1% fewer commits at 25 ms, 34.3% at 10 ms and 45.6% at 50 ms. this is an estimate, not a measured a/b.
 - **we asked upstream** whether they want this direction, and whether opt-in or default-on, before opening a focused pr: [discussion 29954](https://github.com/pingdotgg/t3code/discussions/29954), plus a [comment on issue 24003](https://github.com/pingdotgg/t3code/issues/24003#issuecomment-6596275747).
 
 ## one commit per event {#problem}
 
-experiment 03b preloaded a small shim that counts the server's write syscalls per file and parses wal frame headers. the counts cover the server process only. turns are the repo's `devReplay` acp agent, driven through the real adapter, orchestration, projections and checkpoints. medians over 10 tapped turns, on a 654.6 MiB copy of one real database at 4 KiB pages:
+experiment 03b preloaded a small shim that counts the server's write syscalls per file and parses wal frame headers. the counts cover the server process only. turns are the repo's `devReplay` acp agent, driven through the real adapter, orchestration, projections and checkpoints. p50 (nearest rank) over 10 tapped turns, on a 618.8 MiB doctor-compacted seed derived from the 654.6 MiB database, at 4 KiB pages:
 
 | per turn | 4 KiB pages |
 |---|---|
@@ -56,9 +56,9 @@ experiment 03b preloaded a small shim that counts the server's write syscalls pe
 | checkpoint copy-back | 1.19 MiB |
 | sqlite bytes written | 7.1 MiB, 83% of it wal frames |
 
-- **each commit rewrites the same hot pages.** these are the right-edge leaf of `orchestration_events` and of each of its indexes (together 42.5% of frames), `sqlite_sequence`, the projection metadata row, the thread row and its `project_updated` index. each is one page, rewritten about 46 times per turn.
-- **a turn writes about 29× what it adds.** it writes 7.1 MiB to grow the database by about 242 KiB.
-- **checkpoint tuning does not help.** a smaller checkpoint threshold raises copy-back. a larger one cannot touch the wal frames, which are paid on every commit. the lever is the number of commits.
+- **commits keep rewriting the same pages.** the event table and its indexes account for 42.5% of frames. `sqlite_sequence`, the projection metadata row, the thread row and its `project_updated` index each sit on one page that is rewritten about 46 times per turn.
+- **a turn writes about 29× what it adds** (median of the per-turn ratios): about 7.1 MiB written to grow the database by about 242 KiB.
+- **checkpoint tuning cannot remove the main cost.** a smaller checkpoint threshold raises copy-back. a larger one lowers copy-back somewhat (modelled), but cannot touch the wal frames, which are paid on every commit. the lever is the number of commits.
 
 ## the change {#change}
 
@@ -76,7 +76,7 @@ the failure modes are the part we asked upstream about:
 
 ## a/b on simulated turns {#group-commit}
 
-four arms, interleaved a b c / c b a. pilot slots 1–3 ran at `fc7cfbeb` and slots 4–8 at `be02c345`; the diff between the two touches only the pooling script, so the slots pool. each slot is one boot with 2 tapped turns.
+four arms. pilot slots 1–3 ran all four (a b c d / d c b a) at `fc7cfbeb`; slots 4–8 ran off, 25 ms and idx (a b c / c b a) at `be02c345`; the diff between the two touches only the pooling script, so the slots pool. each slot is one boot with 2 tapped turns.
 
 - `off`: no flags. 8 slots, 16 turns.
 - `w25`: 25 ms window. 8 slots, 16 turns.
@@ -103,18 +103,18 @@ the median shift vs off, with a bootstrap 95% interval:
 | event lag p95 (ms) | 236 / 916 | +47 [−96, +160] | −40 [−180, +31] | −14 [−112, +456] |
 | ws frame gap p50 (ms) | 220 / 240 | +27.5 [+17, +38] | +2.5 [−8, +17] | +8.5 [−18, +32] |
 | assistant delta gap p50 (ms) | 427 / 492 | −3.5 [−15, +1.5] | −2 [−13, +7.5] | +21 [+9.5, +32] |
-| turn wall (ms) | 5710 / 7260 | −64 [−345, +338] | −90 [−376, +154] | −173 [−407, +618] |
+| turn wall (ms) | 5710 / 7260 | −64 [−345, +338] | −89.5 [−376, +154] | −173 [−407, +618] |
 | peak rss (MiB) | 534 / 570 | +24 [−5, +41] | 0 [−14, +24] | −9 [−21, +6] |
 | server cpu per turn (s) | 1.10 / 1.81 | −0.27 [−0.67, +0.45] | −0.26 [−0.59, +0.33] | −0.33 [−0.74, +0.59] |
 | reconnect replay wire (KiB) | 110 / 112 | 0 [−3, +3] | 0 [−3, +3] | 0 [−3, +3] |
 
 how we read it:
 
-- **25 ms cuts commits by 43%, wal frames by 24% and sqlite bytes by 21%.** reconnect wire bytes do not change.
-- **event lag p50 is the only latency metric with a tight interval.** it moves +15.5 ms [−14, +20], and the upper bound stays under the 25 ms window that caps it by design. the other latency intervals (first live event, first assistant delta, turn wall, event lag p95) are wide. they rule out large regressions, not small ones.
+- **25 ms cuts commits by 43%, wal frames by 24% and sqlite bytes by 21%.** reconnect replay wire bytes do not change.
+- **event lag p50 is the only latency metric with a tight interval.** its median rises from 17 to 32.5 ms; the shift is +15.5 ms [−14, +20], below the 25 ms window that bounds the added wait by design. the other latency intervals (first live event, first assistant delta, turn wall, event lag p95) are wide. they rule out large regressions, not small ones.
 - **the window merges ws frames.** each turn sends 3 fewer, and the frame gap grows by 27.5 ms. assistant text keeps the same cadence.
 - **150 ms saves no more and adds 150 ms of event lag** in the 4-turn pilot, so the window has to stay short. it also shows the latency metrics catch a real delay.
-- **the index trim had no measurable per-turn effect** at 16 turns. upstream has since merged it for its own reasons ([pr 23211](https://github.com/pingdotgg/t3code/pull/23211)), so the a/b's seeds predate it.
+- **the index trim had no measurable per-turn effect** at 16 turns. upstream has since merged one part of it, the correlation-index removal ([pr 23211](https://github.com/pingdotgg/t3code/pull/23211)); the a/b's seeds predate that.
 
 ## live-traffic estimate {#live}
 
@@ -154,9 +154,9 @@ we started from a different question: could the provider own the transcript, wit
 </figure>
 
 - **text is 3% of the file.** messages, reasoning and tool input total 18.6 MiB.
-- **tool output is 42.2 MiB (6.8% of the 619.1 MiB post-doctor file).** evicting it saves 37.9 MiB (6.1%), and no adapter can serve it back today. even full provider ownership (policy B) removes only a third. ids and metadata, indexes and page slack are 91% of what remains.
-- **superseded snapshot bodies were the biggest waste.** we built a fold for them (experiment 02, flag `T3CODE_EXPERIMENTAL_SNAPSHOT_FOLD`): −20.1% after `VACUUM`, 18/18 projection tables equal after rebuild. its review found one race (resume check vs replay read) that [pr 29806](https://github.com/pingdotgg/t3code/pull/29806) also handles. both fall back to a snapshot for a cursor in removed history. the designs differ: our fold kept a per-thread watermark, while 29806 prunes everything below a global boundary.
-- **29806 and 29811 are open prs.** [29806](https://github.com/pingdotgg/t3code/pull/29806) prunes events the projections already cover. [29811](https://github.com/pingdotgg/t3code/pull/29811) returns freed pages to the filesystem. if they land, they cover the event-log bytes, which is why we dropped the fold. on this database the event log is 408 of 654.6 MiB including indexes. pruning shrinks the tail pages each commit touches, so the per-commit cost should be re-measured on top of it.
+- **tool output is 42.2 MiB (6.8% of the 619.1 MiB post-doctor file).** evicting it saves 37.9 MiB (6.1%), and no adapter can serve it back today. even full provider ownership (policy B) removes only a third. ids and metadata, indexes and page slack are 92% of what remains.
+- **superseded snapshot bodies were the biggest waste.** we built a fold for them (experiment 02, flag `T3CODE_EXPERIMENTAL_SNAPSHOT_FOLD`): −20.1% after `VACUUM`, 18/18 projection tables equal after rebuild. its review found one race (resume check vs replay read) that [pr 29806](https://github.com/pingdotgg/t3code/pull/29806) also handles. both fall back to a snapshot for a cursor in removed history. the designs differ: our fold kept a per-thread watermark, while 29806 uses one global pruning boundary, with retention exceptions such as each stream's newest event.
+- **29806 and 29811 are open prs.** [29806](https://github.com/pingdotgg/t3code/pull/29806) prunes events the projections already cover. [29811](https://github.com/pingdotgg/t3code/pull/29811) returns freed pages to the filesystem automatically for small existing databases (up to 128 MiB of live data); larger ones still need `t3 doctor`. if they land, they cover most event-log bytes, which is why we dropped the fold. on this database the event log is 408 of 654.6 MiB including indexes. pruning may change the pages each commit touches, so the per-commit cost should be re-measured on top of it.
 
 the case for provider-owned history is freshness: turns run in another client would show up on the next open. it is not bytes.
 

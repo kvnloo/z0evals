@@ -75,7 +75,7 @@
     "page slack": 70.7
    }
   },
-  "B_floor_share_pct": 91.0,
+  "B_floor_share_pct": 92.0,
   "tool_output_mib": 42.2,
   "tool_output_pct_of_doctor": 6.8,
   "evict_tool_output_saving_mib": 37.9,
@@ -94,7 +94,7 @@
   "vacuumed_on_mib": 493.6,
   "vacuumed_saving_pct": -20.1,
   "in_place_file_delta_bytes": 0,
-  "in_place_used_delta_mb": -100.4,
+  "in_place_used_delta_mib": -95.7,
   "events_off": 97784,
   "events_on": 65406,
   "folded_entities": 32378,

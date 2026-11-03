@@ -1,6 +1,6 @@
 schema_version: z0eval.study.v1
 id: t3code-storage-write-amplification
-title: "A 25 ms commit window for T3 Code: fewer SQLite commits, same latency"
+title: "A 25 ms commit window for T3 Code: 43% fewer SQLite commits per turn"
 status: draft
 created: '2026-11-03'
 updated: '2026-11-03'
@@ -66,7 +66,7 @@ artifacts:
     sha256: fda26adfa34168b18e975195f43205ed3d9c475c4cd88eaedca95afab777a270
   - path: data/derived.json
     kind: analysis
-    sha256: d5db8d4d9ec2e7ba9d4bc7216ba8ef17160de568afc39c6ec4daf1e3fd9a40d1
+    sha256: 0f74965297eabb9d42e7dade9c97f1248c929b57e26c1e1d8a96728aeb958d71
   - path: figures/bytes-by-class.svg
     kind: figure
     sha256: b6e93c5de15e5fb4fbbb1b963566170c42a747996e7e956239e0bbe45cf22e22
@@ -78,7 +78,7 @@ artifacts:
     sha256: 7c7e37bbdcd6242c912f95cfd48098c344512d5c2d7bb80d823047fff1c59293
   - path: scripts/figures.py
     kind: other
-    sha256: d0de99f6af0cb5469245be18c4a691440da732669d377d043a8c191bc4937235
+    sha256: f08948b8cdc5e4b96066c553cda9b78b5c7db11d966d9d11d5e811865aec169d
   - path: README.md
     kind: analysis
 limitations:

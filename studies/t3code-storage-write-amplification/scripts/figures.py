@@ -57,7 +57,7 @@ def derive() -> dict:
             "groups_mib": groups,
         }
     b = dbs["B"]["bytes_by_class"]
-    floor = b["metadata"] + b["index"] + b["slack"]
+    floor = sum(b[c] for c in ("metadata", "cell-overhead", "index", "fts", "slack", "free"))
     out["bytes"]["B_floor_share_pct"] = round(100 * floor / dbs["B"]["file_bytes"], 0)
     tool = dbs["doctor"]["bytes_by_class"]["tool-output"]
     out["bytes"]["tool_output_mib"] = mib(tool)
@@ -76,7 +76,7 @@ def derive() -> dict:
         "vacuumed_on_mib": mib(on["size"]["vacuumedBytes"]),
         "vacuumed_saving_pct": round(100 * (on["size"]["vacuumedBytes"] - off["size"]["vacuumedBytes"]) / off["size"]["vacuumedBytes"], 1),
         "in_place_file_delta_bytes": on["size"]["inPlaceFileBytes"] - off["size"]["inPlaceFileBytes"],
-        "in_place_used_delta_mb": round((on["size"]["inPlaceUsedBytes"] - off["size"]["inPlaceUsedBytes"]) / 1e6, 1),
+        "in_place_used_delta_mib": mib(on["size"]["inPlaceUsedBytes"] - off["size"]["inPlaceUsedBytes"]),
         "events_off": off["events"]["rows"], "events_on": on["events"]["rows"],
         "folded_entities": on["folded"]["foldedEntityCount"],
         "transactions": on["folded"]["transactionCount"],
