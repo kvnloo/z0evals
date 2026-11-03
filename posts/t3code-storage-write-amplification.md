@@ -32,17 +32,25 @@ toc:
     label: sources
 ---
 
-<div class="lede">
-the t3 code server commits once per event, and each commit rewrites about 29 pages. we tried a 25 ms group-commit window for plain provider updates. on simulated turns it cut commits per turn by 43% and sqlite bytes written per turn by 21%. we detected no latency regression, though most latency intervals are wide. replaying 2 hours of a real event log through the same rule estimates 41% fewer commits on live traffic.
+<div class="stat-strip" markdown="0">
+<div class="stat"><span>commits per turn</span><b>−43%</b><small>51.5 → 29.5, simulated a/b</small></div>
+<div class="stat"><span>sqlite bytes per turn</span><b>−21%</b><small>7.79 → 6.17 MiB</small></div>
+<div class="stat"><span>live traffic, estimated</span><b>−41%</b><small>commits, replay of 9,292 real events</small></div>
+<div class="stat"><span>event lag p50</span><b>+15.5 ms</b><small>[−14, +20], within noise</small></div>
+</div>
+
+<div class="callout" markdown="1">
+<div class="callout-title">where this stands</div>
+
+we asked the t3 code maintainers whether they want this, opt-in or on by default, in [discussion 29954](https://github.com/pingdotgg/t3code/discussions/29954). if you run t3 code, you can check what it would do for your own traffic with a read-only script: `python3 commit_window_estimate.py ~/.t3/userdata/statev2.sqlite 2` ([source](https://github.com/kvnloo/t3code/blob/45f2edca913aaa03b68ff1c5c8c2a72c78d5ae45/bench/poh/commit_window_estimate.py)). numbers from busy installs are the most useful thing to post there.
 </div>
 
 ## the short version {#summary}
 
-- **the problem already has an upstream venue.** [issue 24003](https://github.com/pingdotgg/t3code/issues/24003) (by @simasrazinskas) tracks it: the server commits once per event, and its first suggested fix is to group a streamed turn's events into one commit. [pr 24145](https://github.com/pingdotgg/t3code/pull/24145) (by @Zheruel) tried batching queued snapshots and was closed. in review, simas found that queued-snapshot batching rarely applies to live traffic, because events arrive one at a time. he suggested grouping commits across threads in `EventSink` instead.
-- **that is what we built,** with a time window as the trigger. plain `node`, `message`, `turn-item` and `plan` updates wait up to 25 ms and then commit together. any other write commits the queue first.
-- **simulated turns (a/b, 8 interleaved slots per arm):** commits per turn 51.5 → 29.5 (−43%). sqlite bytes written per turn 7.79 → 6.17 MiB (−21%). reconnect replay wire bytes are unchanged. event lag is the only latency metric with a tight interval: its median rises 15.5 ms [−14, +20]. the other latency intervals are wide and rule out only large shifts.
-- **live traffic (replay estimate):** 2 hours of a real event log (9,292 events, 21 threads, mostly the hermes acp agent) give 41.1% fewer commits at 25 ms, 34.3% at 10 ms and 45.6% at 50 ms. this is an estimate, not a measured a/b.
-- **we asked upstream** whether they want this direction, and whether opt-in or default-on, before opening a focused pr: [discussion 29954](https://github.com/pingdotgg/t3code/discussions/29954), plus a [comment on issue 24003](https://github.com/pingdotgg/t3code/issues/24003#issuecomment-6596275747).
+- **the problem:** the t3 code server commits to sqlite once per streamed event, and each commit rewrites about 29 pages. it is tracked upstream in [issue 24003](https://github.com/pingdotgg/t3code/issues/24003). [pr 24145](https://github.com/pingdotgg/t3code/pull/24145) batched queued snapshots and was closed under the one-problem rule; its reviewer, @simasrazinskas, found live events rarely queue up and suggested grouping commits across threads instead.
+- **what we built:** that suggestion, with a time window as the trigger. plain `node`, `message`, `turn-item` and `plan` updates wait up to 25 ms, then commit together. any other write commits the queue first, so order is unchanged.
+- **what it costs:** a hard crash can lose up to one window of events that no client had seen yet. in a 4-turn pilot, a 150 ms window saved no more and added 150 ms of lag, so the window has to stay short.
+- **how sure we are:** bytes and commit counts are deterministic. latency intervals are wide except event lag. the a/b used simulated turns; the live number is a replay estimate, not an a/b.
 
 ## one commit per event {#problem}
 
@@ -90,7 +98,8 @@ four arms. pilot slots 1–3 ran all four (a b c d / d c b a) at `fc7cfbeb`; slo
 <figcaption><span class="fig-n">fig. 1</span>per-turn writes, off vs a 25 ms window. bars are the p50 over 16 tapped turns per arm, scaled to off; the white whisker is the bootstrap 95% interval of the shift. this harness runs 2 tapped turns per boot with no warm phase, so its off baseline (7.79 MiB) differs from the 7.1 MiB above; compare arms only within one a/b. source: <a href="https://github.com/kvnloo/z0evals/blob/main/studies/t3code-storage-write-amplification/data/group-commit-ab.json">group-commit-ab.json</a>.</figcaption>
 </figure>
 
-the median shift vs off, with a bootstrap 95% interval:
+<details class="more" markdown="1">
+<summary>all 13 metrics: median shift vs off, with a bootstrap 95% interval</summary>
 
 | metric | off p50 / p95 | Δ 25 ms | Δ idx | Δ 150 ms (pilot) |
 |---|---|---|---|---|
@@ -107,6 +116,8 @@ the median shift vs off, with a bootstrap 95% interval:
 | peak rss (MiB) | 534 / 570 | +24 [−5, +41] | 0 [−14, +24] | −9 [−21, +6] |
 | server cpu per turn (s) | 1.10 / 1.81 | −0.27 [−0.67, +0.45] | −0.26 [−0.59, +0.33] | −0.33 [−0.74, +0.59] |
 | reconnect replay wire (KiB) | 110 / 112 | 0 [−3, +3] | 0 [−3, +3] | 0 [−3, +3] |
+
+</details>
 
 how we read it:
 

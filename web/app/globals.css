@@ -2068,3 +2068,18 @@ html[data-header-hidden] .section-bar { transform: translateY(calc(-1 * var(--he
 .filter-bar, .filter-bar > *, .seg-scroll, .filter-row2 { min-width: 0; max-width: 100%; }
 .filter-bar { overflow-x: clip; }
 .filter-row2 .log-toggle { flex: 0 0 auto; }
+
+/* ------------------------------------------------ post stat strip + disclosure */
+/* Headline numbers for markdown posts: <div class="stat-strip"><div class="stat"><span>label</span><b>value</b><small>note</small></div>…</div> */
+.prose .stat-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1px; margin: 0 0 1.75rem;
+  background: var(--hair); border: 1px solid var(--hair); border-radius: 14px; overflow: hidden; }
+.prose .stat { display: flex; flex-direction: column; gap: 4px; padding: 14px 16px; background: #121210; }
+.prose .stat span { font: 600 11px/14px var(--font-sans); letter-spacing: .4px; text-transform: uppercase; color: #837F74; }
+.prose .stat b { font-family: var(--font-serif); font-weight: 500; font-size: 1.9rem; line-height: 1.1; color: var(--color-sb-text); font-variant-numeric: tabular-nums; }
+.prose .stat small { font-size: .8rem; line-height: 1.35; color: var(--color-sb-text-muted); }
+.prose details.more { margin: 1.5rem 0; border: 1px solid var(--hair); border-radius: 14px; padding: 0 16px; }
+.prose details.more > summary { cursor: pointer; padding: 12px 0; font: 600 12px/16px var(--font-sans); letter-spacing: .4px; text-transform: uppercase; color: #837F74; }
+.prose details.more[open] > summary { border-bottom: 1px solid var(--hair); }
+.prose details.more .table-wrap { margin: 1rem 0; }
+/* Narrow tables fit the column; only tables with four or more columns keep the scrolling minimum. */
+.prose .table-wrap table:not(:has(tr > :nth-child(4))) { min-width: 0; }
