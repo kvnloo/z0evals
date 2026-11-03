@@ -22,7 +22,9 @@ export function useActiveHeading(ids: string[]): string {
       const line = window.innerHeight / 3;
       let current = targets[0].id;
       for (const t of targets) {
-        if (t.getBoundingClientRect().top <= line) current = t.id;
+        const r = t.getBoundingClientRect();
+        if (!r.height) continue; // hidden (e.g. the other reading mode's headings)
+        if (r.top <= line) current = t.id;
         else break;
       }
       setActive(current);
