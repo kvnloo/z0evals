@@ -6,7 +6,7 @@ status: evidence-pending
 author: "zer0 research"
 date: "october 23, 2026"
 dek: "bend agreed with the oracle. the best cpu algorithm made the large-batch chart beside the point."
-area: speed-ux
+area: device-use
 published: 2026-10-23
 series: cua
 log: [cua-bend-action-laws-v0, cua-hobbylm-semantic-v0]

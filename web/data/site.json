@@ -1,5 +1,5 @@
 {
-  "positioning": "zer0 research measures what agent harnesses actually do — cost, speed, memory, governance — and publishes the receipts, including the negative results.",
+  "positioning": "zer0 research measures what agent harnesses, small models and generated interfaces actually do — cost, speed, memory, governance — and publishes the receipts, including the negative results.",
   "repo": "https://github.com/kvnloo/z0evals",
   "featured": "cua-trycua-contributions",
   "highlights": ["slm-router-v0", "z0intelligence-function-routing", "unified-memory-v0", "researching-the-frontier"],
@@ -13,7 +13,7 @@
       "lede": "",
       "author": "kevin rajan",
       "date": "september 21, 2026",
-      "area": "cost-routing",
+      "area": "small-models",
       "published": "2026-09-21",
       "status": "evidence-local",
       "kind": "study"
@@ -22,7 +22,7 @@
       "slug": "z0intelligence-function-routing",
       "fromJson": "z0intelligence-function-routing.json#meta",
       "dek": "we kept trying to make routing smarter. the useful part was learning which decisions should not be model problems.",
-      "area": "cost-routing",
+      "area": "small-models",
       "published": "2026-09-29",
       "kind": "study"
     },

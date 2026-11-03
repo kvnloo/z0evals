@@ -6,7 +6,7 @@ status: evidence-local
 author: "zer0 research"
 date: "october 21, 2026"
 dek: "the frozen baseline is a negative result. the pull-first replacement is still a proposal."
-area: speed-ux
+area: hermes
 published: 2026-10-21
 log: [next-action-v0]
 mock_data: false

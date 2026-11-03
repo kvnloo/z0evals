@@ -6,7 +6,7 @@ status: evidence-local
 author: "zer0 research"
 date: "october 21, 2026"
 dek: "the fast profile matters. so does the difference between an engine and its cli."
-area: speed-ux
+area: hermes
 published: 2026-10-21
 log: [harness-speed-v1]
 mock_data: false

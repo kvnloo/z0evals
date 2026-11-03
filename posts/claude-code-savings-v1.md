@@ -6,7 +6,7 @@ status: draft
 author: "zer0 research"
 date: "october 1, 2026"
 dek: "496 pre-registered runs against the current z0 integration: one lever holds everywhere, one depends on the task, one barely shows up."
-area: cost-routing
+area: hermes
 published: 2026-10-01
 series: claude-code-savings
 log: [claude-code-savings-v1]

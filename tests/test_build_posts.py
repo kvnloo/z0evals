@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import re
 import tempfile
 import unittest
 from pathlib import Path
@@ -89,10 +90,16 @@ class BuildPostsTest(unittest.TestCase):
             with self.subTest(entry=e["id"]):
                 for k in ("title", "area", "question", "status", "date", "finding", "caveat", "links"):
                     self.assertIn(k, e)
+                self.assertIn(e["area"], build_posts.AREAS)
                 if e.get("post"):
                     self.assertIn(e["post"], posts, "entry links a post that does not exist")
                 for link in e["links"]:
                     self.assertTrue(link["url"].startswith("https://"))
+
+    def test_area_list_matches_the_site(self):
+        source = (ROOT / "web" / "lib" / "areas.ts").read_text()
+        site_ids = re.findall(r'\{ id: "([a-z-]+)"', source)
+        self.assertEqual(tuple(site_ids), build_posts.AREAS)
 
 
 if __name__ == "__main__":

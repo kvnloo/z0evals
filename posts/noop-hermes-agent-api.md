@@ -6,7 +6,7 @@ status: evidence-local
 author: "zer0 research"
 date: "october 21, 2026"
 dek: "the bounded phone run worked. that says nothing about the quality of health advice."
-area: speed-ux
+area: device-use
 published: 2026-10-21
 log: [noop-hermes-agent-api]
 mock_data: false

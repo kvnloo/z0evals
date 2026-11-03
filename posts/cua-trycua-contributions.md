@@ -6,7 +6,7 @@ status: living
 author: "zer0 research"
 date: "october 26, 2026"
 dek: "a living record of our trycua/cua work: merged fixes, open rfcs, and experiments that have not earned a claim yet."
-area: speed-ux
+area: device-use
 published: 2026-10-26
 kind: living
 series: cua
