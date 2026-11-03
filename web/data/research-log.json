@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-23",
+ "updated": "2026-11-03",
  "entries": [
   {
    "id": "fsm-work-item-v0",
@@ -46,7 +46,10 @@
    ],
    "interesting": false,
    "why": "The same transition model becomes an incident detector, but its evidence must retain candidates and unknowns rather than turn them into proven violations.",
-   "post": "bend-statecharts-v0"
+   "post": "bend-statecharts-v0",
+   "techniques": [
+    "formal-methods"
+   ]
   },
   {
    "id": "fsm-worker-supervision-v0",
@@ -89,7 +92,10 @@
    ],
    "interesting": false,
    "why": "The replay turns a vague lost-worker problem into a bounded decision queue without pretending that a recommendation is an executed recovery.",
-   "post": "bend-statecharts-v0"
+   "post": "bend-statecharts-v0",
+   "techniques": [
+    "formal-methods"
+   ]
   },
   {
    "id": "fsm-integration-v0",
@@ -136,7 +142,10 @@
    ],
    "interesting": false,
    "why": "The checker refuses to manufacture a healthy deployment from a matching checkout and keeps missing integration ownership separate from proven policy violations.",
-   "post": "bend-statecharts-v0"
+   "post": "bend-statecharts-v0",
+   "techniques": [
+    "formal-methods"
+   ]
   },
   {
    "id": "aodl-admission-v1",
@@ -163,7 +172,10 @@
    ],
    "interesting": false,
    "why": "Authority is pinned to the validated contract rather than caller-supplied limits; structural ALLOW is deliberately not labeled success.",
-   "post": null
+   "post": null,
+   "techniques": [
+    "formal-methods"
+   ]
   },
   {
    "id": "aodl-runtime-v1",
@@ -190,7 +202,10 @@
    ],
    "interesting": false,
    "why": "The admission-to-dispatch crash window is tested as a separate seam instead of inferring durability from a completed task.",
-   "post": null
+   "post": null,
+   "techniques": [
+    "formal-methods"
+   ]
   },
   {
    "id": "aodl-golden-trace-v1",
@@ -217,7 +232,11 @@
    ],
    "interesting": false,
    "why": "A completed provider response cannot silently become verified success, and a missing joined outcome remains visible.",
-   "post": null
+   "post": null,
+   "techniques": [
+    "formal-methods",
+    "measurement"
+   ]
   },
   {
    "id": "causal-ablation-v0",
@@ -248,7 +267,10 @@
    ],
    "interesting": false,
    "why": "A positive contrast, a negative contrast and two nulls survive the same audit; repeated attempts are not promoted into independent experimental units.",
-   "post": null
+   "post": null,
+   "techniques": [
+    "measurement"
+   ]
   },
   {
    "id": "protected-evaluator-v0",
@@ -279,7 +301,10 @@
    ],
    "interesting": false,
    "why": "A high score without a pinned comparable baseline receives no sealed comparison credit; an exact tie cannot become KEEP through floating-point noise.",
-   "post": null
+   "post": null,
+   "techniques": [
+    "measurement"
+   ]
   },
   {
    "id": "hcl-eval-v0",
@@ -302,7 +327,10 @@
    ],
    "interesting": false,
    "why": "The missing candidate is neither filled with zero nor turned into a winner; conformance stays separate from benefit.",
-   "post": null
+   "post": null,
+   "techniques": [
+    "measurement"
+   ]
   },
   {
    "id": "engineering-throughput-v0",
@@ -341,7 +369,11 @@
    ],
    "interesting": false,
    "why": "The faster first candidate lost required facts and was rejected; the later bounded win is not allowed to erase failed work or partial first-use cost.",
-   "post": null
+   "post": null,
+   "techniques": [
+    "measurement",
+    "scheduling"
+   ]
   },
   {
    "id": "omp-qualification-v0",
@@ -372,7 +404,10 @@
    ],
    "interesting": false,
    "why": "A repaired artifact can pass functional tests while strict qualification remains unresolved; corrected reporting must not rewrite historical failures.",
-   "post": null
+   "post": null,
+   "techniques": [
+    "measurement"
+   ]
   },
   {
    "id": "bend2-memory-authority-v0",
@@ -415,7 +450,10 @@
    ],
    "interesting": false,
    "why": "Useful evidence and positive explicit grants survive, so the law is stronger than an all-deny model; remembered approval still cannot authorize a tool.",
-   "post": null
+   "post": null,
+   "techniques": [
+    "formal-methods"
+   ]
   },
   {
    "id": "bend2-law-program-v0",
@@ -446,7 +484,10 @@
    ],
    "interesting": false,
    "why": "The design forces proof scope, toolchain trust and point-of-action enforcement to be audited separately instead of treating a green theorem as a permission token.",
-   "post": null
+   "post": null,
+   "techniques": [
+    "formal-methods"
+   ]
   },
   {
    "id": "bend2-fleet-admission-v0",
@@ -477,7 +518,11 @@
    ],
    "interesting": false,
    "why": "Missing capacity or failed source transfer produces a typed refusal rather than silently routing heavy work back to the desktop.",
-   "post": null
+   "post": null,
+   "techniques": [
+    "formal-methods",
+    "scheduling"
+   ]
   },
   {
    "id": "fsm-hapsland-layers-v0",
@@ -500,7 +545,10 @@
    ],
    "interesting": false,
    "why": "The browser displays compiled-model transitions instead of maintaining a second hand-written state machine.",
-   "post": "bend-statecharts-v0"
+   "post": "bend-statecharts-v0",
+   "techniques": [
+    "formal-methods"
+   ]
   },
   {
    "id": "cua-bend-action-laws-v0",
@@ -527,7 +575,11 @@
    ],
    "interesting": false,
    "why": "The periodicity ablation removes the apparent need for the GPU; the decision is to keep CUDA out of the per-action hot path.",
-   "post": "cua-bend-hobbylm-v0"
+   "post": "cua-bend-hobbylm-v0",
+   "techniques": [
+    "formal-methods",
+    "local-inference"
+   ]
   },
   {
    "id": "cua-hobbylm-semantic-v0",
@@ -562,7 +614,11 @@
    ],
    "interesting": false,
    "why": "Lower per-decision latency did not produce lower controller wall time or more supported success; action count and outcome matter.",
-   "post": "cua-bend-hobbylm-v0"
+   "post": "cua-bend-hobbylm-v0",
+   "techniques": [
+    "model-routing",
+    "local-inference"
+   ]
   },
   {
    "id": "claude-code-savings-v0",
@@ -593,7 +649,10 @@
    ],
    "interesting": false,
    "why": "Prefix reduction and useful state compose, while compression is null on short tasks; a cheaper model without state can cost more.",
-   "post": "claude-code-savings-v0"
+   "post": "claude-code-savings-v0",
+   "techniques": [
+    "context-reduction"
+   ]
   },
   {
    "id": "claude-code-savings-v1",
@@ -648,7 +707,10 @@
    ],
    "interesting": false,
    "why": "A pooled saving hides opposite packet effects and output-heavy versus debugging regimes; later addenda qualify the original optimistic default.",
-   "post": "claude-code-savings-v1"
+   "post": "claude-code-savings-v1",
+   "techniques": [
+    "context-reduction"
+   ]
   },
   {
    "id": "factory-intelligence-v0",
@@ -679,7 +741,11 @@
    ],
    "interesting": false,
    "why": "The recovery primary endpoint passed without passing the MLP comparison; green checks often were not code checks, and the chosen auto-merge rule failed holdout.",
-   "post": "factory-intelligence-v0"
+   "post": "factory-intelligence-v0",
+   "techniques": [
+    "model-routing",
+    "measurement"
+   ]
   },
   {
    "id": "local-offload-and-authority-v0",
@@ -710,7 +776,11 @@
    ],
    "interesting": false,
    "why": "A turn-level grant cannot inspect actions chosen later in the turn, but moving the check to the tool call did not by itself make enforcement safe.",
-   "post": "local-offload-and-authority-v0"
+   "post": "local-offload-and-authority-v0",
+   "techniques": [
+    "model-routing",
+    "formal-methods"
+   ]
   },
   {
    "id": "memory-providers-v0",
@@ -753,7 +823,11 @@
    ],
    "interesting": false,
    "why": "Perfect fixture recall coexists with stale-first retrieval; missing hosted credentials and incomparable prior extraction results stay missing rather than becoming a winner claim.",
-   "post": "memory-providers-v0"
+   "post": "memory-providers-v0",
+   "techniques": [
+    "context-reduction",
+    "measurement"
+   ]
   },
   {
    "id": "offload-and-loop-v0",
@@ -784,7 +858,11 @@
    ],
    "interesting": false,
    "why": "A format verifier admitted unsupported summaries, and a pipe-exit bug contaminated success labels; learning is evidence-bound, not learner-bound.",
-   "post": "offload-and-loop-v0"
+   "post": "offload-and-loop-v0",
+   "techniques": [
+    "model-routing",
+    "local-inference"
+   ]
   },
   {
    "id": "unified-memory-v0",
@@ -875,7 +953,10 @@
    ],
    "interesting": false,
    "why": "A smaller context and passing capture tests still do not establish source-supported memory; a real producer event broke a fixture-green replay reader.",
-   "post": "unified-memory-v0-october"
+   "post": "unified-memory-v0-october",
+   "techniques": [
+    "context-reduction"
+   ]
   },
   {
    "id": "unified-memory-continuity",
@@ -905,7 +986,10 @@
     }
    ],
    "interesting": true,
-   "why": "The product test is fewer repeated explanations, not more indexed records or passing transport tests."
+   "why": "The product test is fewer repeated explanations, not more indexed records or passing transport tests.",
+   "techniques": [
+    "context-reduction"
+   ]
   },
   {
    "id": "memory-source-freshness",
@@ -927,7 +1011,11 @@
     }
    ],
    "interesting": true,
-   "why": "A fresh hash attached to stale excerpt bytes would defeat provenance while appearing correct."
+   "why": "A fresh hash attached to stale excerpt bytes would defeat provenance while appearing correct.",
+   "techniques": [
+    "context-reduction",
+    "formal-methods"
+   ]
   },
   {
    "id": "memory-scoped-mcp",
@@ -949,7 +1037,10 @@
     }
    ],
    "interesting": true,
-   "why": "This is a bounded common read path rather than another memory store."
+   "why": "This is a bounded common read path rather than another memory store.",
+   "techniques": [
+    "context-reduction"
+   ]
   },
   {
    "id": "memory-native-capture",
@@ -971,7 +1062,10 @@
     }
    ],
    "interesting": true,
-   "why": "A summary or assistant assertion must not become a new user-authored correction."
+   "why": "A summary or assistant assertion must not become a new user-authored correction.",
+   "techniques": [
+    "context-reduction"
+   ]
   },
   {
    "id": "memory-use-outcomes",
@@ -993,7 +1087,10 @@
     }
    ],
    "interesting": true,
-   "why": "This supplies the real reward signal needed for memory optimization and the north-star metric."
+   "why": "This supplies the real reward signal needed for memory optimization and the north-star metric.",
+   "techniques": [
+    "measurement"
+   ]
   },
   {
    "id": "optmem-research-wave",
@@ -1011,7 +1108,10 @@
     }
    ],
    "interesting": true,
-   "why": "The useful distinction is retained versus discoverable versus current versus authorized."
+   "why": "The useful distinction is retained versus discoverable versus current versus authorized.",
+   "techniques": [
+    "context-reduction"
+   ]
   },
   {
    "id": "optmem-derived-views",
@@ -1037,7 +1137,10 @@
     }
    ],
    "interesting": true,
-   "why": "This prevents a tree-shaped UI from being mistaken for complete, current memory."
+   "why": "This prevents a tree-shaped UI from being mistaken for complete, current memory.",
+   "techniques": [
+    "context-reduction"
+   ]
   },
   {
    "id": "optmem-temporal-forgetting",
@@ -1063,7 +1166,10 @@
     }
    ],
    "interesting": true,
-   "why": "Faithful historical recall and current applicability need different tests."
+   "why": "Faithful historical recall and current applicability need different tests.",
+   "techniques": [
+    "context-reduction"
+   ]
   },
   {
    "id": "optchat-held-trial",
@@ -1089,7 +1195,10 @@
     }
    ],
    "interesting": true,
-   "why": "A preserved experiment is not an active priority or authorization to restart it."
+   "why": "A preserved experiment is not an active priority or authorization to restart it.",
+   "techniques": [
+    "context-reduction"
+   ]
   },
   {
    "id": "memory-read-path-health",
@@ -1111,7 +1220,10 @@
     }
    ],
    "interesting": false,
-   "why": "A configured archive is not a usable low-latency retrieval path."
+   "why": "A configured archive is not a usable low-latency retrieval path.",
+   "techniques": [
+    "caching-reuse"
+   ]
   },
   {
    "id": "memory-binding-health",
@@ -1129,7 +1241,10 @@
     }
    ],
    "interesting": false,
-   "why": "Configuration, runtime availability and verified use need independent states."
+   "why": "Configuration, runtime availability and verified use need independent states.",
+   "techniques": [
+    "measurement"
+   ]
   },
   {
    "id": "unii-native-core",
@@ -1151,7 +1266,10 @@
     }
    ],
    "interesting": true,
-   "why": "The adapter preserves the original backend and fallback instead of rebuilding them."
+   "why": "The adapter preserves the original backend and fallback instead of rebuilding them.",
+   "techniques": [
+    "caching-reuse"
+   ]
   },
   {
    "id": "unii-memory-explorer",
@@ -1173,7 +1291,10 @@
     }
    ],
    "interesting": true,
-   "why": "Showing a plausible tree is weaker than showing the authoritative context of a particular turn."
+   "why": "Showing a plausible tree is weaker than showing the authoritative context of a particular turn.",
+   "techniques": [
+    "measurement"
+   ]
   },
   {
    "id": "unii-integrated-native-pty",
@@ -1191,7 +1312,10 @@
     }
    ],
    "interesting": true,
-   "why": "Unicode, paste, duplicate sends and modal ownership are tested through actual input bytes."
+   "why": "Unicode, paste, duplicate sends and modal ownership are tested through actual input bytes.",
+   "techniques": [
+    "measurement"
+   ]
   },
   {
    "id": "unii-usage-ledger",
@@ -1209,7 +1333,10 @@
     }
    ],
    "interesting": true,
-   "why": "A cheaper model label is not a measured lower cost once retries and cache behavior are included."
+   "why": "A cheaper model label is not a measured lower cost once retries and cache behavior are included.",
+   "techniques": [
+    "measurement"
+   ]
   },
   {
    "id": "unii-compactor-terra",
@@ -1227,7 +1354,11 @@
     }
    ],
    "interesting": true,
-   "why": "This reverses the assumption that fewer model dollars, fewer raw tokens and lower quota burn are interchangeable."
+   "why": "This reverses the assumption that fewer model dollars, fewer raw tokens and lower quota burn are interchangeable.",
+   "techniques": [
+    "context-reduction",
+    "model-routing"
+   ]
   },
   {
    "id": "fleet-admission-repair",
@@ -1249,7 +1380,10 @@
     }
    ],
    "interesting": true,
-   "why": "A waiting build can be blocked before it even reaches the worker."
+   "why": "A waiting build can be blocked before it even reaches the worker.",
+   "techniques": [
+    "scheduling"
+   ]
   },
   {
    "id": "fleet-steward",
@@ -1271,7 +1405,11 @@
     }
    ],
    "interesting": true,
-   "why": "The first payoff is actionable missing evidence and repeated failure classes, not an automated placement win."
+   "why": "The first payoff is actionable missing evidence and repeated failure classes, not an automated placement win.",
+   "techniques": [
+    "measurement",
+    "scheduling"
+   ]
   },
   {
    "id": "fleet-lesson-learning",
@@ -1297,7 +1435,11 @@
     }
    ],
    "interesting": true,
-   "why": "Identity, stage and outcome coverage must improve before any placement policy can learn honestly."
+   "why": "Identity, stage and outcome coverage must improve before any placement policy can learn honestly.",
+   "techniques": [
+    "scheduling",
+    "measurement"
+   ]
   },
   {
    "id": "fleet-observability-oss",
@@ -1319,7 +1461,10 @@
     }
    ],
    "interesting": true,
-   "why": "Observability can itself worsen the constrained storage and control-plane path."
+   "why": "Observability can itself worsen the constrained storage and control-plane path.",
+   "techniques": [
+    "measurement"
+   ]
   },
   {
    "id": "fleet-kueue-hybrid",
@@ -1345,7 +1490,10 @@
     }
    ],
    "interesting": true,
-   "why": "The blocker is a qualified workload and receipt chain, not merely installing a scheduler."
+   "why": "The blocker is a qualified workload and receipt chain, not merely installing a scheduler.",
+   "techniques": [
+    "scheduling"
+   ]
   },
   {
    "id": "federated-capacity-plane",
@@ -1371,7 +1519,10 @@
     }
    ],
    "interesting": true,
-   "why": "The contract can unify inspection while avoiding a second quota ledger or scheduler."
+   "why": "The contract can unify inspection while avoiding a second quota ledger or scheduler.",
+   "techniques": [
+    "scheduling"
+   ]
   },
   {
    "id": "provider-capacity-projection",
@@ -1393,7 +1544,11 @@
     }
    ],
    "interesting": false,
-   "why": "A passing suite count can hide complete absence of the feature’s own contract checks."
+   "why": "A passing suite count can hide complete absence of the feature’s own contract checks.",
+   "techniques": [
+    "model-routing",
+    "measurement"
+   ]
   },
   {
    "id": "local-resource-placement",
@@ -1419,7 +1574,11 @@
     }
    ],
    "interesting": true,
-   "why": "Local inference costs depend on residency and context pressure, not parameter count alone."
+   "why": "Local inference costs depend on residency and context pressure, not parameter count alone.",
+   "techniques": [
+    "local-inference",
+    "scheduling"
+   ]
   },
   {
    "id": "quota-receipt-validation",
@@ -1445,7 +1604,10 @@
     }
    ],
    "interesting": false,
-   "why": "Accounting validation is a prerequisite to spending expiring free quota safely."
+   "why": "Accounting validation is a prerequisite to spending expiring free quota safely.",
+   "techniques": [
+    "measurement"
+   ]
   },
   {
    "id": "usage-schema-boundary",
@@ -1463,7 +1625,10 @@
     }
    ],
    "interesting": false,
-   "why": "Schema mismatch can look like unused quota unless empty coverage stays unknown."
+   "why": "Schema mismatch can look like unused quota unless empty coverage stays unknown.",
+   "techniques": [
+    "measurement"
+   ]
   },
   {
    "id": "local-cognition-shadow",
@@ -1489,7 +1654,11 @@
     }
    ],
    "interesting": false,
-   "why": "Timeout and unavailable coverage must not be scored as a fast or correct decision."
+   "why": "Timeout and unavailable coverage must not be scored as a fast or correct decision.",
+   "techniques": [
+    "model-routing",
+    "local-inference"
+   ]
   },
   {
    "id": "local-cognition-recovery",
@@ -1507,7 +1676,10 @@
     }
    ],
    "interesting": false,
-   "why": "Reliable negative evidence is necessary before local-model comparison is meaningful."
+   "why": "Reliable negative evidence is necessary before local-model comparison is meaningful.",
+   "techniques": [
+    "local-inference"
+   ]
   },
   {
    "id": "observer-confirmation-failed",
@@ -1529,7 +1701,10 @@
     }
    ],
    "interesting": true,
-   "why": "A calibration-looking improvement can fail transfer or merely approximate the base rate."
+   "why": "A calibration-looking improvement can fail transfer or merely approximate the base rate.",
+   "techniques": [
+    "model-routing"
+   ]
   },
   {
    "id": "adaptive-observer-idea",
@@ -1547,7 +1722,10 @@
     }
    ],
    "interesting": true,
-   "why": "It addresses the all-safe-threshold ambiguity without treating reference agreement as truth."
+   "why": "It addresses the all-safe-threshold ambiguity without treating reference agreement as truth.",
+   "techniques": [
+    "model-routing"
+   ]
   },
   {
    "id": "autonomous-sft-loop",
@@ -1565,7 +1743,10 @@
     }
    ],
    "interesting": true,
-   "why": "The reward and contamination boundaries matter before adding weight updates."
+   "why": "The reward and contamination boundaries matter before adding weight updates.",
+   "techniques": [
+    "search-optimization"
+   ]
   },
   {
    "id": "optimizer-before-sft",
@@ -1583,7 +1764,10 @@
     }
    ],
    "interesting": true,
-   "why": "Training is one intervention, not an assumed destination for every failure."
+   "why": "Training is one intervention, not an assumed destination for every failure.",
+   "techniques": [
+    "search-optimization"
+   ]
   },
   {
    "id": "byte-distillation-paper",
@@ -1605,7 +1789,10 @@
     }
    ],
    "interesting": true,
-   "why": "It suggests a new target representation, but economics must be checked before expensive training."
+   "why": "It suggests a new target representation, but economics must be checked before expensive training.",
+   "techniques": [
+    "model-routing"
+   ]
   },
   {
    "id": "shared-context-write-leases",
@@ -1623,7 +1810,10 @@
     }
    ],
    "interesting": true,
-   "why": "It separates concurrency control from model-context reuse."
+   "why": "It separates concurrency control from model-context reuse.",
+   "techniques": [
+    "formal-methods"
+   ]
   },
   {
    "id": "per-tool-call-placement",
@@ -1645,7 +1835,10 @@
     }
    ],
    "interesting": true,
-   "why": "An apparently cheap remote call becomes expensive under admission waits."
+   "why": "An apparently cheap remote call becomes expensive under admission waits.",
+   "techniques": [
+    "scheduling"
+   ]
   },
   {
    "id": "prefix-cache-before-c2c",
@@ -1667,7 +1860,10 @@
     }
    ],
    "interesting": true,
-   "why": "The smallest existing-cache control can falsify the need for a more complex mechanism."
+   "why": "The smallest existing-cache control can falsify the need for a more complex mechanism.",
+   "techniques": [
+    "caching-reuse"
+   ]
   },
   {
    "id": "outcome-credit-rfc",
@@ -1697,7 +1893,10 @@
     }
    ],
    "interesting": true,
-   "why": "An optimizer can otherwise improve its own scoreboard without improving a task."
+   "why": "An optimizer can otherwise improve its own scoreboard without improving a task.",
+   "techniques": [
+    "measurement"
+   ]
   },
   {
    "id": "selective-autonomy-rfc",
@@ -1719,7 +1918,10 @@
     }
    ],
    "interesting": true,
-   "why": "The useful target is safe decision coverage with a costed fallback, not raw agreement."
+   "why": "The useful target is safe decision coverage with a costed fallback, not raw agreement.",
+   "techniques": [
+    "model-routing"
+   ]
   },
   {
    "id": "mechanism-neutral-compilation",
@@ -1741,7 +1943,11 @@
     }
    ],
    "interesting": true,
-   "why": "A specialist that cannot repay discovery and drift cost should be narrowed or removed."
+   "why": "A specialist that cannot repay discovery and drift cost should be narrowed or removed.",
+   "techniques": [
+    "caching-reuse",
+    "algorithmic"
+   ]
   },
   {
    "id": "promotion-queue-reconciliation",
@@ -1763,7 +1969,10 @@
     }
    ],
    "interesting": false,
-   "why": "The queue exposes how much unfinished work is acceptance and integration rather than new implementation."
+   "why": "The queue exposes how much unfinished work is acceptance and integration rather than new implementation.",
+   "techniques": [
+    "measurement"
+   ]
   },
   {
    "id": "mobile-offline-contracts",
@@ -1785,7 +1994,10 @@
     }
    ],
    "interesting": true,
-   "why": "Small offline gates can make remote contribution useful without fabricating runtime coverage."
+   "why": "Small offline gates can make remote contribution useful without fabricating runtime coverage.",
+   "techniques": [
+    "formal-methods"
+   ]
   },
   {
    "id": "bend-autoresearch-artifact",
@@ -1803,7 +2015,11 @@
     }
    ],
    "interesting": true,
-   "why": "It makes the proposed exact-revision verification and separate owner-acceptance boundary concrete."
+   "why": "It makes the proposed exact-revision verification and separate owner-acceptance boundary concrete.",
+   "techniques": [
+    "search-optimization",
+    "formal-methods"
+   ]
   },
   {
    "id": "k3s-fleet-artifact",
@@ -1829,7 +2045,10 @@
     }
    ],
    "interesting": true,
-   "why": "The handoff turns specific failures into questions for infrastructure expertise without claiming a scheduler win."
+   "why": "The handoff turns specific failures into questions for infrastructure expertise without claiming a scheduler win.",
+   "techniques": [
+    "scheduling"
+   ]
   },
   {
    "id": "harness-speed-v1",
@@ -1868,7 +2087,11 @@
    ],
    "interesting": false,
    "why": "The speed profile removes much of the apparent Hermes gap; the engine-versus-CLI distinction changes the comparison.",
-   "post": "harness-speed-v1"
+   "post": "harness-speed-v1",
+   "techniques": [
+    "caching-reuse",
+    "measurement"
+   ]
   },
   {
    "id": "gui-scripting-speed-z0live-control",
@@ -1895,7 +2118,10 @@
    ],
    "interesting": false,
    "why": "Cheap lexical choice beat adding an on-phone language-model tier; waiting for confirmation dominates the fast path.",
-   "post": "z0live-phone-control"
+   "post": "z0live-phone-control",
+   "techniques": [
+    "caching-reuse"
+   ]
   },
   {
    "id": "z0live-v0",
@@ -1922,7 +2148,10 @@
    ],
    "interesting": false,
    "why": "The wrapper makes missing runtime evidence an explicit partial decision instead of a blended passing score.",
-   "post": null
+   "post": null,
+   "techniques": [
+    "measurement"
+   ]
   },
   {
    "id": "voice-omp-parity-v0",
@@ -1961,7 +2190,10 @@
    ],
    "interesting": false,
    "why": "A quicker result or fixed missing reply does not override blocking interruption and stale-speech failures.",
-   "post": "voice-omp-parity-v0"
+   "post": "voice-omp-parity-v0",
+   "techniques": [
+    "measurement"
+   ]
   },
   {
    "id": "next-action-v0",
@@ -1992,7 +2224,10 @@
    ],
    "interesting": false,
    "why": "A plain recency list beats the predictor while its highest-confidence band is worse; changing the action space matters before adding a model.",
-   "post": "next-action-baseline"
+   "post": "next-action-baseline",
+   "techniques": [
+    "model-routing"
+   ]
   },
   {
    "id": "agentweb-emma-z0-v0",
@@ -2031,7 +2266,10 @@
    ],
    "interesting": false,
    "why": "Green transport and privacy checks coexist with a blocked model study; the evidence classes cannot substitute for each other.",
-   "post": "agentweb-boundary-not-quality"
+   "post": "agentweb-boundary-not-quality",
+   "techniques": [
+    "formal-methods"
+   ]
   },
   {
    "id": "noop-hermes-agent-api",
@@ -2062,7 +2300,10 @@
    ],
    "interesting": false,
    "why": "The background result is deliberately a notification, not a stolen foreground; the API distinguishes permission, delivery and landed action.",
-   "post": "noop-hermes-agent-api"
+   "post": "noop-hermes-agent-api",
+   "techniques": [
+    "scheduling"
+   ]
   },
   {
    "id": "breath-phase-camera",
@@ -2101,7 +2342,10 @@
    ],
    "interesting": false,
    "why": "The real-clip evaluator is the skipped test, so an otherwise green suite cannot support the intended camera claim.",
-   "post": null
+   "post": null,
+   "techniques": [
+    "measurement"
+   ]
   },
   {
    "id": "turbo-mode-rfc",
@@ -2120,7 +2364,10 @@
    ],
    "interesting": false,
    "why": "The useful target is verified outcomes per bounded run, not launched workers.",
-   "post": null
+   "post": null,
+   "techniques": [
+    "scheduling"
+   ]
   },
   {
    "id": "turbo-fanout-now-testing",
@@ -2143,7 +2390,10 @@
    ],
    "interesting": false,
    "why": "A Now testing card ties a candidate to individually decidable criteria; the ownership correction prevents treating a cognition prototype as deployed orchestration.",
-   "post": null
+   "post": null,
+   "techniques": [
+    "scheduling"
+   ]
   },
   {
    "id": "bounded-recommendation-ux",
@@ -2166,7 +2416,10 @@
    ],
    "interesting": false,
    "why": "The baseline can abstain without spending inference or turning uncertain observations into health decisions.",
-   "post": null
+   "post": null,
+   "techniques": [
+    "model-routing"
+   ]
   },
   {
    "id": "turbo-app-fanout",
@@ -2193,7 +2446,254 @@
    ],
    "interesting": false,
    "why": "Real Git rollback evidence can coexist with no physical-device proof; synthetic qualification must not unlock live automation.",
-   "post": "turbo-app-fanout-offline"
+   "post": "turbo-app-fanout-offline",
+   "techniques": [
+    "scheduling"
+   ]
+  },
+  {
+   "id": "math372-transfer",
+   "title": "OpenAI math results, moved into real hot paths",
+   "area": "applied-math",
+   "techniques": [
+    "algorithmic",
+    "measurement"
+   ],
+   "question": "Can any of the 372 result families in OpenAI's math release produce a measured, user-visible improvement in an OSS project we already contribute to?",
+   "status": "in-progress",
+   "date": "2026-11-03",
+   "finding": "October triage (ChatGPT, source-reported) mapped families onto PyTorch, ctx, Kerdoios, CUA/OMP, Newton/OpenUSD, gods-eye-view and OpenROAD: #107 matmul and #130 FFT held as research-only, #121 edit distance and #125 k-median demoted, #110/#174/#120/#116 fit-gated, #124 not applicable. No candidate has an end-to-end measurement yet. A continuous program started 2026-11-03 with a model council and a fresh ChatGPT wave. A four-model council (2026-11-03) agreed the funnel must run profile-first, killed the matmul/FFT/scheduling candidates, and named Kerdoios residency, gods-eye-view OD ensembles and OpenROAD MBFF seeding as the first three experiments.",
+   "caveat": "Lean-proved statements are not algorithms, and asymptotic bounds say nothing about finite crossovers on our hardware. Every decision so far is a triage judgement, not a measurement.",
+   "links": [
+    {
+     "label": "studies/math372-transfer-v0 (program + ledger)",
+     "url": "https://github.com/kvnloo/z0evals/blob/main/studies/math372-transfer-v0/README.md"
+    },
+    {
+     "label": "kvnloo/frontier-kb#42 (hub)",
+     "url": "https://github.com/kvnloo/frontier-kb/issues/42"
+    },
+    {
+     "label": "kvnloo/oss-factory#293 (wave 4 chats)",
+     "url": "https://github.com/kvnloo/oss-factory/issues/293"
+    },
+    {
+     "label": "openai/math",
+     "url": "https://github.com/openai/math"
+    }
+   ],
+   "interesting": true,
+   "why": "The initiative is a month old with zero measured transfers; the continuous program exists to produce the first real result or a clean null.",
+   "post": null
+  },
+  {
+   "id": "math372-openroad-kmedian",
+   "title": "a k-median seed is the wrong fit for capacity-bound trays",
+   "area": "applied-math",
+   "techniques": [
+    "algorithmic"
+   ],
+   "question": "Is OpenAI math family #125 (metric k-median) a drop-in seed for OpenROAD's multi-bit flip-flop tray placement?",
+   "status": "frozen-internal",
+   "date": "2026-10-14",
+   "finding": "Source-reported toy counterexample: with eight flops and two trays of capacity four, the uncapacitated k-median optimum costs 291 under the capacity constraint versus 101 for capacity-aware centers (2.881× worse), and it was worse on all 150 seeded imbalanced fixtures.",
+   "caveat": "A synthetic construction, not a chip design. No OpenROAD binary or full design flow ran; it rules out a naive fit, not every k-median-derived seed.",
+   "links": [
+    {
+     "label": "kvnloo/oss-factory#99",
+     "url": "https://github.com/kvnloo/oss-factory/issues/99"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "math372-gev-digital-twins",
+   "title": "fifteen math work orders for digital twins, none measured",
+   "area": "applied-math",
+   "techniques": [
+    "algorithmic"
+   ],
+   "question": "Which OpenAI math families could make gods-eye-view's what-if comparisons more informative, correct or cheaper?",
+   "status": "proposal",
+   "date": "2026-10-12",
+   "finding": "An RFC and a 372-family atlas produced 15 one-idea work orders (OD-demand ensembles, facility placement, exact matching, cut sketches, optimal-transport stability, matmul and FFT crossovers, and more), each with a cheapest experiment and a stop rule. None has run.",
+   "caveat": "Work orders only. Several depend on existing owners' drafts, and none authorizes live traffic, dispatch or safety claims.",
+   "links": [
+    {
+     "label": "kvnloo/gods-eye-view#202 (RFC)",
+     "url": "https://github.com/kvnloo/gods-eye-view/issues/202"
+    },
+    {
+     "label": "kvnloo/gods-eye-view#204 (atlas)",
+     "url": "https://github.com/kvnloo/gods-eye-view/issues/204"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "memory-replay-corrections",
+   "title": "distilled corrections beat today's memory, 0.71 to 0.24",
+   "area": "memory",
+   "techniques": [
+    "context-reduction",
+    "measurement"
+   ],
+   "question": "When the owner had to re-explain something, would today's memory have prevented it, and does injecting distilled past corrections do better?",
+   "status": "frozen-internal",
+   "date": "2026-10-25",
+   "finding": "84 curated re-explanation incidents replayed from a blank state through a real harness, judged pass/partial/fail. No memory scored 0.10, today's configured memory 0.24, a raw-history seam 0.16 (31 run), an instruction to look 0.28 (25 run), and the top three BM25-retrieved distilled corrections 0.71. Paired: corrections beat today's system on 56 incidents, lost on 2, tied on 26.",
+   "caveat": "One model and a model judge; incidents and corrections come from the same corpus, so leakage is possible; two arms ran on subsets. Private corpus, internal evidence only.",
+   "links": [],
+   "interesting": true,
+   "why": "The largest measured memory win in the log, from a cheap retrieval seam rather than a new memory system.",
+   "post": null
+  },
+  {
+   "id": "repo-distill-startup-context",
+   "title": "a state packet beats a sparse repo as startup context",
+   "area": "memory",
+   "techniques": [
+    "context-reduction"
+   ],
+   "question": "What should an agent load at startup to answer questions about a large, multi-checkout repository: the repo, a distilled sparse core, or a source-linked state packet with normal retrieval?",
+   "status": "frozen-internal",
+   "date": "2026-11-02",
+   "finding": "The source-linked state packet plus local retrieval answered 17/32 questions fully correctly, versus 0/32 for the plain repository and 2/32 for the sparse distilled core (169 files, 47,943 LOC).",
+   "caveat": "32 questions on one repository; no startup hook or live configuration was changed, and the cutover remains a proposal.",
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "layerfs-vs-worktrees",
+   "title": "cheap forks did not pay for repeated installs",
+   "area": "fleet",
+   "techniques": [
+    "caching-reuse"
+   ],
+   "question": "Do LayerFS copy-on-write forks beat Git worktrees and Btrfs reflinks for parallel agent workspaces?",
+   "status": "frozen-internal",
+   "date": "2026-10-27",
+   "finding": "At fan-out four, an empty fork's p50 fell from 0.277 s to 0.030 s, but the matched create, install and verified-export p50 rose from 10.306 s to 73.733 s. Decision: keep worktrees and reflinks as defaults, LayerFS opt-in only.",
+   "caveat": "One host shared with other agents, warm caches, two pinned CPUs, five paired observations per cell; a filesystem study, not an inference benchmark.",
+   "links": [
+    {
+     "label": "kvnloo/z0intelligence#267 summary",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/267#issuecomment-6453164240"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "slm-opt-four-devices",
+   "title": "277 tuning runs on four devices, no quality-held winner yet",
+   "area": "small-models",
+   "techniques": [
+    "local-inference",
+    "search-optimization"
+   ],
+   "question": "Which device, model and configuration combinations give the best local SLM throughput across the desktop GPU, the laptop CPU and two phones?",
+   "status": "frozen-internal",
+   "date": "2026-10-23",
+   "finding": "277 completed configuration runs over 257 distinct configurations (desktop 78, laptop 80, older phone 45, newer phone 74), consolidated in one ledger with reproducible scripts.",
+   "caveat": "Completed runs are not quality-approved: no optimized configuration has passed the required 31-task live rerun, and voice components were not tuned on every device.",
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "laptop-gpu-vs-cpu",
+   "title": "an old laptop GPU helps prompts, hurts generation",
+   "area": "small-models",
+   "techniques": [
+    "local-inference"
+   ],
+   "question": "Should an old laptop's discrete or integrated GPU run local models instead of its CPU?",
+   "status": "frozen-internal",
+   "date": "2026-10-24",
+   "finding": "Radeon Vulkan sped up 512-token prompt processing 2.24–4.68× across five model/quant pairs, but generation for 1.7B and 4B models ran at 0.40–0.42× CPU speed; 0.6B generation gained only 1.05–1.19×. The Iris GPU failed to load models. Keep the CPU as default.",
+   "caveat": "One Linux/Mesa/Vulkan configuration and four CPU threads; says nothing about Metal, partial offload or other drivers.",
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "choice-ladder",
+   "title": "how many options can a tiny model choose between?",
+   "area": "small-models",
+   "techniques": [
+    "model-routing",
+    "measurement"
+   ],
+   "question": "Up to how many options k does a small local model still pick correctly at least 95% of the time, by single-token likelihood?",
+   "status": "in-progress",
+   "date": "2026-10-24",
+   "finding": "5,000 decisions so far: 50 of 125 model × task × k cells complete at n=100 each, on a frozen 2,500-item synthetic corpus.",
+   "caveat": "Easy synthetic recognition tasks, incomplete grid; missing cells are not failures, and GPU and CPU latencies are not comparable.",
+   "links": [],
+   "post": null
+  },
+  {
+   "id": "edge-compute-probe",
+   "title": "the smallest model that was fast enough and right",
+   "area": "small-models",
+   "techniques": [
+    "local-inference"
+   ],
+   "question": "What can hosted runners and the phones actually run, at what latency, for tiny networks and small GGUF models?",
+   "status": "frozen-internal",
+   "date": "2026-10-24",
+   "finding": "On the hosted runner, Qwen3 1.7B Q4 was the smallest of five pinned GGUF configurations that was both above the decode floor and correct on every diagnostic item; the older phone completed two models on its small cores before its memory budget stopped the third.",
+   "caveat": "Diagnostic items, not task quality; the newer phone was unreachable during the probe.",
+   "links": [
+    {
+     "label": "kvnloo/tiny-nn-probe",
+     "url": "https://github.com/kvnloo/tiny-nn-probe/tree/e7dda7a7b8350b25ebd8d7f1f1c9c07fb1e4402f"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "intent-service-qualification",
+   "title": "an intent service that never produced the causal fact",
+   "area": "governance",
+   "techniques": [
+    "measurement",
+    "formal-methods"
+   ],
+   "question": "Can the IntentService draft answer contracted requests with the required causal fact, under an AODL gate, well enough to install?",
+   "status": "draft-pr",
+   "date": "2026-10-24",
+   "finding": "Not installable: the final causal-fact metric stayed at 0/30 across four retained runs (2, 53, 53 and 53 attempted; 0, 0, 45 and 37 responses), after infrastructure failures were triaged and repaired.",
+   "caveat": "One model, and two runs failed for infrastructure reasons before any model answered.",
+   "links": [
+    {
+     "label": "kvnloo/z0intelligence#217",
+     "url": "https://github.com/kvnloo/z0intelligence/pull/217"
+    }
+   ],
+   "post": null
+  },
+  {
+   "id": "gpu-tensor-unlock",
+   "title": "does unlocking the desktop GPU make useful work faster?",
+   "area": "small-models",
+   "techniques": [
+    "local-inference"
+   ],
+   "question": "Does a tensor-core unlock on the RTX 3080 Ti improve verified useful work per latency, energy and attention for our real local workloads, beyond safer runtime tuning?",
+   "status": "proposal",
+   "date": "2026-10-25",
+   "finding": "Preregistered design only; the physical experiment has not run and needs separate owner approval for any driver or boot change.",
+   "caveat": "Faster GEMM or prefill would be a mechanism result, not a user benefit, until shown on real workloads.",
+   "links": [
+    {
+     "label": "kvnloo/z0intelligence#234",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/234"
+    },
+    {
+     "label": "kvnloo/z0intelligence#231",
+     "url": "https://github.com/kvnloo/z0intelligence/issues/231"
+    }
+   ],
+   "post": null
   }
  ]
 }

@@ -1,12 +1,13 @@
 // Research areas. One list for the log, the research index, the home chips and
 // scripts/build_posts.py (AREAS there must match the ids here).
-// Product areas come first: they name the system under test. The last four are
-// cross-cutting. docs/areas.md says how to pick one.
+// Product and field areas come first: they name the system or field under study. The
+// last four are cross-cutting. docs/areas.md says how to pick one.
 export type AreaId =
   | "hermes"
   | "small-models"
   | "generative-ui"
   | "device-use"
+  | "applied-math"
   | "memory"
   | "governance"
   | "fleet"
@@ -18,6 +19,7 @@ export const AREAS: readonly Area[] = [
   { id: "small-models", label: "small models & routing", blurb: "which decisions deserve a model, local slms, quota and offload" },
   { id: "generative-ui", label: "generative ui", blurb: "interfaces agents generate: formats, tokens and validity" },
   { id: "device-use", label: "phone & computer use", blurb: "agents driving phones, desktops and the web" },
+  { id: "applied-math", label: "applied math", blurb: "new mathematical results moved into real oss hot paths, or ruled out" },
   { id: "memory", label: "memory", blurb: "what agents remember, and whether it is still true" },
   { id: "governance", label: "laws & governance", blurb: "statecharts, authority checks and admission bars" },
   { id: "fleet", label: "fleet", blurb: "placement, capacity and the machines underneath" },

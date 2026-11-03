@@ -25,7 +25,9 @@ FOCUS_MD = ROOT / "web" / "data" / "research-focus.md"
 FOCUS_HTML = ROOT / "web" / "data" / "research-focus.html"
 
 # keep in step with web/lib/areas.ts
-AREAS = ("hermes", "small-models", "generative-ui", "device-use", "memory", "governance", "fleet", "research")
+AREAS = ("hermes", "small-models", "generative-ui", "device-use", "applied-math", "memory", "governance", "fleet", "research")
+# keep in step with web/lib/techniques.ts
+TECHNIQUES = ("output-format", "context-reduction", "model-routing", "local-inference", "caching-reuse", "scheduling", "algorithmic", "search-optimization", "formal-methods", "measurement")
 KINDS = ("post", "study", "living", "architecture")
 INDEX = "_index"
 

@@ -91,6 +91,8 @@ class BuildPostsTest(unittest.TestCase):
                 for k in ("title", "area", "question", "status", "date", "finding", "caveat", "links"):
                     self.assertIn(k, e)
                 self.assertIn(e["area"], build_posts.AREAS)
+                for t in e.get("techniques", []):
+                    self.assertIn(t, build_posts.TECHNIQUES)
                 if e.get("post"):
                     self.assertIn(e["post"], posts, "entry links a post that does not exist")
                 for link in e["links"]:
@@ -100,6 +102,8 @@ class BuildPostsTest(unittest.TestCase):
         source = (ROOT / "web" / "lib" / "areas.ts").read_text()
         site_ids = re.findall(r'\{ id: "([a-z-]+)"', source)
         self.assertEqual(tuple(site_ids), build_posts.AREAS)
+        source = (ROOT / "web" / "lib" / "techniques.ts").read_text()
+        self.assertEqual(tuple(re.findall(r'\{ id: "([a-z-]+)"', source)), build_posts.TECHNIQUES)
 
 
 if __name__ == "__main__":
