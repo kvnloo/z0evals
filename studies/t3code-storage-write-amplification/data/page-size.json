@@ -1,0 +1,119 @@
+{
+ "source": {
+  "repo": "kvnloo/t3code",
+  "branch": "exp/poh/03b-page-writes",
+  "commit_ab": "9b199744"
+ },
+ "note": "per-turn values are medians over tapped turns of the server process (write syscalls on the db and wal files); durable bytes are the doctor-compacted seed at each page size",
+ "tap_per_turn": {
+  "off": {
+   "turns": 10,
+   "page_size": 4096,
+   "commits_p50": 52.0,
+   "wal_frames_p50": 1523.5,
+   "distinct_pages_p50": 297.0,
+   "wal_bytes_p50": 6276852.0,
+   "copyback_bytes_p50": 1247232.0
+  },
+  "ps16k": {
+   "turns": 10,
+   "page_size": 16384,
+   "commits_p50": 52.0,
+   "wal_frames_p50": 1171.0,
+   "distinct_pages_p50": 187.0,
+   "wal_bytes_p50": 19092060.0,
+   "copyback_bytes_p50": 3727360.0
+  },
+  "ps16kc": {
+   "turns": 10,
+   "page_size": 16384,
+   "commits_p50": 52.0,
+   "wal_frames_p50": 1167.0,
+   "distinct_pages_p50": 182.0,
+   "wal_bytes_p50": 19148232.0,
+   "copyback_bytes_p50": 6234112.0
+  },
+  "ps16kj": {
+   "turns": 10,
+   "page_size": 16384,
+   "commits_p50": 52.0,
+   "wal_frames_p50": 1189.0,
+   "distinct_pages_p50": 188.0,
+   "wal_bytes_p50": 19387356.0,
+   "copyback_bytes_p50": 3932160.0
+  },
+  "ps8k": {
+   "turns": 10,
+   "page_size": 8192,
+   "commits_p50": 52.0,
+   "wal_frames_p50": 1288.0,
+   "distinct_pages_p50": 223.5,
+   "wal_bytes_p50": 10582240.0,
+   "copyback_bytes_p50": 2138112.0
+  }
+ },
+ "tap_ledger_p50": {
+  "off": {
+   "wal.bytes": 6229472,
+   "wal_frames.count": 1512,
+   "wal_commits.count": 52,
+   "wal_bytes_per_commit.bytes": 119797.53846153847,
+   "frames_per_commit.count": 29.076923076923077,
+   "db_copyback.bytes": 1179648,
+   "wal_resets.count": 1,
+   "other_files.bytes": 549352,
+   "sqlite_total.bytes": 7409120
+  },
+  "ps8k": {
+   "wal.bytes": 10508296,
+   "wal_frames.count": 1279,
+   "wal_commits.count": 52,
+   "wal_bytes_per_commit.bytes": 202082.61538461538,
+   "frames_per_commit.count": 24.596153846153847,
+   "db_copyback.bytes": 2113536,
+   "wal_resets.count": 1,
+   "other_files.bytes": 553348,
+   "sqlite_total.bytes": 12408216
+  },
+  "ps16k": {
+   "wal.bytes": 19085176,
+   "wal_frames.count": 1164,
+   "wal_commits.count": 52,
+   "wal_bytes_per_commit.bytes": 366025.23076923075,
+   "frames_per_commit.count": 22.384615384615383,
+   "db_copyback.bytes": 3555328,
+   "wal_resets.count": 1,
+   "other_files.bytes": 528664,
+   "sqlite_total.bytes": 22984568
+  },
+  "ps16kc": {
+   "wal.bytes": 19115416,
+   "wal_frames.count": 1165,
+   "wal_commits.count": 52,
+   "wal_bytes_per_commit.bytes": 367604.1538461539,
+   "frames_per_commit.count": 22.403846153846153,
+   "db_copyback.bytes": 5799936,
+   "wal_resets.count": 3,
+   "other_files.bytes": 551590,
+   "sqlite_total.bytes": 24965576
+  },
+  "ps16kj": {
+   "wal.bytes": 19265568,
+   "wal_frames.count": 1189,
+   "wal_commits.count": 52,
+   "wal_bytes_per_commit.bytes": 368234,
+   "frames_per_commit.count": 22.865384615384617,
+   "db_copyback.bytes": 3899392,
+   "wal_resets.count": 1,
+   "other_files.bytes": 495747,
+   "sqlite_total.bytes": 23164960
+  }
+ },
+ "durable_file_bytes": {
+  "off": 648888320,
+  "ps8k": 594173952,
+  "ps16k": 553582592,
+  "ps16kc": 553582592,
+  "ps16kj": 553582592
+ }
+}

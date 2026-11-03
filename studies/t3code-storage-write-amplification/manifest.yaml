@@ -1,0 +1,94 @@
+schema_version: z0eval.study.v1
+id: t3code-storage-write-amplification
+title: "A 25 ms commit window for T3 Code: 43% fewer SQLite commits per turn"
+status: draft
+created: '2026-11-03'
+updated: '2026-11-03'
+sources:
+  - repo: kvnloo/t3code
+    commit: 258d7a4edc571b0b3aa6d99b81f7dc38bf670dab
+    branch: exp/poh/00-baseline
+    role: P1 baseline harness (bench/poh) on unmodified origin/main 9bcf75335f
+  - repo: kvnloo/t3code
+    commit: e17f68cebb45c95a7d11461b3a3550b3a4d7cbfb
+    branch: exp/poh/01-byte-accounting
+    role: byte accounting and eviction-policy simulation
+  - repo: kvnloo/t3code
+    commit: e3155fc400fce4536f9ad9ec05e881a5adeb144e
+    branch: exp/poh/02-snapshot-dedupe
+    role: opt-in snapshot fold, review fixes, seed equivalence
+  - repo: kvnloo/t3code
+    commit: 3b263defba036730160a3f2451b84bfd26c3dd4b
+    branch: exp/poh/02b-rebuild-divergence
+    role: pre-existing rebuild vs live divergence (not a bug)
+  - repo: kvnloo/t3code
+    commit: 93e439187bec68d9229c3c486bc1517e38679bb9
+    branch: exp/poh/03-id-index
+    role: id/index footprint and opt-in page size
+  - repo: kvnloo/t3code
+    commit: 3676fef04b58844605728973ea8c92b6de1236d1
+    branch: exp/poh/03b-page-writes
+    role: per-turn WAL/commit tap and page-size write cost
+  - repo: kvnloo/t3code
+    commit: ea608f3764b00090e12a10543d3739104a2e2623
+    branch: exp/poh/04-commit-batching
+    role: opt-in group-commit window A/B (upstream base 5b9731ce)
+  - repo: kvnloo/t3code
+    commit: 45f2edca913aaa03b68ff1c5c8c2a72c78d5ae45
+    branch: exp/poh/04-commit-batching
+    role: read-only live-traffic commit-window estimator (bench/poh/commit_window_estimate.py)
+  - repo: pingdotgg/t3code
+    commit: 9bcf75335f9b2a8af877e1317c809b72a070b280
+    role: upstream origin/main measured by the baseline (later branches were cut from fresher main SHAs recorded in their READMEs)
+questions:
+  - Where do a turn's SQLite writes go, and does a short group-commit window cut them without a latency regression?
+  - What would the same window rule save on live traffic (replay estimate)?
+  - What does page size trade between file size and writes per turn?
+  - Background - which byte classes make up a real state.sqlite, and how much is left for provider-owned history?
+artifacts:
+  - path: data/bytes-by-class.json
+    kind: dataset
+    sha256: b19f85876e57886d1300a6246f203ec0f1cb3c999d92393bcf2b8bea38ad8585
+  - path: data/snapshot-fold-seed.json
+    kind: result
+    sha256: 53964b759aa933c8b46c9fe7f693c9f39638d7c6e50017522c9e8215ea6e8ec3
+  - path: data/page-size.json
+    kind: result
+    sha256: 4b3e88df2f86c3db5622df128c73ba8ed3f57c104af523e96a49c5c302ed84aa
+  - path: data/group-commit-ab.json
+    kind: result
+    sha256: f4d6cf30a8f7294915ebe0660b7ba3b89e42a31e765af8dd0df5cb6340a7482b
+  - path: data/live-window-estimate.json
+    kind: result
+    sha256: 8ff0d572ae4194d6240f8189f71b679687694defac102102830aa1bc74ec95e0
+  - path: data/ledger-summary.json
+    kind: receipt
+    sha256: fda26adfa34168b18e975195f43205ed3d9c475c4cd88eaedca95afab777a270
+  - path: data/derived.json
+    kind: analysis
+    sha256: 0f74965297eabb9d42e7dade9c97f1248c929b57e26c1e1d8a96728aeb958d71
+  - path: figures/bytes-by-class.svg
+    kind: figure
+    sha256: b6e93c5de15e5fb4fbbb1b963566170c42a747996e7e956239e0bbe45cf22e22
+  - path: figures/group-commit.svg
+    kind: figure
+    sha256: 433644a57743ee1e875a24f61b607baad272e650ed8a73d48d697e04f89f6626
+  - path: scripts/import_aggregates.py
+    kind: other
+    sha256: 7c7e37bbdcd6242c912f95cfd48098c344512d5c2d7bb80d823047fff1c59293
+  - path: scripts/figures.py
+    kind: other
+    sha256: f08948b8cdc5e4b96066c553cda9b78b5c7db11d966d9d11d5e811865aec169d
+  - path: README.md
+    kind: analysis
+limitations:
+  - One real database (about 655 MiB) from one user; other users' provider mix differs.
+  - Turns are simulated with the devReplay ACP agent, not live provider turns.
+  - Small n per arm (page size 10 tapped turns, group commit 16 tapped turns, 150 ms pilot 4); latency is noisy and p95 tails are wide.
+  - The snapshot fold's in-pass latency was never measured (host memory pressure); bound only, longest fold transaction 49.8 ms.
+  - Experiment 02 (snapshot fold) was dropped in favour of the open upstream PRs 29806 and 29811.
+  - The live-traffic number is a source-reported replay estimate (one commit per event assumed, ingestion time as commit time), not re-run here.
+  - Experiments were cut from different upstream main SHAs; none describe a later main.
+  - The write tap counts syscalls, not device writes; client decode and render were not measured.
+  - Raw per-run samples and the full ledger are not published; only sanitized aggregates are.
+claims: []

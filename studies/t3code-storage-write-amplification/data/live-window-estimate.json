@@ -1,0 +1,23 @@
+{
+ "provenance": "source-reported: transcribed from the posted upstream discussion (pingdotgg/t3code discussion 29954, section 4). Not re-run for this study: the source database keeps changing, so the same 2-hour range no longer holds the same rows.",
+ "estimator": {
+  "repo": "kvnloo/t3code",
+  "branch": "exp/poh/04-commit-batching",
+  "commit": "45f2edca913aaa03b68ff1c5c8c2a72c78d5ae45",
+  "path": "bench/poh/commit_window_estimate.py"
+ },
+ "range_utc": ["2026-11-03T03:30", "2026-11-03T05:28"],
+ "events": 9292,
+ "threads": 21,
+ "baseline": "one commit per event",
+ "assumptions": [
+  "one commit per event today",
+  "ingestion time (occurred_at) stands in for commit time",
+  "extra flushes forced when a pending entity is compared against are not modelled"
+ ],
+ "windows_ms": {
+  "10": {"commits": 6109},
+  "25": {"commits": 5471},
+  "50": {"commits": 5051}
+ }
+}
