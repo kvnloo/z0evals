@@ -23,6 +23,20 @@ post and a research-log entry; this study links them.
   gpt-6.1-sol; independent openings, no cross-examination yet) reviewed that record. Its
   synthesis is in `data/council-2026-11-03.md`; the program below adopts the points all four
   seats made and lists where they disagreed.
+- 2026-11-03, wave 4: five ChatGPT research answers in
+  [oss-factory#293](https://github.com/kvnloo/oss-factory/issues/293). They covered a recall audit,
+  a source delta, a surface map, a program design and a skeptic review. Folded in:
+  - The two October pins are reconciled: they differ only in a GitHub workflow file. The new pin
+    is `openai/math@4eaee87` with its `history.md` blob, and the corpus now has 373 families and
+    721 manuscripts.
+  - The local results the recall found are marked in the ledger as source-reported.
+  - Four candidates come from the map, each with a named code path and a falsifier: oh-my-pi and
+    OpenClaw edit distance (#121), three-hex-map L1 heuristic (#089) and Open3D Lp descriptors
+    (#094).
+  - Two map entries are negative fits, recorded as killed: Hermes compaction and T3 Code event
+    projection.
+  - #378 (ETH), the QFT announcement and #174 go on a watch list with no hot path.
+  - No earlier kill was overturned.
 
 ## Program
 
@@ -70,13 +84,18 @@ source-delta monitoring.
 - Win threshold: R ≤ 0.8 and beat the control by 10% (Fable), ≥10% reduction (Sol), CI lower bound
   above 1.05× on a weighted task basket (Astra), or beat both arms by a preregistered MDE (Opus).
 - Stop horizon: four weekly cycles (Astra, Sol) or six weeks (Opus).
-- OpenMC and Kerdoios are not in the factory registry; they need admission before implementation.
+- OpenMC and Kerdoios are not in the factory registry; admission is proposed in
+  [oss-factory#296](https://github.com/kvnloo/oss-factory/pull/296) (with OpenROAD) and is needed
+  before implementation.
+- Wave 4 added two more threshold proposals: a 95% lower confidence bound above a 5% end-to-end
+  reduction over both incumbent and control (program design), and at least 10% lower p95 at
+  equal accuracy over 30 matched cases (skeptic).
 - Whether the durable product is an "assumption checker" of guard results (Fable) rather than speedups.
 
 ## Files
 
 | path | what |
 |---|---|
-| `data/candidates.json` | the queue: family, target, artifact class, gate reached, next falsifier |
+| `data/candidates.json` | the pins, the queue (family, target, artifact class, gate reached, next falsifier) and the watch list |
 | `data/ledger.jsonl` | append-only verdicts, one JSON object per line |
 | `data/council-2026-11-03.md` | facilitator synthesis of the four council openings |

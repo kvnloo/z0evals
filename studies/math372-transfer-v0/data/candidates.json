@@ -1,10 +1,12 @@
 {
  "pins": {
-  "openai_math": [
-   "fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb",
-   "1581d4cbdd69a0faf34b2089614fe2a814316a6a"
-  ],
-  "note": "two pins in use; reconcile to one with history.md hash before the next freeze (G0)"
+  "openai_math_current": "4eaee87548250b2682affda7d05d947c05554bae",
+  "history_md_git_blob": "ce3d4ca01564fe0e796c441d1caa6489d661117b",
+  "contents_md_git_blob": "7e1ed90ac5a666f1bbecb22027387c4ad79e9d03",
+  "openai_math_historical": "fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb",
+  "equivalent_historical": "1581d4cbdd69a0faf34b2089614fe2a814316a6a",
+  "note": "Reconciled 2026-11-03. 1581d4c differs from fd4aeeb only in .github/workflows/lock-prs.yml (checked with the GitHub compare API), so the October receipts share one source. New work pins 4eaee87 plus the history.md blob. Historical receipts keep their own pin. The corpus is now 373 families / 721 manuscripts (was 372 / 719): #378 is new, #079 is broadened, #032 gained a Lean proof and #266 gained verification materials. No withdrawals after Oct 7.",
+  "source": "https://github.com/kvnloo/oss-factory/issues/293#issuecomment-6597484780"
  },
  "candidates": [
   {
@@ -15,8 +17,9 @@
    "gate": "G1",
    "state": "active",
    "next": "log one week of load/evict receipts; test the cost matrix for metric axioms; replay vs sticky residency and GreedyDual-Size",
-   "note": "not in the factory registry; admit first",
-   "source": "https://github.com/kvnloo/frontier-kb/issues/42"
+   "note": "registry admission proposed in oss-factory#296; KServer comparator config changed at 4eaee87, so revalidate G0",
+   "source": "https://github.com/kvnloo/frontier-kb/issues/42",
+   "measured_so_far": "source-reported local function probe (Oct 10, unpublished): 12/12 tests; 343/648 synthetic shared-quota cases mismatched; direct k-server countermodel. Not a runtime or #110 measurement."
   },
   {
    "id": "gev-od-ensembles",
@@ -26,7 +29,8 @@
    "gate": "G1",
    "state": "active",
    "next": "draft #197 green on Node 24 on a hosted runner; then Patefield / IPF control vs challenger on a small SUMO network",
-   "source": "https://github.com/kvnloo/gods-eye-view/issues/205"
+   "source": "https://github.com/kvnloo/gods-eye-view/issues/205",
+   "measured_so_far": "source-reported: 12/12 focused tests on Node 22 (outside the supported >=24.14); 5 comparator assertions written, not run; 0 workflow runs on current heads."
   },
   {
    "id": "openroad-mbff-seed",
@@ -46,7 +50,7 @@
    "gate": "G0",
    "state": "queued",
    "next": "compute the certified CRAM order under both constants for the 27 wave-3 cases (expected null by arithmetic)",
-   "note": "not in the factory registry; admit first",
+   "note": "registry admission proposed in oss-factory#296",
    "source": "https://github.com/kvnloo/frontier-kb/issues/42"
   },
   {
@@ -57,7 +61,8 @@
    "gate": "G3",
    "state": "queued",
    "next": "profile real queries/patch calls; kill if edit distance is under 10% of p95",
-   "source": "https://github.com/kvnloo/frontier-kb/issues/42"
+   "source": "https://github.com/kvnloo/frontier-kb/issues/42",
+   "note": "MAP: the inspected ctx paths are vector similarity scans, not edit distance; zero edit-distance calls in a 30-task profile means REJECTED_FIT. omp-fuzzy-edit-121 is the first edit-distance screen."
   },
   {
    "id": "pytorch-gemm-107",
@@ -97,7 +102,8 @@
    "gate": "G1",
    "state": "killed",
    "verdict": "REJECTED_FIT",
-   "source": "https://github.com/kvnloo/gods-eye-view/issues/207"
+   "source": "https://github.com/kvnloo/gods-eye-view/issues/207",
+   "measured_so_far": "source-reported: NetworkX baseline, 6 synthetic workloads x 21 warmed reps; draft #224 13/13 and #225 29/29 (supersedes 27/27) on Node 22. Not the #120 algorithm."
   },
   {
    "id": "factory-lane-scheduling",
@@ -108,6 +114,94 @@
    "state": "killed",
    "verdict": "REJECTED_FIT",
    "source": "https://github.com/kvnloo/frontier-kb/issues/42"
+  },
+  {
+   "id": "omp-fuzzy-edit-121",
+   "family": "#121",
+   "target": "oh-my-pi crates/pi-edit/src/fuzzy.rs levenshtein_within / find_match / replace_text @83de60ad",
+   "artifact_class": "executable algorithm (randomized approximation)",
+   "gate": "G1",
+   "state": "queued",
+   "next": "replay 100 frozen patch tasks (10 KB / 100 KB / 1 MB) request to verified diff; B current banded DP, C exact anchor + thresholded DP, T approximate screen + mandatory exact unique-match check",
+   "falsifier": "edit distance under 10% of whole-task wall, any wrong edit, or no gain over C",
+   "note": "MAP's first next screen; exact edit distance confirmed in code; upstream is not ours, so this is research only",
+   "source": "https://github.com/kvnloo/oss-factory/issues/293#issuecomment-6597464536"
+  },
+  {
+   "id": "openclaw-path-suggest-121",
+   "family": "#121",
+   "target": "openclaw src/agents/sessions/tools/read.ts suggestLocalReadPaths -> src/shared/levenshtein-distance.ts @d921a2bf",
+   "artifact_class": "executable algorithm (randomized approximation)",
+   "gate": "G1",
+   "state": "queued",
+   "next": "30 missing-read tasks in 1k/10k/50k-file trees; B current scan + bounded Levenshtein, C trigram shortlist + exact distance, T #121 with exact re-check",
+   "falsifier": "C wins, basenames too short to matter, or any false suggestion",
+   "source": "https://github.com/kvnloo/oss-factory/issues/293#issuecomment-6597464536"
+  },
+  {
+   "id": "hexmap-l1-heuristic-089",
+   "family": "#089",
+   "target": "three-hex-map src/helpers/pathfinder.ts PathFinder.find / hexDistance @049db9dd",
+   "artifact_class": "existence bound (embedding), heuristic only if derived",
+   "gate": "G1",
+   "state": "queued",
+   "next": "128x128 and 256x256 symmetric hex maps, 100 click-to-move paths; B Dijkstra, C A* with scaled hex distance, T certified L1 heuristic only if constructive and admissible",
+   "falsifier": "directed or zero costs, inadmissible heuristic, no constructive embedding, or C dominates",
+   "source": "https://github.com/kvnloo/oss-factory/issues/293#issuecomment-6597464536"
+  },
+  {
+   "id": "open3d-fpfh-lp-094",
+   "family": "#094",
+   "target": "Open3D cpp/open3d/pipelines/registration/Feature.cpp ComputeFPFHFeature / KDTreeFlann @b6c5e196",
+   "artifact_class": "existence bound (Lp dimension reduction, p != 2)",
+   "gate": "G1",
+   "state": "queued",
+   "next": "confirm any user workload uses non-L2 descriptors; else REJECTED_FIT",
+   "falsifier": "L2-only workload, or feature search under 10% of scan-to-pose time",
+   "note": "low confidence (MAP P=0.12)",
+   "source": "https://github.com/kvnloo/oss-factory/issues/293#issuecomment-6597464536"
+  },
+  {
+   "id": "hermes-compaction-118-124",
+   "family": "#118 / #124",
+   "target": "hermes-agent agent/micro_compaction.py, agent/context_compressor.py",
+   "artifact_class": "negative result / unit-job scheduling",
+   "gate": "G1",
+   "state": "killed",
+   "verdict": "REJECTED_FIT",
+   "falsifier": "would reopen only if a literal bin-packing LP or identical unit-job schedule is found in the compactor",
+   "source": "https://github.com/kvnloo/oss-factory/issues/293#issuecomment-6597464536"
+  },
+  {
+   "id": "t3code-projection-121",
+   "family": "#121 / #124",
+   "target": "t3code packages/client-runtime/src/state/orchestrationV2Projection.ts",
+   "artifact_class": "executable algorithm",
+   "gate": "G1",
+   "state": "killed",
+   "verdict": "REJECTED_FIT",
+   "falsifier": "would reopen only if a traced string edit-distance subroutine appears; keyed event upserts are not edit distance",
+   "source": "https://github.com/kvnloo/oss-factory/issues/293#issuecomment-6597464536"
+  }
+ ],
+ "watch": [
+  {
+   "family": "#378",
+   "what": "exact fixed-width CNF counting (refutes ETH); constructive formal bit-program, no benchmarked executable",
+   "rule": "screen only when a profiled exact bounded-width #SAT caller exists in an owned repo; otherwise HOLD",
+   "source": "https://github.com/kvnloo/oss-factory/issues/293#issuecomment-6597484780"
+  },
+  {
+   "family": "QFT / Yang-Mills existence (Oct 26 announcement)",
+   "what": "paper and Lean withheld",
+   "rule": "BLOCKED_SOURCE, watch only",
+   "source": "https://github.com/kvnloo/oss-factory/issues/293#issuecomment-6597484780"
+  },
+  {
+   "family": "#174 thin spanning trees",
+   "what": "no graph consumer identified",
+   "rule": "KILL as runtime feature until a named owner supplies an undirected multigraph",
+   "source": "https://github.com/kvnloo/oss-factory/issues/293#issuecomment-6597372713"
   }
  ]
 }

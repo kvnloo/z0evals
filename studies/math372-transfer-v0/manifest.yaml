@@ -10,17 +10,20 @@ sources:
     role: result families as triaged in frontier-kb#42 and gods-eye-view#202
   - repo: openai/math
     commit: 1581d4cbdd69a0faf34b2089614fe2a814316a6a
-    role: result families as triaged in oss-factory#99 (to be reconciled)
+    role: pin used by oss-factory#99; identical to fd4aeeb except one GitHub workflow file
+  - repo: openai/math
+    commit: 4eaee87548250b2682affda7d05d947c05554bae
+    role: current G0 pin (373 families / 721 manuscripts; history.md blob ce3d4ca01564fe0e796c441d1caa6489d661117b)
 questions:
   - Can any OpenAI math result family produce a measured, reproduced, user-visible improvement in an OSS project we contribute to, beyond what a simple conventional control delivers?
   - Which families fail on fit, constructiveness or hotness, and with what counterexample or profile?
 artifacts:
   - path: data/candidates.json
     kind: dataset
-    sha256: a059b87e47b91d822c17c8b106ce38f8e2ec41c9b9272213b720fe81c1d66331
+    sha256: b9b5eb732e9f84b026374f0dd39f3a808656d5f0fe2042f24e90ba5d38abf9f0
   - path: data/ledger.jsonl
     kind: result
-    sha256: f371c35bc4b8bf5efce7f276193ecaed9907f7ce53eb762677442b0110929adc
+    sha256: 442451fbb67d4a725736553bdd4a3670153a4d7bdbc11ea6dd8a62e47aadb2e2
   - path: data/council-2026-11-03.md
     kind: analysis
     sha256: c4a82bde576c81b71064791fe47542daf10f1866d6d9b68b80fe4c4d4425931c
@@ -29,6 +32,7 @@ artifacts:
 limitations:
   - Living program; no candidate has an end-to-end measurement yet.
   - The October verdicts in the ledger are source-reported; their raw artifacts are not yet in this repository.
-  - Two openai/math pins are in use until G0 reconciles them.
+  - The October receipts use fd4aeeb (1581d4c is equivalent); new work uses 4eaee87. Historical receipts keep their own pin.
+  - Wave-4 answers in oss-factory#293 are model research reading public sources; their local-result claims are source-reported.
   - Council verdicts are model judgements and never override a measurement.
 claims: []
