@@ -1,0 +1,37 @@
+{
+  "estimated_cost_usd": 0.2470426,
+  "cost_status": "estimated",
+  "cost_source": "official_docs_snapshot",
+  "input_tokens": 33303,
+  "output_tokens": 7913,
+  "cache_read_tokens": 16193,
+  "cache_write_tokens": 17104,
+  "reasoning_tokens": 0,
+  "total_tokens": 41216,
+  "api_calls": 2,
+  "model": "claude-opus-5-5",
+  "provider": "anthropic",
+  "session_id": "local-890e81efd08278caee967c0110298823c88a20891333ed478dbf99403843a6d7",
+  "completed": true,
+  "partial": false,
+  "interrupted": false,
+  "turn_exit_reason": "text_response(finish_reason=stop)",
+  "failed": false,
+  "service_tier": null,
+  "auxiliary": {
+    "api_calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "cache_read_tokens": 0,
+    "cache_write_tokens": 0,
+    "reasoning_tokens": 0,
+    "estimated_cost_usd": 0,
+    "total_tokens": 0,
+    "by_task": {}
+  },
+  "total_including_auxiliary": {
+    "estimated_cost_usd": 0.2470426,
+    "total_tokens": 41216,
+    "api_calls": 2
+  }
+}
