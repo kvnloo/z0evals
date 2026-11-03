@@ -295,3 +295,10 @@
 @media (min-width: 960px) {
   .es-wide { --es-w: min(1000px, calc(100vw - 30rem)); }
 }
+
+/* Live ephemeral-ui cards in a frame (KitEmbed). The frame sizes itself to its card. */
+.es-embed { width: 100%; border-radius: 10px; overflow: hidden; background: #000; }
+.es-embed iframe { display: block; width: 100%; border: 0; background: transparent; transition: height .2s ease; }
+@media (prefers-reduced-motion: reduce) { .es-embed iframe { transition: none; } }
+.eu-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4, 1rem); margin-block: var(--space-4, 1rem); }
+@media (max-width: 760px) { .eu-pair { grid-template-columns: minmax(0, 1fr); } }

@@ -14,6 +14,7 @@ export { default as Teaser, GrowBars } from "./Teaser";
 export { default as SetupFigure } from "./SetupFigure";
 export { default as TracePages, type TraceItem } from "./TracePages";
 export { default as Citation } from "./Citation";
+export { default as KitEmbed } from "./KitEmbed";
 
 export function Tldr({ children }: { children: ReactNode }) {
   return (

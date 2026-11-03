@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>ephemeral-ui embed</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="trace.css">
+<style>
+  /* embed frame: no page chrome, no section padding; the essay around it supplies the margins */
+  html { scroll-behavior: auto; scroll-padding-top: 0; }
+  body { background: transparent; overflow: hidden; }
+  .sec { max-width: none; padding: 2px; }
+  #tracekinds { margin-top: 0; }
+  .one { display: grid; gap: 8px; }
+  .one .eu-card { width: 100%; }
+  .one .kl { display: flex; align-items: center; gap: 8px; font-size: 12.5px; }
+  .one .kl code { font-size: 11px; color: var(--h-mutedFg); }
+</style>
+</head>
+<body>
+<section id="ask" class="sec" hidden>
+  <div class="ask">
+    <form id="askform" class="ask-bar" autocomplete="off"><span class="dim">⌕</span><input id="askq" type="search" placeholder="why was this session slow?" aria-label="Ask the trace"><button class="eu-btn primary" type="submit">Ask</button></form>
+    <div id="asksugg" class="ask-sugg"></div>
+    <div id="asklayers" class="ask-layers"></div>
+    <div id="askans" class="ask-answer"><span class="who">→</span><p class="dim">Pick a question.</p></div>
+    <details class="ask-plan"><summary>Query plan · <code>trace-query.v0</code> (what an agent emits to answer this live)</summary><pre id="askplan"></pre></details>
+    <div id="askout" class="ask-out"></div>
+  </div>
+  <div id="tracekinds" class="tracegrid" aria-label="Trace card kinds"></div>
+</section>
+<section id="one" class="sec one" hidden></section>
+<script type="module">
+// Vendored from kvnloo/launch-videos pretotypes/ephemeral-ui (see VENDORED.md). Query params:
+//   view=ask [&q=<question>] [&gallery=1]   the "Ask the trace" section, optionally with every kind below it
+//   view=kind&kind=<trace|trace-summary|...>  one trace card on the fixture defaults
+//   theme=<t3-light|t3-dark|hermes-nous|hermes-nous-dark|...>
+// The frame posts {type:"eui-embed-height", id, height} to its parent so the essay can size it.
+import { loadThemes, apply, state } from "./js/themes.js";
+import { h, rng } from "./js/motion.js";
+import { KINDS_T } from "./js/kinds-t.js";
+import { buildAsk } from "./js/ask.js";
+
+const p = new URLSearchParams(location.search);
+const id = p.get("id") ?? "";
+const app = { id: "omp-stats", name: "omp stats", hex: null, cat: "agents", oss: true };
+
+await loadThemes();
+const theme = p.get("theme");
+// set the host theme without the view transition or the saved-preference write setTheme does
+const pick = theme && state.themes.find((t) => t.id === theme);
+if (pick) { state.base = pick; state.over = {}; apply(false); }
+
+if (p.get("view") === "kind") {
+  const k = p.get("kind") ?? "trace";
+  const K = KINDS_T[k] ?? KINDS_T.trace;
+  const sec = document.getElementById("one");
+  sec.hidden = false;
+  const c = K.make(app, rng(k), undefined, {});
+  sec.append(h("div", { class: "kl" }, h("b", {}, K.label), h("code", {}, k)), c.el);
+  c.play?.();
+} else {
+  const sec = document.getElementById("ask");
+  sec.hidden = false;
+  if (p.get("gallery") !== "1") document.getElementById("tracekinds").remove();
+  else document.getElementById("tracekinds").style.marginTop = "28px";
+  // no hash deep link here; the question comes from ?q= so the parent page's hash is untouched
+  buildAsk({ catalog: { byId: { "omp-stats": app } }, setSpec: null });
+  const q = p.get("q");
+  if (q) window.__ask?.ask(q);
+}
+
+let last = 0;
+const post = () => {
+  const height = Math.ceil(document.documentElement.scrollHeight);
+  if (height !== last) { last = height; parent.postMessage({ type: "eui-embed-height", id, height }, "*"); }
+};
+new ResizeObserver(post).observe(document.body);
+post();
+</script>
+</body>
+</html>

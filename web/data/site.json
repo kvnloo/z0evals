@@ -91,6 +91,19 @@
       "published": "2026-11-02",
       "status": "source-reported",
       "kind": "study"
+    },
+    {
+      "slug": "ephemeral-ui-v0",
+      "title": "an agent's session, as cards",
+      "subtitle": "the omp /stats dashboard rebuilt as ephemeral-ui cards, running live in the post on four sanitized sessions.",
+      "dek": "ephemeral-ui trace cards, live: scrub a sanitized agent session, open its spans, and ask it a question.",
+      "lede": "",
+      "author": "zer0 research",
+      "date": "november 3, 2026",
+      "area": "generative-ui",
+      "published": "2026-11-03",
+      "status": "source-reported",
+      "kind": "study"
     }
   ]
 }
