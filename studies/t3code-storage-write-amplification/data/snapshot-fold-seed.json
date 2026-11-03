@@ -1,0 +1,52 @@
+{
+ "source": {
+  "repo": "kvnloo/t3code",
+  "branch": "exp/poh/02-snapshot-dedupe",
+  "commit_tests": "bb7fde1c"
+ },
+ "off": {
+  "compaction_deleted_events": 5169,
+  "folded": null,
+  "fold_ms_unpaced": null,
+  "size": {
+   "autoVacuum": 0,
+   "pageSize": 4096,
+   "inPlaceFileBytes": 686415872,
+   "inPlacePageCount": 167582,
+   "inPlaceFreelistCount": 8446,
+   "inPlaceUsedBytes": 651821056,
+   "vacuumedBytes": 647565312
+  },
+  "events": {
+   "rows": 97784,
+   "payloadBytes": 162045140
+  },
+  "verification_valid": true
+ },
+ "on": {
+  "compaction_deleted_events": 5169,
+  "folded": {
+   "foldedEntityCount": 32378,
+   "deletedEventCount": 32378,
+   "transactionCount": 575,
+   "longestTransactionMillis": 49.777
+  },
+  "fold_ms_unpaced": 2231,
+  "size": {
+   "autoVacuum": 0,
+   "pageSize": 4096,
+   "inPlaceFileBytes": 686415872,
+   "inPlacePageCount": 167582,
+   "inPlaceFreelistCount": 32956,
+   "inPlaceUsedBytes": 551428096,
+   "vacuumedBytes": 517595136
+  },
+  "events": {
+   "rows": 65406,
+   "payloadBytes": 112844855
+  },
+  "verification_valid": true
+ },
+ "projection_tables": 18,
+ "projection_tables_equal_on_off": 18
+}

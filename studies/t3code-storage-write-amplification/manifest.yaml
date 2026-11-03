@@ -1,0 +1,85 @@
+schema_version: z0eval.study.v1
+id: t3code-storage-write-amplification
+title: "Where a T3 Code database's bytes and writes go"
+status: draft
+created: '2026-11-03'
+updated: '2026-11-03'
+sources:
+  - repo: kvnloo/t3code
+    commit: 258d7a4edc571b0b3aa6d99b81f7dc38bf670dab
+    branch: exp/poh/00-baseline
+    role: P1 baseline harness (bench/poh) on unmodified origin/main 9bcf75335f
+  - repo: kvnloo/t3code
+    commit: e17f68cebb45c95a7d11461b3a3550b3a4d7cbfb
+    branch: exp/poh/01-byte-accounting
+    role: byte accounting and eviction-policy simulation
+  - repo: kvnloo/t3code
+    commit: e3155fc400fce4536f9ad9ec05e881a5adeb144e
+    branch: exp/poh/02-snapshot-dedupe
+    role: opt-in snapshot fold, review fixes, seed equivalence
+  - repo: kvnloo/t3code
+    commit: 3b263defba036730160a3f2451b84bfd26c3dd4b
+    branch: exp/poh/02b-rebuild-divergence
+    role: pre-existing rebuild vs live divergence (not a bug)
+  - repo: kvnloo/t3code
+    commit: 93e439187bec68d9229c3c486bc1517e38679bb9
+    branch: exp/poh/03-id-index
+    role: id/index footprint and opt-in page size
+  - repo: kvnloo/t3code
+    commit: 3676fef04b58844605728973ea8c92b6de1236d1
+    branch: exp/poh/03b-page-writes
+    role: per-turn WAL/commit tap and page-size write cost
+  - repo: kvnloo/t3code
+    commit: ea608f3764b00090e12a10543d3739104a2e2623
+    branch: exp/poh/04-commit-batching
+    role: opt-in group-commit window A/B
+  - repo: pingdotgg/t3code
+    commit: 9bcf75335f9b2a8af877e1317c809b72a070b280
+    role: upstream origin/main measured by the baseline (later branches were cut from fresher main SHAs recorded in their READMEs)
+questions:
+  - Which byte classes make up a real T3 Code state.sqlite, and how much would each eviction policy save?
+  - What does folding superseded snapshot bodies save, and how does that relate to upstream event pruning (PR 29806, PR 29811)?
+  - Where do a turn's SQLite writes go, and do page size or a group-commit window change them?
+  - How much is left for provider-owned history once the event log is pruned?
+artifacts:
+  - path: data/bytes-by-class.json
+    kind: dataset
+    sha256: b19f85876e57886d1300a6246f203ec0f1cb3c999d92393bcf2b8bea38ad8585
+  - path: data/snapshot-fold-seed.json
+    kind: result
+    sha256: 53964b759aa933c8b46c9fe7f693c9f39638d7c6e50017522c9e8215ea6e8ec3
+  - path: data/page-size.json
+    kind: result
+    sha256: 4b3e88df2f86c3db5622df128c73ba8ed3f57c104af523e96a49c5c302ed84aa
+  - path: data/group-commit-ab.json
+    kind: result
+    sha256: f4d6cf30a8f7294915ebe0660b7ba3b89e42a31e765af8dd0df5cb6340a7482b
+  - path: data/ledger-summary.json
+    kind: receipt
+    sha256: fda26adfa34168b18e975195f43205ed3d9c475c4cd88eaedca95afab777a270
+  - path: data/derived.json
+    kind: analysis
+    sha256: aa8a4a8ab2f84518221f15340b67a3148d661677bed531da868411151799f3a2
+  - path: figures/bytes-by-class.svg
+    kind: figure
+    sha256: 5514f7dbf41156c42446308d02dab4a011e9b3eda1a54c2a85ea6d76a5b68f55
+  - path: figures/group-commit.svg
+    kind: figure
+    sha256: 4ea52db9eef72ad52de81e1e48e98302406c3bfc892f73653dc841b755979665
+  - path: scripts/import_aggregates.py
+    kind: other
+    sha256: 7c7e37bbdcd6242c912f95cfd48098c344512d5c2d7bb80d823047fff1c59293
+  - path: scripts/figures.py
+    kind: other
+    sha256: 2ac3349d3ca4d229acfc00816ea7b694b0b12458489affbf5fe9088c90ac5ae7
+  - path: README.md
+    kind: analysis
+limitations:
+  - One real database (about 655 MiB) from one user; other users' provider mix differs.
+  - Turns are simulated with the devReplay ACP agent, not live provider turns.
+  - Small n per arm (page size 10 tapped turns, group commit 16 tapped turns, 150 ms pilot 4); latency is noisy and p95 tails are wide.
+  - The snapshot fold's in-pass latency was never measured (host memory pressure); bound only, longest fold transaction 49.8 ms.
+  - Experiment 02 is superseded by upstream PR 29806 and PR 29811.
+  - The write tap counts syscalls, not device writes; client decode and render were not measured.
+  - Raw per-run samples and the full ledger are not published; only sanitized aggregates are.
+claims: []
