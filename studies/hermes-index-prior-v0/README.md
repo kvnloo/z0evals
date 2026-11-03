@@ -31,3 +31,13 @@ Harbor (0.25.0) ships a built-in `hermes` installed agent: it installs hermes-ag
 `scripts/harbor_pilot.sh <dataset@version> <task> <openrouter/<id>:free> <jobs-dir> [max_turns] [timeout_mult]` runs one task, one attempt, on Docker, with these fail-closed guards: the model must be an OpenRouter `:free` id; the OpenRouter key must report a 0 USD credit limit (so no auxiliary call can bill); a turn cap and an agent-timeout multiplier are always set; toolsets are `terminal,file,todo`. Keys come from the environment only (run it under `dsh-env-exec`). Run it on a node with Docker and spare CPU (the MBP), not on a memory-starved host.
 
 A one-task pilot proves the path runs and grades. It is not a score: one trial, a capped turn budget and a shortened timeout make any reward a lower bound for that model.
+
+### Pilot, 2026-11-03 (MBP, Docker): `data/pilots/harbor-tb4-music-harmony-20261103.json`
+
+TerminalBench 4 `music-harmony`, `openrouter/nvidia/nemotron-3.5-super-vl:free`, 40-turn cap, 1/16 agent timeout, $0 (key credit limit 0).
+
+1. Built-in `-a hermes`: setup failed. Harbor's install probe `hermes version` exits 2 on hermes-agent 2026.9.24 (`'version' is not a hermes command`).
+2. Probe `hermes --version`: exit 1 on the fresh `/tmp/hermes` data root ("no dependency environment is committed for this install; run `hermes pm repair`").
+3. `hermes pm repair && hermes --version` (`hermes_harbor_agent.py`): install passed. Hermes Agent v0.22.6 ran 14.4 min on the free model alone (no auxiliary model), made 41 tool calls (20 write_file, 19 terminal, 2 read_file), hit "maximum number of tool-calling iterations", and exited 1 without writing `/app/harmony.mxl`. The verifier ran and scored **0**. Harbor exported a 43-step ATIF trajectory and reported 0 tokens, so usage isn't captured on this path yet.
+
+So the Hermes-in-Harbor path installs, runs, exports and grades on a free lane. Trajectories stay off this repo (TerminalBench canary).

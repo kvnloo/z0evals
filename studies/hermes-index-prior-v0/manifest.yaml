@@ -47,6 +47,10 @@ artifacts:
     kind: other
     sha256: b99e46ab98c4b8929797825d0101c04404f8d781266b7dd2abd74e6ecf8846e6
 
+  - path: data/pilots/harbor-tb4-music-harmony-20261103.json
+    kind: receipt
+    sha256: a0e9e11616fa3f4291a519bf79dfb744218cb5c1ea496f8ebe116d80ce7f3405
+
 limitations:
   - The Index is Nous Research's measurement in their harness configuration; z0evals did not reproduce it.
   - The page carries no publication date; captured_at (2026-11-03T20:32:51Z) is the only time bound.
@@ -55,6 +59,9 @@ limitations:
   - Rows the page marks provisional keep "[provisional]" in the benchmark name downstream.
 
 claims:
+  - id: harbor-hermes-path
+    text: The Hermes-in-Harbor path installs, runs, exports a trajectory and is graded on a free OpenRouter lane once the version probe is fixed; the one-task pilot scored 0 at a 40-turn cap and is not a model score.
+    evidence: [data/pilots/harbor-tb4-music-harmony-20261103.json]
   - id: prior-not-acceptance
     text: Hermes Index rows enter the O14 catalog only as external_benchmark entries and never set task-class p_accept.
     evidence: [data/benchmark-rows-20261103T2032Z.json]
