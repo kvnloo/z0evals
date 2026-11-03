@@ -390,5 +390,5 @@ const explore = (
 );
 
 export default function Page() {
-  return <StoryShell meta={meta} toc={toc} banner={banner} story={story} explore={explore} />;
+  return <StoryShell slug="fframes-delivery-v0" meta={meta} toc={toc} banner={banner} story={story} explore={explore} />;
 }

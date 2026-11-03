@@ -421,5 +421,5 @@ function Explore() {
 }
 
 export default function QuacklesLineagePage() {
-  return <StoryShell meta={meta} banner={banner} toc={toc} story={<Story />} explore={<Explore />} />;
+  return <StoryShell slug="quackles-lineage-v0" meta={meta} banner={banner} toc={toc} story={<Story />} explore={<Explore />} />;
 }
