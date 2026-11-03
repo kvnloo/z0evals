@@ -1,0 +1,68 @@
+name: free-taskfit
+
+# Runs the free-taskfit-v0 battery against free model lanes with provider keys from repo
+# secrets. Quota is per key, so one run at a time and never on pull_request (fork PRs must
+# never see the keys). Synthetic, public-safe task inputs only (studies/free-taskfit-v0/frozen).
+on:
+  workflow_dispatch:
+    inputs:
+      lanes:
+        description: comma list of provider/model lanes
+        default: groq/openai/gpt-oss-20b,groq/openai/gpt-oss-120b,openrouter/nvidia/nemotron-3.5-super-vl:free,nvidia/nvidia/nemotron-3-ultra-550b-a55b
+      repeats:
+        description: repeats per task
+        default: "2"
+      force:
+        description: re-measure (lane, family) pairs already in an unexpired committed receipt
+        type: boolean
+        default: false
+  schedule:
+    - cron: "17 9 * * *"  # 03:17 CST; daily free quotas reset at 00:00 UTC
+
+permissions:
+  contents: read
+
+concurrency:
+  group: free-taskfit  # one key set, one run: parallel runs only 429 sooner
+  cancel-in-progress: false
+
+jobs:
+  battery:
+    if: github.repository == 'kvnloo/z0evals'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      STUDY: studies/free-taskfit-v0
+      LANES: ${{ inputs.lanes || 'groq/openai/gpt-oss-20b,groq/openai/gpt-oss-120b,openrouter/nvidia/nemotron-3.5-super-vl:free,nvidia/nvidia/nemotron-3-ultra-550b-a55b' }}
+      REPEATS: ${{ inputs.repeats || '2' }}
+      FORCE: ${{ inputs.force && '--force' || '' }}
+      RUN_ID: free-taskfit-gha-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Plan against frozen/limits.json (sends nothing)
+        run: python "$STUDY/scripts/run_taskfit.py" --plan-only --only "$LANES" --repeats "$REPEATS" $FORCE --out "out/$RUN_ID/rows.jsonl"
+      - name: Run battery
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
+        run: |
+          mkdir -p "out/$RUN_ID"
+          date -u +%Y-%m-%dT%H:%M:%SZ > "out/$RUN_ID/started_at"
+          python "$STUDY/scripts/run_taskfit.py" --only "$LANES" --repeats "$REPEATS" $FORCE --out "out/$RUN_ID/rows.jsonl"
+          date -u +%Y-%m-%dT%H:%M:%SZ > "out/$RUN_ID/finished_at"
+      - name: Certify
+        run: |
+          test -s "out/$RUN_ID/rows.jsonl" || { echo "no rows (everything planned out or already measured)"; exit 0; }
+          python "$STUDY/scripts/certify.py" "out/$RUN_ID/rows.jsonl" --run-id "$RUN_ID" --out "out/$RUN_ID/result.json"
+      - name: Upload rows and receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.RUN_ID }}
+          path: out/${{ env.RUN_ID }}/
+          if-no-files-found: warn
+          retention-days: 30
