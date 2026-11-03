@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { STATUS } from "@/lib/logStatus";
 import { AREAS as AREA_LIST } from "@/lib/areas";
+import { TECHNIQUES, techniqueLabel } from "@/lib/techniques";
 import { monthLabel } from "@/lib/dates";
 import GelSeg from "@/components/site/GelSeg";
 import SiteLink from "@/components/site/SiteLink";
@@ -22,23 +23,27 @@ export type LogEntry = {
   interesting?: boolean;
   why?: string;
   post?: string | null;
+  techniques?: string[];
 };
 
 const AREAS: [string, string][] = [["all", "everything"], ...AREA_LIST.map((a) => [a.id, a.label] as [string, string])];
+const TECHS: [string, string][] = [["all", "any technique"], ...TECHNIQUES.map((t) => [t.id, t.label] as [string, string])];
 
 
 export default function LogExplorer({ entries }: { entries: LogEntry[] }) {
   const [area, setArea] = useState("all");
+  const [tech, setTech] = useState("all");
   const [onlyHot, setOnlyHot] = useState(false);
   const [q, setQ] = useState("");
   const shown = useMemo(() => {
     const needle = q.trim().toLowerCase();
     return entries
       .filter((e) => area === "all" || e.area === area)
+      .filter((e) => tech === "all" || (e.techniques ?? []).includes(tech))
       .filter((e) => !onlyHot || e.interesting)
       .filter((e) => !needle || `${e.title} ${e.question} ${e.finding} ${e.id}`.toLowerCase().includes(needle))
       .sort((a, b) => (b.date || "").localeCompare(a.date || ""));
-  }, [entries, area, onlyHot, q]);
+  }, [entries, area, tech, onlyHot, q]);
   const groups = useMemo(() => {
     const m = new Map<string, LogEntry[]>();
     for (const e of shown) {
@@ -48,12 +53,15 @@ export default function LogExplorer({ entries }: { entries: LogEntry[] }) {
     return [...m.entries()];
   }, [shown]);
   const count = (a: string) => entries.filter((e) => a === "all" || e.area === a).length;
+  const techCount = (t: string) => entries.filter((e) => t === "all" || (e.techniques ?? []).includes(t)).length;
 
   return (
     <div className="log-explorer">
       <div className="log-controls">
         <GelSeg label="area" value={area} onChange={setArea}
           options={AREAS.map(([k, label]) => ({ id: k, label, count: count(k) }))} />
+        <GelSeg label="technique" value={tech} onChange={setTech}
+          options={TECHS.map(([k, label]) => ({ id: k, label, count: techCount(k) }))} />
         <div className="log-row2">
           <button type="button" className="log-toggle" data-press="control" aria-pressed={onlyHot}
             onClick={() => { haptic.select(); setOnlyHot(!onlyHot); }}>
@@ -74,6 +82,7 @@ export default function LogExplorer({ entries }: { entries: LogEntry[] }) {
               <div className="log-card-top">
                 <span className={`log-status ${tone}`}><span className={`dot ${tone}`} />{label}</span>
                 <span className="log-area">{AREAS.find(([k]) => k === e.area)?.[1] ?? e.area}</span>
+                {(e.techniques ?? []).map((t) => <span key={t} className="log-area">{techniqueLabel(t)}</span>)}
                 <span className="log-date">{e.date}</span>
               </div>
               <h4>{e.post ? <SiteLink href={`/${e.post}/`}>{e.title}</SiteLink> : e.title}</h4>

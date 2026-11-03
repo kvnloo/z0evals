@@ -1,0 +1,113 @@
+{
+ "pins": {
+  "openai_math": [
+   "fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb",
+   "1581d4cbdd69a0faf34b2089614fe2a814316a6a"
+  ],
+  "note": "two pins in use; reconcile to one with history.md hash before the next freeze (G0)"
+ },
+ "candidates": [
+  {
+   "id": "kerdoios-residency",
+   "family": "#110",
+   "target": "kvnloo/kerdoios local-model reuse/load/evict",
+   "artifact_class": "executable algorithm",
+   "gate": "G1",
+   "state": "active",
+   "next": "log one week of load/evict receipts; test the cost matrix for metric axioms; replay vs sticky residency and GreedyDual-Size",
+   "note": "not in the factory registry; admit first",
+   "source": "https://github.com/kvnloo/frontier-kb/issues/42"
+  },
+  {
+   "id": "gev-od-ensembles",
+   "family": "#115",
+   "target": "gods-eye-view OD demand ensembles (draft #197)",
+   "artifact_class": "executable algorithm",
+   "gate": "G1",
+   "state": "active",
+   "next": "draft #197 green on Node 24 on a hosted runner; then Patefield / IPF control vs challenger on a small SUMO network",
+   "source": "https://github.com/kvnloo/gods-eye-view/issues/205"
+  },
+  {
+   "id": "openroad-mbff-seed",
+   "family": "#125 (motivation only)",
+   "target": "OpenROAD GPL MBFF tray seeding",
+   "artifact_class": "executable algorithm",
+   "gate": "G1",
+   "state": "active",
+   "next": "incumbent 5 multistarts vs equal-budget capacity-aware seed on one small public design, hosted runner",
+   "source": "https://github.com/kvnloo/oss-factory/issues/99"
+  },
+  {
+   "id": "openmc-cram-325",
+   "family": "#325",
+   "target": "OpenMC repeated CRAM depletion operators",
+   "artifact_class": "bound used to pick a parameter",
+   "gate": "G0",
+   "state": "queued",
+   "next": "compute the certified CRAM order under both constants for the 27 wave-3 cases (expected null by arithmetic)",
+   "note": "not in the factory registry; admit first",
+   "source": "https://github.com/kvnloo/frontier-kb/issues/42"
+  },
+  {
+   "id": "ctx-hermes-edit-distance",
+   "family": "#121",
+   "target": "ctx search/blame or hermes-agent fuzzy patch matching",
+   "artifact_class": "executable algorithm",
+   "gate": "G3",
+   "state": "queued",
+   "next": "profile real queries/patch calls; kill if edit distance is under 10% of p95",
+   "source": "https://github.com/kvnloo/frontier-kb/issues/42"
+  },
+  {
+   "id": "pytorch-gemm-107",
+   "family": "#107",
+   "target": "PyTorch GEMM",
+   "artifact_class": "existence-only",
+   "gate": "G2",
+   "state": "killed",
+   "verdict": "REJECTED_NONCONSTRUCTIVE",
+   "source": "https://github.com/kvnloo/gods-eye-view/issues/214"
+  },
+  {
+   "id": "fft-130",
+   "family": "#130",
+   "target": "FFT kernels (PyTorch, OpenROAD)",
+   "artifact_class": "existence-only",
+   "gate": "G2",
+   "state": "killed",
+   "verdict": "REJECTED_NONCONSTRUCTIVE",
+   "source": "https://github.com/kvnloo/gods-eye-view/issues/215"
+  },
+  {
+   "id": "openroad-kmedian-capacity",
+   "family": "#125",
+   "target": "OpenROAD MBFF tray centers as k-median",
+   "artifact_class": "existence-only",
+   "gate": "G1",
+   "state": "killed",
+   "verdict": "REJECTED_FIT",
+   "source": "https://github.com/kvnloo/oss-factory/issues/99"
+  },
+  {
+   "id": "gev-relief-matching",
+   "family": "#120",
+   "target": "gods-eye-view relief pickup / volunteer matching",
+   "artifact_class": "executable algorithm",
+   "gate": "G1",
+   "state": "killed",
+   "verdict": "REJECTED_FIT",
+   "source": "https://github.com/kvnloo/gods-eye-view/issues/207"
+  },
+  {
+   "id": "factory-lane-scheduling",
+   "family": "#124",
+   "target": "factory scheduling across heterogeneous lanes",
+   "artifact_class": "executable algorithm",
+   "gate": "G1",
+   "state": "killed",
+   "verdict": "REJECTED_FIT",
+   "source": "https://github.com/kvnloo/frontier-kb/issues/42"
+  }
+ ]
+}

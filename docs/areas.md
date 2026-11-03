@@ -1,4 +1,7 @@
-# Research areas
+# Research areas and techniques
+
+The log has two facets. **Area** is the system or field under study (one per entry).
+**Techniques** are how an entry tries to make it better (any number, log entries only).
 
 Every post and research-log entry has one `area`. The list lives in `web/lib/areas.ts`, and
 `scripts/build_posts.py` (`AREAS`) must match it; `tests/test_build_posts.py` checks both and
@@ -12,6 +15,7 @@ every log entry.
 | `small-models` | small models & routing | which model or provider handles a decision: local SLMs, routing, quota, offload. | slm-router-v0, z0intelligence-function-routing, offload-and-loop, local-cognition-* |
 | `generative-ui` | generative ui | an interface an LLM generates: answer formats, renderers, tokens and validity. | genui-openui-vs-html-v0 |
 | `device-use` | phone & computer use | an agent driving a phone, a desktop or the web. | cua-trycua, z0live-phone-control, noop-hermes-agent-api, android-* |
+| `applied-math` | applied math | a new mathematical result moved into (or ruled out of) a real OSS hot path. | math372-transfer, math372-openroad-kmedian |
 
 ## Otherwise, the cross-cutting areas
 
@@ -29,6 +33,25 @@ Rules of thumb:
 - Memory work stays in `memory` even when it runs in Hermes: it spans every harness.
 - Add a new area only when a product gets its own line of studies (two or more), not for one post.
   Update `areas.ts`, `build_posts.py` and this table together.
+
+## Techniques
+
+`web/lib/techniques.ts` holds the list and `build_posts.py` `TECHNIQUES` must match it.
+Tag what the experiment changes, not what it measures with, unless the method itself is the
+contribution (`measurement`).
+
+| technique | label | the experiment tries to… |
+|---|---|---|
+| `output-format` | output format | make the model write less (openui boards instead of html pages) |
+| `context-reduction` | context reduction | send the model less: compaction, state packets, distilled corrections |
+| `model-routing` | model routing | pick the cheapest model good enough per decision or task |
+| `local-inference` | local inference | tune engines, quantization and devices for our own hardware |
+| `caching-reuse` | caching & reuse | keep and reuse work: warm processes, prefix caches, copy-on-write workspaces |
+| `scheduling` | scheduling & placement | decide where and when work runs: admission, fleets, fan-out, pacing |
+| `algorithmic` | algorithms & math | apply a new algorithm or proved result to a hot path |
+| `search-optimization` | search & autoresearch | search prompts, programs or configs with measured keep-or-revert loops |
+| `formal-methods` | formal methods | prove laws, compile statecharts, fail closed |
+| `measurement` | measurement method | change how we measure: ledgers, replays, referees, judges |
 
 ## Where things live
 
