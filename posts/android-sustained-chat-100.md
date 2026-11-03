@@ -6,7 +6,7 @@ status: draft
 author: "zer0 research"
 date: "october 29, 2026"
 published: '2026-10-29'
-area: speed-ux
+area: device-use
 kind: study
 tags: [android, cua, throughput]
 featured: false
