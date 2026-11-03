@@ -2,9 +2,10 @@
 import { useEffect, useState } from "react";
 
 /**
- * The heading currently being read, from one IntersectionObserver (the reference's
- * rootMargin: a heading becomes active as it crosses the top third of the viewport).
- * Passive: it never scrolls and never fires haptics.
+ * The heading currently being read: the last heading whose top has crossed the top third
+ * of the viewport. Recomputed in rAF on scroll and resize, so fast flings, jumps and
+ * scrolling back up all land on the right heading. Passive: it never scrolls and never
+ * fires haptics.
  */
 export function useActiveHeading(ids: string[]): string {
   const [active, setActive] = useState<string>(ids[0] ?? "");
@@ -15,14 +16,30 @@ export function useActiveHeading(ids: string[]): string {
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => Boolean(el));
     if (!targets.length) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) if (e.isIntersecting) setActive(e.target.id);
-      },
-      { rootMargin: "-100px 0px -66% 0px" },
-    );
-    targets.forEach((t) => io.observe(t));
-    return () => io.disconnect();
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const line = window.innerHeight / 3;
+      let current = targets[0].id;
+      for (const t of targets) {
+        const r = t.getBoundingClientRect();
+        if (!r.height) continue; // hidden (e.g. the other reading mode's headings)
+        if (r.top <= line) current = t.id;
+        else break;
+      }
+      setActive(current);
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    return () => {
+      if (frame) cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+    };
   }, [key]);
   return active;
 }
