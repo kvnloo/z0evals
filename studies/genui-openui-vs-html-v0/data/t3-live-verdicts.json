@@ -1,0 +1,104 @@
+[
+ {
+  "run": 1,
+  "id": "repo-treemap",
+  "status": "PASS",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "panels": [
+   "Treemap",
+   "BarChart"
+  ]
+ },
+ {
+  "run": 2,
+  "id": "token-week",
+  "status": "PASS",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "panels": [
+   "StackedArea"
+  ]
+ },
+ {
+  "run": 3,
+  "id": "activity-heatmap",
+  "status": "PASS",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "panels": [
+   "Heatmap"
+  ]
+ },
+ {
+  "run": 4,
+  "id": "disk-usage",
+  "status": "PASS",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "panels": [
+   "Treemap",
+   "BarChart"
+  ]
+ },
+ {
+  "run": 5,
+  "id": "ci-durations",
+  "status": "PASS",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "panels": [
+   "BarChart"
+  ]
+ },
+ {
+  "run": 6,
+  "id": "review-load-dense",
+  "status": "PASS",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "panels": [
+   "Heatmap"
+  ]
+ },
+ {
+  "run": 7,
+  "id": "deep-paths-dashboard",
+  "status": "PASS",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "panels": [
+   "Treemap",
+   "BarChart"
+  ]
+ },
+ {
+  "run": 8,
+  "id": "unsupported-pie",
+  "status": "PASS",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "panels": [
+   "BarChart"
+  ]
+ },
+ {
+  "run": 9,
+  "id": "sparse-zeros",
+  "status": "PASS",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "panels": [
+   "Heatmap"
+  ]
+ }
+]
