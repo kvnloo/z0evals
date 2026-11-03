@@ -1,0 +1,102 @@
+schema_version: z0eval.study.v1
+id: fframes-delivery-v0
+title: fframestudio platform-aware delivery, VMAF qualification in five playback simulators
+status: frozen
+scoring: source-reported
+created: "2026-11-02"
+updated: "2026-11-02"
+
+sources:
+  - repo: kvnloo/fframestudio
+    commit: 1a68268b24634332ed9b0fdc348168de91053b4f
+    role: >-
+      delivery pipeline, platform simulators, and the qualification report with its
+      evidence (the commit that scrubbed machine paths from delivery/evidence).
+      delivery/evidence and REPORT.md are byte-identical at origin/main
+      251f853da0ad2e60f0446fceba1fd00026ca2814; later commits only add a 120 fps profile and its test.
+
+hardware:
+  gpu: NVIDIA GeForce RTX 3080 Ti 12 GB (source-reported)
+  cpu: Intel Core i9-10900KF (source-reported)
+  ffmpeg: n9.0.1-11-ge47273f4d9-20260831 with libvmaf (from delivery/evidence/environment.json, not copied)
+
+questions:
+  - In the source's playback simulators, do the selected NVENC export recipes beat a naive x264 CRF23 upload on pooled mean and p5 VMAF?
+  - How large are those differences per platform, and do they hold for VMAF NEG?
+  - What does the extra quality cost in upload size?
+  - Where does the selected recipe lose (the synthetic 10-bit blue gradient, per-clip regressions)?
+
+artifacts:
+  - path: data/REPORT.md
+    kind: analysis
+    sha256: 937a1376b0db7273703192c74a9503ccb915ba133cc41422065250571992e796
+    source: delivery/REPORT.md
+  - path: data/RESEARCH.md
+    kind: analysis
+    sha256: e77afce30a927929f4932e7c8149d5b614fa7dc1ee4c3caf2959910e45e21ced
+    source: delivery/RESEARCH.md
+  - path: data/platforms.json
+    kind: fixture
+    sha256: 43574fab795ccfb2053992050077d869a5e1f2725383c718c6edf3ca51665852
+    source: delivery/platforms.json
+  - path: data/summary.json
+    kind: result
+    sha256: 4dfa1fd66a467947ebfcbe6290d2839adfc9045295dc6f5888efaaeded73394d
+    source: delivery/evidence/summary.json
+  - path: data/frames.csv
+    kind: dataset
+    sha256: dc9265ce416962393ef88533daf3018074b768745d509eb815484db43751bffd
+    source: delivery/evidence/frames.csv
+  - path: data/gates.json
+    kind: receipt
+    sha256: 956f7f92886526df84d453ae80d3350011a85d4c04d09c32643ea81615dec572
+    source: delivery/evidence/gates.json
+  - path: data/results.clean.json
+    kind: result
+    sha256: b69b4fb16002bf8fa0d227345d8e46a1492a05d48db67bc2c80348f44c471d99
+    source: delivery/evidence/results.json
+    source_sha256: 31f8df1d50b826d95f9256443d8a349598a8158681fd8afb9ed4de2ba39bf035
+    derived: >-
+      cleaned copy. the source already replaced machine paths with "<local>/..."; this copy
+      also drops those path-valued keys (upload, playback, reference, and the nested
+      previous/measured_on paths). numbers are unchanged. see data/provenance.json.
+  - path: data/gradient10.clean.json
+    kind: result
+    sha256: 717f3e7d511de3b3f9dcd43860c6d58b83ca92041ec719c9ddb31c7167eb99c1
+    source: delivery/evidence/gradient10.json
+    source_sha256: fc245e4e37844ccc5aa37ca3d3bcba344efbca220b9c40edc307af8fd90f29ee
+    derived: cleaned copy, path-valued keys (upload, playback, reference) dropped. numbers unchanged.
+  - path: data/provenance.json
+    kind: receipt
+    sha256: 3e4b0d4c4471bce2d4cf1162a199b64b603b2bae2b18f449e4c908f2739a9b70
+
+reproduction:
+  - >-
+    scripts/build_fframes_delivery.py site recomputes pooled mean and linear-interpolated p5
+    (the rule in delivery/summarize.py) for VMAF and VMAF NEG from the 3,600 rows of
+    frames.csv and fails if any of the 20 values per metric differs from summary.json by
+    more than 1e-6. that is a reproduced aggregation of frozen per-frame scores, not a
+    re-encode or re-score of any video.
+
+limitations:
+  - Simulator results, not measured gains on YouTube, Shorts, TikTok, Reels, or X. No account uploads occurred.
+  - Recipe selection and evaluation used the same four clips. There is no held-out corpus.
+  - Four real clips of 3 seconds (90 frames at 30 fps) each. Frames are correlated. No significance claim.
+  - Not equal bitrate. Selected uploads are 3.23x to 3.92x the size of naive uploads per platform.
+  - The synthetic 10-bit blue ramp is a counterexample. Naive wins VMAF there on both simulated platforms.
+  - VMAF is not calibrated for small UI text or portrait phone viewing. CAMBI regressions exist inside the positive aggregate.
+  - Self-review only in the source run. No independent reviewer.
+  - The encoded videos themselves are not frozen here; only scores, sizes, and hashes recorded by the source.
+
+claims:
+  - id: simulator-pooled-gain
+    text: >-
+      In the source's five simulators, the selected recipes have higher pooled mean and p5
+      VMAF than naive x264 CRF23 on the same four clips (source-reported; aggregation reproduced from frames.csv).
+    evidence: [data/summary.json, data/frames.csv]
+  - id: gradient-counterexample
+    text: On the synthetic 10-bit blue ramp the selected H.264 recipe loses mean and p5 VMAF to naive in both simulated platforms.
+    evidence: [data/gradient10.clean.json]
+  - id: upload-cost
+    text: The selected uploads are 3.23x to 3.92x larger than naive per platform, so the comparison is not equal-bitrate.
+    evidence: [data/results.clean.json]

@@ -1,0 +1,12 @@
+{
+  "source": "Quackles process/OVERNIGHT-2026-10-16.md (08:27 and 10:17 entries) and the 2026-10-27 showcase scope note. Source-reported; the z0evals study did not re-run these checks.",
+  "lineage_page": {
+    "lighthouse": "100 on all four categories in local preview (integration f46c451)",
+    "timeline_passes": "candidate 670f81b passed 9 of 10 full runs; after the merge, 10 of 10 with the worst frame at 3.8 to 4.6 ms",
+    "unit_tests": "npm run test:timeline passes on wt-perf-motion (fff480b) and wt-timeline (332d2f4): binary-search boundaries, resilient deep links, a 665-entry 25,863-byte index",
+    "not_run": "the frame-budget gate (p95 <= 4 ms, max <= 8.3 ms at 4x CPU throttle) and any real-device 120 Hz proof"
+  },
+  "home_sensor": {
+    "finding": "the home-page I16 tile-gap failure was a measurement artifact: the legacy sensor flagged 0/171/8 gaps where real painted gaps were 0/0/0. The sensor was fixed (ad6183c) and no renderer change was needed."
+  }
+}

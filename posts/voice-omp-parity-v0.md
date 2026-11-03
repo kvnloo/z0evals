@@ -6,6 +6,9 @@ status: evidence-local
 author: "zer0 research"
 date: "october 20, 2026"
 mock_data: false
+tldr: |
+  both candidates were `FAIL`. realtime missed the direct-response latency gates. bidi also missed interruption gates.
+  the later bidi subset got missing audible replies to 0/15, but it still had 1 stale resume and the scoreboard remains `FAIL`.
 toc:
   - id: method
     label: what we measured

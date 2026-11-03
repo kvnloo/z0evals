@@ -6,6 +6,9 @@ status: evidence-local
 author: "zer0 research"
 date: "september 30, 2026"
 mock_data: false
+tldr: |
+  privacy, byte-budget, required-term and non-application gates passed on 18 fixture rows and 0 live rows.
+  the model smoke was blocked: credentials were unavailable and execution was false. we have a completed bounded boundary campaign and an unexecuted model campaign, not an answer-quality result.
 toc:
   - id: boundary
     label: what turned green

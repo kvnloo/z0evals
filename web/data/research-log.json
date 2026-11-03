@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-23",
+ "updated": "2026-11-02",
  "entries": [
   {
    "id": "fsm-work-item-v0",
@@ -2194,6 +2194,46 @@
    "interesting": false,
    "why": "Real Git rollback evidence can coexist with no physical-device proof; synthetic qualification must not unlock live automation.",
    "post": "turbo-app-fanout-offline"
+  },
+  {
+   "id": "quackles-lineage-v0",
+   "title": "665 renders, 8 of 39 overnight candidates promoted, no gigapixel detail",
+   "area": "research",
+   "question": "What does an agent render loop look like from its archive: how often does a two-reviewer gate promote, and does a 1 GP export carry 1 GP of source detail?",
+   "status": "draft-pr",
+   "date": "2026-11-02",
+   "finding": "Source-reported: 665 preserved versions across five scenes; one overnight log records 39 review decisions with 8 promoted. At 1 GP, 11 of 12 measured texture sources are under one texel per pixel (Night head print 0.038).",
+   "caveat": "No render or review was re-run. Reviewers are model subagents; every pick awaits the owner. 640 of 665 dates are file mtimes. Densities are sampled medians.",
+   "links": [
+    {
+     "label": "post",
+     "url": "https://kvnloo.github.io/z0evals/quackles-lineage-v0/"
+    },
+    {
+     "label": "study",
+     "url": "https://github.com/kvnloo/z0evals/tree/main/studies/quackles-lineage-v0"
+    }
+   ]
+  },
+  {
+   "id": "fframes-delivery-v0",
+   "title": "a bigger upload scores higher in a simulator",
+   "area": "speed-ux",
+   "question": "Do fframestudio's platform export recipes beat a naive x264 CRF23 upload after a simulated platform re-encode?",
+   "status": "draft-pr",
+   "date": "2026-11-02",
+   "finding": "Source-reported, aggregates reproduced from 3,600 frame scores: selected recipes beat naive on pooled mean and p5 VMAF in all 5 simulators; uploads are 3.23x to 3.92x larger.",
+   "caveat": "Simulators, not real uploads. The same 4 clips tuned and scored the recipes. A synthetic blue ramp loses VMAF against naive.",
+   "links": [
+    {
+     "label": "post",
+     "url": "https://kvnloo.github.io/z0evals/fframes-delivery-v0/"
+    },
+    {
+     "label": "study",
+     "url": "https://github.com/kvnloo/z0evals/tree/main/studies/fframes-delivery-v0"
+    }
+   ]
   }
  ]
 }

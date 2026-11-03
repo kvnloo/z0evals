@@ -1,0 +1,56 @@
+/* fframes-delivery-v0 figures. Tokens from app/globals.css; scoped with ff-. */
+.ff-svg { width: 100%; height: auto; display: block; overflow: visible; }
+.ff-svg text { fill: var(--color-sb-text-muted); font-family: var(--font-mono); }
+.ff-tick { font-size: 11px; fill: var(--color-sb-text-light) !important; }
+.ff-head { font-size: 11px; letter-spacing: 0.04em; text-transform: lowercase; fill: var(--color-sb-highlight) !important; }
+.ff-row { font-size: 12px; fill: var(--color-sb-text) !important; }
+.ff-val { font-size: 11px; font-variant-numeric: tabular-nums; }
+.ff-grid { stroke: var(--color-sb-border); stroke-width: 1; opacity: 0.6; }
+.ff-axis { stroke: var(--color-sb-text-light); stroke-width: 1; }
+.ff-dash { stroke-dasharray: 3 3; }
+
+.ff-line { fill: none; stroke-width: 2; stroke-linejoin: round; }
+.ff-line.ff-naive { stroke: var(--color-sb-text-light); stroke-dasharray: 5 4; }
+.ff-line.ff-ours { stroke: var(--color-sb-highlight); }
+.ff-dot.ff-naive { fill: var(--color-sb-text-light); }
+.ff-dot.ff-ours { fill: var(--color-sb-highlight); }
+.ff-cursor { stroke: var(--color-sb-text-muted); stroke-width: 1; opacity: 0.7; }
+.ff-scrub { cursor: crosshair; touch-action: pan-y; border-radius: var(--radius-md); }
+.ff-scrub:focus-visible, .ff-explorer .es-btn:focus-visible { outline: 2px solid var(--color-sb-highlight); outline-offset: 2px; }
+
+.ff-bar { transition: width 420ms ease, x 420ms ease; }
+.ff-bar.ff-mean { fill: var(--color-sb-highlight); }
+.ff-bar.ff-p5 { fill: var(--color-sb-highlight-medium); stroke: var(--color-sb-highlight); stroke-width: 1; }
+.ff-bar.ff-cost { fill: var(--color-sb-error); opacity: 0.75; }
+.ff-naive-fill { fill: var(--color-sb-text-light); stroke: var(--color-sb-text-light); }
+.ff-ours-fill { fill: var(--color-sb-highlight); stroke: var(--color-sb-highlight); }
+.ff-alt-fill { fill: var(--color-sb-success); stroke: var(--color-sb-success); }
+.ff-hollow { fill: var(--color-sb-background) !important; stroke-width: 2; }
+.ff-range { stroke: var(--color-sb-border); stroke-width: 3; }
+
+.ff-ctl-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-sb-text-light);
+  min-width: 5.5rem;
+}
+.ff-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-sb-text-muted);
+  margin: var(--space-2) 0;
+}
+.ff-key { display: inline-block; width: 18px; height: 8px; margin-right: 6px; vertical-align: middle; border-radius: 2px; }
+.ff-key.ff-naive { background: var(--color-sb-text-light); }
+.ff-key.ff-ours, .ff-key.ff-mean { background: var(--color-sb-highlight); }
+.ff-key.ff-p5 { background: var(--color-sb-highlight-medium); border: 1px solid var(--color-sb-highlight); }
+.ff-key.ff-cost { background: var(--color-sb-error); opacity: 0.75; }
+.ff-stats { margin-top: var(--space-3); font-variant-numeric: tabular-nums; }
+.ff-mini { height: 100%; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ff-bar { transition: none; }
+}

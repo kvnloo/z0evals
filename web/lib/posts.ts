@@ -14,6 +14,8 @@ export type Post = {
   date: string;
   toc: PostToc[];
   lede: string;
+  /** prerendered html of the optional `tldr:` front-matter field; "" when absent */
+  tldr: string;
   html: string;
 };
 

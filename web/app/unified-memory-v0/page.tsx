@@ -3,11 +3,45 @@ import StoryShell, { type StoryMeta, type StoryBanner } from "@/components/Story
 import type { TocItem } from "@/components/Toc";
 import MetricRow from "@/components/MetricRow";
 import Callout from "@/components/Callout";
+import { Citation, Evidence, ExpHead, SetupFigure, Teaser, Tldr, TracePages, type TraceItem } from "@/components/essay/Essay";
+import "./memory.css";
+// The frozen cohort, question contract and receipt schema, adapted by
+// scripts/build_site_data.py. No harness receipts are frozen yet, so the page
+// shows the questions and what each one requires, never an invented answer.
+import study from "@/data/unified-memory-v0.json";
 
 export const metadata: Metadata = {
   title: "can four agents remember the same thing? — z0evals",
   description: "unified-memory v0, updated october 5: integrated OptMem foundations, separate OptChat experiments, and the unchanged four-harness evidence boundary.",
 };
+
+const { manifest, cohort, contract } = study;
+const receipts: unknown[] = study.receipts;
+const harnesses = study.receipt_harnesses;
+if (manifest.scoring !== "unscored" || manifest.claims.length !== 0) {
+  throw new Error("unified-memory publication: the manifest no longer says unscored with no claims");
+}
+if (receipts.length !== 0) {
+  throw new Error("unified-memory publication: harness receipts were imported; rewrite the page before scoring it");
+}
+const expectedById = new Map(contract.questions.map((q) => [q.id, q.expected]));
+const evidenceById = new Map(cohort.evidence.map((e) => [e.source_id, e]));
+if (cohort.questions.some((q) => !expectedById.has(q.id))) {
+  throw new Error("unified-memory publication: cohort and question contract disagree");
+}
+
+// Lane status as reported in the september 29 write-up below (the status table).
+// It is the page's existing claim, not a frozen receipt.
+const lanes: { harness: string; state: "measured" | "bounded" | "pending" }[] = [
+  { harness: "omp", state: "measured" },
+  { harness: "dsh", state: "bounded" },
+  { harness: "hermes", state: "pending" },
+  { harness: "omo", state: "pending" },
+];
+if (lanes.length !== harnesses.length || lanes.some((l) => !harnesses.includes(l.harness))) {
+  throw new Error("unified-memory publication: lane list and receipt schema harnesses disagree");
+}
+const gates = ["retrieval", "injection", "answer support", "verification"];
 
 const meta: StoryMeta = {
   title: "can four agents remember the same thing?",
@@ -31,10 +65,148 @@ const toc: TocItem[] = [
   { id: "omp", label: "omp finally gave us a number", depth: 0 },
   { id: "status", label: "do not average pending work", depth: 0 },
   { id: "limits", label: "what this still does not prove", depth: 0 },
+  { id: "cite", label: "cite this", depth: 0 },
 ];
+
+const actionText: Record<string, string> = {
+  answer: "answer, citing the evidence",
+  observe: "report both claims with provenance, pick no winner",
+  abstain: "abstain: say the evidence is not there",
+};
+
+const traces: TraceItem[] = cohort.questions.map((q) => {
+  const present = q.evidence_ids.filter((id) => evidenceById.has(id));
+  const absent = q.evidence_ids.filter((id) => !evidenceById.has(id));
+  return {
+    label: q.id,
+    group: q.expected_action,
+    ask: <>{q.prompt}</>,
+    given: (
+      <>
+        <span className="um-tag">kind: {q.kind}</span>
+        <ul className="um-evidence">
+          {present.map((id) => {
+            const e = evidenceById.get(id)!;
+            return (
+              <li key={id}>
+                <code>{e.source_id}</code> ({e.trust_class}, observed {e.observed_at.slice(0, 10)}): <code>{e.claim}</code>
+              </li>
+            );
+          })}
+          {absent.map((id) => (
+            <li key={id}><code>{id}</code>: not in the fixture, on purpose</li>
+          ))}
+        </ul>
+      </>
+    ),
+    answer: (
+      <>
+        <p>no harness answer is frozen. the contract expects: <b>{actionText[q.expected_action] ?? q.expected_action}</b>{" "}
+          (<code>{expectedById.get(q.id)}</code>).</p>
+        {q.expected_support.length ? (
+          <div className="um-tags">
+            {q.expected_support.map((s) => <span key={s} className="um-tag">{s}</span>)}
+          </div>
+        ) : null}
+        {q.forbidden.length ? (
+          <div className="um-tags">
+            {q.forbidden.map((s) => <span key={s} className="um-tag" data-kind="forbidden">{s}</span>)}
+          </div>
+        ) : null}
+      </>
+    ),
+    verdict: { text: "unscored · no receipt", tone: "hold" },
+    steps: [
+      <>retrieval: should find {q.evidence_ids.map((id) => <code key={id}>{id} </code>)}. no frozen receipt.</>,
+      <>injection: that evidence has to reach the model, not just the index. no frozen receipt.</>,
+      <>answer support: {q.expected_support.length
+        ? <>the answer has to contain {q.expected_support.length} expected support string{q.expected_support.length === 1 ? "" : "s"}.</>
+        : <>there is nothing to support, so the right move is to abstain.</>}{q.forbidden.length ? <> it must not say <code>{q.forbidden.join(", ")}</code>.</> : null} not run.</>,
+      <>verification: contract outcome <code>{expectedById.get(q.id)}</code>. not run.</>,
+    ],
+    foot: <>question {q.id} · studies/unified-memory-v0/cohort.json · {cohort.source}</>,
+  };
+});
+
+const teaser = (
+  <Teaser
+    label="the memory study in three panels"
+    panels={[
+      {
+        step: "1 · the questions",
+        task: <>one cohort, frozen before any harness touched it.</>,
+        visual: (
+          <ul className="um-kinds">
+            {cohort.questions.map((q) => <li key={q.id}>{q.id}</li>)}
+          </ul>
+        ),
+        by: "studies/unified-memory-v0/cohort.json",
+        big: cohort.questions.length,
+        note: <>questions, each with its own evidence and expected action</>,
+      },
+      {
+        step: "2 · the harnesses",
+        task: <>the same receipt shape, required from {harnesses.join(", ")}.</>,
+        visual: (
+          <div className="um-lanes">
+            {lanes.map((l) => (
+              <div className="um-lane" data-state={l.state} key={l.harness}>
+                <span>{l.harness}</span>
+                <span className="um-lane-bar" title={l.state} />
+              </div>
+            ))}
+          </div>
+        ),
+        by: "lane status from the september 29 report",
+        big: <>{lanes.filter((l) => l.state === "measured").length} / {lanes.length}</>,
+        note: <>lanes with a measured row. that row is omp, source-reported.</>,
+      },
+      {
+        step: "3 · not scored",
+        task: <>a pass needs every gate on a frozen receipt.</>,
+        visual: (
+          <ul className="um-gates">
+            {gates.map((g) => <li key={g}><span>{g}</span><span>no receipt</span></li>)}
+          </ul>
+        ),
+        by: `manifest scoring: ${manifest.scoring}`,
+        big: receipts.length,
+        note: <>frozen harness receipts. not a pass and not a fail.</>,
+      },
+    ]}
+  />
+);
+
+const cohortSetup = (
+  <>
+    <p><b>what the study asks.</b></p>
+    <ul className="um-setup-list">{manifest.questions.map((q) => <li key={q}>{q}</li>)}</ul>
+    <p><b>receipt.</b> every harness row must carry {study.receipt_required.length} fields, including{" "}
+      <code>retrieval_ok</code>, <code>injected</code>, <code>answer_supported</code> and <code>verified</code> as
+      separate booleans.</p>
+    <p><b>starting revisions.</b></p>
+    <ul className="um-setup-list">
+      {manifest.sources.map((s) => (
+        <li key={s.repo}><code>{s.repo}@{s.commit.slice(0, 7)}</code>: {s.role}</li>
+      ))}
+    </ul>
+    <p><b>limitations, from the manifest.</b></p>
+    <ul className="um-setup-list">{manifest.limitations.map((l) => <li key={l}>{l}</li>)}</ul>
+  </>
+);
 
 const story = (
   <>
+    <Tldr>
+      <p>the october 5 update is implementation evidence, not a recall benchmark. optmem&apos;s structural
+        foundation is integrated and optchat is a separate harness experiment.</p>
+      <p>the {cohort.questions.length}-question cohort is frozen. no harness receipts are frozen yet, so the
+        study is {manifest.scoring}: not a pass and not a fail. omp&apos;s 960-byte state
+        packet against 320,075 bytes native is a source-reported context-size number, not proof that four
+        harnesses remember correctly.</p>
+    </Tldr>
+    {teaser}
+
     <h2 id="optmem-update">what actually landed in optmem</h2>
     <p>
       the old page stopped at the september 29 cohort. work continued, but the publication did
@@ -117,7 +289,7 @@ const story = (
 
     <h2 id="contract">memory is not one thing</h2>
     <p>
-      this kept biting us because we would say “memory worked” when we actually meant one of like
+      this kept biting us because we would say "memory worked" when we actually meant one of like
       four different things.
     </p>
     <p><strong>retrieval → model-visible injection → answer support → verification</strong></p>
@@ -131,19 +303,27 @@ const story = (
     </Callout>
 
     <h2 id="cohort">freeze the questions before touching the harnesses</h2>
+    <ExpHead n={1} id="exp-cohort">what does each question require?</ExpHead>
     <p>
-      i did not want dsh, hermes, omo, and omp each “passing” their own custom little memory demo.
+      i did not want dsh, hermes, omo, and omp each "passing" their own custom little memory demo.
       so the cohort is frozen first:
       <code>exact-identifier</code>, <code>supersession</code>, <code>cross-harness</code>,{" "}
       <code>contradiction</code>, <code>missing-evidence</code>, and <code>minimal-context</code>.
     </p>
     <p>
       the contradiction case has to show both claims and pick no winner. the missing-evidence case
-      has to say “i do not have it.” honestly those two are more interesting than the easy recall
+      has to say "i do not have it." honestly those two are more interesting than the easy recall
       cases anyway.
     </p>
+    <SetupFigure setup={cohortSetup} caption={<>the {cohort.questions.length} frozen questions, with the
+      evidence each one may use and the outcome the contract expects. every gate reads &ldquo;no receipt&rdquo;
+      because no harness run has been frozen. use the left and right arrow keys to move between questions.</>}>
+      <TracePages items={traces} label="frozen cohort questions" columns={["question", "required outcome", "gates"]} />
+    </SetupFigure>
 
     <h2 id="omp">omp finally gave us a number i actually care about</h2>
+    <ExpHead n={2} id="exp-omp">how much context does omp hand the model at turn 4?</ExpHead>
+    <p><Evidence kind="source-reported">omp pr #107, not a receipt frozen in this study</Evidence></p>
     <p>
       omp pr #107 runs the same six question ids through the common receipt schema and passes{" "}
       <strong>16/16</strong> focused tests. the fun part is the context size at turn 4:
@@ -180,8 +360,9 @@ const story = (
       </table>
     </div>
     <p>
-      i am not turning one good omp row into “unified memory solved.” once all four lanes produce
-      the same receipt shape against the same frozen cohort, then we can talk.
+      i am not turning one good omp row into "unified memory solved." once all four lanes produce
+      the same receipt shape against the same frozen cohort, then we can talk. this study has{" "}
+      {receipts.length} of those receipts frozen today.
     </p>
 
     <h2 id="limits">what this still does not prove</h2>
@@ -197,6 +378,11 @@ const story = (
       harness, same answer support. once that is boring, memory stops being a product-specific
       magic trick and starts becoming infrastructure.
     </p>
+
+    <h2 id="cite">cite this</h2>
+    <Citation id="zer0-unified-memory-v0" title={meta.title} year={2026}
+      url="https://kvnloo.github.io/z0evals/unified-memory-v0/"
+      note={`${manifest.scoring}; no harness receipts frozen; study ${manifest.id}`} />
   </>
 );
 
@@ -204,13 +390,14 @@ const explore = (
   <>
     <h2>show me the receipts</h2>
     <ul>
-      <li><a href="https://github.com/VictorTaelin/OptMem">Victor Taelin — original OptMem project</a></li>
-      <li><a href="https://github.com/kvnloo/z0intelligence/pull/109">z0intelligence #109 — integrated event ledger, OptMem projection, and scoped memory contract</a></li>
-      <li><a href="https://github.com/kvnloo/z0intelligence/pull/126">z0intelligence #126 — separate OMP OptChat experiment</a></li>
-      <li><a href="https://github.com/kvnloo/z0intelligence/pull/127">z0intelligence #127 — optional Hermes OptChat adapter</a></li>
-      <li>z0evals #56 / pr #57 / pr #59 — cohort + receipt contract</li>
-      <li>kvnloo/oh-my-pi#107 — measured omp lane</li>
-      <li>kvnloo/deepseek-harness#2 — dsh transport overlay</li>
+      <li><a href="https://github.com/VictorTaelin/OptMem">Victor Taelin: original OptMem project</a></li>
+      <li><a href="https://github.com/kvnloo/z0intelligence/pull/109">z0intelligence #109: integrated event ledger, OptMem projection, and scoped memory contract</a></li>
+      <li><a href="https://github.com/kvnloo/z0intelligence/pull/126">z0intelligence #126: separate OMP OptChat experiment</a></li>
+      <li><a href="https://github.com/kvnloo/z0intelligence/pull/127">z0intelligence #127: optional Hermes OptChat adapter</a></li>
+      <li>z0evals #56 / pr #57 / pr #59: cohort + receipt contract</li>
+      <li>kvnloo/oh-my-pi#107: measured omp lane</li>
+      <li>kvnloo/deepseek-harness#2: dsh transport overlay</li>
+      <li><a href="https://github.com/kvnloo/z0evals/tree/main/studies/unified-memory-v0">studies/unified-memory-v0</a>: manifest, cohort, question contract and receipt schema</li>
     </ul>
   </>
 );

@@ -6,6 +6,9 @@ status: draft
 author: zer0 research
 date: october 21, 2026
 mock_data: false
+tldr: |
+  three measured native surfaces tie on the retrieval scores, recall@5 1.000 and mrr@5 0.944, on a tiny synthetic fixture. that does not select a provider.
+  all three returned both versions of the updated fact, with the old document first: newest document top-1 was 0/5 for each. graphrag and supermemory did not run.
 toc:
 - id: question
   label: what we asked
@@ -37,6 +40,11 @@ we used each provider's native surface. ctx includes cli process overhead. herme
 
 ## the results {#results}
 
+```setup
+eight synthetic documents, ten fixed queries, five repetitions per query. nine answerable queries contribute to recall@5 and truncated mrr@5; the absent-answer query is scored separately. the repetitions are warm samples, not independent work items.
+
+each provider ran on its native surface. ctx includes cli process overhead, hermes runs in process, and tencentdb uses its local conversation/search surface, so the timings include those differences.
+```
 | native surface | recall@5 | mrr@5 | p50 ms | p95 ms | newest document top-1 |
 |---|---:|---:|---:|---:|---:|
 | ctx 2.2.8 lexical cli | 1.000 | 0.944 | 17.896 | 35.190 | 0/5 |

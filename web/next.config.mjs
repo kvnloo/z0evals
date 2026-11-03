@@ -9,5 +9,8 @@ const nextConfig = {
   // rather than trusting the caller to have removed it.
   basePath: (process.env.Z0_BASE_PATH || "").replace(/\/+$/, ""),
   assetPrefix: (process.env.Z0_BASE_PATH || "").replace(/\/+$/, ""),
+  // Plain <img>/<video> URLs under public/ do not get basePath; lib/asset.ts
+  // prefixes them with this inlined value.
+  env: { Z0_ASSET_BASE: (process.env.Z0_BASE_PATH || "").replace(/\/+$/, "") },
 };
 export default nextConfig;

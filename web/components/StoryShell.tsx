@@ -81,6 +81,8 @@ export default function StoryShell({
               <a href="../researching-the-frontier/">research</a>
               <a href="../unified-memory-v0/">memory</a>
               <a href="../optchat-long-horizon-v0/">optchat</a>
+              <a href="../quackles-lineage-v0/">quackles</a>
+              <a href="../fframes-delivery-v0/">delivery</a>
               <a href="https://github.com/kvnloo/z0evals">github</a>
             </div>
           </nav>

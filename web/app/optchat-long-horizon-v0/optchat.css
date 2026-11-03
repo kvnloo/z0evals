@@ -1,0 +1,19 @@
+/* optchat-long-horizon-v0 page-only styles. Shared essay pieces live in components/essay. */
+.oc-chart svg { width: 100%; height: auto; display: block; touch-action: pan-y; cursor: crosshair; }
+.oc-chart svg:focus-visible { outline: 1px solid var(--color-sb-highlight); outline-offset: 4px; }
+.oc-raw { fill: none; stroke: currentColor; stroke-width: 2; }
+.oc-view { fill: none; stroke: var(--color-sb-highlight); stroke-width: 2; stroke-dasharray: 6 4; }
+.oc-guide { stroke: var(--color-sb-highlight); opacity: 0.45; }
+.oc-dot-raw { fill: currentColor; }
+.oc-dot-view { fill: var(--color-sb-highlight); }
+.oc-readout { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-4); margin-top: var(--space-2); }
+.oc-readout b { color: var(--color-sb-text); font-weight: 600; }
+.oc-file { flex-basis: 100%; overflow-wrap: anywhere; }
+
+/* teaser visuals */
+.oc-spark { width: 100%; height: 100%; display: block; color: var(--color-sb-text-muted); }
+.oc-unmeasured { list-style: none; margin: 0; padding: var(--space-3); display: grid; gap: var(--space-2); height: 100%; align-content: center; }
+.oc-unmeasured li { margin: 0; font-size: var(--text-xs); line-height: 1.35; color: var(--color-sb-text-muted); display: grid; gap: 2px; justify-items: start; }
+.oc-unmeasured li::before { content: "not measured"; flex: none; font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-sb-highlight); border: 1px solid var(--color-sb-highlight-medium); border-radius: 999px; padding: 0 0.45rem; font-size: 0.6rem; }
+.oc-setup-list { margin: 0; padding-left: 1.1rem; }
+.oc-setup-list li { margin-bottom: var(--space-1); }

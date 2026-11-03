@@ -41,6 +41,43 @@ class BuildPostsTest(unittest.TestCase):
         self.assertNotIn('class="lede"', p["html"])
         self.assertEqual(p["toc"], [{"id": "a", "label": "A"}])
 
+    def _build(self, src: str) -> dict:
+        with tempfile.TemporaryDirectory() as d:
+            f = Path(d) / "x.md"
+            f.write_text(src)
+            return build_posts.build_post(f)
+
+    def test_tldr_front_matter_is_rendered_and_optional(self):
+        p = self._build("---\ntitle: t\ntldr: |\n  the view was **smaller**.\n---\n\nbody\n")
+        self.assertEqual(p["tldr"], "<p>the view was <strong>smaller</strong>.</p>")
+        self.assertNotIn("smaller", p["html"])
+        self.assertEqual(self._build("---\ntitle: t\n---\n\nbody\n")["tldr"], "")
+
+    def test_setup_block_folds_onto_the_next_table(self):
+        p = self._build(
+            "---\ntitle: t\n---\n\nbefore\n\n```setup\neight **synthetic** docs.\n```\n"
+            "| x | y |\n|---|---|\n| 1 | 2 |\n\nafter\n"
+        )
+        html = p["html"]
+        self.assertIn('<figure class="es-fig es-wide has-setup"><details class="es-setup"><summary>setup</summary>', html)
+        self.assertIn('<div class="es-setup-body"><p>eight <strong>synthetic</strong> docs.</p></div></details>', html)
+        self.assertIn('</details><div class="table-wrap"><table>', html)
+        self.assertIn("</table></div></figure>", html)
+        self.assertLess(html.index("before"), html.index("<figure"))
+        self.assertLess(html.index("</figure>"), html.index("after"))
+        self.assertNotIn("<code>", html)
+        self.assertNotIn("es-setup-slot", html)
+
+    def test_setup_block_takes_a_whole_code_fence_or_figure(self):
+        fence = self._build("---\ntitle: t\n---\n\n```setup\nhow\n```\n\n```text\na\n\nb\n```\n\nafter\n")["html"]
+        self.assertIn("<pre><code class=\"language-text\">a\n\nb\n</code></pre></figure>", fence)
+        fig = self._build("---\ntitle: t\n---\n\n```setup\nhow\n```\n<figure>\n<img src=\"a.png\">\n\n<figcaption>c</figcaption>\n</figure>\n\nafter\n")["html"]
+        self.assertIn("<figcaption>c</figcaption>\n</figure></figure>", fig)
+
+    def test_setup_block_without_a_figure_is_an_error(self):
+        with self.assertRaises(ValueError):
+            self._build("---\ntitle: t\n---\n\n```setup\nhow\n```\n")
+
     def test_research_log_entries_are_complete(self):
         doc = json.loads((ROOT / "web" / "data" / "research-log.json").read_text())
         posts = {p.stem for p in (ROOT / "posts").glob("*.md")}

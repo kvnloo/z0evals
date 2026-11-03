@@ -6,6 +6,9 @@ status: evidence-local
 author: "zer0 research"
 date: "october 21, 2026"
 mock_data: false
+tldr: |
+  30 days, 7,859 shadow predictions, 0 explicit commits and 0 accept/reject decisions. the service ran. the adoption loop did not.
+  on the app-switch subset, recency top-1 was 0.771 and the engine got 0.454. the pull-first panel is a proposal, not a result.
 toc:
   - id: baseline
     label: running is not used
