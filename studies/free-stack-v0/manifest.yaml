@@ -64,7 +64,7 @@ artifacts:
     sha256: fd4b209636af58e9bae31c07174d73cc068731fda308840ef68d3a2c2a2a90bf
   - path: scripts/onboard.py
     kind: other
-    sha256: 534abd974d2a81473bf2a2a8f9cc0e3fc2030e33b2ced8f4336af3b113b499bb
+    sha256: d0fa944ca1617569f17c16a70f4e23d913557e12f7d5544686a02f2f6d98b6a6
   - path: scripts/speed_probe.py
     kind: other
     sha256: 3add2957be3834d4a4abdaea8b41b675292cc727c6327b280f59a1e92e02320c

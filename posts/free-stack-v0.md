@@ -31,7 +31,7 @@ the models are fast enough now. what slows agent work down is orchestration. thi
 
 ## get every key in ten minutes {#signup}
 
-every provider below lets you sign in with github or google. creating each key is a click and a paste. one script opens every key page, takes the pasted keys without echoing them, checks each one, and saves them to `~/.config/free-stack/keys.env` (mode 600):
+every provider below has a web sign-up, most with github or google sign-in. creating each key is a few clicks and a paste. one script opens every key page, takes the pasted keys without echoing them, checks each one, and saves them to `~/.config/free-stack/keys.env` (mode 600):
 
 ```bash
 curl -fsSLO https://raw.githubusercontent.com/kvnloo/z0evals/main/studies/free-stack-v0/scripts/onboard.py

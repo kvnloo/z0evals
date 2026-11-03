@@ -8,7 +8,7 @@
 
 Keys are saved to ~/.config/free-stack/keys.env (mode 600) and never printed. Keys already in your
 environment are reused. Account creation itself (email confirmation, CAPTCHA, terms) stays with you:
-every provider below offers sign-in with GitHub or Google, so each one is usually a click and a paste.
+most providers below offer sign-in with GitHub or Google, so each one is usually a few clicks and a paste.
 Standard library only."""
 import argparse, getpass, json, os, ssl, stat, sys, urllib.error, urllib.request, webbrowser
 from pathlib import Path
