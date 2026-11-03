@@ -78,6 +78,8 @@ def test_benchmark_rows_never_claim_acceptance_and_drop_free_variant_costs():
     assert all("p_accept" not in r for r in rows)
     free = [r for r in rows if "free variant" in r["benchmark"]]
     assert free and all(r["unit"] == "percent" for r in free)
+    free_ids = {tuple(a) for fam in idmap["families"].values() for a in fam.get("free_variants", [])}
+    assert not [r for r in rows if r["unit"] == "USD_per_task" and (r["provider"], r["model"]) in free_ids]
     opus_cost = [r for r in rows if r["model"] == "claude-opus-5-5" and r["task_class"] == "external.hermes_index.mean"
                  and r["unit"] == "USD_per_task"]
     assert opus_cost[0]["benchmark"].endswith("[provisional]")
