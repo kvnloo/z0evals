@@ -34,6 +34,12 @@ z0intelligence decisions. Plan source: council round 1 (`council/`, 2026-11-03),
    pruned). BLOCKED: both cells exit 1 within 2 min because the O19 Modal stop timer (every 2 min) stops every Modal app
    (`modal app list`: z0int-weight-space deployed 01:16/01:17, stopped 01:17/01:19). Needs Kevin's O19 Modal approval
    in his own terminal; then rerun with a fresh run id.
+   2026-11-04 02:00 tick: Modal still stopped (no new approval; both apps `stopped`). Built the GPU-free part: z0int
+   `benchmarks/weight_space/slm/toolchoice.py` (BFCL v3 @61fc060, choice-only grading: name or none; metrics accuracy,
+   false-call %, near-miss %, missed-call %; selftest ok). Items at `/mnt/zer0models/zer0-tier/datasets/toolchoice-bfcl-v3/`
+   (2,374; sha256 0670f476...): practice 585 abstain + 628 choose, dev 276 + 328, sealed 261 + 296. Chat-template render
+   check with the FunctionGemma tokenizer timed out on groot (torch import > 250 s under memory pressure): do it as
+   the first step of the Modal baseline. Next (needs Modal): unedited FunctionGemma on dev, then Astra 10 passes.
 0. [~] RUNNING (check first every tick): the blog's Exp-8 method on Qwen3.5-0.8B, thinking on, Modal sandbox + L4,
    10 forward passes per editor, run `20261104-exp8`, launched by `scripts/launch-exp8.sh` as user units
    `wsp-20261104-exp8-<editor>` (status: `systemctl --user is-active`, logs and state:
