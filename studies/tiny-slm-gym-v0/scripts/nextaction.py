@@ -157,6 +157,15 @@ def wmetrics(P, y, w):
             "k_for_98pct": next(k for k, c in cov.items() if c >= 0.98)}
 
 
+def macro_ci(v: np.ndarray, groups: np.ndarray, B: int = 4000, seed: int = 0):
+    """95% CI of the session-macro mean of v: resample sessions, average each session's mean."""
+    rng = np.random.default_rng(seed)
+    ug, inv = np.unique(groups, return_inverse=True)
+    per = np.bincount(inv, weights=v) / np.bincount(inv)
+    s = [per[rng.integers(0, len(per), len(per))].mean() for _ in range(B)]
+    return [float(np.percentile(s, 2.5)), float(per.mean()), float(np.percentile(s, 97.5))]
+
+
 def boot_ci(correct: np.ndarray, groups: np.ndarray | None = None, B: int = 2000, seed: int = 0):
     rng = np.random.default_rng(seed)
     if groups is None:
@@ -210,9 +219,29 @@ def controls():
     w = 1.0 / cnt[inv]  # session-macro: every session counts once, whatever its length
     res["scoring_sessions"] = int(len(cnt))
     res["largest_session_row_share"] = float(cnt.max() / cnt.sum())
-    for k, p in P.items():
-        m = {"row_micro": metrics(p, ydv[~cal]), "session_macro": wmetrics(p, ydv[~cal], w)}
-        m["row_micro"]["top1_ci95_session_clustered"] = boot_ci((p.argmax(1) == ydv[~cal]).astype(float), sc)
+    mbdir = os.environ.get("TINY_MB_PATH", "/workspace/evolution-lab")  # Evolution Lab's local_plasticity (read-only)
+    try:
+        sys.path.insert(0, mbdir)
+        from evolution_lab.jev_distill import fit_fly, predict_fly  # noqa: PLC0415
+        fly = fit_fly(Xtr, ytr, len(FAMILIES), n_kc=96, seed=1)
+        mb_pred = predict_fly(Xdv[~cal], fly)
+        res["mb"] = {"source": mbdir, "n_kc": 96, "n_params": int(fly.get("n_params", 0))}
+    except Exception as e:  # noqa: BLE001 - report, never fake
+        mb_pred, res["mb"] = None, {"unavailable": f"{type(e).__name__}: {e}"}
+    yy = ydv[~cal]
+    corr = {k: (p.argmax(1) == yy).astype(float) for k, p in P.items()}
+    if mb_pred is not None:
+        corr["mb"] = (mb_pred == yy).astype(float)
+    for k, c in corr.items():
+        m = {}
+        if k in P:
+            m = {"row_micro": metrics(P[k], yy), "session_macro": wmetrics(P[k], yy, w)}
+            m["row_micro"]["top1_ci95_session_clustered"] = boot_ci(c, sc)
+        else:
+            m = {"row_micro": {"top1": float(c.mean())}, "session_macro": {"top1": float((w * c).sum() / w.sum())}}
+        m["session_macro"]["top1_ci95"] = macro_ci(c, sc)
+        if k != "recency":
+            m["session_macro"]["top1_minus_recency_ci95"] = macro_ci(c - corr["recency"], sc)
         res["arms"][k] = m
     (REPO_DATA / "controls-dev.json").write_text(json.dumps(res, indent=1) + "\n")
     print(json.dumps(res, indent=1))

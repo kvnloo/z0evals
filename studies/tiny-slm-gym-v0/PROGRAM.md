@@ -45,7 +45,10 @@ z0intelligence decisions. Plan source: council round 1 (`council/`, 2026-11-03),
 2. [~] Controls. Parity (`data/controls-parity.json`, original row 80/20): majority 0.3186 and ridge 0.4122 reproduced
    exactly; **recency (same family as last step) 0.7404**, bigram 0.405. Dev, session-macro (`data/controls-dev.json`,
    49 scoring sessions): recency top-1 0.698 (top-2 covers 98%), ridge 0.639, bigram 0.636, majority 0.599.
-   Remaining: MB arm (needs `Z0INT_MB_PROVIDER`), per-session bootstrap CIs on the macro metric, and the one-time
+   2026-11-04 tick 3: added the MB arm (Evolution Lab `jev_distill.fit_fly`, read-only via TINY_MB_PATH) and
+   session-resampled 95% CIs on the macro metric plus each arm minus recency; first run exceeded a 500 s cap (MB fit),
+   rerunning as a 50-min capped job writing `data/controls-dev.json`.
+   Remaining: the one-time
    sealed-test pass by tiny-evaluator. Also queue: a fresh export from state.db (data ends 2026-09-16).
 3. [ ] Displacement audit: 200 sampled decisions; offline count of tool-schema tokens removable by top-k narrowing.
 4. [ ] Loop B: frozen-trunk heads, both ends in parallel order: SmolLM2-135M and Qwen3-0.6B, then Gemma-270M and
