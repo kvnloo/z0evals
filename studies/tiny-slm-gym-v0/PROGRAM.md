@@ -40,6 +40,13 @@ z0intelligence decisions. Plan source: council round 1 (`council/`, 2026-11-03),
    (2,374; sha256 0670f476...): practice 585 abstain + 628 choose, dev 276 + 328, sealed 261 + 296. Chat-template render
    check with the FunctionGemma tokenizer timed out on groot (torch import > 250 s under memory pressure): do it as
    the first step of the Modal baseline. Next (needs Modal): unedited FunctionGemma on dev, then Astra 10 passes.
+   2026-11-04 02:35 tick: Modal still stopped. Made the baseline one command: z0int `slm/common.py` target
+   `functiongemma-270m` (unsloth mirror @79eaaa8, card sampling, 256-token cap, same frozen tensors as the paper),
+   `slm/gpu.py` renders tool items with the model's own chat template, `slm/toolchoice_eval.py` runner (create-only,
+   sealed refused unless WSP_ROLE=tiny-evaluator). Dry run with fake generations scored end to end (604 dev items;
+   numbers are random-chance, discarded); 9 tests pass. Once Modal is approved:
+   `WSP_BACKEND=modal WSP_MODAL_GPU=L4 bws-env-exec --scope hermes -- .venv-wsp/bin/python benchmarks/weight_space/slm/toolchoice_eval.py tc-base-<date>`.
+   Still to do before an editor run: a session task-adapter so session.py practice passes use toolchoice items.
 0. [~] RUNNING (check first every tick): the blog's Exp-8 method on Qwen3.5-0.8B, thinking on, Modal sandbox + L4,
    10 forward passes per editor, run `20261104-exp8`, launched by `scripts/launch-exp8.sh` as user units
    `wsp-20261104-exp8-<editor>` (status: `systemctl --user is-active`, logs and state:
