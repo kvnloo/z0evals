@@ -17,6 +17,10 @@ z0intelligence decisions. Plan source: council round 1 (`council/`, 2026-11-03),
    10 forward passes per editor, run `20261104-exp8`, launched by `scripts/launch-exp8.sh` as user units
    `wsp-20261104-exp8-<editor>` (status: `systemctl --user is-active`, logs and state:
    ~/.z0int/state/weight-space/slm/20261104-exp8/). Editors: opus (claude-opus-5-5), fable (claude-fable-5-1).
+   2026-11-04 tick: opus/fable sat 90 min on turn 1. Two causes: (1) a local 6 GB RAM gate before each sandbox run
+   (fixed in z0int session.py: skipped when WSP_BACKEND=modal, uncommitted in that worktree); (2) the Anthropic OAuth
+   token is at 100% of its 7-day limit (429, overage disabled), resets 2026-11-05 00:00 CST. Units stopped; stalled dirs
+   kept as `*.stalled-2050`. Relaunch after the reset: `launch-exp8.sh 20261104-exp8 10 opus fable`.
    argon: BLOCKED, agy 429 "Individual quota reached", resets ~2026-11-07 22:50 CST; relaunch then with
    `launch-exp8.sh 20261104-exp8 10 argon` (state marked not-done). When a cell's session ends, matrix runs evaluate.py
    (unedited baseline + edited); report MATH-500/GSM8K, %cut-at-limit, and what the edit was, vs the blog's 10-pass row
@@ -52,6 +56,12 @@ z0intelligence decisions. Plan source: council round 1 (`council/`, 2026-11-03),
    items 2-3 numbers in the brief.
 
 ## Done
+- 2026-11-04 Argon via Gemini app, prompt 1 (Breakout write) run in TASK mode by Kevin; reply in
+  `argon-app/replies/1-breakout-write-MAX-TASKMODE-20261103T2055.txt` (fence re-added; weight lines verbatim).
+  Official score under the prompt's rules: 45/91 statements unreadable (2-value lists broadcast over 10x2 selections,
+  which the spec forbids: "as many values as entries"), mean 0.003 over 1,000 episodes. Informational, numpy
+  broadcasting allowed: mean 83.3 (se 2.6, max 539). Reference: PPO-500M 25.3, Astra (paper) 517.4, Astra (ours) 586.4,
+  Argon via agy 61.3. Task mode makes it a tool-use arm, not comparable to the no-tool rows.
 - 2026-11-03 Math Darwin lanes (harness validation only), run `20261103-ends`, volume `tiny-gym-results`:
   Qwen3.5-0.8B held-out GSM8K base 0.592 / instruct 0.512 / best merge 0.532; MATH-500 0.320 / 0.170 / 0.320.
   SmolLM2-135M: all ~0. Null: the fitness-selected merge did not beat the better parent.

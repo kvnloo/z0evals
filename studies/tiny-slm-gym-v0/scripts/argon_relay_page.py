@@ -25,6 +25,8 @@ NOTES = {
                                     "apply_edit.py, which I audit and score on MATH-500 myself.",
     "8-TASK-qwen35-recreate-exp8": "TASK mode. Recreate the blog's headline (Qwen3.5-0.8B 7.9 -> 48.1). Deliverable: "
                                    "apply_edit.py, audited and scored on our held-out protocol.",
+    "9-TASK-full-exp8-loopfix-tool": "RUN THIS ONE (TASK mode). Full Exp-8 reproduction + a reusable gradient-free "
+                                     "failure-mode repair tool run on all four tiny models. Replaces #7 and #8.",
 }
 
 

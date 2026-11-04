@@ -1,0 +1,60 @@
+TASK (agentic, long-running: use your code tools, download models and data, run experiments, iterate). This is a real
+research deliverable for my project, not a quiz. Everything you hand back will be re-run on my own GPU harness, so only
+reproducible artifacts count; self-reported numbers are welcome but are not the result.
+
+## Background
+
+Paper: "Sparks of Weight-Space Programming" (https://rikiyat.github.io/blog/weight-space-programming/), with full logs at
+https://github.com/RikiyaT/lm_understand-logs (read exp8_math/README.md, exp8_math/runs/*/final_answer.md and
+exp8_math/gemma_followup/). In its Experiment 8 a frontier model edited Qwen3.5-0.8B's weights directly, with no training,
+and raised MATH-500 from 7.9 to 48.1 (GSM8K 13.8 -> 67.1) with thinking on. Answers cut at the 32k-token limit fell from
+93% to 33%. The winning edits removed a "repetition / loop" direction from attention and MLP output matrices
+(W' = W - a * u u^T W) or zeroed one attention head. On Gemma 3 270M, which rarely loops, no edit moved MATH-500 by more
+than about a point. So weight editing worked as REPAIR of a named failure mode, not as added capability.
+
+My project needs exactly that capability as a reusable tool: tiny models (135M-0.8B) that I want to use as cheap
+decision models have failure modes (looping, never emitting a final answer, majority-class collapse), and I want a
+principled, gradient-free way to find and remove them.
+
+## The job, in order
+
+1. **Reproduce Experiment 8 on Qwen3.5-0.8B** (`Qwen/Qwen3.5-0.8B`, revision 2fc06364715b967f1860aea9cf38778875588b17).
+   Re-derive the loop direction / components yourself from the original weights and your own forward passes (do not
+   copy the paper's edit tensors). Show causally that your edit removes looping, at several strengths, and that accuracy
+   rises on TRAINING-split problems (GSM8K train, MATH train), not only that answers get shorter.
+2. **Turn it into a general tool**: `loopfix.py`, which takes any Hugging Face causal LM id + revision and (a) measures
+   its failure modes on a fixed set of training-split prompts (cut-at-limit share, n-gram repetition rate, no-final-answer
+   share, accuracy), (b) finds the responsible directions / heads / neurons with a documented, deterministic procedure
+   (fixed seeds, fixed prompt set), (c) proposes edits at a small grid of strengths, (d) picks the best by a paired
+   comparison on a dev subset, and (e) saves the edited model. No gradient descent or training of any kind anywhere.
+3. **Run `loopfix.py` on the ladder** and report what it finds for each: `Qwen/Qwen3-0.6B` (thinking on),
+   `unsloth/gemma-3-270m-it` (rev 23cf460f6bb16954176b3ddcc8d4f250501458a9) and `HuggingFaceTB/SmolLM2-135M-Instruct`
+   (rev 12fd25f77366fa6b3b4b768ec3050bf629380bac; its instruct model gives no final answer on ~99% of MATH problems in
+   my tests). A clean "no repairable failure mode found" is a valid result for a model; say so with the numbers.
+
+## Rules
+
+- No gradient descent, autograd, optimizers or iterative fitting of weights to a loss. Weight analysis, forward passes
+  (as many as you like), and directly computed edits (projections, ablations, rank-k changes, rescaling specific
+  neurons/heads/directions) are allowed.
+- Do not edit the final norm or the embedding / output layer, and do not only multiply a whole tensor by a constant.
+- Never use MATH-500 or GSM8K TEST problems for anything. Training splits only.
+- If your sandbox lacks a GPU or time, scale down honestly (fewer prompts, shorter caps) and state exactly what you ran.
+  Keep every comparison paired (same prompts and seeds for original vs edited) and report n and standard errors.
+
+## How I will judge it (you never see this data)
+
+Held-out MATH-500 and GSM8K test subsets. Qwen models: chat template with thinking enabled, temperature 0.6, top_p 0.95,
+top_k 20, presence_penalty 1.5, up to 4,096 new tokens. Gemma: no thinking, temperature 1.0, top_k 64, top_p 0.95,
+8,192 tokens. Grading: last \boxed{} with math-verify (lenient fallback to "the answer is" / last number for Gemma and
+SmolLM2). Unedited vs edited on the same problems and seeds, plus the share of answers cut at the limit.
+
+## Deliverables (final reply)
+
+1. `loopfix.py`: complete and self-contained (pip deps listed at the top), deterministic, CPU or single-GPU, network
+   only for the Hugging Face downloads. Usage: `python loopfix.py <model_id> <revision> <out_dir> [--thinking]`.
+2. `apply_qwen35.py`: your best Qwen3.5-0.8B edit as a standalone deterministic script (download, edit, save_pretrained
+   to argv[1]), in case your best edit there came from manual work beyond `loopfix.py`.
+3. A results table: for each model, failure-mode numbers before / after on your training-split prompts (with n), the
+   edit found (tensors, rank, strength), and the paired accuracy difference with its standard error.
+4. Under 300 words: what generalizes across models and what does not, and the single most important caveat.
