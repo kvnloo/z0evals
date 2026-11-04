@@ -28,6 +28,12 @@ z0intelligence decisions. Plan source: council round 1 (`council/`, 2026-11-03),
    z0 states stay a sealed transfer check run once by tiny-evaluator. Target: `unsloth/functiongemma-270m-it` (ungated
    mirror of google/functiongemma-270m-it). Next: pin a BFCL dataset revision, write the task loader + grader in the
    z0int SLM harness (new target entry), measure the unedited baseline on Modal, then launch Astra (10 passes).
+   2026-11-04 01:25: Claude unblocked via the Ultra sub: z0int `editors.py` reads the Hermes pool row named by
+   WSP_CLAUDE_POOL_LABEL (probe: claude-fable-5-1 and claude-opus-5-5 both answer on `claude-ultra`). Relaunched Exp 8 as
+   `20261104-exp8u` (fable + opus, 10 passes); launcher now uses durable `scripts/editor-env.sh` (scratch wrapper was
+   pruned). BLOCKED: both cells exit 1 within 2 min because the O19 Modal stop timer (every 2 min) stops every Modal app
+   (`modal app list`: z0int-weight-space deployed 01:16/01:17, stopped 01:17/01:19). Needs Kevin's O19 Modal approval
+   in his own terminal; then rerun with a fresh run id.
 0. [~] RUNNING (check first every tick): the blog's Exp-8 method on Qwen3.5-0.8B, thinking on, Modal sandbox + L4,
    10 forward passes per editor, run `20261104-exp8`, launched by `scripts/launch-exp8.sh` as user units
    `wsp-20261104-exp8-<editor>` (status: `systemctl --user is-active`, logs and state:
