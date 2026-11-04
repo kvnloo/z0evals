@@ -1,0 +1,20 @@
+{
+  "fixture": "synthetic tensor security checks, not accuracy",
+  "n": 12,
+  "checks": {
+    "valid": true,
+    "empty": true,
+    "unknown": true,
+    "frozen": true,
+    "shape": true,
+    "nan": true,
+    "inf": true,
+    "integer": true,
+    "object": true,
+    "symlink": true,
+    "hardlink": true,
+    "directory": true
+  },
+  "passed": 12,
+  "ci": null
+}
