@@ -23,6 +23,12 @@ z0intelligence decisions. Plan source: council round 1 (`council/`, 2026-11-03),
 - Probed isolation capabilities without executing editor code: no bubblewrap or Docker installed; `unshare --user --map-root-user --net /bin/true` fails with uid_map Operation not permitted. The user systemd manager runs. Oracle inference works, but a safe editor sandbox is NOT yet verified; do not execute Opus-generated Python unsandboxed there.
 - Next: collect the baseline score when complete, compare with 75.3% lexical+abstain, then validate a no-network/file-restricted Oracle sandbox or use the existing Modal backend after owner approval. No sealed split was accessed this tick.
 
+### 2026-11-04 11:05 CST tick — real baseline completed
+- Collected the finished Oracle run (76/76 batches, 604 public dev items, 2,673.3 s generation). Raw outputs: `~/.z0int/state/weight-space/slm/tc-base-oracle/toolchoice-dev-unedited/{gen.jsonl,score.json}`. No weights edited; no sealed data accessed.
+- Ran `python3 scripts/compare_toolchoice_baseline.py`: FunctionGemma 77.0% vs frozen lexical+abstain 75.3%; paired difference +1.66 pp, 4,000-resample IID-item bootstrap 95% CI [-2.32, +5.79] pp. Not a statistically clear lead. Model-only correct 82, control-only correct 72. Related BFCL items may be correlated, so this CI is provisional.
+- Model false-call 15.2%, near-miss 9.5%, missed-call 20.1%; cheap control 18.5%, 9.8%, 20.1%. Artifact: `data/toolchoice-oracle-baseline-dev.json`; reproducible comparison script in `scripts/compare_toolchoice_baseline.py`.
+- Next: validate an isolated Oracle editor sandbox before Opus-generated code executes, or use approved Modal. Opus availability was verified last tick, but no weight-editing session has completed. Oracle baseline job is now finished; do not rerun it.
+
 ## Queue (do the first undone item; mark done here with date + artifact)
 00. [ ] RETARGET (owner, 2026-11-04 00:35: "apply the blog to our workflows, not a perfect reconstruction"). Apply the
    blog's weight editing to a tiny model that is ALREADY a z0 decision model and has a measured, named failure:

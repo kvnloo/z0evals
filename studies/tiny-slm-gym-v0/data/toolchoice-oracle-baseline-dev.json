@@ -1,0 +1,34 @@
+{
+  "run_id": "tc-base-oracle",
+  "split": "public dev",
+  "n": 604,
+  "model": {
+    "n": 604,
+    "accuracy_pct": 77.0,
+    "abstain_acc_pct": 84.8,
+    "choose_acc_pct": 70.4,
+    "false_call_pct": 15.2,
+    "near_miss_pct": 9.5,
+    "missed_call_pct": 20.1
+  },
+  "control": {
+    "n": 604,
+    "accuracy_pct": 75.3,
+    "abstain_acc_pct": 81.5,
+    "choose_acc_pct": 70.1,
+    "false_call_pct": 18.5,
+    "near_miss_pct": 9.8,
+    "missed_call_pct": 20.1
+  },
+  "difference_model_minus_control_pp": 1.6556291390728477,
+  "paired_item_bootstrap_95ci_pp": [
+    -2.3178807947019866,
+    5.7947019867549665
+  ],
+  "ci_caveat": "IID item bootstrap; BFCL related items may be correlated; dev only, not transfer evidence.",
+  "model_only_correct": 82,
+  "control_only_correct": 72,
+  "gen_sha256": "00a5417715f00346e442bcb906496fd2b470993244d77d20a0aff6cd7e37b6c1",
+  "inference_wall_s": 2673.3,
+  "weights_edited": false
+}
