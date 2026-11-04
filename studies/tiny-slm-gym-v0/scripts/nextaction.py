@@ -259,5 +259,36 @@ def parity():
     print(json.dumps({k: round(v["top1"], 4) for k, v in res["arms"].items()}))
 
 
+def sealed():
+    """tiny-evaluator's ONE pass on the sealed test window: fit on train+dev, score test, session-macro + CIs."""
+    tp = OUT / "sealed" / "test.jsonl"
+    if json.loads((REPO_DATA / "splits.json").read_text())["splits"]["test"]["sha256"] != sha(tp):
+        raise SystemExit("sealed test hash mismatch")
+    if (REPO_DATA / "controls-sealed.json").exists():
+        raise SystemExit("sealed pass already recorded; a second pass would spend the holdout")
+    Xa, ya, la = load(OUT / "train.jsonl")
+    Xb, yb, lb = load(OUT / "dev.jsonl")
+    Xtr, ytr, ltr = np.vstack([Xa, Xb]), np.concatenate([ya, yb]), np.concatenate([la, lb])
+    Xte, yte, lte = load(tp)
+    sess = np.array([r["session"] for r in rows(tp) if r["family"] in FAMILIES])
+    P, info = arms(Xtr, ytr, ltr, Xte, yte, lte)
+    sys.path.insert(0, os.environ.get("TINY_MB_PATH", "/workspace/evolution-lab"))
+    from evolution_lab.jev_distill import fit_fly, predict_fly  # noqa: PLC0415
+    corr = {k: (p.argmax(1) == yte).astype(float) for k, p in P.items()}
+    corr["mb"] = (predict_fly(Xte, fit_fly(Xtr, ytr, len(FAMILIES), n_kc=96, seed=1)) == yte).astype(float)
+    _, inv, cnt = np.unique(sess, return_inverse=True, return_counts=True)
+    res = {"split": "sealed test (fit on train+dev)", "test_rows": int(len(yte)), "test_sessions": int(len(cnt)),
+           "largest_session_row_share": float(cnt.max() / cnt.sum()), **info, "arms": {}}
+    for k, c in corr.items():
+        a = {"row_micro_top1": float(c.mean()), "session_macro_top1_ci95": macro_ci(c, sess)}
+        if k != "recency":
+            a["minus_recency_ci95"] = macro_ci(c - corr["recency"], sess)
+        if k in P:
+            a["session_macro"] = wmetrics(P[k], yte, 1.0 / cnt[inv])
+        res["arms"][k] = a
+    (REPO_DATA / "controls-sealed.json").write_text(json.dumps(res, indent=1) + "\n")
+    print(json.dumps(res, indent=1))
+
+
 if __name__ == "__main__":
-    {"split": split, "controls": controls, "parity": parity}[sys.argv[1]]()
+    {"split": split, "controls": controls, "parity": parity, "sealed": sealed}[sys.argv[1]]()

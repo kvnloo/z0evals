@@ -42,7 +42,7 @@ z0intelligence decisions. Plan source: council round 1 (`council/`, 2026-11-03),
    the seal is convention + hash, not OS-enforced.
    Finding: a few automated sessions dominate rows (train's largest session = 20% of rows; one dev session, a DELEGATE
    loop, = 73% of dev rows). Primary metric is now **session-macro** (each session weighted once).
-2. [~] Controls. Parity (`data/controls-parity.json`, original row 80/20): majority 0.3186 and ridge 0.4122 reproduced
+2. [x] Controls. Parity (`data/controls-parity.json`, original row 80/20): majority 0.3186 and ridge 0.4122 reproduced
    exactly; **recency (same family as last step) 0.7404**, bigram 0.405. Dev, session-macro (`data/controls-dev.json`,
    49 scoring sessions): recency top-1 0.698 (top-2 covers 98%), ridge 0.639, bigram 0.636, majority 0.599.
    2026-11-04 tick 3: added the MB arm (Evolution Lab `jev_distill.fit_fly`, read-only via TINY_MB_PATH) and
@@ -53,7 +53,11 @@ z0intelligence decisions. Plan source: council round 1 (`council/`, 2026-11-03),
    params) 0.648 [0.605, 0.688], -0.050 [-0.093, -0.015]; ridge 0.639, -0.059 [-0.098, -0.030]; bigram 0.636, -0.062
    [-0.102, -0.035]; majority 0.599, -0.099 [-0.170, -0.034]. Recency beats every learned control (CIs exclude 0), so it
    is the bar any tiny-SLM head must beat. 49 scoring sessions.
-   Remaining: the one-time
+   2026-11-04 23:15 SEALED PASS (once; `nextaction.py sealed` refuses a second run), fit on train+dev, 255 test sessions /
+   4,186 rows, session-macro top-1 [95% CI], minus recency: recency 0.660 [0.643, 0.677]; bigram 0.616, -0.044
+   [-0.050, -0.039]; MB 0.612, -0.048 [-0.065, -0.032]; ridge 0.543, -0.118 [-0.132, -0.104]; majority 0.409, -0.252.
+   Confirms dev: recency is the bar. Artifact `data/controls-sealed.json`. Item 2 DONE except the fresh state.db export.
+   (Old note, superseded:) Remaining: the one-time
    sealed-test pass by tiny-evaluator. Also queue: a fresh export from state.db (data ends 2026-09-16).
 3. [ ] Displacement audit: 200 sampled decisions; offline count of tool-schema tokens removable by top-k narrowing.
 4. [ ] Loop B: frozen-trunk heads, both ends in parallel order: SmolLM2-135M and Qwen3-0.6B, then Gemma-270M and
