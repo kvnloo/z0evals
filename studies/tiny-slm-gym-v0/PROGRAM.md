@@ -47,7 +47,12 @@ z0intelligence decisions. Plan source: council round 1 (`council/`, 2026-11-03),
    49 scoring sessions): recency top-1 0.698 (top-2 covers 98%), ridge 0.639, bigram 0.636, majority 0.599.
    2026-11-04 tick 3: added the MB arm (Evolution Lab `jev_distill.fit_fly`, read-only via TINY_MB_PATH) and
    session-resampled 95% CIs on the macro metric plus each arm minus recency; first run exceeded a 500 s cap (MB fit),
-   rerunning as a 50-min capped job writing `data/controls-dev.json`.
+   rerunning as a 50-min capped job writing `data/controls-dev.json`. Done 21:57 (scoped jobs under the agent tree get
+   TERMed by agent-oom-guard pressure relief; run heavy steps as their own `systemd-run --user --unit=...` service).
+   Dev, session-macro top-1 with session-resampled 95% CI, and minus recency: recency 0.698 [0.668, 0.727]; MB (768
+   params) 0.648 [0.605, 0.688], -0.050 [-0.093, -0.015]; ridge 0.639, -0.059 [-0.098, -0.030]; bigram 0.636, -0.062
+   [-0.102, -0.035]; majority 0.599, -0.099 [-0.170, -0.034]. Recency beats every learned control (CIs exclude 0), so it
+   is the bar any tiny-SLM head must beat. 49 scoring sessions.
    Remaining: the one-time
    sealed-test pass by tiny-evaluator. Also queue: a fresh export from state.db (data ends 2026-09-16).
 3. [ ] Displacement audit: 200 sampled decisions; offline count of tool-schema tokens removable by top-k narrowing.
