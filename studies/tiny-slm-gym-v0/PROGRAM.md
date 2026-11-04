@@ -19,7 +19,7 @@ z0intelligence decisions. Plan source: council round 1 (`council/`, 2026-11-03),
    ~/.z0int/state/weight-space/slm/20261104-exp8/). Editors: opus (claude-opus-5-5), fable (claude-fable-5-1).
    2026-11-04 tick: opus/fable sat 90 min on turn 1. Two causes: (1) a local 6 GB RAM gate before each sandbox run
    (fixed in z0int session.py: skipped when WSP_BACKEND=modal, uncommitted in that worktree); (2) the Anthropic OAuth
-   token is at 100% of its 7-day limit (429, overage disabled), resets 2026-11-05 00:00 CST. Units stopped; stalled dirs
+   token is at 100% of its 7-day limit (429, overage disabled), resets 2026-11-05 02:00 CST. Units stopped; stalled dirs
    kept as `*.stalled-2050`. Relaunch after the reset: `launch-exp8.sh 20261104-exp8 10 opus fable`.
    argon: BLOCKED, agy 429 "Individual quota reached", resets ~2026-11-07 22:50 CST; relaunch then with
    `launch-exp8.sh 20261104-exp8 10 argon` (state marked not-done). When a cell's session ends, matrix runs evaluate.py
