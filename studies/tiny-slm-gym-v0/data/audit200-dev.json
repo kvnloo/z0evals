@@ -1,0 +1,40 @@
+{
+ "split": "dev",
+ "n": 200,
+ "sessions": 90,
+ "max_per_session": 4,
+ "narrowed_to": "last family + most frequent train family (EXECUTE)",
+ "miss_rate": 0.1,
+ "misses": 20,
+ "miss_by_session_kind": {
+  "cron": "11/144",
+  "interactive": "9/56"
+ },
+ "misses_on_first_step": 14,
+ "top_miss_transitions": [
+  [
+   "START->READ_SEARCH",
+   14
+  ],
+  [
+   "EXECUTE->EDIT",
+   2
+  ],
+  [
+   "EDIT->READ_SEARCH",
+   1
+  ],
+  [
+   "EXECUTE->WEB",
+   1
+  ],
+  [
+   "WEB->EDIT",
+   1
+  ],
+  [
+   "READ_SEARCH->EDIT",
+   1
+  ]
+ ]
+}

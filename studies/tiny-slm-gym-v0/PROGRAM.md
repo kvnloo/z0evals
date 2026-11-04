@@ -121,7 +121,13 @@ z0intelligence decisions. Plan source: council round 1 (`council/`, 2026-11-03),
    recency top-3 0.5% / 69%; bigram top-2 5.9% / 66%; ridge top-2 7.2% / 66%; top-1 for any arm misses ~35%.
    Caveats: Hermes already defers many tools via tool_search, so the live saving is smaller than vs the full catalog;
    the trace's tool set (Jul-Sep) differs from today's catalog; schemas are re-sent every call but often cached.
-   Remaining: the 200-decision qualitative audit, and the same replay on the sealed window by tiny-evaluator.
+   2026-11-04 07:05 audit (`scripts/audit200.py`, `data/audit200-dev.json`; per-row private file chmod 600 under
+   ~/.z0int/state/tiny-gym/nextaction/): 200 dev decisions, 90 sessions, <=4 per session. Narrowed to {last family,
+   EXECUTE}: 20 misses (10%; cron 11/144, interactive 9/56). **14 of 20 are the session's first step**
+   (START->READ_SEARCH: no previous step, so recency falls back to EXECUTE). Rule fix: on the first step keep
+   READ_SEARCH + EXECUTE (or skip narrowing) -> 6/200 = 3% misses in this sample, the rest EXECUTE->EDIT (2) and single
+   others. Rate differs from the 1.6% session-macro replay because of the <=4-per-session sampling.
+   Remaining: the same replay on the sealed window by tiny-evaluator.
 4. [ ] Loop B: frozen-trunk heads, both ends in parallel order: SmolLM2-135M and Qwen3-0.6B, then Gemma-270M and
    Qwen3.5-0.8B. Logistic head on pooled states; risk/coverage, calibration, warm p50 latency (kill > ~70 ms).
 5. [ ] Loop A (blog method) on Modal: SmolLM2-135M-Instruct no-answer defect, 25 passes, vs logit-bias, random rank-1
