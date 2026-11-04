@@ -21,6 +21,13 @@ z0intelligence decisions. Plan source: council round 1 (`council/`, 2026-11-03),
    `launch-exp8.sh 20261104-exp8 10 argon` (state marked not-done). When a cell's session ends, matrix runs evaluate.py
    (unedited baseline + edited); report MATH-500/GSM8K, %cut-at-limit, and what the edit was, vs the blog's 10-pass row
    (12.3 / 25.7, 87.2% cut). Never report a cell whose editor made 0 edits as an editor result.
+0b. [~] ARGON VIA GEMINI APP (owner runs prompts by hand while agy is quota-blocked). Page:
+   http://100.113.138.100:8765/ (unit `argon-relay-page`, `scripts/argon_relay_page.py`); prompts in `argon-app/`, replies
+   land in `argon-app/replies/<prompt>-<ts>.txt`. Each tick, process new replies: #1/#2/#3 (exp5 MinAtar writes) score
+   with the z0int `run.py` exp5 scorer (1,000 episodes) and compare MAX vs DEFAULT effort on #1/#2; #4 (council seat)
+   summarize vs the four seats; #5 (Qwen relay) run its python blocks in the Modal sandbox and forward blocks via
+   session.forward on a dedicated work dir `20261104-exp8/qwen35-0.8b__argon-app/`, then write the round-N+1 message as
+   `argon-app/5-qwen-weight-edit-relay-roundN.txt` (the page lists it) and tell Kevin.
 1. [x] 2026-11-04 Loop C export (`scripts/nextaction.py split`, `data/splits.json`). Source: the frozen
    `next_action.jsonl` (76,970 rows, 1,276 sessions, 2026-07-12..09-16, so no gym/council sessions). Split: 70/10/20 of
    sessions by start time, 6 h purge before each boundary (167 sessions dropped): train 757 sessions / 64,695 rows, dev
