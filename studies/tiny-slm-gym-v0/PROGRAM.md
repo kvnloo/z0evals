@@ -13,6 +13,14 @@ z0intelligence decisions. Plan source: council round 1 (`council/`, 2026-11-03),
 - Every result: command, artifact path, n, CI. Failures and nulls are logged, not dropped.
 
 ## Queue (do the first undone item; mark done here with date + artifact)
+0. [~] RUNNING (check first every tick): the blog's Exp-8 method on Qwen3.5-0.8B, thinking on, Modal sandbox + L4,
+   10 forward passes per editor, run `20261104-exp8`, launched by `scripts/launch-exp8.sh` as user units
+   `wsp-20261104-exp8-<editor>` (status: `systemctl --user is-active`, logs and state:
+   ~/.z0int/state/weight-space/slm/20261104-exp8/). Editors: opus (claude-opus-5-5), fable (claude-fable-5-1).
+   argon: BLOCKED, agy 429 "Individual quota reached", resets ~2026-11-07 22:50 CST; relaunch then with
+   `launch-exp8.sh 20261104-exp8 10 argon` (state marked not-done). When a cell's session ends, matrix runs evaluate.py
+   (unedited baseline + edited); report MATH-500/GSM8K, %cut-at-limit, and what the edit was, vs the blog's 10-pass row
+   (12.3 / 25.7, 87.2% cut). Never report a cell whose editor made 0 edits as an editor result.
 1. [x] 2026-11-04 Loop C export (`scripts/nextaction.py split`, `data/splits.json`). Source: the frozen
    `next_action.jsonl` (76,970 rows, 1,276 sessions, 2026-07-12..09-16, so no gym/council sessions). Split: 70/10/20 of
    sessions by start time, 6 h purge before each boundary (167 sessions dropped): train 757 sessions / 64,695 rows, dev
