@@ -30,6 +30,13 @@ z0intelligence decisions. Plan source: council round 1 (`council/`, 2026-11-03),
 - Next: validate an isolated Oracle editor sandbox before Opus-generated code executes, or use approved Modal. Opus availability was verified last tick, but no weight-editing session has completed. Oracle baseline job is now finished; do not rerun it.
 
 ## Queue (do the first undone item; mark done here with date + artifact)
+
+### 2026-11-04 12:09 CST tick — Oracle isolation fixture validated
+- Checked previous job first: baseline final score exists, no toolchoice_eval process remains. No baseline rerun or sealed access.
+- Root namespaces work (`sudo -n unshare --net --mount --pid --fork /usr/bin/true`, rc=0), unlike the earlier unprivileged uid-map probe. Installed Ubuntu bubblewrap 0.9.0; staged a public Python venv under `/opt/wsp-isolation/.venv` without exposing the worker home.
+- Ran `python3 ~/wsp/oracle_isolation_probe.py` on Oracle. Initial fixture failed because dropping to nobody prevented traversal of `/home/ubuntu`; moved the runtime to `/opt` and made the temporary fixture traversable. Two subsequent probes passed, rc=0: all 13 checks true, including no network, uid 65534/no effective capabilities, host SSH/home hidden, clean environment, read-only model/practice/root, writable work and real torch 2.14.0 CPU tensor execution. Per-probe systemd limits: MemoryMax=2G, TasksMax=64, RuntimeMaxSec=60. Artifact: `data/oracle-isolation-probe.json`; reproducer: `scripts/oracle_isolation_probe.py`. These are deterministic checks (n=13), not accuracy estimates; CI not applicable.
+- This validates trusted fixtures only, NOT the complete editor backend. CPU topology warnings occur because sysfs is intentionally hidden. No generated editor code executed and no weights edited. Next: bind the actual read-only model/practice snapshot, validate safetensors load/save under confinement, and wire the Oracle session transport. No owner action required for this free-worker path; Modal remains separately approval-gated.
+
 00. [ ] RETARGET (owner, 2026-11-04 00:35: "apply the blog to our workflows, not a perfect reconstruction"). Apply the
    blog's weight editing to a tiny model that is ALREADY a z0 decision model and has a measured, named failure:
    FunctionGemma-270M on the slm-router bounded-choice set (51/84, picked the dangerous near-miss; Hammer3B 75/84) or

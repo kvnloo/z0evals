@@ -1,0 +1,11 @@
+{
+  "returncode": 0,
+  "stdout": "{\"checks\": {\"unprivileged_uid\": true, \"no_capabilities\": true, \"host_home_hidden\": true, \"host_etc_hidden\": true, \"clean_environment\": true, \"model_readonly\": true, \"practice_readonly\": true, \"root_readonly\": true, \"work_writable\": true, \"practice_readable\": true, \"network_blocked\": true, \"only_loopback_interface\": true, \"torch_usable\": true}, \"torch\": \"2.14.0+cpu\", \"uid\": 65534}\n",
+  "stderr": "/__w/pytorch/pytorch/third_party/ideep/mkl-dnn/third_party/xbyak_aarch64/src/util_impl_linux.h, 444: Can't open MIDR_EL1 sysfs entry\nError in cpuinfo: failed to parse the list of possible processors in /sys/devices/system/cpu/possible\nError in cpuinfo: failed to parse the list of present processors in /sys/devices/system/cpu/present\nError in cpuinfo: failed to parse both lists of possible and present processors\n",
+  "limits": {
+    "memory_bytes": 2147483648,
+    "tasks": 64,
+    "runtime_seconds": 60
+  },
+  "scope": "trusted fixture probe only; not yet an editor backend or actual model smoke"
+}
