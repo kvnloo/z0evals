@@ -12,6 +12,12 @@ z0intelligence decisions. Plan source: council round 1 (`council/`, 2026-11-03),
   and count the skip. No pkill -f.
 - Every result: command, artifact path, n, CI. Failures and nulls are logged, not dropped.
 
+## Latest resumption (2026-11-04 10:01 CST)
+- Owner requested resumption with Opus 5.5 and newly added subscriptions. Verified `t3-claude-ultra -p 'Reply exactly OK' --model claude-opus-5-5 --output-format json`: result OK, is_error=false, modelUsage identifies claude-opus-5-5. Root Hermes pool currently contains claude-ultra, claude-sub2 and ANTHROPIC_TOKEN; no token values recorded.
+- Newly available free Oracle A1 worker is reachable (4 ARM CPUs, 24 GB RAM). Only public BFCL task/code were sent; no private traces or credentials. Installed torch 2.14.0+cpu / transformers 5.20.2 in `/home/ubuntu/wsp/.venv`.
+- REAL FunctionGemma unedited baseline is RUNNING on the Oracle worker: `/home/ubuntu/wsp/base.sh`, log `/home/ubuntu/wsp/base.log`, run `tc-base-oracle`; at 10:01, 50/76 generation batches, 1,495 s. Public dev set: 604 items. No final score yet. First 16-item smoke completed before full run. Do not relaunch the same run or delete its output.
+- Next tick: SSH to the worker recorded in `~/.oci/fleet.env`, collect `/home/ubuntu/z0/state/weight-space/slm/tc-base-oracle/toolchoice-dev-unedited/score.json` when present. Baseline inference is no longer fully blocked. Opus weight-editing itself has NOT resumed yet: existing sandbox path still depends on Modal approval; an Oracle sandbox adapter would require separate isolation validation before running model-generated code.
+
 ## Queue (do the first undone item; mark done here with date + artifact)
 00. [ ] RETARGET (owner, 2026-11-04 00:35: "apply the blog to our workflows, not a perfect reconstruction"). Apply the
    blog's weight editing to a tiny model that is ALREADY a z0 decision model and has a measured, named failure:
