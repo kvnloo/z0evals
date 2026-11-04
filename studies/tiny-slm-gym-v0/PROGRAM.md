@@ -18,6 +18,11 @@ z0intelligence decisions. Plan source: council round 1 (`council/`, 2026-11-03),
 - REAL FunctionGemma unedited baseline is RUNNING on the Oracle worker: `/home/ubuntu/wsp/base.sh`, log `/home/ubuntu/wsp/base.log`, run `tc-base-oracle`; at 10:01, 50/76 generation batches, 1,495 s. Public dev set: 604 items. No final score yet. First 16-item smoke completed before full run. Do not relaunch the same run or delete its output.
 - Next tick: SSH to the worker recorded in `~/.oci/fleet.env`, collect `/home/ubuntu/z0/state/weight-space/slm/tc-base-oracle/toolchoice-dev-unedited/score.json` when present. Baseline inference is no longer fully blocked. Opus weight-editing itself has NOT resumed yet: existing sandbox path still depends on Modal approval; an Oracle sandbox adapter would require separate isolation validation before running model-generated code.
 
+### 2026-11-04 10:05 CST tick
+- Checked the existing Oracle baseline before doing anything else: still running, 56/76 batches, 1,714 generation seconds at the last completed batch; 604 public dev items, no score.json yet. Artifact: `data/oracle-baseline-progress.json`. Did not restart or overwrite the run.
+- Probed isolation capabilities without executing editor code: no bubblewrap or Docker installed; `unshare --user --map-root-user --net /bin/true` fails with uid_map Operation not permitted. The user systemd manager runs. Oracle inference works, but a safe editor sandbox is NOT yet verified; do not execute Opus-generated Python unsandboxed there.
+- Next: collect the baseline score when complete, compare with 75.3% lexical+abstain, then validate a no-network/file-restricted Oracle sandbox or use the existing Modal backend after owner approval. No sealed split was accessed this tick.
+
 ## Queue (do the first undone item; mark done here with date + artifact)
 00. [ ] RETARGET (owner, 2026-11-04 00:35: "apply the blog to our workflows, not a perfect reconstruction"). Apply the
    blog's weight editing to a tiny model that is ALREADY a z0 decision model and has a measured, named failure:

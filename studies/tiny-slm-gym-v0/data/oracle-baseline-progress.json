@@ -1,0 +1,19 @@
+{
+  "observed_at": "2026-11-04T10:05:00-06:00",
+  "run_id": "tc-base-oracle",
+  "task": "public BFCL tool-choice dev",
+  "n_items": 604,
+  "completed_batches": 56,
+  "total_batches": 76,
+  "elapsed_generation_s_at_batch": 1714,
+  "status": "running; no final score present",
+  "remote_log": "/home/ubuntu/wsp/base.log",
+  "remote_score": "/home/ubuntu/z0/state/weight-space/slm/tc-base-oracle/toolchoice-dev-unedited/score.json",
+  "sandbox_probe": {
+    "bubblewrap_installed": false,
+    "docker_installed": false,
+    "systemd_user_manager": "running",
+    "unprivileged_user_network_namespace": "refused: write failed /proc/self/uid_map: Operation not permitted",
+    "safe_to_execute_editor_code": false
+  }
+}
