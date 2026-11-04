@@ -1,0 +1,12 @@
+{
+  "observed_date": "2026-11-04",
+  "command": "printf trusted Python | ssh Oracle 'python3 ~/wsp/oracle_sandbox_exec.py transport-smoke'",
+  "calls": [
+    {"returncode": 0, "wall_s": 3.22, "stdout_contains": "236 1213", "action": "write /work/persist and enumerate tensors/practice"},
+    {"returncode": 0, "wall_s": 3.07, "stdout_contains": "persistent-second-process-ok", "action": "assert prior file survives fresh confined process"}
+  ],
+  "work": "/opt/wsp-isolation/session-transport-smoke",
+  "limits": {"memory_bytes": 4294967296, "tasks": 64, "runtime_seconds": 600, "max_file_bytes": 67108864},
+  "scope": "trusted transport smoke only; no AI-generated code, no accuracy measurement",
+  "remaining": "Integrate session/generation RPC; validate submitted edit artifacts independently before trusted inference. File-size cap is per file, not aggregate disk quota."
+}

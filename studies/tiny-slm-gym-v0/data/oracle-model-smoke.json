@@ -1,0 +1,15 @@
+{
+  "returncode": 0,
+  "wall_s": 3.15,
+  "stdout": "{\"tensor\": \"model.layers.0.mlp.down_proj.weight\", \"shape\": [640, 2048], \"tensor_count\": 236, \"edited_entries\": 1, \"roundtrip_equal\": true, \"original_unchanged\": true, \"frozen_rejected\": true, \"practice_items\": 1213, \"uid\": 65534, \"message\": \"saved model.layers.0.mlp.down_proj.weight: 1 of 1310720 entries differ\"}\n",
+  "stderr": "/__w/pytorch/pytorch/third_party/ideep/mkl-dnn/third_party/xbyak_aarch64/src/util_impl_linux.h, 444: Can't open MIDR_EL1 sysfs entry\nError in cpuinfo: failed to parse the list of possible processors in /sys/devices/system/cpu/possible\nError in cpuinfo: failed to parse the list of present processors in /sys/devices/system/cpu/present\nError in cpuinfo: failed to parse both lists of possible and present processors\n",
+  "model_revision": "79eaaa84125b897f5a0ad6638362b864fec813ad",
+  "practice_sha256": "241315fa86a9448ef243e443aad3fa69e40a7076969fba182697dc623805dd8e",
+  "work": "/opt/wsp-isolation/model-smoke-1793819130992262014",
+  "scope": "trusted one-entry smoke edit only, not an editor improvement",
+  "limits": {
+    "memory_bytes": 4294967296,
+    "tasks": 64,
+    "runtime_seconds": 60
+  }
+}
