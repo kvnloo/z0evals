@@ -27,7 +27,10 @@ z0intelligence decisions. Plan source: council round 1 (`council/`, 2026-11-03),
    with the z0int `run.py` exp5 scorer (1,000 episodes) and compare MAX vs DEFAULT effort on #1/#2; #4 (council seat)
    summarize vs the four seats; #5 (Qwen relay) run its python blocks in the Modal sandbox and forward blocks via
    session.forward on a dedicated work dir `20261104-exp8/qwen35-0.8b__argon-app/`, then write the round-N+1 message as
-   `argon-app/5-qwen-weight-edit-relay-roundN.txt` (the page lists it) and tell Kevin.
+   `argon-app/5-qwen-weight-edit-relay-roundN.txt` (the page lists it) and tell Kevin. #6 (TASK, tools allowed) score
+   like #1 as a separate tool-use arm. #7/#8 (TASK) deliver `apply_edit.py`: audit it first (no training/autograd, no
+   network beyond the HF download, only in-scope tensors), run it in a no-network Modal container, then score
+   edited vs unedited with the stated protocol (#7: MATH-500 x4, Gemma sampling, 8,192 tokens; #8: the Exp-8 eval).
 1. [x] 2026-11-04 Loop C export (`scripts/nextaction.py split`, `data/splits.json`). Source: the frozen
    `next_action.jsonl` (76,970 rows, 1,276 sessions, 2026-07-12..09-16, so no gym/council sessions). Split: 70/10/20 of
    sessions by start time, 6 h purge before each boundary (167 sessions dropped): train 757 sessions / 64,695 rows, dev

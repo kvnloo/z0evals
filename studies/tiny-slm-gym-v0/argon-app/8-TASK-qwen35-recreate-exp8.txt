@@ -1,0 +1,22 @@
+TASK (agentic; use your code tools). Recreate the headline result of the paper "Sparks of Weight-Space Programming"
+(rikiyat.github.io/blog/weight-space-programming, logs at github.com/RikiyaT/lm_understand-logs, folder exp8_math).
+There, a frontier model edited Qwen3.5-0.8B's weights directly (no training) and raised MATH-500 from 7.9 to 48.1 with
+thinking on, mainly by removing a "repetition / loop" direction from attention and MLP output matrices.
+
+Your job: independently re-derive and reproduce that kind of edit, and ideally beat it. Read the paper and logs as much
+as you like; do not simply copy their final edit tensors. Find the direction / components yourself from the original
+weights and your own forward passes, check causally that your edit removes the looping, and verify on training-split
+problems (GSM8K train, MATH train) that accuracy rises, not only that answers get shorter.
+
+Model: `Qwen/Qwen3.5-0.8B` at revision 2fc06364715b967f1860aea9cf38778875588b17 (text part, 24 layers).
+Rules: no gradient descent or training of any kind; do not edit the final norm or the embedding / output layer; no
+whole-tensor constant scaling; never use MATH-500 / GSM8K test problems.
+
+How it will be judged (you never see the test set): MATH-500 and GSM8K test subsets, chat template with thinking
+enabled, temperature 0.6, top_p 0.95, top_k 20, presence_penalty 1.5, at most 4,096 new tokens, last \boxed{} graded by
+math-verify, unedited vs edited on the same problems and seeds.
+
+Deliverable (your final reply): ONE self-contained Python file `apply_edit.py` that downloads the model at that exact
+revision, applies your edit deterministically and saves it with `save_pretrained` to argv[1] (tokenizer, config and chat
+template unchanged). Below it, in under 250 words: the edit, how you found it, how it differs from the paper's, and your
+own before/after numbers on training-split problems (with n, share of answers cut at the token limit, and accuracy).

@@ -1,0 +1,24 @@
+TASK (agentic; use your code tools). Make Gemma 3 270M IT better at mathematics by EDITING ITS WEIGHTS DIRECTLY.
+
+Model: `unsloth/gemma-3-270m-it` at revision 23cf460f6bb16954176b3ddcc8d4f250501458a9 (an ungated mirror of
+google/gemma-3-270m-it). Context: in the paper "Sparks of Weight-Space Programming" (rikiyat.github.io, logs at
+github.com/RikiyaT/lm_understand-logs, folder exp8_math/gemma_followup) another frontier model tried this and found no
+edit that moved MATH-500 by more than about one point. You may read that blog and those logs. Your goal is to beat them.
+
+Rules:
+- No gradient descent or other training: no backward passes, autograd, optimizers or iterative fitting of weights to a
+  loss. Analysing weights and activations, running the model forward as much as you like, and computing direct edits
+  (projections, ablations, rank-k changes, rescaling specific neurons/heads/directions) are all allowed.
+- Do not edit the final norm, the embedding / output layer, and do not only multiply a whole tensor by a constant.
+- Do not tune on MATH-500 or GSM8K test problems. Use only training splits (GSM8K train, MATH train) for diagnosis.
+
+How it will be judged (you never see the test set): MATH-500, 4 samples per problem, temperature 1.0, top_k 64,
+top_p 0.95, at most 8,192 new tokens, no thinking mode, user message = problem + "\nPlease reason step by step, and put
+your final answer within \boxed{}.", graded by math-verify on the last \boxed{} (with a lenient fallback to "the answer
+is" / the last number). Baseline (unedited) and edited are scored on the same problems with the same seeds.
+
+Deliverable (your final reply): ONE self-contained Python file `apply_edit.py` that downloads the model at that exact
+revision, applies your edit deterministically (no randomness, no network other than the Hugging Face download), and
+saves the edited model with `save_pretrained` to a directory given as argv[1]. Keep the tokenizer, config and chat
+template unchanged. Below the file, in under 200 words: what the edit is, the evidence that made you choose it, and your
+own measured before/after numbers on training-split problems (with n).

@@ -19,6 +19,12 @@ NOTES = {
     "4-council-seat-MAX": "Highest setting. Long paste (54 KB). Argon joins the council as 5th seat.",
     "5-qwen-weight-edit-relay-round1-MAX": "Highest setting. Round 1 of a relay: paste the reply back, I run its code "
                                            "on Modal and give you round 2.",
+    "6-TASK-breakout-write-with-tools": "TASK mode. Same Breakout write, but Argon may play the game and search/train. "
+                                        "Scored here on 1,000 fresh episodes; a separate tool-use arm.",
+    "7-TASK-gemma270m-weight-edit": "TASK mode. The blog's follow-up where Astra failed (Gemma 270M). Deliverable: "
+                                    "apply_edit.py, which I audit and score on MATH-500 myself.",
+    "8-TASK-qwen35-recreate-exp8": "TASK mode. Recreate the blog's headline (Qwen3.5-0.8B 7.9 -> 48.1). Deliverable: "
+                                   "apply_edit.py, audited and scored on our held-out protocol.",
 }
 
 
