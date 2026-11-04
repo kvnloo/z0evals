@@ -59,7 +59,15 @@ z0intelligence decisions. Plan source: council round 1 (`council/`, 2026-11-03),
    Confirms dev: recency is the bar. Artifact `data/controls-sealed.json`. Item 2 DONE except the fresh state.db export.
    (Old note, superseded:) Remaining: the one-time
    sealed-test pass by tiny-evaluator. Also queue: a fresh export from state.db (data ends 2026-09-16).
-3. [ ] Displacement audit: 200 sampled decisions; offline count of tool-schema tokens removable by top-k narrowing.
+3. [~] Displacement audit: 200 sampled decisions; offline count of tool-schema tokens removable by top-k narrowing.
+   2026-11-04 00:20 token count done (`scripts/narrowing.py`, `data/tool-schemas-by-family.json`,
+   `data/narrowing-dev.json`). Hermes' current uncollapsed catalog: 55 tools, ~21.2k schema tokens (chars/4 proxy); 18
+   tools / 8.6k tokens map to no family (ABSTAIN bucket, e.g. MCP/plugin tools). Dev counterfactual (miss -> one extra
+   call with the full list), session-macro: **recency top-2 misses 1.6% of steps and removes 71% of schema tokens**;
+   recency top-3 0.5% / 69%; bigram top-2 5.9% / 66%; ridge top-2 7.2% / 66%; top-1 for any arm misses ~35%.
+   Caveats: Hermes already defers many tools via tool_search, so the live saving is smaller than vs the full catalog;
+   the trace's tool set (Jul-Sep) differs from today's catalog; schemas are re-sent every call but often cached.
+   Remaining: the 200-decision qualitative audit, and the same replay on the sealed window by tiny-evaluator.
 4. [ ] Loop B: frozen-trunk heads, both ends in parallel order: SmolLM2-135M and Qwen3-0.6B, then Gemma-270M and
    Qwen3.5-0.8B. Logistic head on pooled states; risk/coverage, calibration, warm p50 latency (kill > ~70 ms).
 5. [ ] Loop A (blog method) on Modal: SmolLM2-135M-Instruct no-answer defect, 25 passes, vs logit-bias, random rank-1

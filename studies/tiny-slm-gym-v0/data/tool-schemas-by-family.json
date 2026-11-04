@@ -1,0 +1,313 @@
+{
+ "source": "hermes-agent model_tools.get_tool_definitions(all toolsets, uncollapsed)",
+ "tokenizer": "chars/4 (proxy)",
+ "n_tools": 55,
+ "total_tokens": 21198,
+ "families": {
+  "ABSTAIN": {
+   "tools": 18,
+   "tokens": 8609
+  },
+  "DELEGATE": {
+   "tools": 2,
+   "tokens": 1475
+  },
+  "EDIT": {
+   "tools": 2,
+   "tokens": 517
+  },
+  "EXECUTE": {
+   "tools": 4,
+   "tokens": 2007
+  },
+  "READ_SEARCH": {
+   "tools": 10,
+   "tokens": 3908
+  },
+  "VERIFY": {
+   "tools": 2,
+   "tokens": 418
+  },
+  "WEB": {
+   "tools": 17,
+   "tokens": 4264
+  }
+ },
+ "tools": [
+  {
+   "name": "cronjob_manage",
+   "family": "ABSTAIN",
+   "tokens": 1768
+  },
+  {
+   "name": "computer_use",
+   "family": "ABSTAIN",
+   "tokens": 1428
+  },
+  {
+   "name": "delegate_task",
+   "family": "DELEGATE",
+   "tokens": 1152
+  },
+  {
+   "name": "session_search",
+   "family": "READ_SEARCH",
+   "tokens": 986
+  },
+  {
+   "name": "browser_cdp",
+   "family": "WEB",
+   "tokens": 903
+  },
+  {
+   "name": "skill_manage",
+   "family": "ABSTAIN",
+   "tokens": 887
+  },
+  {
+   "name": "memory",
+   "family": "READ_SEARCH",
+   "tokens": 801
+  },
+  {
+   "name": "execute_code",
+   "family": "EXECUTE",
+   "tokens": 768
+  },
+  {
+   "name": "terminal",
+   "family": "EXECUTE",
+   "tokens": 668
+  },
+  {
+   "name": "trace_query",
+   "family": "ABSTAIN",
+   "tokens": 602
+  },
+  {
+   "name": "drive_preview",
+   "family": "ABSTAIN",
+   "tokens": 601
+  },
+  {
+   "name": "search_files",
+   "family": "READ_SEARCH",
+   "tokens": 562
+  },
+  {
+   "name": "gui_tour",
+   "family": "ABSTAIN",
+   "tokens": 543
+  },
+  {
+   "name": "clarify",
+   "family": "ABSTAIN",
+   "tokens": 445
+  },
+  {
+   "name": "browser_dialog",
+   "family": "WEB",
+   "tokens": 418
+  },
+  {
+   "name": "process_manage",
+   "family": "EXECUTE",
+   "tokens": 381
+  },
+  {
+   "name": "text_to_speech",
+   "family": "ABSTAIN",
+   "tokens": 375
+  },
+  {
+   "name": "browser_vault",
+   "family": "WEB",
+   "tokens": 362
+  },
+  {
+   "name": "x_search",
+   "family": "READ_SEARCH",
+   "tokens": 350
+  },
+  {
+   "name": "z0_file_search",
+   "family": "READ_SEARCH",
+   "tokens": 339
+  },
+  {
+   "name": "todo_list",
+   "family": "DELEGATE",
+   "tokens": 323
+  },
+  {
+   "name": "video_generate",
+   "family": "WEB",
+   "tokens": 319
+  },
+  {
+   "name": "read_file",
+   "family": "READ_SEARCH",
+   "tokens": 297
+  },
+  {
+   "name": "browser_vision",
+   "family": "WEB",
+   "tokens": 292
+  },
+  {
+   "name": "web_extract",
+   "family": "WEB",
+   "tokens": 273
+  },
+  {
+   "name": "write_file",
+   "family": "EDIT",
+   "tokens": 273
+  },
+  {
+   "name": "browser_navigate",
+   "family": "WEB",
+   "tokens": 259
+  },
+  {
+   "name": "desktop_preview",
+   "family": "ABSTAIN",
+   "tokens": 259
+  },
+  {
+   "name": "browser_console",
+   "family": "VERIFY",
+   "tokens": 252
+  },
+  {
+   "name": "set_theme",
+   "family": "ABSTAIN",
+   "tokens": 250
+  },
+  {
+   "name": "patch",
+   "family": "EDIT",
+   "tokens": 244
+  },
+  {
+   "name": "annotate_preview",
+   "family": "ABSTAIN",
+   "tokens": 242
+  },
+  {
+   "name": "browser_snapshot",
+   "family": "WEB",
+   "tokens": 241
+  },
+  {
+   "name": "link_pull_request",
+   "family": "ABSTAIN",
+   "tokens": 240
+  },
+  {
+   "name": "skill_view",
+   "family": "READ_SEARCH",
+   "tokens": 227
+  },
+  {
+   "name": "show_tip",
+   "family": "ABSTAIN",
+   "tokens": 218
+  },
+  {
+   "name": "trace_resolve",
+   "family": "ABSTAIN",
+   "tokens": 208
+  },
+  {
+   "name": "vision_analyze",
+   "family": "WEB",
+   "tokens": 204
+  },
+  {
+   "name": "web_search",
+   "family": "WEB",
+   "tokens": 192
+  },
+  {
+   "name": "close_terminal",
+   "family": "EXECUTE",
+   "tokens": 190
+  },
+  {
+   "name": "unlink_pull_request",
+   "family": "ABSTAIN",
+   "tokens": 188
+  },
+  {
+   "name": "desktop_project",
+   "family": "ABSTAIN",
+   "tokens": 184
+  },
+  {
+   "name": "video_analyze",
+   "family": "WEB",
+   "tokens": 184
+  },
+  {
+   "name": "browser_type",
+   "family": "WEB",
+   "tokens": 176
+  },
+  {
+   "name": "bend_verify",
+   "family": "VERIFY",
+   "tokens": 166
+  },
+  {
+   "name": "read_terminal",
+   "family": "READ_SEARCH",
+   "tokens": 140
+  },
+  {
+   "name": "read_window_below",
+   "family": "READ_SEARCH",
+   "tokens": 130
+  },
+  {
+   "name": "browser_click",
+   "family": "WEB",
+   "tokens": 112
+  },
+  {
+   "name": "focus_pane",
+   "family": "ABSTAIN",
+   "tokens": 107
+  },
+  {
+   "name": "browser_scroll",
+   "family": "WEB",
+   "tokens": 97
+  },
+  {
+   "name": "browser_press",
+   "family": "WEB",
+   "tokens": 95
+  },
+  {
+   "name": "browser_get_images",
+   "family": "WEB",
+   "tokens": 79
+  },
+  {
+   "name": "skills_list",
+   "family": "READ_SEARCH",
+   "tokens": 76
+  },
+  {
+   "name": "list_pull_requests",
+   "family": "ABSTAIN",
+   "tokens": 64
+  },
+  {
+   "name": "browser_back",
+   "family": "WEB",
+   "tokens": 58
+  }
+ ]
+}
