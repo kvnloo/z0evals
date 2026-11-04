@@ -22,6 +22,8 @@ toc:
     label: a/b on simulated turns
   - id: live
     label: live-traffic estimate
+  - id: after-29806
+    label: re-run after 29806
   - id: page-size
     label: the page size trade
   - id: background
@@ -148,6 +150,20 @@ one install, 2026-11-03 03:30–05:28 utc, 9,292 events across 21 threads, mostl
 
 this is an estimate. it assumes one commit per event, treats ingestion time as commit time, and does not model the extra flushes forced when a pending entity is compared against. we transcribed these numbers from the [posted discussion](https://github.com/pingdotgg/t3code/discussions/29954); the source database keeps changing, so we did not re-run them for this study ([data](https://github.com/kvnloo/z0evals/blob/main/studies/t3code-storage-write-amplification/data/live-window-estimate.json)).
 
+## re-run after 29806 {#after-29806}
+
+[29806](https://github.com/pingdotgg/t3code/pull/29806) merged on november 3, so we re-ran the a/b on top of it. it was a 2×2 of window off vs 25 ms, on the parent of its merge commit (`9def583f`, "pre") and on the merge commit itself (`550c5fa3`, "post"). the arms were interleaved inside each job: 4 jobs × 3 slots, so 12 slots and 24 tapped turns per arm, all on github-hosted `ubuntu-latest` runners (4 vcpu). the seed is synthetic and public, about 200 MiB and 58.7k events from a committed generator. each base's `t3 doctor --fix` ran on its own copy first. on post that pruned the seed to 993 events and 70.5 MiB; on pre it compacted it to 188 MiB.
+
+| per turn (p50) | pre | post |
+|---|---|---|
+| commits, off → 25 ms | 51.5 → 29.5 | 51.5 → 29.5 |
+| sqlite bytes, off → 25 ms | 6.39 → 4.16 MiB | 6.21 → 4.13 MiB |
+| event lag added by the window | +21 ms | +21 ms |
+
+- **the window's saving does not depend on pruning.** post's saving minus pre's is +0.14 MiB per turn [−0.81, +0.61], zero within noise.
+- **pruning lowers per-commit cost only a little.** with the window off it saves 3.3 KiB per commit [−8.5, −0.1], about 3%. its large effect is file size at rest, so the two changes stack.
+- absolute bytes differ from the a/b above because the seed differs; compare the deltas. turn wall, first live event, cpu, rss and reconnect bytes did not move beyond noise ([data](https://github.com/kvnloo/z0evals/blob/main/studies/t3code-storage-write-amplification/data/post-29806-ab.json), [run](https://github.com/kvnloo/t3code/actions/runs/41740171854)).
+
 ## the page size trade {#page-size}
 
 the same tap measured bigger pages. they pack the event rows better, but each commit then writes bigger frames:
@@ -174,7 +190,7 @@ we started from a different question: could the provider own the transcript, wit
 - **text is 3% of the file.** messages, reasoning and tool input total 18.6 MiB.
 - **tool output is 42.2 MiB (6.8% of the 619.1 MiB post-doctor file).** evicting it saves 37.9 MiB (6.1%), and no adapter can serve it back today. even full provider ownership (policy B) removes only a third. ids and metadata, indexes and page slack are 92% of what remains.
 - **superseded snapshot bodies were the biggest waste.** we built a fold for them (experiment 02, flag `T3CODE_EXPERIMENTAL_SNAPSHOT_FOLD`): −20.1% after `VACUUM`, 18/18 projection tables equal after rebuild. its review found one race (resume check vs replay read) that [pr 29806](https://github.com/pingdotgg/t3code/pull/29806) also handles. both fall back to a snapshot for a cursor in removed history. the designs differ: our fold kept a per-thread watermark, while 29806 uses one global pruning boundary, with retention exceptions such as each stream's newest event.
-- **29806 merged on november 3; 29811 was closed.** [29806](https://github.com/pingdotgg/t3code/pull/29806) prunes events the projections already cover, which covers most event-log bytes and is why we dropped the fold. [29811](https://github.com/pingdotgg/t3code/pull/29811) would have returned freed pages at startup for small databases; its author closed it because `t3 doctor` already converts databases to incremental auto-vacuum and the server then returns freed pages every minute. on this database the event log is 408 of 654.6 MiB including indexes. pruning may change the pages each commit touches, so the per-commit cost should be re-measured on a main that includes 29806.
+- **29806 merged on november 3; 29811 was closed.** [29806](https://github.com/pingdotgg/t3code/pull/29806) prunes events the projections already cover, which covers most event-log bytes and is why we dropped the fold. [29811](https://github.com/pingdotgg/t3code/pull/29811) would have returned freed pages at startup for small databases; its author closed it because `t3 doctor` already converts databases to incremental auto-vacuum and the server then returns freed pages every minute. on this database the event log is 408 of 654.6 MiB including indexes. [re-measured on top of it](#after-29806), pruning trims per-commit cost by about 3% and leaves the window's saving unchanged.
 
 the case for provider-owned history is freshness: turns run in another client would show up on the next open. it is not bytes.
 
@@ -183,7 +199,7 @@ the case for provider-owned history is freshness: turns run in another client wo
 - **one install, one user, linux, under memory pressure.** bytes and commit counts are deterministic. latency intervals are wide except event lag.
 - **simulated turns.** the a/b used `devReplay` turns, not live provider turns. the live number is a replay estimate, not a measured a/b.
 - **small n.** 16 tapped turns per arm for off, 25 ms and idx; the 150 ms arm is a 4-turn pilot. page size: 10 tapped turns per arm.
-- **different bases.** each experiment was cut from the upstream main of its day (listed in [sources](#sources)); none of these numbers describe a later main.
+- **different bases.** each experiment was cut from the upstream main of its day (listed in [sources](#sources)); none of these numbers describe a later main, except the [re-run after 29806](#after-29806), which uses a synthetic seed.
 - **only the sqlite share.** the tap counts the server's write syscalls, not device writes. issue 24003's macos data shows the per-commit cost explains only part of the disk writes there.
 - **the fold's in-pass latency was never measured.** host memory pressure stopped every bench server before the fold window; the only bound is the longest fold transaction, 49.8 ms.
 
@@ -201,6 +217,8 @@ fork branches on [kvnloo/t3code](https://github.com/kvnloo/t3code), each pinned 
 | 03b page-size writes | [`exp/poh/03b-page-writes` @ 3676fef0](https://github.com/kvnloo/t3code/tree/3676fef04b58844605728973ea8c92b6de1236d1) | `065a4335` |
 | 04 commit window (a/b code) | [`exp/poh/04-commit-batching` @ ea608f37](https://github.com/kvnloo/t3code/tree/ea608f3764b00090e12a10543d3739104a2e2623) | `5b9731ce` |
 | 04 live estimator | [`exp/poh/04-commit-batching` @ 45f2edca](https://github.com/kvnloo/t3code/tree/45f2edca913aaa03b68ff1c5c8c2a72c78d5ae45) | `5b9731ce` |
+| 04b re-run, post | [`exp/poh/04b-post29806` @ a6382bbe](https://github.com/kvnloo/t3code/tree/a6382bbe24) | `550c5fa3` |
+| 04b re-run, pre | [`exp/poh/04b-pre29806` @ b3c71850](https://github.com/kvnloo/t3code/tree/b3c71850fc) | `9def583f` |
 
 upstream: [discussion 29954](https://github.com/pingdotgg/t3code/discussions/29954) (our proposal), [issue 24003](https://github.com/pingdotgg/t3code/issues/24003) and [our comment there](https://github.com/pingdotgg/t3code/issues/24003#issuecomment-6596275747), [pr 24145](https://github.com/pingdotgg/t3code/pull/24145) (queued-snapshot batching, closed), [pr 29806](https://github.com/pingdotgg/t3code/pull/29806) and [pr 29811](https://github.com/pingdotgg/t3code/pull/29811) (pruning and page reclaim, open), [pr 23211](https://github.com/pingdotgg/t3code/pull/23211) (unused correlation index, merged), [discussion 6897](https://github.com/pingdotgg/t3code/discussions/6897) (retention and compaction, closed).
 
