@@ -67,6 +67,13 @@ z0intelligence decisions. Plan source: council round 1 (`council/`, 2026-11-03),
    **lexical+abstain 75.3%** (false-call 18.5%, near-miss 9.8%, missed-call 20.1%; threshold tuned on practice, 74.0%
    there). This is the bar: an edited FunctionGemma must beat 75.3% on dev, not only the unedited model. 3 dev /
    1 practice items carry no tools (trivial abstains; noted, kept).
+   2026-11-04 08:10 tick: Modal still stopped (0 apps). Spend-free route for the UNEDITED baseline: FunctionGemma 270M
+   fits CPU, the owner rule sends CPU work to the MBP via fleet-build, and BFCL is public. Added `WSP_DEVICE=cpu`
+   (fp32) to z0int `slm/gpu.py` and a local backend to `toolchoice_eval.py`. Tried `fleet-build --node mbp --class
+   test` at 6G/4 CPU and 3G/2 CPU: both exit 75 ("MBP queue is held; no worker has room"). Retry next tick with
+   `WSP_DEVICE=cpu WSP_TOOLCHOICE_DIR=<job dir> python toolchoice.py build && python toolchoice_eval.py tc-base-cpu`
+   (rebuilds the pinned items in the job; sha256 must equal 0670f476...). The editor session itself still needs Modal
+   (sandbox + GPU passes).
 0. [~] RUNNING (check first every tick): the blog's Exp-8 method on Qwen3.5-0.8B, thinking on, Modal sandbox + L4,
    10 forward passes per editor, run `20261104-exp8`, launched by `scripts/launch-exp8.sh` as user units
    `wsp-20261104-exp8-<editor>` (status: `systemctl --user is-active`, logs and state:
