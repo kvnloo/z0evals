@@ -1,0 +1,48 @@
+{
+ "data": "61fc0608cfd831fcfbbaa676ebdfef0ed963eeda",
+ "tuned_on": "practice",
+ "scored_on": "dev",
+ "abstain_threshold": 1.419,
+ "arms": {
+  "always_none": {
+   "n": 604,
+   "accuracy_pct": 45.7,
+   "abstain_acc_pct": 100.0,
+   "choose_acc_pct": 0.0,
+   "false_call_pct": 0.0,
+   "near_miss_pct": 0.0,
+   "missed_call_pct": 100.0
+  },
+  "lexical": {
+   "n": 604,
+   "accuracy_pct": 45.0,
+   "abstain_acc_pct": 1.1,
+   "choose_acc_pct": 82.0,
+   "false_call_pct": 98.9,
+   "near_miss_pct": 18.0,
+   "missed_call_pct": 0.0
+  },
+  "lexical+abstain": {
+   "n": 604,
+   "accuracy_pct": 75.3,
+   "abstain_acc_pct": 81.5,
+   "choose_acc_pct": 70.1,
+   "false_call_pct": 18.5,
+   "near_miss_pct": 9.8,
+   "missed_call_pct": 20.1
+  }
+ },
+ "practice_lexical+abstain": {
+  "n": 1213,
+  "accuracy_pct": 74.0,
+  "abstain_acc_pct": 77.6,
+  "choose_acc_pct": 70.7,
+  "false_call_pct": 22.4,
+  "near_miss_pct": 7.2,
+  "missed_call_pct": 22.1
+ },
+ "items_with_no_tools": {
+  "practice": 1,
+  "dev": 3
+ }
+}

@@ -61,6 +61,12 @@ z0intelligence decisions. Plan source: council round 1 (`council/`, 2026-11-03),
    still use evaluate.py. A session with no edits is refused, not scored as edited. Dry run of both paths ok; 9 tests
    pass. The FunctionGemma pipeline is complete; launch once Modal is approved:
    `WSP_TARGET=functiongemma-270m bash studies/tiny-slm-gym-v0/scripts/launch-exp8.sh <run> 10 astra`.
+   2026-11-04 06:05 tick: Modal still stopped (0 apps listed). Ran the no-model controls (z0int
+   `slm/toolchoice_controls.py`, tuned on practice, scored on dev 604, `data/toolchoice-controls-dev.json`):
+   always-none 45.7%; lexical (IDF word overlap, always calls) 45.0% (false-call 98.9%, near-miss 18.0%);
+   **lexical+abstain 75.3%** (false-call 18.5%, near-miss 9.8%, missed-call 20.1%; threshold tuned on practice, 74.0%
+   there). This is the bar: an edited FunctionGemma must beat 75.3% on dev, not only the unedited model. 3 dev /
+   1 practice items carry no tools (trivial abstains; noted, kept).
 0. [~] RUNNING (check first every tick): the blog's Exp-8 method on Qwen3.5-0.8B, thinking on, Modal sandbox + L4,
    10 forward passes per editor, run `20261104-exp8`, launched by `scripts/launch-exp8.sh` as user units
    `wsp-20261104-exp8-<editor>` (status: `systemctl --user is-active`, logs and state:
