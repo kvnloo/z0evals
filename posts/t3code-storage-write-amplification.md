@@ -1,6 +1,6 @@
 ---
-title: "a 25 ms commit window for t3 code: 43% fewer sqlite commits per turn"
-subtitle: "t3 code commits once per streamed event. grouping plain provider updates for up to 25 ms cut commits per simulated turn by 43%, and a replay of 2 hours of live traffic estimates 41% fewer."
+title: "a 25 ms commit window for t3 code: 22% fewer sqlite commits on real agent turns"
+subtitle: "t3 code commits once per streamed event. grouping plain provider updates for up to 25 ms cut commits per stored event by 22% on 156 real codex turns, with no measurable lag cost. simulated turns overstate the saving at 43%."
 study: t3code-storage-write-amplification
 status: draft
 author: "zer0 research"
@@ -18,10 +18,12 @@ toc:
     label: one commit per event
   - id: change
     label: the change
+  - id: real-turns
+    label: measured on real turns
   - id: group-commit
-    label: a/b on simulated turns
+    label: simulated turns (upper bound)
   - id: live
-    label: live-traffic estimate
+    label: "replay estimate (proxy)"
   - id: after-29806
     label: re-run after 29806
   - id: page-size
@@ -35,10 +37,10 @@ toc:
 ---
 
 <div class="stat-strip" markdown="0">
-<div class="stat"><span>commits per turn</span><b>−43%</b><small>51.5 → 29.5, simulated a/b</small></div>
-<div class="stat"><span>sqlite bytes per turn</span><b>−21%</b><small>7.79 → 6.17 MiB</small></div>
-<div class="stat"><span>live traffic, estimated</span><b>−41%</b><small>commits, replay of 9,292 real events</small></div>
-<div class="stat"><span>event lag p50</span><b>+15.5 ms</b><small>[−14, +20], within noise</small></div>
+<div class="stat"><span>commits per event</span><b>−22%</b><small>0.704 → 0.547, real codex turns</small></div>
+<div class="stat"><span>sqlite bytes per event</span><b>−12%</b><small>115 → 101 KiB, 4 threads at once</small></div>
+<div class="stat"><span>event lag p50</span><b>+15 ms</b><small>[−20, +41], within noise</small></div>
+<div class="stat"><span>after pr 29806</span><b>unchanged</b><small>same saving with pruning on main</small></div>
 </div>
 
 <div class="callout" markdown="1">
@@ -59,7 +61,7 @@ numbers from busy installs are the most useful thing to post there.
 - **the problem:** the t3 code server commits to sqlite once per streamed event, and each commit rewrites about 29 pages. it is tracked upstream in [issue 24003](https://github.com/pingdotgg/t3code/issues/24003). [pr 24145](https://github.com/pingdotgg/t3code/pull/24145) batched queued snapshots and was closed under the one-problem rule; its reviewer, @simasrazinskas, found live events rarely queue up and suggested grouping commits across threads instead.
 - **what we built:** that suggestion, with a time window as the trigger. plain `node`, `message`, `turn-item` and `plan` updates wait up to 25 ms, then commit together. any other write commits the queue first, so order is unchanged.
 - **what it costs:** a hard crash can lose up to one window of events that no client had seen yet. in a 4-turn pilot, a 150 ms window saved no more and added 150 ms of lag, so the window has to stay short.
-- **how sure we are:** bytes and commit counts are deterministic. latency intervals are wide except event lag. the a/b used simulated turns; the live number is a replay estimate, not an a/b.
+- **how sure we are:** measured on 156 real codex turns (6,674 stored events) at 30 turns per arm one thread at a time and 24 per arm four threads at once. commit counts are tight; byte savings are clear only with four threads; lag changes are within noise. claude code turns are still to run (its weekly limit was spent), so this is one provider for now. the simulated a/b and the replay estimate below are kept as upper bounds and are no longer the headline.
 
 ## one commit per event {#problem}
 
@@ -91,7 +93,30 @@ the failure modes are the part we asked upstream about:
 - **hard crash:** up to one window of events that were never published is lost.
 - **batch write fails** (disk full, or a lock timeout that outlasts 2 retries): the error is logged, the window's events are dropped, and that thread's next deferred write fails with the cause. without the flag, the single write fails at its call site.
 
-## a/b on simulated turns {#group-commit}
+## measured on real turns {#real-turns}
+
+real codex agent turns (codex-cli 0.162.1, gpt-5.6-luna, low effort) ran through t3 code's real codex adapter on a main that includes [29806](https://github.com/pingdotgg/t3code/pull/29806). the server was a fresh bench home on the public synthetic seed after `t3 doctor --fix` (993 events, 70.8 MiB). each turn did real work in a fresh scratch repo: read files, run a command, edit a file, explain, and one long answer with no tools. the same prompts ran in the same order in both arms, alternating off and 25 ms (abba). the turns ran 136 commands and made 37 edits, and none were excluded.
+
+two shapes: one thread at a time (s1), and four threads started together (s4), like subagent fan-out. per-event numbers are the fair comparison because real turns vary in length.
+
+| codex, p50 | off | 25 ms | change [95% ci] |
+|---|---|---|---|
+| s1 commits per event (30 turns per arm) | 0.704 | 0.547 | −0.156 [−0.18, −0.11], −22% |
+| s1 commits per turn | 29 | 22 | −7 [−11, −3] |
+| s1 sqlite KiB per event | 111 | 94.5 | −16.9 [−30.6, +15.7] |
+| s1 event lag p50 | 60.5 ms | 75.5 ms | +15 [−20, +41] |
+| s4 commits per event (24 turns per arm) | 0.703 | 0.542 | −0.16 [−0.19, −0.14], −23% |
+| s4 sqlite KiB per event | 115 | 101 | −13.4 [−18.4, −7.7], −12% |
+| s4 sqlite MiB per turn | 4.65 | 4.19 | −0.46 [−1.1, −0.09], −10% |
+
+- **the saving is real but about half the simulated one.** codex events mostly arrive more than 25 ms apart, so fewer of them share a window than in `devReplay` turns.
+- **four threads at once did not add coalescing for codex.** commits per event with the window on are the same in s4 (0.542) as in s1 (0.547).
+- **no measurable cost.** event lag, first event, first assistant text, frame gap, turn wall, cpu and rss all moved by less than their noise. real provider jitter is larger than 25 ms.
+- **an unexplained burst.** the second four-thread batch in each server boot wrote about 200 extra commits that stored no event, in 11 of 12 runs, in both arms. the s4 rows above use first batches; the second batches are in the [data](https://github.com/kvnloo/z0evals/blob/main/studies/t3code-storage-write-amplification/data/real-turns-codex-s4-position.txt). it does not favour either arm.
+
+[data](https://github.com/kvnloo/z0evals/blob/main/studies/t3code-storage-write-amplification/data/real-turns-codex-ab.json), [harness](https://github.com/kvnloo/t3code/tree/exp/poh/04c-real-turns).
+
+## simulated turns (upper bound) {#group-commit}
 
 four arms. pilot slots 1–3 ran all four (a b c d / d c b a) at `fc7cfbeb`; slots 4–8 ran off, 25 ms and idx (a b c / c b a) at `be02c345`; the diff between the two touches only the pooling script, so the slots pool. each slot is one boot with 2 tapped turns.
 
@@ -130,13 +155,13 @@ four arms. pilot slots 1–3 ran all four (a b c d / d c b a) at `fc7cfbeb`; slo
 
 how we read it:
 
-- **25 ms cuts commits by 43%, wal frames by 24% and sqlite bytes by 21%.** reconnect replay wire bytes do not change.
+- **on simulated turns, 25 ms cuts commits by 43%, wal frames by 24% and sqlite bytes by 21%.** reconnect replay wire bytes do not change.
 - **event lag p50 is the only latency metric with a tight interval.** its median rises from 17 to 32.5 ms; the shift is +15.5 ms [−14, +20], below the 25 ms window that bounds the added wait by design. the other latency intervals (first live event, first assistant delta, turn wall, event lag p95) are wide. they rule out large regressions, not small ones.
 - **the window merges ws frames.** each turn sends 3 fewer, and the frame gap grows by 27.5 ms. assistant text keeps the same cadence.
 - **150 ms saves no more and adds 150 ms of event lag** in the 4-turn pilot, so the window has to stay short. it also shows the latency metrics catch a real delay.
 - **the index trim had no measurable per-turn effect** at 16 turns. upstream has since merged one part of it, the correlation-index removal ([pr 23211](https://github.com/pingdotgg/t3code/pull/23211)); the a/b's seeds predate that.
 
-## live-traffic estimate {#live}
+## replay estimate (proxy) {#live}
 
 the simulated turns are one agent on one thread. to see what the rule does on real traffic, the [estimator](https://github.com/kvnloo/t3code/blob/45f2edca913aaa03b68ff1c5c8c2a72c78d5ae45/bench/poh/commit_window_estimate.py) replays `orchestration_events` in sequence order, read-only, using the ingestion timestamps (`occurred_at`). it counts commits under the same window rule. the baseline is one commit per event.
 
@@ -197,7 +222,8 @@ the case for provider-owned history is freshness: turns run in another client wo
 ## what this does not show {#limits}
 
 - **one install, one user, linux, under memory pressure.** bytes and commit counts are deterministic. latency intervals are wide except event lag.
-- **simulated turns.** the a/b used `devReplay` turns, not live provider turns. the live number is a replay estimate, not a measured a/b.
+- **one real provider so far.** the real-turn a/b covers codex only; claude code was rate-limited and hermes acp failed on its configured model. the `devReplay` a/b and the replay estimate are proxies and overstate the saving (43% and 41% vs 22% measured).
+- **an unexplained commit burst** on the second four-thread batch per server boot, in both arms; not yet traced.
 - **small n.** 16 tapped turns per arm for off, 25 ms and idx; the 150 ms arm is a 4-turn pilot. page size: 10 tapped turns per arm.
 - **different bases.** each experiment was cut from the upstream main of its day (listed in [sources](#sources)); none of these numbers describe a later main, except the [re-run after 29806](#after-29806), which uses a synthetic seed.
 - **only the sqlite share.** the tap counts the server's write syscalls, not device writes. issue 24003's macos data shows the per-commit cost explains only part of the disk writes there.
@@ -219,6 +245,7 @@ fork branches on [kvnloo/t3code](https://github.com/kvnloo/t3code), each pinned 
 | 04 live estimator | [`exp/poh/04-commit-batching` @ 45f2edca](https://github.com/kvnloo/t3code/tree/45f2edca913aaa03b68ff1c5c8c2a72c78d5ae45) | `5b9731ce` |
 | 04b re-run, post | [`exp/poh/04b-post29806` @ a6382bbe](https://github.com/kvnloo/t3code/tree/a6382bbe24) | `550c5fa3` |
 | 04b re-run, pre | [`exp/poh/04b-pre29806` @ b3c71850](https://github.com/kvnloo/t3code/tree/b3c71850fc) | `9def583f` |
+| 04c real codex turns | [`exp/poh/04c-real-turns` @ 4d373646](https://github.com/kvnloo/t3code/tree/4d3736468e) (arms ran at b3a89e7a) | `550c5fa3` |
 
 upstream: [discussion 29954](https://github.com/pingdotgg/t3code/discussions/29954) (our proposal), [issue 24003](https://github.com/pingdotgg/t3code/issues/24003) and [our comment there](https://github.com/pingdotgg/t3code/issues/24003#issuecomment-6596275747), [pr 24145](https://github.com/pingdotgg/t3code/pull/24145) (queued-snapshot batching, closed), [pr 29806](https://github.com/pingdotgg/t3code/pull/29806) and [pr 29811](https://github.com/pingdotgg/t3code/pull/29811) (pruning and page reclaim, open), [pr 23211](https://github.com/pingdotgg/t3code/pull/23211) (unused correlation index, merged), [discussion 6897](https://github.com/pingdotgg/t3code/discussions/6897) (retention and compaction, closed).
 
