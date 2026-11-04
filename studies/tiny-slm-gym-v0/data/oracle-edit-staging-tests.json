@@ -1,0 +1,13 @@
+{
+  "n": 5,
+  "passed": 5,
+  "checks": {
+    "snapshot_matches": true,
+    "root_owned": true,
+    "dir_read_only": true,
+    "file_read_only": true,
+    "editor_identity_write_denied": true
+  },
+  "ci": null,
+  "scope": "synthetic immutable staging, not inference or model improvement"
+}

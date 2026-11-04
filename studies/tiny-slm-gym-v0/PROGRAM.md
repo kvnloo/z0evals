@@ -49,6 +49,12 @@ z0intelligence decisions. Plan source: council round 1 (`council/`, 2026-11-03),
 - Executed on Oracle: `sudo -n systemd-run --quiet --wait --pipe --collect -p MemoryMax=1G -p TasksMax=32 -p RuntimeMaxSec=60 /home/ubuntu/wsp/.venv/bin/python /home/ubuntu/wsp/test_validate_oracle_edits.py`. rc=0, 12/12 deterministic synthetic checks passed (CI not applicable). Artifact: `data/oracle-edit-validator-tests.json`. No model weights edited; no quality claim. Groot MemAvailable was 10,986,640 kB; no groot heavy job launched and no resource skips.
 - Next: wire validated immutable edit staging and practice-only inference RPC into the session transport, test a real paired practice generation, then preflight the editor. No Kevin action required for this free-worker path; Modal remains approval-gated.
 
+### 2026-11-04 15:07 CST tick — trusted edit snapshots exercised
+- Checked previous jobs first: Oracle baseline score exists, no active session/eval/probe or Oracle wsp unit; old groot exp8u-opus remains failed. No duplicate launch, sealed access, private transfer or paid call.
+- Added `scripts/stage_oracle_edits.py`: root-owned staging, directory-FD/no-follow bounded copying, validation of the copied bytes, source-mutation detection, read-only publication. Source writes after publication cannot change the snapshot. Caller must ensure all editor processes have exited before staging; this is not a general hostile-root security boundary or aggregate sandbox disk quota.
+- Ran `sudo -n systemd-run --quiet --wait --pipe --collect -p MemoryMax=1G -p TasksMax=32 -p RuntimeMaxSec=60 /home/ubuntu/wsp/.venv/bin/python /home/ubuntu/wsp/test_stage_oracle_edits.py` on Oracle. rc=0, 5/5 synthetic checks: snapshot unchanged after source mutation, root ownership, directory/file read-only, uid 65534 write denied. Artifact: `data/oracle-edit-staging-tests.json`. Deterministic checks, CI not applicable. No groot heavy work or resource skips; no model-quality claim.
+- Next: connect trusted snapshots to practice-only inference RPC and run real paired practice generation, then integrate/preflight the editor. No Kevin action needed on Oracle; Modal spending stays separately gated.
+
 00. [ ] RETARGET (owner, 2026-11-04 00:35: "apply the blog to our workflows, not a perfect reconstruction"). Apply the
    blog's weight editing to a tiny model that is ALREADY a z0 decision model and has a measured, named failure:
    FunctionGemma-270M on the slm-router bounded-choice set (51/84, picked the dangerous near-miss; Hammer3B 75/84) or
