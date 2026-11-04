@@ -20,6 +20,14 @@ z0intelligence decisions. Plan source: council round 1 (`council/`, 2026-11-03),
    (the blog's editor; check quota with a one-word preflight), Opus/Fable after the Claude reset. Practice = train split
    of that task only; judge on its sealed split vs the unedited model AND the cheap controls (recency/rules, logit bias,
    LoRA-4). Build on the z0int SLM harness (new target + task loader), Modal sandbox/GPU. This outranks items 3-6.
+   2026-11-04 01:05 tick: Astra preflight OK (`codex exec -m gpt-6-astra` -> "ok", 8,951 tokens). Data inventory: the
+   bounded-choice corpus (`evolution-lab/corpus/phase2/p1b-20260921T1430Z`, 420 episodes) is only **28 distinct states**
+   x 5 arms x 3 reps (FunctionGemma 84 trials = 28 x 3): too few for a practice/sealed split an editor cannot memorize.
+   Decision: practice + dev on a PUBLIC proxy of FunctionGemma's named failures (calling a tool when none fits /
+   picking a destructive near-miss): BFCL relevance + irrelevance + robustness sets (public, so Modal is fine); the 28
+   z0 states stay a sealed transfer check run once by tiny-evaluator. Target: `unsloth/functiongemma-270m-it` (ungated
+   mirror of google/functiongemma-270m-it). Next: pin a BFCL dataset revision, write the task loader + grader in the
+   z0int SLM harness (new target entry), measure the unedited baseline on Modal, then launch Astra (10 passes).
 0. [~] RUNNING (check first every tick): the blog's Exp-8 method on Qwen3.5-0.8B, thinking on, Modal sandbox + L4,
    10 forward passes per editor, run `20261104-exp8`, launched by `scripts/launch-exp8.sh` as user units
    `wsp-20261104-exp8-<editor>` (status: `systemctl --user is-active`, logs and state:
