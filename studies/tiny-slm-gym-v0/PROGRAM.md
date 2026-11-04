@@ -55,6 +55,12 @@ z0intelligence decisions. Plan source: council round 1 (`council/`, 2026-11-03),
    items, written into the practice dir that the Modal sandbox image mounts). Stub-GPU test: paired "both" pass ok; 9
    tests pass. Remaining: matrix.py still runs the math evaluator after a session; for this target call
    `toolchoice_eval.py <run> --edit-dir <session>/edited` instead. Then launch Astra once Modal is approved.
+   2026-11-04 05:05 tick: Modal still stopped. Done: `matrix.py` now evaluates `task: toolchoice` targets with
+   `toolchoice_eval.py` (dev split; unedited once, then each editor whose /work/edited has tensors; outputs inside the
+   session work dir because Modal syncs edits per session; summary `<run>/toolchoice-dev-<editor>.json`); math targets
+   still use evaluate.py. A session with no edits is refused, not scored as edited. Dry run of both paths ok; 9 tests
+   pass. The FunctionGemma pipeline is complete; launch once Modal is approved:
+   `WSP_TARGET=functiongemma-270m bash studies/tiny-slm-gym-v0/scripts/launch-exp8.sh <run> 10 astra`.
 0. [~] RUNNING (check first every tick): the blog's Exp-8 method on Qwen3.5-0.8B, thinking on, Modal sandbox + L4,
    10 forward passes per editor, run `20261104-exp8`, launched by `scripts/launch-exp8.sh` as user units
    `wsp-20261104-exp8-<editor>` (status: `systemctl --user is-active`, logs and state:
