@@ -1,0 +1,62 @@
+{
+  "scope": "trusted one-entry edit, paired practice generation transport smoke only",
+  "n_per_arm": 2,
+  "max_tokens": 16,
+  "arms": {
+    "unedited": {
+      "meta": {
+        "generations": 2,
+        "wall_s": 5.7,
+        "checkpoint": "/opt/wsp-isolation/model-79eaaa84125b897f5a0ad6638362b864fec813ad",
+        "engine": "hf"
+      },
+      "n": 2,
+      "tokens": 32,
+      "cut": 2,
+      "generation_sha256": "82ab868d7121ac7bedab88a6f707c40d17486a72e4bb71d17f5ffb8d4c82de22"
+    },
+    "staged_edit": {
+      "meta": {
+        "generations": 2,
+        "wall_s": 5.6,
+        "checkpoint": "/home/ubuntu/z0/state/weight-space/slm/ckpt/functiongemma-270m/b98e931aeedb4ba7",
+        "engine": "hf"
+      },
+      "n": 2,
+      "tokens": 32,
+      "cut": 2,
+      "generation_sha256": "82ab868d7121ac7bedab88a6f707c40d17486a72e4bb71d17f5ffb8d4c82de22"
+    }
+  },
+  "staging": {
+    "snapshot": "/opt/wsp-isolation/trusted-snapshots/snapshot-lse4ll64",
+    "manifest": {
+      "accepted": [
+        {
+          "tensor": "model.layers.0.mlp.down_proj.weight",
+          "shape": [
+            640,
+            2048
+          ],
+          "dtype": "float32",
+          "bytes": 5243008,
+          "sha256": "142e631c8a4638c5b6506a8a03deee5ee3c8e4630281519a8b88e687c16ed150"
+        }
+      ],
+      "total_bytes": 5243008,
+      "note": "Copy validated files into a controller-owned immutable staging directory before inference; this manifest alone does not prevent later mutation. Scientific edit-scope audit is separate."
+    },
+    "authority": "artifact validation only, not scientific edit approval"
+  },
+  "unknown_id_rejected": true,
+  "split": "practice",
+  "ci": null,
+  "ci_reason": "deterministic engineering smoke, not accuracy estimate",
+  "wall_s": 19.6,
+  "limitations": [
+    "truncated generations not quality scores",
+    "no AI editor run",
+    "not session RPC integrated",
+    "editor must be stopped before staging"
+  ]
+}
