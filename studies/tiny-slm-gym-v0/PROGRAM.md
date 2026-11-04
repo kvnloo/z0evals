@@ -13,10 +13,18 @@ z0intelligence decisions. Plan source: council round 1 (`council/`, 2026-11-03),
 - Every result: command, artifact path, n, CI. Failures and nulls are logged, not dropped.
 
 ## Queue (do the first undone item; mark done here with date + artifact)
-1. [ ] Loop C export: next_action rows with decision-time-only features, session/lineage grouping, time split with a
-   purge gap, gym/council sessions excluded; sealed test hash in `data/splits.json`; data stays under ~/.z0int.
-2. [ ] Controls on the export: majority (expect ~0.319), recency/last-family, bigram, ridge (~0.412), MB (~0.397):
-   top-1, top-3, Brier, k for 98% coverage. Write `data/controls.json` (counts and rates only).
+1. [x] 2026-11-04 Loop C export (`scripts/nextaction.py split`, `data/splits.json`). Source: the frozen
+   `next_action.jsonl` (76,970 rows, 1,276 sessions, 2026-07-12..09-16, so no gym/council sessions). Split: 70/10/20 of
+   sessions by start time, 6 h purge before each boundary (167 sessions dropped): train 757 sessions / 64,695 rows, dev
+   97 / 6,249, sealed test 255 / 4,186 (chmod 600 under ~/.z0int/state/tiny-gym/nextaction/sealed). Same OS user, so
+   the seal is convention + hash, not OS-enforced.
+   Finding: a few automated sessions dominate rows (train's largest session = 20% of rows; one dev session, a DELEGATE
+   loop, = 73% of dev rows). Primary metric is now **session-macro** (each session weighted once).
+2. [~] Controls. Parity (`data/controls-parity.json`, original row 80/20): majority 0.3186 and ridge 0.4122 reproduced
+   exactly; **recency (same family as last step) 0.7404**, bigram 0.405. Dev, session-macro (`data/controls-dev.json`,
+   49 scoring sessions): recency top-1 0.698 (top-2 covers 98%), ridge 0.639, bigram 0.636, majority 0.599.
+   Remaining: MB arm (needs `Z0INT_MB_PROVIDER`), per-session bootstrap CIs on the macro metric, and the one-time
+   sealed-test pass by tiny-evaluator. Also queue: a fresh export from state.db (data ends 2026-09-16).
 3. [ ] Displacement audit: 200 sampled decisions; offline count of tool-schema tokens removable by top-k narrowing.
 4. [ ] Loop B: frozen-trunk heads, both ends in parallel order: SmolLM2-135M and Qwen3-0.6B, then Gemma-270M and
    Qwen3.5-0.8B. Logistic head on pooled states; risk/coverage, calibration, warm p50 latency (kill > ~70 ms).

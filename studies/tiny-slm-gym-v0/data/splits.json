@@ -1,0 +1,62 @@
+{
+ "source": "/home/kvn/.z0int/episodes/next_action.jsonl",
+ "source_sha256": "c18a2e780ba0f4ba60df6fa97f4f6ee42721082455c96e29dab0d975d7bb2252",
+ "source_rows": 76970,
+ "source_sessions": 1276,
+ "fractions": [
+  0.7,
+  0.1,
+  0.2
+ ],
+ "purge_hours": 6.0,
+ "boundaries_utc": [
+  "2026-08-15T11:54:56.788215+00:00",
+  "2026-08-16T07:00:20.867362+00:00"
+ ],
+ "purged_sessions": 167,
+ "purged_rows": 1840,
+ "splits": {
+  "train": {
+   "rows": 64695,
+   "sessions": 757,
+   "families": {
+    "READ_SEARCH": 22708,
+    "DELEGATE": 1189,
+    "EXECUTE": 28257,
+    "EDIT": 6098,
+    "WEB": 5835,
+    "VERIFY": 322,
+    "ABSTAIN": 286
+   },
+   "sha256": "4cd050551eac37b99a6553e0f8d047a0b32058854a75abf43673af9c9f6d8eb5"
+  },
+  "dev": {
+   "rows": 6249,
+   "sessions": 97,
+   "families": {
+    "READ_SEARCH": 980,
+    "EXECUTE": 977,
+    "EDIT": 107,
+    "WEB": 35,
+    "ABSTAIN": 29,
+    "DELEGATE": 4121
+   },
+   "sha256": "c8159d2582037550353bed159017a74614d1aa7b46999ee05007e2dd60431b0f"
+  },
+  "test": {
+   "rows": 4186,
+   "sessions": 255,
+   "families": {
+    "EXECUTE": 1764,
+    "READ_SEARCH": 1064,
+    "DELEGATE": 1163,
+    "ABSTAIN": 189,
+    "EDIT": 1,
+    "WEB": 4,
+    "RESPOND": 1
+   },
+   "sha256": "92fca29d143728173a54b27cf7245974606ebea3762e1a928c29f8f68418d7e6"
+  }
+ },
+ "sealed_reader": "tiny-evaluator only (convention + hash; same OS user, so not OS-enforced)"
+}
