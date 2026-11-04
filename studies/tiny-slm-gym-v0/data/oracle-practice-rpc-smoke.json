@@ -1,0 +1,17 @@
+{
+  "request": {
+    "ids": [
+      "BFCL_v3_irrelevance:irrelevance_6"
+    ],
+    "max_tokens": 8,
+    "arm": "staged_edit"
+  },
+  "meta": {
+    "generations": 1,
+    "wall_s": 1.2,
+    "checkpoint": "/home/ubuntu/wsp/rpc-1705/controller-state/ckpt/functiongemma-270m/b98e931aeedb4ba7",
+    "engine": "hf"
+  },
+  "validated_tensors": 1,
+  "scope": "practice RPC engineering check, not quality evaluation"
+}
