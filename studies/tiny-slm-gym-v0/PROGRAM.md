@@ -13,6 +13,13 @@ z0intelligence decisions. Plan source: council round 1 (`council/`, 2026-11-03),
 - Every result: command, artifact path, n, CI. Failures and nulls are logged, not dropped.
 
 ## Queue (do the first undone item; mark done here with date + artifact)
+00. [ ] RETARGET (owner, 2026-11-04 00:35: "apply the blog to our workflows, not a perfect reconstruction"). Apply the
+   blog's weight editing to a tiny model that is ALREADY a z0 decision model and has a measured, named failure:
+   FunctionGemma-270M on the slm-router bounded-choice set (51/84, picked the dangerous near-miss; Hammer3B 75/84) or
+   on z0 route/delegate call formation (factory-intelligence-v0: returns `[]` / invented tools). Editor: Astra via codex
+   (the blog's editor; check quota with a one-word preflight), Opus/Fable after the Claude reset. Practice = train split
+   of that task only; judge on its sealed split vs the unedited model AND the cheap controls (recency/rules, logit bias,
+   LoRA-4). Build on the z0int SLM harness (new target + task loader), Modal sandbox/GPU. This outranks items 3-6.
 0. [~] RUNNING (check first every tick): the blog's Exp-8 method on Qwen3.5-0.8B, thinking on, Modal sandbox + L4,
    10 forward passes per editor, run `20261104-exp8`, launched by `scripts/launch-exp8.sh` as user units
    `wsp-20261104-exp8-<editor>` (status: `systemctl --user is-active`, logs and state:
