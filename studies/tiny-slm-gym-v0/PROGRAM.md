@@ -47,6 +47,14 @@ z0intelligence decisions. Plan source: council round 1 (`council/`, 2026-11-03),
    numbers are random-chance, discarded); 9 tests pass. Once Modal is approved:
    `WSP_BACKEND=modal WSP_MODAL_GPU=L4 bws-env-exec --scope hermes -- .venv-wsp/bin/python benchmarks/weight_space/slm/toolchoice_eval.py tc-base-<date>`.
    Still to do before an editor run: a session task-adapter so session.py practice passes use toolchoice items.
+   2026-11-04 04:05 tick: Modal still stopped (no new deploy since 01:19). Built the session adapter (z0int
+   `slm/session.py`): targets with `task: toolchoice` get a tool-choice editor prompt (same sandbox, budget and
+   rules; failures named; held-out grading described; no z0 data or scores in the prompt), generation passes accept
+   practice ids only (dev/sealed ids refused as unknown), rows graded by `toolchoice.predicted`, results add
+   false_call/near_miss/missed_call. Practice file for the sandbox: `/practice/toolchoice_practice.jsonl` (1,213 public
+   items, written into the practice dir that the Modal sandbox image mounts). Stub-GPU test: paired "both" pass ok; 9
+   tests pass. Remaining: matrix.py still runs the math evaluator after a session; for this target call
+   `toolchoice_eval.py <run> --edit-dir <session>/edited` instead. Then launch Astra once Modal is approved.
 0. [~] RUNNING (check first every tick): the blog's Exp-8 method on Qwen3.5-0.8B, thinking on, Modal sandbox + L4,
    10 forward passes per editor, run `20261104-exp8`, launched by `scripts/launch-exp8.sh` as user units
    `wsp-20261104-exp8-<editor>` (status: `systemctl --user is-active`, logs and state:
