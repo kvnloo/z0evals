@@ -45,6 +45,12 @@ artifacts:
     kind: fixture
   - path: receipt.schema.json
     kind: fixture
+  - path: fleet-mbp-thermal.case.json
+    kind: fixture
+  - path: fleet-mbp-thermal.protocol.md
+    kind: other
+  - path: fleet-mbp-thermal.receipts.json
+    kind: receipt
 
 limitations:
   - Harness runs are not frozen yet; these are starting revisions.
