@@ -1,0 +1,5 @@
+{
+  "model": "anthropic/claude-opus-5-5",
+  "ready": false,
+  "reason": "missing executable: claude"
+}

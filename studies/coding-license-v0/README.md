@@ -31,13 +31,13 @@ Run from the repository root. Use a new output directory for each run. Existing 
 
 ```sh
 fleet-build --node mbp --local-data --wait 1800 --mem 1G --cpus 1 --timeout 600 --src-include studies/harness-speed-v1 --src-include studies/coding-license-v0 -- python3 -m unittest discover -s studies/coding-license-v0 -p 'test_*.py' -v
-fleet-build --node mbp --local-data --wait 1800 --mem 1G --cpus 1 --timeout 14400 --src-include studies/harness-speed-v1 --src-include studies/coding-license-v0 --fetch studies/coding-license-v0/data/run-001 -- python3 studies/coding-license-v0/run.py --out studies/coding-license-v0/data/run-001
+fleet-build --node mbp --local-data --wait 1800 --mem 1G --cpus 1 --timeout 86400 --src-include studies/harness-speed-v1 --src-include studies/coding-license-v0 --fetch studies/coding-license-v0/data/run-001 -- python3 studies/coding-license-v0/run.py --out studies/coding-license-v0/data/run-001
 ```
 
 Exit 0 means all listed models passed all tiers. Exit 1 means at least one model failed or is blocked.
 Configuration or provenance errors exit nonzero without issuing a license.
 `matrix.md`, `matrix.json`, `rows.jsonl`, `run.json`, and each model's `route.json` form the result bundle.
-An interrupted run writes a partial matrix. It cannot pass a tier with missing rows.
+A Python exception writes a partial matrix. Abrupt termination may leave only rows. Missing rows cannot grant a tier.
 Controls in `test_run.py` require all 14 originals to fail and all 14 references to pass.
 They are fixture checks, never model measurements. Test tampering, duplicate rows, timeouts, and blocked-route reporting have separate checks.
 

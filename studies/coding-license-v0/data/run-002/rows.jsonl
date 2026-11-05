@@ -1,0 +1,182 @@
+{"model": "opencode/beam-free", "task": "t01-paginate", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/beam-free", "task": "t02-slugify", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/beam-free", "task": "t03-csvsum", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/beam-free", "task": "t04-cliflag", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/beam-free", "task": "t05-lru", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/beam-free", "task": "t06-duration", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/beam-free", "task": "t07-rename", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/beam-free", "task": "t08-merge", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/beam-free", "task": "h05-calc", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/beam-free", "task": "h06-wordstats", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/beam-free", "task": "h01-reserve", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/beam-free", "task": "h02-config", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/beam-free", "task": "h03-bus", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/beam-free", "task": "h04-money", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/big-pickle", "task": "t01-paginate", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "anonymous model inventory unavailable or model absent"}
+{"model": "opencode/big-pickle", "task": "t02-slugify", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "anonymous model inventory unavailable or model absent"}
+{"model": "opencode/big-pickle", "task": "t03-csvsum", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "anonymous model inventory unavailable or model absent"}
+{"model": "opencode/big-pickle", "task": "t04-cliflag", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "anonymous model inventory unavailable or model absent"}
+{"model": "opencode/big-pickle", "task": "t05-lru", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "anonymous model inventory unavailable or model absent"}
+{"model": "opencode/big-pickle", "task": "t06-duration", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "anonymous model inventory unavailable or model absent"}
+{"model": "opencode/big-pickle", "task": "t07-rename", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "anonymous model inventory unavailable or model absent"}
+{"model": "opencode/big-pickle", "task": "t08-merge", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "anonymous model inventory unavailable or model absent"}
+{"model": "opencode/big-pickle", "task": "h05-calc", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "anonymous model inventory unavailable or model absent"}
+{"model": "opencode/big-pickle", "task": "h06-wordstats", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "anonymous model inventory unavailable or model absent"}
+{"model": "opencode/big-pickle", "task": "h01-reserve", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "anonymous model inventory unavailable or model absent"}
+{"model": "opencode/big-pickle", "task": "h02-config", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "anonymous model inventory unavailable or model absent"}
+{"model": "opencode/big-pickle", "task": "h03-bus", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "anonymous model inventory unavailable or model absent"}
+{"model": "opencode/big-pickle", "task": "h04-money", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "anonymous model inventory unavailable or model absent"}
+{"model": "opencode/crouton-alpha-free", "task": "t01-paginate", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/crouton-alpha-free", "task": "t02-slugify", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/crouton-alpha-free", "task": "t03-csvsum", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/crouton-alpha-free", "task": "t04-cliflag", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/crouton-alpha-free", "task": "t05-lru", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/crouton-alpha-free", "task": "t06-duration", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/crouton-alpha-free", "task": "t07-rename", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/crouton-alpha-free", "task": "t08-merge", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/crouton-alpha-free", "task": "h05-calc", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/crouton-alpha-free", "task": "h06-wordstats", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/crouton-alpha-free", "task": "h01-reserve", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/crouton-alpha-free", "task": "h02-config", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/crouton-alpha-free", "task": "h03-bus", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/crouton-alpha-free", "task": "h04-money", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/deepseek-v4.1-flash-free", "task": "t01-paginate", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/deepseek-v4.1-flash-free", "task": "t02-slugify", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/deepseek-v4.1-flash-free", "task": "t03-csvsum", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/deepseek-v4.1-flash-free", "task": "t04-cliflag", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/deepseek-v4.1-flash-free", "task": "t05-lru", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/deepseek-v4.1-flash-free", "task": "t06-duration", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/deepseek-v4.1-flash-free", "task": "t07-rename", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/deepseek-v4.1-flash-free", "task": "t08-merge", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/deepseek-v4.1-flash-free", "task": "h05-calc", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/deepseek-v4.1-flash-free", "task": "h06-wordstats", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/deepseek-v4.1-flash-free", "task": "h01-reserve", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/deepseek-v4.1-flash-free", "task": "h02-config", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/deepseek-v4.1-flash-free", "task": "h03-bus", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/deepseek-v4.1-flash-free", "task": "h04-money", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/flint-40b-free", "task": "t01-paginate", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/flint-40b-free", "task": "t02-slugify", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/flint-40b-free", "task": "t03-csvsum", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/flint-40b-free", "task": "t04-cliflag", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/flint-40b-free", "task": "t05-lru", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/flint-40b-free", "task": "t06-duration", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/flint-40b-free", "task": "t07-rename", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/flint-40b-free", "task": "t08-merge", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/flint-40b-free", "task": "h05-calc", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/flint-40b-free", "task": "h06-wordstats", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/flint-40b-free", "task": "h01-reserve", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/flint-40b-free", "task": "h02-config", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/flint-40b-free", "task": "h03-bus", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/flint-40b-free", "task": "h04-money", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/glm-5.3-flash-free", "task": "t01-paginate", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/glm-5.3-flash-free", "task": "t02-slugify", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/glm-5.3-flash-free", "task": "t03-csvsum", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/glm-5.3-flash-free", "task": "t04-cliflag", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/glm-5.3-flash-free", "task": "t05-lru", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/glm-5.3-flash-free", "task": "t06-duration", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/glm-5.3-flash-free", "task": "t07-rename", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/glm-5.3-flash-free", "task": "t08-merge", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/glm-5.3-flash-free", "task": "h05-calc", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/glm-5.3-flash-free", "task": "h06-wordstats", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/glm-5.3-flash-free", "task": "h01-reserve", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/glm-5.3-flash-free", "task": "h02-config", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/glm-5.3-flash-free", "task": "h03-bus", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/glm-5.3-flash-free", "task": "h04-money", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/mimo-v2.6-flash-free", "task": "t01-paginate", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/mimo-v2.6-flash-free", "task": "t02-slugify", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/mimo-v2.6-flash-free", "task": "t03-csvsum", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/mimo-v2.6-flash-free", "task": "t04-cliflag", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/mimo-v2.6-flash-free", "task": "t05-lru", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/mimo-v2.6-flash-free", "task": "t06-duration", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/mimo-v2.6-flash-free", "task": "t07-rename", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/mimo-v2.6-flash-free", "task": "t08-merge", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/mimo-v2.6-flash-free", "task": "h05-calc", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/mimo-v2.6-flash-free", "task": "h06-wordstats", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/mimo-v2.6-flash-free", "task": "h01-reserve", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/mimo-v2.6-flash-free", "task": "h02-config", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/mimo-v2.6-flash-free", "task": "h03-bus", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/mimo-v2.6-flash-free", "task": "h04-money", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/nemotron-3.5-lightning-free", "task": "t01-paginate", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "anonymous model inventory unavailable or model absent"}
+{"model": "opencode/nemotron-3.5-lightning-free", "task": "t02-slugify", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "anonymous model inventory unavailable or model absent"}
+{"model": "opencode/nemotron-3.5-lightning-free", "task": "t03-csvsum", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "anonymous model inventory unavailable or model absent"}
+{"model": "opencode/nemotron-3.5-lightning-free", "task": "t04-cliflag", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "anonymous model inventory unavailable or model absent"}
+{"model": "opencode/nemotron-3.5-lightning-free", "task": "t05-lru", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "anonymous model inventory unavailable or model absent"}
+{"model": "opencode/nemotron-3.5-lightning-free", "task": "t06-duration", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "anonymous model inventory unavailable or model absent"}
+{"model": "opencode/nemotron-3.5-lightning-free", "task": "t07-rename", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "anonymous model inventory unavailable or model absent"}
+{"model": "opencode/nemotron-3.5-lightning-free", "task": "t08-merge", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "anonymous model inventory unavailable or model absent"}
+{"model": "opencode/nemotron-3.5-lightning-free", "task": "h05-calc", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "anonymous model inventory unavailable or model absent"}
+{"model": "opencode/nemotron-3.5-lightning-free", "task": "h06-wordstats", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "anonymous model inventory unavailable or model absent"}
+{"model": "opencode/nemotron-3.5-lightning-free", "task": "h01-reserve", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "anonymous model inventory unavailable or model absent"}
+{"model": "opencode/nemotron-3.5-lightning-free", "task": "h02-config", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "anonymous model inventory unavailable or model absent"}
+{"model": "opencode/nemotron-3.5-lightning-free", "task": "h03-bus", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "anonymous model inventory unavailable or model absent"}
+{"model": "opencode/nemotron-3.5-lightning-free", "task": "h04-money", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "anonymous model inventory unavailable or model absent"}
+{"model": "opencode/nemotron-3.5-super-vl-free", "task": "t01-paginate", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/nemotron-3.5-super-vl-free", "task": "t02-slugify", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/nemotron-3.5-super-vl-free", "task": "t03-csvsum", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/nemotron-3.5-super-vl-free", "task": "t04-cliflag", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/nemotron-3.5-super-vl-free", "task": "t05-lru", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/nemotron-3.5-super-vl-free", "task": "t06-duration", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/nemotron-3.5-super-vl-free", "task": "t07-rename", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/nemotron-3.5-super-vl-free", "task": "t08-merge", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/nemotron-3.5-super-vl-free", "task": "h05-calc", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/nemotron-3.5-super-vl-free", "task": "h06-wordstats", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/nemotron-3.5-super-vl-free", "task": "h01-reserve", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/nemotron-3.5-super-vl-free", "task": "h02-config", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/nemotron-3.5-super-vl-free", "task": "h03-bus", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/nemotron-3.5-super-vl-free", "task": "h04-money", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/pulse-alpha-free", "task": "t01-paginate", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/pulse-alpha-free", "task": "t02-slugify", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/pulse-alpha-free", "task": "t03-csvsum", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/pulse-alpha-free", "task": "t04-cliflag", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/pulse-alpha-free", "task": "t05-lru", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/pulse-alpha-free", "task": "t06-duration", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/pulse-alpha-free", "task": "t07-rename", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/pulse-alpha-free", "task": "t08-merge", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/pulse-alpha-free", "task": "h05-calc", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/pulse-alpha-free", "task": "h06-wordstats", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/pulse-alpha-free", "task": "h01-reserve", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/pulse-alpha-free", "task": "h02-config", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/pulse-alpha-free", "task": "h03-bus", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "opencode/pulse-alpha-free", "task": "h04-money", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "free label has no matching zero-price catalog evidence"}
+{"model": "openai/gpt-6.1-terra", "task": "t01-paginate", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "missing executable: fx"}
+{"model": "openai/gpt-6.1-terra", "task": "t02-slugify", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "missing executable: fx"}
+{"model": "openai/gpt-6.1-terra", "task": "t03-csvsum", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "missing executable: fx"}
+{"model": "openai/gpt-6.1-terra", "task": "t04-cliflag", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "missing executable: fx"}
+{"model": "openai/gpt-6.1-terra", "task": "t05-lru", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "missing executable: fx"}
+{"model": "openai/gpt-6.1-terra", "task": "t06-duration", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "missing executable: fx"}
+{"model": "openai/gpt-6.1-terra", "task": "t07-rename", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "missing executable: fx"}
+{"model": "openai/gpt-6.1-terra", "task": "t08-merge", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "missing executable: fx"}
+{"model": "openai/gpt-6.1-terra", "task": "h05-calc", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "missing executable: fx"}
+{"model": "openai/gpt-6.1-terra", "task": "h06-wordstats", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "missing executable: fx"}
+{"model": "openai/gpt-6.1-terra", "task": "h01-reserve", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "missing executable: fx"}
+{"model": "openai/gpt-6.1-terra", "task": "h02-config", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "missing executable: fx"}
+{"model": "openai/gpt-6.1-terra", "task": "h03-bus", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "missing executable: fx"}
+{"model": "openai/gpt-6.1-terra", "task": "h04-money", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "missing executable: fx"}
+{"model": "anthropic/claude-opus-5-5", "task": "t01-paginate", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "missing executable: claude"}
+{"model": "anthropic/claude-opus-5-5", "task": "t02-slugify", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "missing executable: claude"}
+{"model": "anthropic/claude-opus-5-5", "task": "t03-csvsum", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "missing executable: claude"}
+{"model": "anthropic/claude-opus-5-5", "task": "t04-cliflag", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "missing executable: claude"}
+{"model": "anthropic/claude-opus-5-5", "task": "t05-lru", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "missing executable: claude"}
+{"model": "anthropic/claude-opus-5-5", "task": "t06-duration", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "missing executable: claude"}
+{"model": "anthropic/claude-opus-5-5", "task": "t07-rename", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "missing executable: claude"}
+{"model": "anthropic/claude-opus-5-5", "task": "t08-merge", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "missing executable: claude"}
+{"model": "anthropic/claude-opus-5-5", "task": "h05-calc", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "missing executable: claude"}
+{"model": "anthropic/claude-opus-5-5", "task": "h06-wordstats", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "missing executable: claude"}
+{"model": "anthropic/claude-opus-5-5", "task": "h01-reserve", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "missing executable: claude"}
+{"model": "anthropic/claude-opus-5-5", "task": "h02-config", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "missing executable: claude"}
+{"model": "anthropic/claude-opus-5-5", "task": "h03-bus", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "missing executable: claude"}
+{"model": "anthropic/claude-opus-5-5", "task": "h04-money", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "missing executable: claude"}
+{"model": "google/gemini-pro", "task": "t01-paginate", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "no verified zero-spend subscription adapter"}
+{"model": "google/gemini-pro", "task": "t02-slugify", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "no verified zero-spend subscription adapter"}
+{"model": "google/gemini-pro", "task": "t03-csvsum", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "no verified zero-spend subscription adapter"}
+{"model": "google/gemini-pro", "task": "t04-cliflag", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "no verified zero-spend subscription adapter"}
+{"model": "google/gemini-pro", "task": "t05-lru", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "no verified zero-spend subscription adapter"}
+{"model": "google/gemini-pro", "task": "t06-duration", "tier": "S", "rep": 0, "status": "BLOCKED", "reason": "no verified zero-spend subscription adapter"}
+{"model": "google/gemini-pro", "task": "t07-rename", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "no verified zero-spend subscription adapter"}
+{"model": "google/gemini-pro", "task": "t08-merge", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "no verified zero-spend subscription adapter"}
+{"model": "google/gemini-pro", "task": "h05-calc", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "no verified zero-spend subscription adapter"}
+{"model": "google/gemini-pro", "task": "h06-wordstats", "tier": "M", "rep": 0, "status": "BLOCKED", "reason": "no verified zero-spend subscription adapter"}
+{"model": "google/gemini-pro", "task": "h01-reserve", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "no verified zero-spend subscription adapter"}
+{"model": "google/gemini-pro", "task": "h02-config", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "no verified zero-spend subscription adapter"}
+{"model": "google/gemini-pro", "task": "h03-bus", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "no verified zero-spend subscription adapter"}
+{"model": "google/gemini-pro", "task": "h04-money", "tier": "L", "rep": 0, "status": "BLOCKED", "reason": "no verified zero-spend subscription adapter"}

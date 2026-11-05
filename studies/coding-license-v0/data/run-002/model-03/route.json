@@ -1,0 +1,6 @@
+{
+  "model": "opencode/deepseek-v4.1-flash-free",
+  "ready": false,
+  "executable": "/work/src/.tools/opencode",
+  "reason": "free label has no matching zero-price catalog evidence"
+}

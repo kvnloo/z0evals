@@ -1,0 +1,5 @@
+{
+  "model": "openai/gpt-6.1-terra",
+  "ready": false,
+  "reason": "missing executable: fx"
+}

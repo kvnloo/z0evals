@@ -1,0 +1,6 @@
+{
+  "model": "opencode/flint-40b-free",
+  "ready": false,
+  "executable": "/work/src/.tools/opencode",
+  "reason": "free label has no matching zero-price catalog evidence"
+}

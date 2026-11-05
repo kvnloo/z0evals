@@ -1,0 +1,5 @@
+{
+  "model": "google/gemini-pro",
+  "ready": false,
+  "reason": "no verified zero-spend subscription adapter"
+}

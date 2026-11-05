@@ -1,0 +1,80 @@
+[
+  {
+    "job_id": "fleet-mbp-cf15b5678ae54ca7",
+    "class": "test",
+    "command": [
+      "env",
+      "FLEET_BUILD_JDK=",
+      "FLEET_GRADLE_ARGS=",
+      "FLEET_BUILD_BEND_TOOLS=0",
+      "sh",
+      "-c",
+      "if [ \"${FLEET_BUILD_BEND_TOOLS:-0}\" = 1 ]; then\n  export HOME=\"$PWD/.fleet-bend-home\"\n  mkdir -p \"$HOME/.bend\" || exit $?\n  tar -xzf .fleet-bend-tools.tar.gz -C \"$HOME/.bend\" || exit $?\n  export BEND=\"$HOME/.bend/bin/bend\"\n  export PATH=\"$HOME/.bend/bin:$PATH\"\nfi\ncd \"$1\" && shift\ncase ${FLEET_BUILD_JDK:-} in\n  17) [ -n \"${JAVA17_HOME:-}\" ] || { echo \"fleet-build: no JDK 17 on $(hostname)\" >&2; exit 3; }; export JAVA_HOME=$JAVA17_HOME ;;\n  21) [ -n \"${JAVA21_HOME:-}\" ] || { echo \"fleet-build: no JDK 21 on $(hostname)\" >&2; exit 3; }; export JAVA_HOME=$JAVA21_HOME ;;\nesac\n[ -n \"${JAVA_HOME:-}\" ] && export PATH=$JAVA_HOME/bin:$PATH\ncase $1 in\n  ./gradlew|gradlew|gradle)\n    g=$1; shift\n    # FLEET_GRADLE_ARGS is word-split on purpose; \"\\ \" keeps a space inside one flag.\n    eval \"set -- $FLEET_GRADLE_ARGS \\\"\\$@\\\"\"\n    set -- \"$g\" \"$@\"\n    echo \"fleet-build: $*\" >&2 ;;\nesac\nexec \"$@\"",
+      "fleet-build",
+      ".",
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "studies/coding-license-v0",
+      "-p",
+      "test_*.py",
+      "-v"
+    ],
+    "source_snapshot": {
+      "git_head": "7dce36d753ee0e99e7bde6e3daa9f091becf2e3b",
+      "dirty": false,
+      "sha256": "8a4b4eb9bfe3bd9dd7673270a72813e5913b6f2586d6313fdc8690b4d5d4060a",
+      "format": "tar+gzip",
+      "files": 106,
+      "source_bytes": 85701,
+      "archive_bytes": 31144,
+      "includes": [
+        "studies/harness-speed-v1/tasks",
+        "studies/harness-speed-v1/harness/verify.py",
+        "studies/coding-license-v0"
+      ]
+    },
+    "fetch_completed": true,
+    "exit_code": 0,
+    "receipt_path": "/mnt/zer0models/host-offload/home_kvn_.local_state_fleet_runs/fleet-mbp-cf15b5678ae54ca7.json"
+  },
+  {
+    "job_id": "fleet-mbp-4ce7fa734471438f",
+    "class": "build",
+    "command": [
+      "env",
+      "FLEET_BUILD_JDK=",
+      "FLEET_GRADLE_ARGS=",
+      "FLEET_BUILD_BEND_TOOLS=0",
+      "sh",
+      "-c",
+      "if [ \"${FLEET_BUILD_BEND_TOOLS:-0}\" = 1 ]; then\n  export HOME=\"$PWD/.fleet-bend-home\"\n  mkdir -p \"$HOME/.bend\" || exit $?\n  tar -xzf .fleet-bend-tools.tar.gz -C \"$HOME/.bend\" || exit $?\n  export BEND=\"$HOME/.bend/bin/bend\"\n  export PATH=\"$HOME/.bend/bin:$PATH\"\nfi\ncd \"$1\" && shift\ncase ${FLEET_BUILD_JDK:-} in\n  17) [ -n \"${JAVA17_HOME:-}\" ] || { echo \"fleet-build: no JDK 17 on $(hostname)\" >&2; exit 3; }; export JAVA_HOME=$JAVA17_HOME ;;\n  21) [ -n \"${JAVA21_HOME:-}\" ] || { echo \"fleet-build: no JDK 21 on $(hostname)\" >&2; exit 3; }; export JAVA_HOME=$JAVA21_HOME ;;\nesac\n[ -n \"${JAVA_HOME:-}\" ] && export PATH=$JAVA_HOME/bin:$PATH\ncase $1 in\n  ./gradlew|gradlew|gradle)\n    g=$1; shift\n    # FLEET_GRADLE_ARGS is word-split on purpose; \"\\ \" keeps a space inside one flag.\n    eval \"set -- $FLEET_GRADLE_ARGS \\\"\\$@\\\"\"\n    set -- \"$g\" \"$@\"\n    echo \"fleet-build: $*\" >&2 ;;\nesac\nexec \"$@\"",
+      "fleet-build",
+      ".",
+      "sh",
+      "-lc",
+      "chmod u+x .tools/opencode; export PATH=\"$PWD/.tools:$PATH\"; python3 studies/coding-license-v0/run.py --out \"studies/coding-license-v0/data/$1\"",
+      "fleet-eval",
+      "run-002"
+    ],
+    "source_snapshot": {
+      "git_head": "7dce36d753ee0e99e7bde6e3daa9f091becf2e3b",
+      "dirty": false,
+      "sha256": "1e0c0612180453fc2a6a806d8cb67767475eb6fc2c98b39c5ed64b07810f968a",
+      "format": "tar+gzip",
+      "files": 106,
+      "source_bytes": 85701,
+      "archive_bytes": 31144,
+      "includes": [
+        "studies/harness-speed-v1/tasks",
+        "studies/harness-speed-v1/harness/verify.py",
+        "studies/coding-license-v0"
+      ]
+    },
+    "fetch_completed": true,
+    "exit_code": 1,
+    "receipt_path": "/mnt/zer0models/host-offload/home_kvn_.local_state_fleet_runs/fleet-mbp-4ce7fa734471438f.json"
+  }
+]

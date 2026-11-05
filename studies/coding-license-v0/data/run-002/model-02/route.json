@@ -1,0 +1,6 @@
+{
+  "model": "opencode/crouton-alpha-free",
+  "ready": false,
+  "executable": "/work/src/.tools/opencode",
+  "reason": "free label has no matching zero-price catalog evidence"
+}
