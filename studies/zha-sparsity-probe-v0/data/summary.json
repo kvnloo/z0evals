@@ -1,0 +1,4966 @@
+{
+ "scope": "training-free feasibility; NOT a reproduction of trained ZHA",
+ "niah": [
+  {
+   "length": 16384,
+   "router": "dense",
+   "correct": 20,
+   "n": 30,
+   "accuracy": 0.6666666666666666,
+   "wilson95": [
+    0.4878005164454384,
+    0.8076950191632386
+   ],
+   "dense_correct_router_wrong": 0,
+   "dense_wrong_router_correct": 0,
+   "attended_frac": 1.0,
+   "idealized_selected_node_plus_key_ratio": 1.0
+  },
+  {
+   "length": 16384,
+   "router": "flat64-p0.9",
+   "correct": 20,
+   "n": 30,
+   "accuracy": 0.6666666666666666,
+   "wilson95": [
+    0.4878005164454384,
+    0.8076950191632386
+   ],
+   "dense_correct_router_wrong": 0,
+   "dense_wrong_router_correct": 0,
+   "attended_frac": 0.2005925952333552,
+   "idealized_selected_node_plus_key_ratio": 0.21625807229031987
+  },
+  {
+   "length": 16384,
+   "router": "flat64-p0.99",
+   "correct": 20,
+   "n": 30,
+   "accuracy": 0.6666666666666666,
+   "wilson95": [
+    0.4878005164454384,
+    0.8076950191632386
+   ],
+   "dense_correct_router_wrong": 0,
+   "dense_wrong_router_correct": 0,
+   "attended_frac": 0.5203709881198745,
+   "idealized_selected_node_plus_key_ratio": 0.5360364651768392
+  },
+  {
+   "length": 16384,
+   "router": "tree4x3-p0.95",
+   "correct": 18,
+   "n": 30,
+   "accuracy": 0.6,
+   "wilson95": [
+    0.42320360253322475,
+    0.7540937188319815
+   ],
+   "dense_correct_router_wrong": 2,
+   "dense_wrong_router_correct": 0,
+   "attended_frac": 0.05713218744937196,
+   "idealized_selected_node_plus_key_ratio": 0.12234910435140306
+  },
+  {
+   "length": 16384,
+   "router": "tree4x3-p0.99",
+   "correct": 20,
+   "n": 30,
+   "accuracy": 0.6666666666666666,
+   "wilson95": [
+    0.4878005164454384,
+    0.8076950191632386
+   ],
+   "dense_correct_router_wrong": 0,
+   "dense_wrong_router_correct": 0,
+   "attended_frac": 0.18821602646006808,
+   "idealized_selected_node_plus_key_ratio": 0.31254883163719444
+  },
+  {
+   "length": 16384,
+   "router": "tree4x6-p0.99",
+   "correct": 20,
+   "n": 30,
+   "accuracy": 0.6666666666666666,
+   "wilson95": [
+    0.4878005164454384,
+    0.8076950191632386
+   ],
+   "dense_correct_router_wrong": 0,
+   "dense_wrong_router_correct": 0,
+   "attended_frac": 0.17577100079608732,
+   "idealized_selected_node_plus_key_ratio": 0.2894089521746544
+  },
+  {
+   "length": 16384,
+   "router": "tree4x6-p0.999",
+   "correct": 20,
+   "n": 30,
+   "accuracy": 0.6666666666666666,
+   "wilson95": [
+    0.4878005164454384,
+    0.8076950191632386
+   ],
+   "dense_correct_router_wrong": 0,
+   "dense_wrong_router_correct": 0,
+   "attended_frac": 0.4410666492691695,
+   "idealized_selected_node_plus_key_ratio": 0.6445152816974354
+  },
+  {
+   "length": 16384,
+   "router": "window-only",
+   "correct": 0,
+   "n": 30,
+   "accuracy": 0.0,
+   "wilson95": [
+    0.0,
+    0.11351339317396876
+   ],
+   "dense_correct_router_wrong": 20,
+   "dense_wrong_router_correct": 0,
+   "attended_frac": 0.00807873093453981,
+   "idealized_selected_node_plus_key_ratio": 0.2580982818082903
+  },
+  {
+   "length": 4096,
+   "router": "dense",
+   "correct": 26,
+   "n": 30,
+   "accuracy": 0.8666666666666667,
+   "wilson95": [
+    0.703186733179637,
+    0.9469034451594526
+   ],
+   "dense_correct_router_wrong": 0,
+   "dense_wrong_router_correct": 0,
+   "attended_frac": 1.0,
+   "idealized_selected_node_plus_key_ratio": 1.0
+  },
+  {
+   "length": 4096,
+   "router": "flat64-p0.9",
+   "correct": 25,
+   "n": 30,
+   "accuracy": 0.8333333333333334,
+   "wilson95": [
+    0.6643564949358398,
+    0.9266345762815145
+   ],
+   "dense_correct_router_wrong": 1,
+   "dense_wrong_router_correct": 0,
+   "attended_frac": 0.26657635715950656,
+   "idealized_selected_node_plus_key_ratio": 0.2823636928673565
+  },
+  {
+   "length": 4096,
+   "router": "flat64-p0.99",
+   "correct": 26,
+   "n": 30,
+   "accuracy": 0.8666666666666667,
+   "wilson95": [
+    0.703186733179637,
+    0.9469034451594526
+   ],
+   "dense_correct_router_wrong": 0,
+   "dense_wrong_router_correct": 0,
+   "attended_frac": 0.6342443613612614,
+   "idealized_selected_node_plus_key_ratio": 0.6500316321932869
+  },
+  {
+   "length": 4096,
+   "router": "tree4x3-p0.95",
+   "correct": 26,
+   "n": 30,
+   "accuracy": 0.8666666666666667,
+   "wilson95": [
+    0.703186733179637,
+    0.9469034451594526
+   ],
+   "dense_correct_router_wrong": 0,
+   "dense_wrong_router_correct": 0,
+   "attended_frac": 0.09144167327205736,
+   "idealized_selected_node_plus_key_ratio": 0.17043441119580352
+  },
+  {
+   "length": 4096,
+   "router": "tree4x3-p0.99",
+   "correct": 26,
+   "n": 30,
+   "accuracy": 0.8666666666666667,
+   "wilson95": [
+    0.703186733179637,
+    0.9469034451594526
+   ],
+   "dense_correct_router_wrong": 0,
+   "dense_wrong_router_correct": 0,
+   "attended_frac": 0.24857031029084486,
+   "idealized_selected_node_plus_key_ratio": 0.39858926821518875
+  },
+  {
+   "length": 4096,
+   "router": "tree4x6-p0.99",
+   "correct": 26,
+   "n": 30,
+   "accuracy": 0.8666666666666667,
+   "wilson95": [
+    0.703186733179637,
+    0.9469034451594526
+   ],
+   "dense_correct_router_wrong": 0,
+   "dense_wrong_router_correct": 0,
+   "attended_frac": 0.2437418781277502,
+   "idealized_selected_node_plus_key_ratio": 0.3922245281341482
+  },
+  {
+   "length": 4096,
+   "router": "tree4x6-p0.999",
+   "correct": 26,
+   "n": 30,
+   "accuracy": 0.8666666666666667,
+   "wilson95": [
+    0.703186733179637,
+    0.9469034451594526
+   ],
+   "dense_correct_router_wrong": 0,
+   "dense_wrong_router_correct": 0,
+   "attended_frac": 0.5422895983032613,
+   "idealized_selected_node_plus_key_ratio": 0.7843630422135193
+  },
+  {
+   "length": 4096,
+   "router": "window-only",
+   "correct": 1,
+   "n": 30,
+   "accuracy": 0.03333333333333333,
+   "wilson95": [
+    0.005908590381612455,
+    0.16670390991409173
+   ],
+   "dense_correct_router_wrong": 25,
+   "dense_wrong_router_correct": 0,
+   "attended_frac": 0.03257945613084982,
+   "idealized_selected_node_plus_key_ratio": 0.28265506391971745
+  },
+  {
+   "length": 8192,
+   "router": "dense",
+   "correct": 16,
+   "n": 30,
+   "accuracy": 0.5333333333333333,
+   "wilson95": [
+    0.36142299619873297,
+    0.6976761109230025
+   ],
+   "dense_correct_router_wrong": 0,
+   "dense_wrong_router_correct": 0,
+   "attended_frac": 1.0,
+   "idealized_selected_node_plus_key_ratio": 1.0
+  },
+  {
+   "length": 8192,
+   "router": "flat64-p0.9",
+   "correct": 16,
+   "n": 30,
+   "accuracy": 0.5333333333333333,
+   "wilson95": [
+    0.36142299619873297,
+    0.6976761109230025
+   ],
+   "dense_correct_router_wrong": 0,
+   "dense_wrong_router_correct": 0,
+   "attended_frac": 0.22446489382527943,
+   "idealized_selected_node_plus_key_ratio": 0.24017102656131945
+  },
+  {
+   "length": 8192,
+   "router": "flat64-p0.99",
+   "correct": 16,
+   "n": 30,
+   "accuracy": 0.5333333333333333,
+   "wilson95": [
+    0.36142299619873297,
+    0.6976761109230025
+   ],
+   "dense_correct_router_wrong": 0,
+   "dense_wrong_router_correct": 0,
+   "attended_frac": 0.5714297875149824,
+   "idealized_selected_node_plus_key_ratio": 0.5871358560236357
+  },
+  {
+   "length": 8192,
+   "router": "tree4x3-p0.95",
+   "correct": 16,
+   "n": 30,
+   "accuracy": 0.5333333333333333,
+   "wilson95": [
+    0.36142299619873297,
+    0.6976761109230025
+   ],
+   "dense_correct_router_wrong": 0,
+   "dense_wrong_router_correct": 0,
+   "attended_frac": 0.068649771000593,
+   "idealized_selected_node_plus_key_ratio": 0.1392905874552335
+  },
+  {
+   "length": 8192,
+   "router": "tree4x3-p0.99",
+   "correct": 16,
+   "n": 30,
+   "accuracy": 0.5333333333333333,
+   "wilson95": [
+    0.36142299619873297,
+    0.6976761109230025
+   ],
+   "dense_correct_router_wrong": 0,
+   "dense_wrong_router_correct": 0,
+   "attended_frac": 0.2122868405477801,
+   "idealized_selected_node_plus_key_ratio": 0.3481270158040927
+  },
+  {
+   "length": 8192,
+   "router": "tree4x6-p0.99",
+   "correct": 16,
+   "n": 30,
+   "accuracy": 0.5333333333333333,
+   "wilson95": [
+    0.36142299619873297,
+    0.6976761109230025
+   ],
+   "dense_correct_router_wrong": 0,
+   "dense_wrong_router_correct": 0,
+   "attended_frac": 0.20284845202892487,
+   "idealized_selected_node_plus_key_ratio": 0.3319416988156981
+  },
+  {
+   "length": 8192,
+   "router": "tree4x6-p0.999",
+   "correct": 16,
+   "n": 30,
+   "accuracy": 0.5333333333333333,
+   "wilson95": [
+    0.36142299619873297,
+    0.6976761109230025
+   ],
+   "dense_correct_router_wrong": 0,
+   "dense_wrong_router_correct": 0,
+   "attended_frac": 0.4875265944524933,
+   "idealized_selected_node_plus_key_ratio": 0.7102192446124017
+  },
+  {
+   "length": 8192,
+   "router": "window-only",
+   "correct": 1,
+   "n": 30,
+   "accuracy": 0.03333333333333333,
+   "wilson95": [
+    0.005908590381612455,
+    0.16670390991409173
+   ],
+   "dense_correct_router_wrong": 15,
+   "dense_wrong_router_correct": 0,
+   "attended_frac": 0.01620118983043068,
+   "idealized_selected_node_plus_key_ratio": 0.26624120067006696
+  },
+  {
+   "length": "pooled",
+   "router": "dense",
+   "correct": 62,
+   "n": 90,
+   "accuracy": 0.6888888888888889,
+   "wilson95": [
+    0.5871717545902345,
+    0.7751414535299087
+   ],
+   "dense_correct_router_wrong": 0,
+   "dense_wrong_router_correct": 0,
+   "attended_frac": 1.0,
+   "idealized_selected_node_plus_key_ratio": 1.0
+  },
+  {
+   "length": "pooled",
+   "router": "flat64-p0.9",
+   "correct": 61,
+   "n": 90,
+   "accuracy": 0.6777777777777778,
+   "wilson95": [
+    0.5756683783279567,
+    0.7653322881380605
+   ],
+   "dense_correct_router_wrong": 1,
+   "dense_wrong_router_correct": 0,
+   "attended_frac": 0.23054461540604704,
+   "idealized_selected_node_plus_key_ratio": 0.24626426390633194
+  },
+  {
+   "length": "pooled",
+   "router": "flat64-p0.99",
+   "correct": 62,
+   "n": 90,
+   "accuracy": 0.6888888888888889,
+   "wilson95": [
+    0.5871717545902345,
+    0.7751414535299087
+   ],
+   "dense_correct_router_wrong": 0,
+   "dense_wrong_router_correct": 0,
+   "attended_frac": 0.5753483789987062,
+   "idealized_selected_node_plus_key_ratio": 0.5910679844645872
+  },
+  {
+   "length": "pooled",
+   "router": "tree4x3-p0.95",
+   "correct": 60,
+   "n": 90,
+   "accuracy": 0.6666666666666666,
+   "wilson95": [
+    0.5642231776063374,
+    0.7554649472055536
+   ],
+   "dense_correct_router_wrong": 2,
+   "dense_wrong_router_correct": 0,
+   "attended_frac": 0.0724078772406741,
+   "idealized_selected_node_plus_key_ratio": 0.14402470100081335
+  },
+  {
+   "length": "pooled",
+   "router": "tree4x3-p0.99",
+   "correct": 62,
+   "n": 90,
+   "accuracy": 0.6888888888888889,
+   "wilson95": [
+    0.5871717545902345,
+    0.7751414535299087
+   ],
+   "dense_correct_router_wrong": 0,
+   "dense_wrong_router_correct": 0,
+   "attended_frac": 0.216357725766231,
+   "idealized_selected_node_plus_key_ratio": 0.35308837188549197
+  },
+  {
+   "length": "pooled",
+   "router": "tree4x6-p0.99",
+   "correct": 62,
+   "n": 90,
+   "accuracy": 0.6888888888888889,
+   "wilson95": [
+    0.5871717545902345,
+    0.7751414535299087
+   ],
+   "dense_correct_router_wrong": 0,
+   "dense_wrong_router_correct": 0,
+   "attended_frac": 0.20745377698425413,
+   "idealized_selected_node_plus_key_ratio": 0.3378583930415002
+  },
+  {
+   "length": "pooled",
+   "router": "tree4x6-p0.999",
+   "correct": 62,
+   "n": 90,
+   "accuracy": 0.6888888888888889,
+   "wilson95": [
+    0.5871717545902345,
+    0.7751414535299087
+   ],
+   "dense_correct_router_wrong": 0,
+   "dense_wrong_router_correct": 0,
+   "attended_frac": 0.4902942806749747,
+   "idealized_selected_node_plus_key_ratio": 0.7130325228411188
+  },
+  {
+   "length": "pooled",
+   "router": "window-only",
+   "correct": 2,
+   "n": 90,
+   "accuracy": 0.022222222222222223,
+   "wilson95": [
+    0.006115441986325208,
+    0.07744526688625372
+   ],
+   "dense_correct_router_wrong": 60,
+   "dense_wrong_router_correct": 0,
+   "attended_frac": 0.018953125631940102,
+   "idealized_selected_node_plus_key_ratio": 0.26899818213269155
+  }
+ ],
+ "scaling": [
+  {
+   "model": "qwen3-0.6b",
+   "n": 256,
+   "router": "flat64-p0.9",
+   "segments": 6,
+   "attended_frac": 0.8490687779017857,
+   "attention_mass": 0.9915908330031449,
+   "idealized_selected_node_plus_key_ratio": 0.8646937779017857
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 256,
+   "router": "flat64-p0.95",
+   "segments": 6,
+   "attended_frac": 0.9258975074404762,
+   "attention_mass": 0.9977036629626084,
+   "idealized_selected_node_plus_key_ratio": 0.9415225074404762
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 256,
+   "router": "flat64-p0.99",
+   "segments": 6,
+   "attended_frac": 0.98779296875,
+   "attention_mass": 0.9999338506632263,
+   "idealized_selected_node_plus_key_ratio": 1.00341796875
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 256,
+   "router": "oracle-p0.5",
+   "segments": 6,
+   "attended_frac": 0.013138543991815476,
+   "attention_mass": 0.6926722363790585,
+   "idealized_selected_node_plus_key_ratio": 0.013138543991815476
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 256,
+   "router": "oracle-p0.8",
+   "segments": 6,
+   "attended_frac": 0.04961286272321428,
+   "attention_mass": 0.8498716843979699,
+   "idealized_selected_node_plus_key_ratio": 0.04961286272321428
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 256,
+   "router": "oracle-p0.9",
+   "segments": 6,
+   "attended_frac": 0.09633091517857142,
+   "attention_mass": 0.9174071575648018,
+   "idealized_selected_node_plus_key_ratio": 0.09633091517857142
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 256,
+   "router": "oracle-p0.95",
+   "segments": 6,
+   "attended_frac": 0.15812610444568453,
+   "attention_mass": 0.9559453363485989,
+   "idealized_selected_node_plus_key_ratio": 0.15812610444568453
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 256,
+   "router": "tree16x2-p0.9",
+   "segments": 6,
+   "attended_frac": 0.6920340401785714,
+   "attention_mass": 0.9783096948106373,
+   "idealized_selected_node_plus_key_ratio": 0.7584402901785714
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 256,
+   "router": "tree16x2-p0.95",
+   "segments": 6,
+   "attended_frac": 0.7638113839285714,
+   "attention_mass": 0.9878811102493533,
+   "idealized_selected_node_plus_key_ratio": 0.8302176339285714
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 256,
+   "router": "tree16x2-p0.99",
+   "segments": 6,
+   "attended_frac": 0.8947695777529762,
+   "attention_mass": 0.9978399666114932,
+   "idealized_selected_node_plus_key_ratio": 0.9611758277529762
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 256,
+   "router": "tree4x3-p0.9",
+   "segments": 6,
+   "attended_frac": 0.5796886625744048,
+   "attention_mass": 0.9620219579055196,
+   "idealized_selected_node_plus_key_ratio": 0.7536969866071428
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 256,
+   "router": "tree4x3-p0.95",
+   "segments": 6,
+   "attended_frac": 0.6361432756696429,
+   "attention_mass": 0.9764603146440571,
+   "idealized_selected_node_plus_key_ratio": 0.8576543898809523
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 256,
+   "router": "tree4x3-p0.99",
+   "segments": 6,
+   "attended_frac": 0.7762393043154762,
+   "attention_mass": 0.9941920565352553,
+   "idealized_selected_node_plus_key_ratio": 1.0629301525297619
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 256,
+   "router": "tree4x6-p0.9",
+   "segments": 6,
+   "attended_frac": 0.5796886625744048,
+   "attention_mass": 0.9620219579055196,
+   "idealized_selected_node_plus_key_ratio": 0.7654157366071428
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 256,
+   "router": "tree4x6-p0.95",
+   "segments": 6,
+   "attended_frac": 0.6361432756696429,
+   "attention_mass": 0.9764603146440571,
+   "idealized_selected_node_plus_key_ratio": 0.8693731398809523
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 256,
+   "router": "tree4x6-p0.99",
+   "segments": 6,
+   "attended_frac": 0.7762393043154762,
+   "attention_mass": 0.9941920565352553,
+   "idealized_selected_node_plus_key_ratio": 1.0746489025297619
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 256,
+   "router": "tree4x6-p0.999",
+   "segments": 6,
+   "attended_frac": 0.9150332496279762,
+   "attention_mass": 0.9994408051882471,
+   "idealized_selected_node_plus_key_ratio": 1.2469540550595237
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 304,
+   "router": "flat64-p0.9",
+   "segments": 6,
+   "attended_frac": 0.7113731594611529,
+   "attention_mass": 0.9851746770021106,
+   "idealized_selected_node_plus_key_ratio": 0.7278205278822055
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 304,
+   "router": "flat64-p0.95",
+   "segments": 6,
+   "attended_frac": 0.8149817904135338,
+   "attention_mass": 0.9943334392404982,
+   "idealized_selected_node_plus_key_ratio": 0.8314291588345865
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 304,
+   "router": "flat64-p0.99",
+   "segments": 6,
+   "attended_frac": 0.9480684132205514,
+   "attention_mass": 0.9995664379204667,
+   "idealized_selected_node_plus_key_ratio": 0.964515781641604
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 304,
+   "router": "oracle-p0.5",
+   "segments": 6,
+   "attended_frac": 0.01078501918859649,
+   "attention_mass": 0.7023284317969921,
+   "idealized_selected_node_plus_key_ratio": 0.01078501918859649
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 304,
+   "router": "oracle-p0.8",
+   "segments": 6,
+   "attended_frac": 0.04083328438283208,
+   "attention_mass": 0.8551481132439914,
+   "idealized_selected_node_plus_key_ratio": 0.04083328438283208
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 304,
+   "router": "oracle-p0.9",
+   "segments": 6,
+   "attended_frac": 0.07976851307957393,
+   "attention_mass": 0.9196481771678442,
+   "idealized_selected_node_plus_key_ratio": 0.07976851307957393
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 304,
+   "router": "oracle-p0.95",
+   "segments": 6,
+   "attended_frac": 0.13322490797305764,
+   "attention_mass": 0.9568099814378435,
+   "idealized_selected_node_plus_key_ratio": 0.13322490797305764
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 304,
+   "router": "tree16x2-p0.9",
+   "segments": 6,
+   "attended_frac": 0.6071036967418546,
+   "attention_mass": 0.9763522808040892,
+   "idealized_selected_node_plus_key_ratio": 0.6674107142857143
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 304,
+   "router": "tree16x2-p0.95",
+   "segments": 6,
+   "attended_frac": 0.684000039160401,
+   "attention_mass": 0.9864290987274477,
+   "idealized_selected_node_plus_key_ratio": 0.7486465186403509
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 304,
+   "router": "tree16x2-p0.99",
+   "segments": 6,
+   "attended_frac": 0.844141604010025,
+   "attention_mass": 0.9972657689026424,
+   "idealized_selected_node_plus_key_ratio": 0.9125462582236842
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 304,
+   "router": "tree4x3-p0.9",
+   "segments": 6,
+   "attended_frac": 0.4897203947368421,
+   "attention_mass": 0.9583989211269432,
+   "idealized_selected_node_plus_key_ratio": 0.6391369047619048
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 304,
+   "router": "tree4x3-p0.95",
+   "segments": 6,
+   "attended_frac": 0.5470952772556391,
+   "attention_mass": 0.9745766396989071,
+   "idealized_selected_node_plus_key_ratio": 0.7445126488095238
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 304,
+   "router": "tree4x3-p0.99",
+   "segments": 6,
+   "attended_frac": 0.7033942277568922,
+   "attention_mass": 0.9933649331907786,
+   "idealized_selected_node_plus_key_ratio": 0.9767644208176691
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 304,
+   "router": "tree4x6-p0.9",
+   "segments": 6,
+   "attended_frac": 0.48939242637844615,
+   "attention_mass": 0.9582879564591816,
+   "idealized_selected_node_plus_key_ratio": 0.647960232612782
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 304,
+   "router": "tree4x6-p0.95",
+   "segments": 6,
+   "attended_frac": 0.5469875861528822,
+   "attention_mass": 0.9745026255425598,
+   "idealized_selected_node_plus_key_ratio": 0.7554432957393484
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 304,
+   "router": "tree4x6-p0.99",
+   "segments": 6,
+   "attended_frac": 0.7033942277568922,
+   "attention_mass": 0.9933649331907786,
+   "idealized_selected_node_plus_key_ratio": 0.9896029135338346
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 304,
+   "router": "tree4x6-p0.999",
+   "segments": 6,
+   "attended_frac": 0.8807272086466166,
+   "attention_mass": 0.9993509492127314,
+   "idealized_selected_node_plus_key_ratio": 1.2102191513941103
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 362,
+   "router": "flat64-p0.9",
+   "segments": 6,
+   "attended_frac": 0.6679656669297553,
+   "attention_mass": 0.9787720091907042,
+   "idealized_selected_node_plus_key_ratio": 0.6845402525651145
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 362,
+   "router": "flat64-p0.95",
+   "segments": 6,
+   "attended_frac": 0.7831573927913706,
+   "attention_mass": 0.9911032928641708,
+   "idealized_selected_node_plus_key_ratio": 0.7997319784267298
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 362,
+   "router": "flat64-p0.99",
+   "segments": 6,
+   "attended_frac": 0.9419971717968956,
+   "attention_mass": 0.9992171222610133,
+   "idealized_selected_node_plus_key_ratio": 0.9585717574322548
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 362,
+   "router": "oracle-p0.5",
+   "segments": 6,
+   "attended_frac": 0.010883237963693764,
+   "attention_mass": 0.685839368740008,
+   "idealized_selected_node_plus_key_ratio": 0.010883237963693764
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 362,
+   "router": "oracle-p0.8",
+   "segments": 6,
+   "attended_frac": 0.04620186299657985,
+   "attention_mass": 0.8452504420697334,
+   "idealized_selected_node_plus_key_ratio": 0.04620186299657985
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 362,
+   "router": "oracle-p0.9",
+   "segments": 6,
+   "attended_frac": 0.09382604906603526,
+   "attention_mass": 0.9149393965046675,
+   "idealized_selected_node_plus_key_ratio": 0.09382604906603526
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 362,
+   "router": "oracle-p0.95",
+   "segments": 6,
+   "attended_frac": 0.15817794659300186,
+   "attention_mass": 0.954794154413754,
+   "idealized_selected_node_plus_key_ratio": 0.15817794659300186
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 362,
+   "router": "tree16x2-p0.9",
+   "segments": 6,
+   "attended_frac": 0.5547758813470139,
+   "attention_mass": 0.9686652436808106,
+   "idealized_selected_node_plus_key_ratio": 0.6180014305445936
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 362,
+   "router": "tree16x2-p0.95",
+   "segments": 6,
+   "attended_frac": 0.6450358458300447,
+   "attention_mass": 0.9818723937274799,
+   "idealized_selected_node_plus_key_ratio": 0.7121059836227308
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 362,
+   "router": "tree16x2-p0.99",
+   "segments": 6,
+   "attended_frac": 0.8252084155485399,
+   "attention_mass": 0.9962187417605448,
+   "idealized_selected_node_plus_key_ratio": 0.8942291091160222
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 362,
+   "router": "tree4x3-p0.9",
+   "segments": 6,
+   "attended_frac": 0.42406809063404366,
+   "attention_mass": 0.9443038136676132,
+   "idealized_selected_node_plus_key_ratio": 0.5676096750855039
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 362,
+   "router": "tree4x3-p0.95",
+   "segments": 6,
+   "attended_frac": 0.48741079650092084,
+   "attention_mass": 0.9646137180028572,
+   "idealized_selected_node_plus_key_ratio": 0.6792743685872139
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 362,
+   "router": "tree4x3-p0.99",
+   "segments": 6,
+   "attended_frac": 0.6694681498289924,
+   "attention_mass": 0.9907685448637321,
+   "idealized_selected_node_plus_key_ratio": 0.9414576345040779
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 362,
+   "router": "tree4x6-p0.9",
+   "segments": 6,
+   "attended_frac": 0.42399409694817153,
+   "attention_mass": 0.9442208025804055,
+   "idealized_selected_node_plus_key_ratio": 0.5762823516837674
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 362,
+   "router": "tree4x6-p0.95",
+   "segments": 6,
+   "attended_frac": 0.48737791041831097,
+   "attention_mass": 0.9645212668748129,
+   "idealized_selected_node_plus_key_ratio": 0.6895677124440937
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 362,
+   "router": "tree4x6-p0.99",
+   "segments": 6,
+   "attended_frac": 0.6694681498289924,
+   "attention_mass": 0.9907685448637321,
+   "idealized_selected_node_plus_key_ratio": 0.9524970813601684
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 362,
+   "router": "tree4x6-p0.999",
+   "segments": 6,
+   "attended_frac": 0.867473197842673,
+   "attention_mass": 0.9989955510411944,
+   "idealized_selected_node_plus_key_ratio": 1.1960061908050512
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 431,
+   "router": "flat64-p0.9",
+   "segments": 6,
+   "attended_frac": 0.676709583195227,
+   "attention_mass": 0.9745202473852607,
+   "idealized_selected_node_plus_key_ratio": 0.6929508824991714
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 431,
+   "router": "flat64-p0.95",
+   "segments": 6,
+   "attended_frac": 0.778387747210253,
+   "attention_mass": 0.9888333851870681,
+   "idealized_selected_node_plus_key_ratio": 0.7946290465141973
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 431,
+   "router": "flat64-p0.99",
+   "segments": 6,
+   "attended_frac": 0.9253483731079439,
+   "attention_mass": 0.9988531798700846,
+   "idealized_selected_node_plus_key_ratio": 0.9415896724118882
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 431,
+   "router": "oracle-p0.5",
+   "segments": 6,
+   "attended_frac": 0.01142915838028947,
+   "attention_mass": 0.667084861812847,
+   "idealized_selected_node_plus_key_ratio": 0.01142915838028947
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 431,
+   "router": "oracle-p0.8",
+   "segments": 6,
+   "attended_frac": 0.05009287647773727,
+   "attention_mass": 0.8427075484457115,
+   "idealized_selected_node_plus_key_ratio": 0.05009287647773727
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 431,
+   "router": "oracle-p0.9",
+   "segments": 6,
+   "attended_frac": 0.09940976825765109,
+   "attention_mass": 0.9149916590457516,
+   "idealized_selected_node_plus_key_ratio": 0.09940976825765109
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 431,
+   "router": "oracle-p0.95",
+   "segments": 6,
+   "attended_frac": 0.16257785741906972,
+   "attention_mass": 0.954838533752731,
+   "idealized_selected_node_plus_key_ratio": 0.16257785741906972
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 431,
+   "router": "tree16x2-p0.9",
+   "segments": 6,
+   "attended_frac": 0.5461861948955916,
+   "attention_mass": 0.9618066562384012,
+   "idealized_selected_node_plus_key_ratio": 0.607544228538283
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 431,
+   "router": "tree16x2-p0.95",
+   "segments": 6,
+   "attended_frac": 0.6377782841674953,
+   "attention_mass": 0.9788490042888692,
+   "idealized_selected_node_plus_key_ratio": 0.7022169511656171
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 431,
+   "router": "tree16x2-p0.99",
+   "segments": 6,
+   "attended_frac": 0.8082368315655728,
+   "attention_mass": 0.9954127361110988,
+   "idealized_selected_node_plus_key_ratio": 0.8750250317644459
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 431,
+   "router": "tree4x3-p0.9",
+   "segments": 6,
+   "attended_frac": 0.38807952850513755,
+   "attention_mass": 0.9257969016852301,
+   "idealized_selected_node_plus_key_ratio": 0.5334303529996686
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 431,
+   "router": "tree4x3-p0.95",
+   "segments": 6,
+   "attended_frac": 0.4617462849408905,
+   "attention_mass": 0.9556344226667923,
+   "idealized_selected_node_plus_key_ratio": 0.6522906653960888
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 431,
+   "router": "tree4x3-p0.99",
+   "segments": 6,
+   "attended_frac": 0.6517649983427245,
+   "attention_mass": 0.9889937014585095,
+   "idealized_selected_node_plus_key_ratio": 0.9177093691304828
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 431,
+   "router": "tree4x6-p0.9",
+   "segments": 6,
+   "attended_frac": 0.3879353800685007,
+   "attention_mass": 0.9256618176309747,
+   "idealized_selected_node_plus_key_ratio": 0.540383141365595
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 431,
+   "router": "tree4x6-p0.95",
+   "segments": 6,
+   "attended_frac": 0.461653926361728,
+   "attention_mass": 0.9554664580417531,
+   "idealized_selected_node_plus_key_ratio": 0.6604864103413988
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 431,
+   "router": "tree4x6-p0.99",
+   "segments": 6,
+   "attended_frac": 0.6517382402496962,
+   "attention_mass": 0.9889785373982575,
+   "idealized_selected_node_plus_key_ratio": 0.9267630993812839
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 431,
+   "router": "tree4x6-p0.999",
+   "segments": 6,
+   "attended_frac": 0.8476135233675837,
+   "attention_mass": 0.9988066844775209,
+   "idealized_selected_node_plus_key_ratio": 1.1682945945199426
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 512,
+   "router": "flat64-p0.9",
+   "segments": 6,
+   "attended_frac": 0.5518101283482143,
+   "attention_mass": 0.9765063448188205,
+   "idealized_selected_node_plus_key_ratio": 0.5674351283482143
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 512,
+   "router": "flat64-p0.95",
+   "segments": 6,
+   "attended_frac": 0.6682070777529762,
+   "attention_mass": 0.9884290888328993,
+   "idealized_selected_node_plus_key_ratio": 0.6838320777529762
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 512,
+   "router": "flat64-p0.99",
+   "segments": 6,
+   "attended_frac": 0.8641212100074405,
+   "attention_mass": 0.9984217247748304,
+   "idealized_selected_node_plus_key_ratio": 0.8797462100074405
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 512,
+   "router": "oracle-p0.5",
+   "segments": 6,
+   "attended_frac": 0.007178896949404762,
+   "attention_mass": 0.6847882001616415,
+   "idealized_selected_node_plus_key_ratio": 0.007178896949404762
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 512,
+   "router": "oracle-p0.8",
+   "segments": 6,
+   "attended_frac": 0.030699230375744048,
+   "attention_mass": 0.8426612176976743,
+   "idealized_selected_node_plus_key_ratio": 0.030699230375744048
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 512,
+   "router": "oracle-p0.9",
+   "segments": 6,
+   "attended_frac": 0.06467837379092262,
+   "attention_mass": 0.9131336409953379,
+   "idealized_selected_node_plus_key_ratio": 0.06467837379092262
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 512,
+   "router": "oracle-p0.95",
+   "segments": 6,
+   "attended_frac": 0.11419314429873512,
+   "attention_mass": 0.954053293026629,
+   "idealized_selected_node_plus_key_ratio": 0.11419314429873512
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 512,
+   "router": "tree16x2-p0.9",
+   "segments": 6,
+   "attended_frac": 0.42888823009672616,
+   "attention_mass": 0.9677183979989162,
+   "idealized_selected_node_plus_key_ratio": 0.48909795851934523
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 512,
+   "router": "tree16x2-p0.95",
+   "segments": 6,
+   "attended_frac": 0.5174589611235119,
+   "attention_mass": 0.9805910560036344,
+   "idealized_selected_node_plus_key_ratio": 0.5803542364211309
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 512,
+   "router": "tree16x2-p0.99",
+   "segments": 6,
+   "attended_frac": 0.7138177780877977,
+   "attention_mass": 0.9952288913052707,
+   "idealized_selected_node_plus_key_ratio": 0.7796078636532738
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 512,
+   "router": "tree4x3-p0.9",
+   "segments": 6,
+   "attended_frac": 0.30716668991815477,
+   "attention_mass": 0.9449150845452788,
+   "idealized_selected_node_plus_key_ratio": 0.4216279529389881
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 512,
+   "router": "tree4x3-p0.95",
+   "segments": 6,
+   "attended_frac": 0.36394973028273814,
+   "attention_mass": 0.9636261578250145,
+   "idealized_selected_node_plus_key_ratio": 0.5186099097842262
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 512,
+   "router": "tree4x3-p0.99",
+   "segments": 6,
+   "attended_frac": 0.5453985305059523,
+   "attention_mass": 0.9896765729146344,
+   "idealized_selected_node_plus_key_ratio": 0.7802559988839286
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 512,
+   "router": "tree4x6-p0.9",
+   "segments": 6,
+   "attended_frac": 0.3068731398809524,
+   "attention_mass": 0.9447269569860682,
+   "idealized_selected_node_plus_key_ratio": 0.42675199962797616
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 512,
+   "router": "tree4x6-p0.95",
+   "segments": 6,
+   "attended_frac": 0.3637782505580357,
+   "attention_mass": 0.963478744872624,
+   "idealized_selected_node_plus_key_ratio": 0.5249779110863095
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 512,
+   "router": "tree4x6-p0.99",
+   "segments": 6,
+   "attended_frac": 0.5453316824776786,
+   "attention_mass": 0.9896687489845568,
+   "idealized_selected_node_plus_key_ratio": 0.7877836681547619
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 512,
+   "router": "tree4x6-p0.999",
+   "segments": 6,
+   "attended_frac": 0.7824154808407738,
+   "attention_mass": 0.9987347802546407,
+   "idealized_selected_node_plus_key_ratio": 1.0881289527529763
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 609,
+   "router": "flat64-p0.9",
+   "segments": 6,
+   "attended_frac": 0.5055773027601845,
+   "attention_mass": 0.9684172234098827,
+   "idealized_selected_node_plus_key_ratio": 0.521997664008132
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 609,
+   "router": "flat64-p0.95",
+   "segments": 6,
+   "attended_frac": 0.6189627072093205,
+   "attention_mass": 0.9830165593219655,
+   "idealized_selected_node_plus_key_ratio": 0.635383068457268
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 609,
+   "router": "flat64-p0.99",
+   "segments": 6,
+   "attended_frac": 0.8262123455704121,
+   "attention_mass": 0.9971863292379394,
+   "idealized_selected_node_plus_key_ratio": 0.8426327068183596
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 609,
+   "router": "oracle-p0.5",
+   "segments": 6,
+   "attended_frac": 0.008748362850887481,
+   "attention_mass": 0.6812571431953638,
+   "idealized_selected_node_plus_key_ratio": 0.008748362850887481
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 609,
+   "router": "oracle-p0.8",
+   "segments": 6,
+   "attended_frac": 0.03912053327077958,
+   "attention_mass": 0.8437978843936608,
+   "idealized_selected_node_plus_key_ratio": 0.03912053327077958
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 609,
+   "router": "oracle-p0.9",
+   "segments": 6,
+   "attended_frac": 0.08052269039799828,
+   "attention_mass": 0.9147937573226435,
+   "idealized_selected_node_plus_key_ratio": 0.08052269039799828
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 609,
+   "router": "oracle-p0.95",
+   "segments": 6,
+   "attended_frac": 0.13683145672061928,
+   "attention_mass": 0.9545958690079195,
+   "idealized_selected_node_plus_key_ratio": 0.13683145672061928
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 609,
+   "router": "tree16x2-p0.9",
+   "segments": 6,
+   "attended_frac": 0.3749315818281336,
+   "attention_mass": 0.9514821512580273,
+   "idealized_selected_node_plus_key_ratio": 0.4265256030573149
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 609,
+   "router": "tree16x2-p0.95",
+   "segments": 6,
+   "attended_frac": 0.4623229679802956,
+   "attention_mass": 0.9705799535316016,
+   "idealized_selected_node_plus_key_ratio": 0.5217154390491828
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 609,
+   "router": "tree16x2-p0.99",
+   "segments": 6,
+   "attended_frac": 0.6582946037610446,
+   "attention_mass": 0.9915242533066443,
+   "idealized_selected_node_plus_key_ratio": 0.7251654253655485
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 609,
+   "router": "tree4x3-p0.9",
+   "segments": 6,
+   "attended_frac": 0.2737136161936039,
+   "attention_mass": 0.9264586332387158,
+   "idealized_selected_node_plus_key_ratio": 0.38110937622175306
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 609,
+   "router": "tree4x3-p0.95",
+   "segments": 6,
+   "attended_frac": 0.33158439381499727,
+   "attention_mass": 0.9505795873923316,
+   "idealized_selected_node_plus_key_ratio": 0.47502981077488465
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 609,
+   "router": "tree4x3-p0.99",
+   "segments": 6,
+   "attended_frac": 0.5147752707404801,
+   "attention_mass": 0.984520758480011,
+   "idealized_selected_node_plus_key_ratio": 0.7359614463601533
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 609,
+   "router": "tree4x6-p0.9",
+   "segments": 6,
+   "attended_frac": 0.2721821487215576,
+   "attention_mass": 0.9245783097908965,
+   "idealized_selected_node_plus_key_ratio": 0.3788112586988819
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 609,
+   "router": "tree4x6-p0.95",
+   "segments": 6,
+   "attended_frac": 0.33044022206583784,
+   "attention_mass": 0.9496226577709118,
+   "idealized_selected_node_plus_key_ratio": 0.4770292096723747
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 609,
+   "router": "tree4x6-p0.99",
+   "segments": 6,
+   "attended_frac": 0.5144276819923371,
+   "attention_mass": 0.9843448935342687,
+   "idealized_selected_node_plus_key_ratio": 0.7427354562514661
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 609,
+   "router": "tree4x6-p0.999",
+   "segments": 6,
+   "attended_frac": 0.760356189889749,
+   "attention_mass": 0.9976843320542857,
+   "idealized_selected_node_plus_key_ratio": 1.059216538626945
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 724,
+   "router": "flat64-p0.9",
+   "segments": 6,
+   "attended_frac": 0.4892071987634833,
+   "attention_mass": 0.9624413994052226,
+   "idealized_selected_node_plus_key_ratio": 0.5057817843988424
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 724,
+   "router": "flat64-p0.95",
+   "segments": 6,
+   "attended_frac": 0.6054245593264931,
+   "attention_mass": 0.9799864864242929,
+   "idealized_selected_node_plus_key_ratio": 0.621999144961852
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 724,
+   "router": "flat64-p0.99",
+   "segments": 6,
+   "attended_frac": 0.8216279433043936,
+   "attention_mass": 0.9964075013995171,
+   "idealized_selected_node_plus_key_ratio": 0.8382025289397527
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 724,
+   "router": "oracle-p0.5",
+   "segments": 6,
+   "attended_frac": 0.007403993192580899,
+   "attention_mass": 0.6548714694966162,
+   "idealized_selected_node_plus_key_ratio": 0.007403993192580899
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 724,
+   "router": "oracle-p0.8",
+   "segments": 6,
+   "attended_frac": 0.03827528939752697,
+   "attention_mass": 0.8357265947076181,
+   "idealized_selected_node_plus_key_ratio": 0.03827528939752697
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 724,
+   "router": "oracle-p0.9",
+   "segments": 6,
+   "attended_frac": 0.08188891492370429,
+   "attention_mass": 0.9120596181601286,
+   "idealized_selected_node_plus_key_ratio": 0.08188891492370429
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 724,
+   "router": "oracle-p0.95",
+   "segments": 6,
+   "attended_frac": 0.14093998700999738,
+   "attention_mass": 0.9538902044518008,
+   "idealized_selected_node_plus_key_ratio": 0.14093998700999738
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 724,
+   "router": "tree16x2-p0.9",
+   "segments": 6,
+   "attended_frac": 0.3643325769534333,
+   "attention_mass": 0.944539421038436,
+   "idealized_selected_node_plus_key_ratio": 0.4185658379373849
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 724,
+   "router": "tree16x2-p0.95",
+   "segments": 6,
+   "attended_frac": 0.462635244014733,
+   "attention_mass": 0.9677696052850002,
+   "idealized_selected_node_plus_key_ratio": 0.5237283362930808
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 724,
+   "router": "tree16x2-p0.99",
+   "segments": 6,
+   "attended_frac": 0.669587361878453,
+   "attention_mass": 0.9918410471374435,
+   "idealized_selected_node_plus_key_ratio": 0.7364447678242567
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 724,
+   "router": "tree4x3-p0.9",
+   "segments": 6,
+   "attended_frac": 0.24591595961589055,
+   "attention_mass": 0.9116395656573808,
+   "idealized_selected_node_plus_key_ratio": 0.3495199659629045
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 724,
+   "router": "tree4x3-p0.95",
+   "segments": 6,
+   "attended_frac": 0.3125986582478295,
+   "attention_mass": 0.9431083441179777,
+   "idealized_selected_node_plus_key_ratio": 0.454251348329387
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 724,
+   "router": "tree4x3-p0.99",
+   "segments": 6,
+   "attended_frac": 0.5145767561168113,
+   "attention_mass": 0.9839886130011153,
+   "idealized_selected_node_plus_key_ratio": 0.7358893013351749
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 724,
+   "router": "tree4x6-p0.9",
+   "segments": 6,
+   "attended_frac": 0.2433816758747698,
+   "attention_mass": 0.9080744988085436,
+   "idealized_selected_node_plus_key_ratio": 0.34669381823862144
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 724,
+   "router": "tree4x6-p0.95",
+   "segments": 6,
+   "attended_frac": 0.31063988095238093,
+   "attention_mass": 0.9408454575930678,
+   "idealized_selected_node_plus_key_ratio": 0.4557163205406472
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 724,
+   "router": "tree4x6-p0.99",
+   "segments": 6,
+   "attended_frac": 0.5141739016048408,
+   "attention_mass": 0.9835669876386722,
+   "idealized_selected_node_plus_key_ratio": 0.741915675973428
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 724,
+   "router": "tree4x6-p0.999",
+   "segments": 6,
+   "attended_frac": 0.7731990759010786,
+   "attention_mass": 0.9981095499935604,
+   "idealized_selected_node_plus_key_ratio": 1.0717137554262037
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 861,
+   "router": "flat64-p0.9",
+   "segments": 6,
+   "attended_frac": 0.5219368743432332,
+   "attention_mass": 0.9626803093969578,
+   "idealized_selected_node_plus_key_ratio": 0.5381970369448592
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 861,
+   "router": "flat64-p0.95",
+   "segments": 6,
+   "attended_frac": 0.645980241690172,
+   "attention_mass": 0.9805690116786753,
+   "idealized_selected_node_plus_key_ratio": 0.662240404291798
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 861,
+   "router": "flat64-p0.99",
+   "segments": 6,
+   "attended_frac": 0.8543719062828383,
+   "attention_mass": 0.9968839613720775,
+   "idealized_selected_node_plus_key_ratio": 0.8706320688844644
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 861,
+   "router": "oracle-p0.5",
+   "segments": 6,
+   "attended_frac": 0.006224161412532493,
+   "attention_mass": 0.6821699620978463,
+   "idealized_selected_node_plus_key_ratio": 0.006224161412532493
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 861,
+   "router": "oracle-p0.8",
+   "segments": 6,
+   "attended_frac": 0.032461993943919035,
+   "attention_mass": 0.8424473194228042,
+   "idealized_selected_node_plus_key_ratio": 0.032461993943919035
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 861,
+   "router": "oracle-p0.9",
+   "segments": 6,
+   "attended_frac": 0.07176689273270284,
+   "attention_mass": 0.9133971538172946,
+   "idealized_selected_node_plus_key_ratio": 0.07176689273270284
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 861,
+   "router": "oracle-p0.95",
+   "segments": 6,
+   "attended_frac": 0.12796409214092141,
+   "attention_mass": 0.9541356485514414,
+   "idealized_selected_node_plus_key_ratio": 0.12796409214092141
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 861,
+   "router": "tree16x2-p0.9",
+   "segments": 6,
+   "attended_frac": 0.38835915463746473,
+   "attention_mass": 0.9461193942531411,
+   "idealized_selected_node_plus_key_ratio": 0.4392594436148443
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 861,
+   "router": "tree16x2-p0.95",
+   "segments": 6,
+   "attended_frac": 0.5136080346772856,
+   "attention_mass": 0.9711089884374469,
+   "idealized_selected_node_plus_key_ratio": 0.5720983007023948
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 861,
+   "router": "tree16x2-p0.99",
+   "segments": 6,
+   "attended_frac": 0.7444766778662685,
+   "attention_mass": 0.9937223193590485,
+   "idealized_selected_node_plus_key_ratio": 0.8103296450694099
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 861,
+   "router": "tree4x3-p0.9",
+   "segments": 6,
+   "attended_frac": 0.22498712391460648,
+   "attention_mass": 0.906902409923662,
+   "idealized_selected_node_plus_key_ratio": 0.3425483760577402
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 861,
+   "router": "tree4x3-p0.95",
+   "segments": 6,
+   "attended_frac": 0.30153934032962776,
+   "attention_mass": 0.9406371094075785,
+   "idealized_selected_node_plus_key_ratio": 0.4621447410264919
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 861,
+   "router": "tree4x3-p0.99",
+   "segments": 6,
+   "attended_frac": 0.525330025302804,
+   "attention_mass": 0.9835431503597647,
+   "idealized_selected_node_plus_key_ratio": 0.7694623326973066
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 861,
+   "router": "tree4x6-p0.9",
+   "segments": 6,
+   "attended_frac": 0.22078381657541066,
+   "attention_mass": 0.90277934850504,
+   "idealized_selected_node_plus_key_ratio": 0.3329967403628118
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 861,
+   "router": "tree4x6-p0.95",
+   "segments": 6,
+   "attended_frac": 0.29872604529616725,
+   "attention_mass": 0.9389667057465496,
+   "idealized_selected_node_plus_key_ratio": 0.45965291604446656
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 861,
+   "router": "tree4x6-p0.99",
+   "segments": 6,
+   "attended_frac": 0.5247907852165257,
+   "attention_mass": 0.9834430683293336,
+   "idealized_selected_node_plus_key_ratio": 0.7749039910679719
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 861,
+   "router": "tree4x6-p0.999",
+   "segments": 6,
+   "attended_frac": 0.7873713255627455,
+   "attention_mass": 0.9974331310728476,
+   "idealized_selected_node_plus_key_ratio": 1.099592199684752
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1024,
+   "router": "flat64-p0.9",
+   "segments": 6,
+   "attended_frac": 0.4995204380580357,
+   "attention_mass": 0.9624936856063349,
+   "idealized_selected_node_plus_key_ratio": 0.5151454380580357
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1024,
+   "router": "flat64-p0.95",
+   "segments": 6,
+   "attended_frac": 0.6212506975446429,
+   "attention_mass": 0.9800319280253634,
+   "idealized_selected_node_plus_key_ratio": 0.6368756975446428
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1024,
+   "router": "flat64-p0.99",
+   "segments": 6,
+   "attended_frac": 0.8305678594680059,
+   "attention_mass": 0.9962550501472184,
+   "idealized_selected_node_plus_key_ratio": 0.8461928594680059
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1024,
+   "router": "oracle-p0.5",
+   "segments": 6,
+   "attended_frac": 0.006789071219308036,
+   "attention_mass": 0.6613916378202183,
+   "idealized_selected_node_plus_key_ratio": 0.006789071219308036
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1024,
+   "router": "oracle-p0.8",
+   "segments": 6,
+   "attended_frac": 0.035189674014136904,
+   "attention_mass": 0.8390957876773817,
+   "idealized_selected_node_plus_key_ratio": 0.035189674014136904
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1024,
+   "router": "oracle-p0.9",
+   "segments": 6,
+   "attended_frac": 0.07442401704334077,
+   "attention_mass": 0.9127996952405998,
+   "idealized_selected_node_plus_key_ratio": 0.07442401704334077
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1024,
+   "router": "oracle-p0.95",
+   "segments": 6,
+   "attended_frac": 0.12837146577380953,
+   "attention_mass": 0.9540454300918749,
+   "idealized_selected_node_plus_key_ratio": 0.12837146577380953
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1024,
+   "router": "tree16x2-p0.9",
+   "segments": 6,
+   "attended_frac": 0.35131981259300593,
+   "attention_mass": 0.9426142795543586,
+   "idealized_selected_node_plus_key_ratio": 0.399566650390625
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1024,
+   "router": "tree16x2-p0.95",
+   "segments": 6,
+   "attended_frac": 0.47526477632068453,
+   "attention_mass": 0.9687123644564832,
+   "idealized_selected_node_plus_key_ratio": 0.5308707101004464
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1024,
+   "router": "tree16x2-p0.99",
+   "segments": 6,
+   "attended_frac": 0.7095467703683036,
+   "attention_mass": 0.9924992523821337,
+   "idealized_selected_node_plus_key_ratio": 0.7737208775111607
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1024,
+   "router": "tree4x3-p0.9",
+   "segments": 6,
+   "attended_frac": 0.2062930152529762,
+   "attention_mass": 0.9047998451139955,
+   "idealized_selected_node_plus_key_ratio": 0.3198954264322917
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1024,
+   "router": "tree4x3-p0.95",
+   "segments": 6,
+   "attended_frac": 0.28409394763764884,
+   "attention_mass": 0.9407973855489954,
+   "idealized_selected_node_plus_key_ratio": 0.4382120768229167
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1024,
+   "router": "tree4x3-p0.99",
+   "segments": 6,
+   "attended_frac": 0.5086713518415179,
+   "attention_mass": 0.984153301100291,
+   "idealized_selected_node_plus_key_ratio": 0.7421671549479167
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1024,
+   "router": "tree4x6-p0.9",
+   "segments": 6,
+   "attended_frac": 0.20008050827752977,
+   "attention_mass": 0.8992188575877142,
+   "idealized_selected_node_plus_key_ratio": 0.306243896484375
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1024,
+   "router": "tree4x6-p0.95",
+   "segments": 6,
+   "attended_frac": 0.2791864304315476,
+   "attention_mass": 0.9380889735406354,
+   "idealized_selected_node_plus_key_ratio": 0.43113781156994047
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1024,
+   "router": "tree4x6-p0.99",
+   "segments": 6,
+   "attended_frac": 0.5070975167410714,
+   "attention_mass": 0.983787911411907,
+   "idealized_selected_node_plus_key_ratio": 0.7447785877046131
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1024,
+   "router": "tree4x6-p0.999",
+   "segments": 6,
+   "attended_frac": 0.77825927734375,
+   "attention_mass": 0.9981638956149774,
+   "idealized_selected_node_plus_key_ratio": 1.0822492327008928
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1218,
+   "router": "flat64-p0.9",
+   "segments": 6,
+   "attended_frac": 0.41168619028070996,
+   "attention_mass": 0.9447341487560021,
+   "idealized_selected_node_plus_key_ratio": 0.42810655152865745
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1218,
+   "router": "flat64-p0.95",
+   "segments": 6,
+   "attended_frac": 0.5216054812729689,
+   "attention_mass": 0.968087308882137,
+   "idealized_selected_node_plus_key_ratio": 0.5380258425209165
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1218,
+   "router": "flat64-p0.99",
+   "segments": 6,
+   "attended_frac": 0.7282906697161624,
+   "attention_mass": 0.990951120734237,
+   "idealized_selected_node_plus_key_ratio": 0.7447110309641098
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1218,
+   "router": "oracle-p0.5",
+   "segments": 6,
+   "attended_frac": 0.006344563687543983,
+   "attention_mass": 0.6490839926437253,
+   "idealized_selected_node_plus_key_ratio": 0.006344563687543983
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1218,
+   "router": "oracle-p0.8",
+   "segments": 6,
+   "attended_frac": 0.03565900138791149,
+   "attention_mass": 0.8344600389578513,
+   "idealized_selected_node_plus_key_ratio": 0.03565900138791149
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1218,
+   "router": "oracle-p0.9",
+   "segments": 6,
+   "attended_frac": 0.07799885399562123,
+   "attention_mass": 0.9114389051683247,
+   "idealized_selected_node_plus_key_ratio": 0.07799885399562123
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1218,
+   "router": "oracle-p0.95",
+   "segments": 6,
+   "attended_frac": 0.13617445900774103,
+   "attention_mass": 0.9534513703103931,
+   "idealized_selected_node_plus_key_ratio": 0.13617445900774103
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1218,
+   "router": "tree16x2-p0.9",
+   "segments": 6,
+   "attended_frac": 0.3056465761591993,
+   "attention_mass": 0.9256458228476168,
+   "idealized_selected_node_plus_key_ratio": 0.35198828094456175
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1218,
+   "router": "tree16x2-p0.95",
+   "segments": 6,
+   "attended_frac": 0.42332155563374774,
+   "attention_mass": 0.9583698811627637,
+   "idealized_selected_node_plus_key_ratio": 0.477937888517476
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1218,
+   "router": "tree16x2-p0.99",
+   "segments": 6,
+   "attended_frac": 0.6489561341778091,
+   "attention_mass": 0.9892404258716851,
+   "idealized_selected_node_plus_key_ratio": 0.7131271869379936
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1218,
+   "router": "tree4x3-p0.9",
+   "segments": 6,
+   "attended_frac": 0.1824156746031746,
+   "attention_mass": 0.8846634685233723,
+   "idealized_selected_node_plus_key_ratio": 0.2778461959496442
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1218,
+   "router": "tree4x3-p0.95",
+   "segments": 6,
+   "attended_frac": 0.25950829325983266,
+   "attention_mass": 0.9253075203464721,
+   "idealized_selected_node_plus_key_ratio": 0.3912853575338181
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1218,
+   "router": "tree4x3-p0.99",
+   "segments": 6,
+   "attended_frac": 0.4766993363437329,
+   "attention_mass": 0.9772812183641474,
+   "idealized_selected_node_plus_key_ratio": 0.6844214877042771
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1218,
+   "router": "tree4x6-p0.9",
+   "segments": 6,
+   "attended_frac": 0.17400879173508485,
+   "attention_mass": 0.8781904095390235,
+   "idealized_selected_node_plus_key_ratio": 0.2612129442294159
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1218,
+   "router": "tree4x6-p0.95",
+   "segments": 6,
+   "attended_frac": 0.25400673918992883,
+   "attention_mass": 0.9227953953488308,
+   "idealized_selected_node_plus_key_ratio": 0.38402539535929314
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1218,
+   "router": "tree4x6-p0.99",
+   "segments": 6,
+   "attended_frac": 0.47535113183204314,
+   "attention_mass": 0.977368050690053,
+   "idealized_selected_node_plus_key_ratio": 0.6878448398037376
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1218,
+   "router": "tree4x6-p0.999",
+   "segments": 6,
+   "attended_frac": 0.7409926254984752,
+   "attention_mass": 0.9964542894047641,
+   "idealized_selected_node_plus_key_ratio": 1.0265422799867074
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1448,
+   "router": "flat64-p0.9",
+   "segments": 6,
+   "attended_frac": 0.3793399352144173,
+   "attention_mass": 0.9574305863962287,
+   "idealized_selected_node_plus_key_ratio": 0.39522391311496974
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1448,
+   "router": "flat64-p0.95",
+   "segments": 6,
+   "attended_frac": 0.4998078219547487,
+   "attention_mass": 0.9756726899317333,
+   "idealized_selected_node_plus_key_ratio": 0.5156917998553012
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1448,
+   "router": "flat64-p0.99",
+   "segments": 6,
+   "attended_frac": 0.7311264716521968,
+   "attention_mass": 0.9942976434360302,
+   "idealized_selected_node_plus_key_ratio": 0.7470104495527493
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1448,
+   "router": "oracle-p0.5",
+   "segments": 6,
+   "attended_frac": 0.005682612305972112,
+   "attention_mass": 0.6559777833920505,
+   "idealized_selected_node_plus_key_ratio": 0.005682612305972112
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1448,
+   "router": "oracle-p0.8",
+   "segments": 6,
+   "attended_frac": 0.030476920136148382,
+   "attention_mass": 0.8355396996429634,
+   "idealized_selected_node_plus_key_ratio": 0.030476920136148382
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1448,
+   "router": "oracle-p0.9",
+   "segments": 6,
+   "attended_frac": 0.06575520833333334,
+   "attention_mass": 0.9114589802477331,
+   "idealized_selected_node_plus_key_ratio": 0.06575520833333334
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1448,
+   "router": "oracle-p0.95",
+   "segments": 6,
+   "attended_frac": 0.11524131190805051,
+   "attention_mass": 0.9533637102826366,
+   "idealized_selected_node_plus_key_ratio": 0.11524131190805051
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1448,
+   "router": "tree16x2-p0.9",
+   "segments": 6,
+   "attended_frac": 0.24594987338858196,
+   "attention_mass": 0.9347628667462795,
+   "idealized_selected_node_plus_key_ratio": 0.2861181679163378
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1448,
+   "router": "tree16x2-p0.95",
+   "segments": 6,
+   "attended_frac": 0.3522078893712181,
+   "attention_mass": 0.9627877589803011,
+   "idealized_selected_node_plus_key_ratio": 0.40124180931005
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1448,
+   "router": "tree16x2-p0.99",
+   "segments": 6,
+   "attended_frac": 0.5906093791107603,
+   "attention_mass": 0.9905979009345174,
+   "idealized_selected_node_plus_key_ratio": 0.6514881980071034
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1448,
+   "router": "tree4x3-p0.9",
+   "segments": 6,
+   "attended_frac": 0.14951143613522758,
+   "attention_mass": 0.9061463617143177,
+   "idealized_selected_node_plus_key_ratio": 0.2341453112667719
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1448,
+   "router": "tree4x3-p0.95",
+   "segments": 6,
+   "attended_frac": 0.21438540022362537,
+   "attention_mass": 0.9380470606542769,
+   "idealized_selected_node_plus_key_ratio": 0.33324495198631937
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1448,
+   "router": "tree4x3-p0.99",
+   "segments": 6,
+   "attended_frac": 0.41822772790055246,
+   "attention_mass": 0.9813927059017477,
+   "idealized_selected_node_plus_key_ratio": 0.6148507896770586
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1448,
+   "router": "tree4x6-p0.9",
+   "segments": 6,
+   "attended_frac": 0.1402529761904762,
+   "attention_mass": 0.897390157871303,
+   "idealized_selected_node_plus_key_ratio": 0.21270564078531964
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1448,
+   "router": "tree4x6-p0.95",
+   "segments": 6,
+   "attended_frac": 0.20605288904235727,
+   "attention_mass": 0.9335571094970441,
+   "idealized_selected_node_plus_key_ratio": 0.318191090749145
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1448,
+   "router": "tree4x6-p0.99",
+   "segments": 6,
+   "attended_frac": 0.41476441232570377,
+   "attention_mass": 0.9806439759475845,
+   "idealized_selected_node_plus_key_ratio": 0.613357812911076
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1448,
+   "router": "tree4x6-p0.999",
+   "segments": 6,
+   "attended_frac": 0.6978971405551171,
+   "attention_mass": 0.997418100080852,
+   "idealized_selected_node_plus_key_ratio": 0.9764736048079453
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1722,
+   "router": "flat64-p0.9",
+   "segments": 6,
+   "attended_frac": 0.417420652203971,
+   "attention_mass": 0.9579922679501276,
+   "idealized_selected_node_plus_key_ratio": 0.4331000947126818
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1722,
+   "router": "flat64-p0.95",
+   "segments": 6,
+   "attended_frac": 0.5405700389912063,
+   "attention_mass": 0.9763092762746272,
+   "idealized_selected_node_plus_key_ratio": 0.556249481499917
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1722,
+   "router": "flat64-p0.99",
+   "segments": 6,
+   "attended_frac": 0.7639813547370168,
+   "attention_mass": 0.9944293637582589,
+   "idealized_selected_node_plus_key_ratio": 0.7796607972457276
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1722,
+   "router": "oracle-p0.5",
+   "segments": 6,
+   "attended_frac": 0.004599959902660251,
+   "attention_mass": 0.6574163746000046,
+   "idealized_selected_node_plus_key_ratio": 0.004599959902660251
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1722,
+   "router": "oracle-p0.8",
+   "segments": 6,
+   "attended_frac": 0.026243233573917373,
+   "attention_mass": 0.8358823538403071,
+   "idealized_selected_node_plus_key_ratio": 0.026243233573917373
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1722,
+   "router": "oracle-p0.9",
+   "segments": 6,
+   "attended_frac": 0.05875664544272994,
+   "attention_mass": 0.9113267610026967,
+   "idealized_selected_node_plus_key_ratio": 0.05875664544272994
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1722,
+   "router": "oracle-p0.95",
+   "segments": 6,
+   "attended_frac": 0.10572821608318124,
+   "attention_mass": 0.9534115694862392,
+   "idealized_selected_node_plus_key_ratio": 0.10572821608318124
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1722,
+   "router": "tree16x2-p0.9",
+   "segments": 6,
+   "attended_frac": 0.2429898788783806,
+   "attention_mass": 0.9280985875742599,
+   "idealized_selected_node_plus_key_ratio": 0.2838926220894862
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1722,
+   "router": "tree16x2-p0.95",
+   "segments": 6,
+   "attended_frac": 0.3529347968862342,
+   "attention_mass": 0.9586560772288413,
+   "idealized_selected_node_plus_key_ratio": 0.40225452477739065
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1722,
+   "router": "tree16x2-p0.99",
+   "segments": 6,
+   "attended_frac": 0.5993826392345556,
+   "attention_mass": 0.9900041011472543,
+   "idealized_selected_node_plus_key_ratio": 0.660632189867817
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1722,
+   "router": "tree4x3-p0.9",
+   "segments": 6,
+   "attended_frac": 0.1346354598750069,
+   "attention_mass": 0.8961938846346346,
+   "idealized_selected_node_plus_key_ratio": 0.22297750400973398
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1722,
+   "router": "tree4x3-p0.95",
+   "segments": 6,
+   "attended_frac": 0.19848917717493503,
+   "attention_mass": 0.9320665032248057,
+   "idealized_selected_node_plus_key_ratio": 0.32243186908909904
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1722,
+   "router": "tree4x3-p0.99",
+   "segments": 6,
+   "attended_frac": 0.4009046962280847,
+   "attention_mass": 0.9791112092456647,
+   "idealized_selected_node_plus_key_ratio": 0.6029291798020021
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1722,
+   "router": "tree4x6-p0.9",
+   "segments": 6,
+   "attended_frac": 0.125531462585034,
+   "attention_mass": 0.8856337879329831,
+   "idealized_selected_node_plus_key_ratio": 0.20062863814224877
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1722,
+   "router": "tree4x6-p0.95",
+   "segments": 6,
+   "attended_frac": 0.18991793872020352,
+   "attention_mass": 0.9261754575584615,
+   "idealized_selected_node_plus_key_ratio": 0.30552638992588904
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1722,
+   "router": "tree4x6-p0.99",
+   "segments": 6,
+   "attended_frac": 0.3981212149493944,
+   "attention_mass": 0.9784079224669507,
+   "idealized_selected_node_plus_key_ratio": 0.6017368456528953
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 1722,
+   "router": "tree4x6-p0.999",
+   "segments": 6,
+   "attended_frac": 0.6841098736242465,
+   "attention_mass": 0.9972258265396314,
+   "idealized_selected_node_plus_key_ratio": 0.9670188578480172
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2048,
+   "router": "flat64-p0.9",
+   "segments": 6,
+   "attended_frac": 0.3897007533482143,
+   "attention_mass": 0.9612990627287045,
+   "idealized_selected_node_plus_key_ratio": 0.4053257533482143
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2048,
+   "router": "flat64-p0.95",
+   "segments": 6,
+   "attended_frac": 0.5212489536830357,
+   "attention_mass": 0.9785205279920428,
+   "idealized_selected_node_plus_key_ratio": 0.5368739536830357
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2048,
+   "router": "flat64-p0.99",
+   "segments": 6,
+   "attended_frac": 0.7563571021670387,
+   "attention_mass": 0.9950377373468309,
+   "idealized_selected_node_plus_key_ratio": 0.7719821021670387
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2048,
+   "router": "oracle-p0.5",
+   "segments": 6,
+   "attended_frac": 0.003962380545479911,
+   "attention_mass": 0.6740395654258984,
+   "idealized_selected_node_plus_key_ratio": 0.003962380545479911
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2048,
+   "router": "oracle-p0.8",
+   "segments": 6,
+   "attended_frac": 0.023499625069754462,
+   "attention_mass": 0.8426575120538473,
+   "idealized_selected_node_plus_key_ratio": 0.023499625069754462
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2048,
+   "router": "oracle-p0.9",
+   "segments": 6,
+   "attended_frac": 0.05301466442289807,
+   "attention_mass": 0.9135283855721354,
+   "idealized_selected_node_plus_key_ratio": 0.05301466442289807
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2048,
+   "router": "oracle-p0.95",
+   "segments": 6,
+   "attended_frac": 0.09636470249720983,
+   "attention_mass": 0.9541997237663185,
+   "idealized_selected_node_plus_key_ratio": 0.09636470249720983
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2048,
+   "router": "tree16x2-p0.9",
+   "segments": 6,
+   "attended_frac": 0.22757611955915177,
+   "attention_mass": 0.9358845816570378,
+   "idealized_selected_node_plus_key_ratio": 0.2671443394252232
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2048,
+   "router": "tree16x2-p0.95",
+   "segments": 6,
+   "attended_frac": 0.3468497140066964,
+   "attention_mass": 0.9640695134266501,
+   "idealized_selected_node_plus_key_ratio": 0.3949366978236607
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2048,
+   "router": "tree16x2-p0.99",
+   "segments": 6,
+   "attended_frac": 0.6192416236514137,
+   "attention_mass": 0.9916781716580902,
+   "idealized_selected_node_plus_key_ratio": 0.6793641589936756
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2048,
+   "router": "tree4x3-p0.9",
+   "segments": 6,
+   "attended_frac": 0.11833554222470238,
+   "attention_mass": 0.9038314574531147,
+   "idealized_selected_node_plus_key_ratio": 0.20341346377418154
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2048,
+   "router": "tree4x3-p0.95",
+   "segments": 6,
+   "attended_frac": 0.18372017996651785,
+   "attention_mass": 0.9384105666207948,
+   "idealized_selected_node_plus_key_ratio": 0.30593072800409227
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2048,
+   "router": "tree4x3-p0.99",
+   "segments": 6,
+   "attended_frac": 0.40289887927827384,
+   "attention_mass": 0.9821879508284231,
+   "idealized_selected_node_plus_key_ratio": 0.6081920805431548
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2048,
+   "router": "tree4x6-p0.9",
+   "segments": 6,
+   "attended_frac": 0.10802350725446429,
+   "attention_mass": 0.8934819110990724,
+   "idealized_selected_node_plus_key_ratio": 0.17758106050037203
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2048,
+   "router": "tree4x6-p0.95",
+   "segments": 6,
+   "attended_frac": 0.1719571068173363,
+   "attention_mass": 0.93149968824305,
+   "idealized_selected_node_plus_key_ratio": 0.28273809523809523
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2048,
+   "router": "tree4x6-p0.99",
+   "segments": 6,
+   "attended_frac": 0.3976411365327381,
+   "attention_mass": 0.9813617227066841,
+   "idealized_selected_node_plus_key_ratio": 0.6024932861328125
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2048,
+   "router": "tree4x6-p0.999",
+   "segments": 6,
+   "attended_frac": 0.7012169247581845,
+   "attention_mass": 0.9976057880779817,
+   "idealized_selected_node_plus_key_ratio": 0.98638916015625
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2435,
+   "router": "flat64-p0.9",
+   "segments": 6,
+   "attended_frac": 0.27466112985235164,
+   "attention_mass": 0.9427426174682166,
+   "idealized_selected_node_plus_key_ratio": 0.2906775569570744
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2435,
+   "router": "flat64-p0.95",
+   "segments": 6,
+   "attended_frac": 0.37777375452234285,
+   "attention_mass": 0.9645042818350097,
+   "idealized_selected_node_plus_key_ratio": 0.3937901816270656
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2435,
+   "router": "flat64-p0.99",
+   "segments": 6,
+   "attended_frac": 0.6038226019360516,
+   "attention_mass": 0.9900387646630406,
+   "idealized_selected_node_plus_key_ratio": 0.6198390290407744
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2435,
+   "router": "oracle-p0.5",
+   "segments": 6,
+   "attended_frac": 0.003943452380952381,
+   "attention_mass": 0.6532901823742403,
+   "idealized_selected_node_plus_key_ratio": 0.003943452380952381
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2435,
+   "router": "oracle-p0.8",
+   "segments": 6,
+   "attended_frac": 0.024484208467781363,
+   "attention_mass": 0.8347699153237045,
+   "idealized_selected_node_plus_key_ratio": 0.024484208467781363
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2435,
+   "router": "oracle-p0.9",
+   "segments": 6,
+   "attended_frac": 0.05629186222743718,
+   "attention_mass": 0.9111748777684712,
+   "idealized_selected_node_plus_key_ratio": 0.05629186222743718
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2435,
+   "router": "oracle-p0.95",
+   "segments": 6,
+   "attended_frac": 0.10247078810990515,
+   "attention_mass": 0.9534040915646723,
+   "idealized_selected_node_plus_key_ratio": 0.10247078810990515
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2435,
+   "router": "tree16x2-p0.9",
+   "segments": 6,
+   "attended_frac": 0.18223681798181285,
+   "attention_mass": 0.9199167533688957,
+   "idealized_selected_node_plus_key_ratio": 0.21719880585704507
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2435,
+   "router": "tree16x2-p0.95",
+   "segments": 6,
+   "attended_frac": 0.2781282084188912,
+   "attention_mass": 0.9510500193795278,
+   "idealized_selected_node_plus_key_ratio": 0.3217950950914247
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2435,
+   "router": "tree16x2-p0.99",
+   "segments": 6,
+   "attended_frac": 0.5215544636745869,
+   "attention_mass": 0.9872722919764263,
+   "idealized_selected_node_plus_key_ratio": 0.5786675283563117
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2435,
+   "router": "tree4x3-p0.9",
+   "segments": 6,
+   "attended_frac": 0.10234565977314951,
+   "attention_mass": 0.8903279606962488,
+   "idealized_selected_node_plus_key_ratio": 0.168417393908282
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2435,
+   "router": "tree4x3-p0.95",
+   "segments": 6,
+   "attended_frac": 0.15972517600469346,
+   "attention_mass": 0.9253166532698309,
+   "idealized_selected_node_plus_key_ratio": 0.2547683215996871
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2435,
+   "router": "tree4x3-p0.99",
+   "segments": 6,
+   "attended_frac": 0.3539523137283661,
+   "attention_mass": 0.9757276806714279,
+   "idealized_selected_node_plus_key_ratio": 0.521805484257358
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2435,
+   "router": "tree4x6-p0.9",
+   "segments": 6,
+   "attended_frac": 0.09066227877187837,
+   "attention_mass": 0.8770125006724682,
+   "idealized_selected_node_plus_key_ratio": 0.14128348978194974
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2435,
+   "router": "tree4x6-p0.95",
+   "segments": 6,
+   "attended_frac": 0.1462244548743522,
+   "attention_mass": 0.9164550386014438,
+   "idealized_selected_node_plus_key_ratio": 0.22989268602718294
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2435,
+   "router": "tree4x6-p0.99",
+   "segments": 6,
+   "attended_frac": 0.3464511831426616,
+   "attention_mass": 0.9742477304036063,
+   "idealized_selected_node_plus_key_ratio": 0.5127328395423878
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2435,
+   "router": "tree4x6-p0.999",
+   "segments": 6,
+   "attended_frac": 0.6402129473452626,
+   "attention_mass": 0.9962014672568157,
+   "idealized_selected_node_plus_key_ratio": 0.8945925919135621
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2896,
+   "router": "flat64-p0.9",
+   "segments": 6,
+   "attended_frac": 0.2811194833596422,
+   "attention_mass": 0.943305659373956,
+   "idealized_selected_node_plus_key_ratio": 0.2970034612601947
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2896,
+   "router": "flat64-p0.95",
+   "segments": 6,
+   "attended_frac": 0.39748020668902917,
+   "attention_mass": 0.9657918928811947,
+   "idealized_selected_node_plus_key_ratio": 0.4133641845895817
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2896,
+   "router": "flat64-p0.99",
+   "segments": 6,
+   "attended_frac": 0.6403768128453039,
+   "attention_mass": 0.9906822192881789,
+   "idealized_selected_node_plus_key_ratio": 0.6562607907458564
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2896,
+   "router": "oracle-p0.5",
+   "segments": 6,
+   "attended_frac": 0.0036232498437911076,
+   "attention_mass": 0.6450835003828008,
+   "idealized_selected_node_plus_key_ratio": 0.0036232498437911076
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2896,
+   "router": "oracle-p0.8",
+   "segments": 6,
+   "attended_frac": 0.022979535607405944,
+   "attention_mass": 0.8320417533894735,
+   "idealized_selected_node_plus_key_ratio": 0.022979535607405944
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2896,
+   "router": "oracle-p0.9",
+   "segments": 6,
+   "attended_frac": 0.05348715798474086,
+   "attention_mass": 0.9100219828431451,
+   "idealized_selected_node_plus_key_ratio": 0.05348715798474086
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2896,
+   "router": "oracle-p0.95",
+   "segments": 6,
+   "attended_frac": 0.0983693384553407,
+   "attention_mass": 0.9528587025900681,
+   "idealized_selected_node_plus_key_ratio": 0.0983693384553407
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2896,
+   "router": "tree16x2-p0.9",
+   "segments": 6,
+   "attended_frac": 0.17494984872402,
+   "attention_mass": 0.9195379759185016,
+   "idealized_selected_node_plus_key_ratio": 0.20468169355103918
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2896,
+   "router": "tree16x2-p0.95",
+   "segments": 6,
+   "attended_frac": 0.2788040976058932,
+   "attention_mass": 0.9509536448999175,
+   "idealized_selected_node_plus_key_ratio": 0.3173029095961589
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2896,
+   "router": "tree16x2-p0.99",
+   "segments": 6,
+   "attended_frac": 0.5439856493357011,
+   "attention_mass": 0.9873161723260724,
+   "idealized_selected_node_plus_key_ratio": 0.5974747342393449
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2896,
+   "router": "tree4x3-p0.9",
+   "segments": 6,
+   "attended_frac": 0.09060629604051565,
+   "attention_mass": 0.8887411068481881,
+   "idealized_selected_node_plus_key_ratio": 0.15879802909596158
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2896,
+   "router": "tree4x3-p0.95",
+   "segments": 6,
+   "attended_frac": 0.1479904548145225,
+   "attention_mass": 0.9253233841265596,
+   "idealized_selected_node_plus_key_ratio": 0.24820269850861615
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2896,
+   "router": "tree4x3-p0.99",
+   "segments": 6,
+   "attended_frac": 0.35125059606024733,
+   "attention_mass": 0.9765452937710852,
+   "idealized_selected_node_plus_key_ratio": 0.5304025410664956
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2896,
+   "router": "tree4x6-p0.9",
+   "segments": 6,
+   "attended_frac": 0.07814092919626414,
+   "attention_mass": 0.8734349342107418,
+   "idealized_selected_node_plus_key_ratio": 0.12632289405748487
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2896,
+   "router": "tree4x6-p0.95",
+   "segments": 6,
+   "attended_frac": 0.131042817679558,
+   "attention_mass": 0.913958876815048,
+   "idealized_selected_node_plus_key_ratio": 0.21360692498684558
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2896,
+   "router": "tree4x6-p0.99",
+   "segments": 6,
+   "attended_frac": 0.33747492436201,
+   "attention_mass": 0.9736036689996365,
+   "idealized_selected_node_plus_key_ratio": 0.509276059137398
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 2896,
+   "router": "tree4x6-p0.999",
+   "segments": 6,
+   "attended_frac": 0.6477545999408051,
+   "attention_mass": 0.9963392818878805,
+   "idealized_selected_node_plus_key_ratio": 0.91148248405025
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 3444,
+   "router": "flat64-p0.9",
+   "segments": 6,
+   "attended_frac": 0.3440468412974946,
+   "attention_mass": 0.9521874878555536,
+   "idealized_selected_node_plus_key_ratio": 0.3597262838062054
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 3444,
+   "router": "flat64-p0.95",
+   "segments": 6,
+   "attended_frac": 0.4700890264642442,
+   "attention_mass": 0.9733360786035302,
+   "idealized_selected_node_plus_key_ratio": 0.485768468972955
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 3444,
+   "router": "flat64-p0.99",
+   "segments": 6,
+   "attended_frac": 0.7040799043194513,
+   "attention_mass": 0.9934765180972005,
+   "idealized_selected_node_plus_key_ratio": 0.7197593468281621
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 3444,
+   "router": "oracle-p0.5",
+   "segments": 6,
+   "attended_frac": 0.003229823433438416,
+   "attention_mass": 0.6507443675904402,
+   "idealized_selected_node_plus_key_ratio": 0.003229823433438416
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 3444,
+   "router": "oracle-p0.8",
+   "segments": 6,
+   "attended_frac": 0.021507707503733202,
+   "attention_mass": 0.8343119860094572,
+   "idealized_selected_node_plus_key_ratio": 0.021507707503733202
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 3444,
+   "router": "oracle-p0.9",
+   "segments": 6,
+   "attended_frac": 0.05073372082572866,
+   "attention_mass": 0.911455369487937,
+   "idealized_selected_node_plus_key_ratio": 0.05073372082572866
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 3444,
+   "router": "oracle-p0.95",
+   "segments": 6,
+   "attended_frac": 0.09400266076959239,
+   "attention_mass": 0.9534634204492682,
+   "idealized_selected_node_plus_key_ratio": 0.09400266076959239
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 3444,
+   "router": "tree16x2-p0.9",
+   "segments": 6,
+   "attended_frac": 0.1582380157347492,
+   "attention_mass": 0.9100906818196,
+   "idealized_selected_node_plus_key_ratio": 0.19040662504839334
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 3444,
+   "router": "tree16x2-p0.95",
+   "segments": 6,
+   "attended_frac": 0.25210727075383,
+   "attention_mass": 0.9451637178703788,
+   "idealized_selected_node_plus_key_ratio": 0.29283890893755876
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 3444,
+   "router": "tree16x2-p0.99",
+   "segments": 6,
+   "attended_frac": 0.49570379472927384,
+   "attention_mass": 0.9855332694105094,
+   "idealized_selected_node_plus_key_ratio": 0.5504116026491898
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 3444,
+   "router": "tree4x3-p0.9",
+   "segments": 6,
+   "attended_frac": 0.08522931530335712,
+   "attention_mass": 0.8801439066134793,
+   "idealized_selected_node_plus_key_ratio": 0.15522877087827
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 3444,
+   "router": "tree4x3-p0.95",
+   "segments": 6,
+   "attended_frac": 0.14464640022675737,
+   "attention_mass": 0.921706469940199,
+   "idealized_selected_node_plus_key_ratio": 0.24615154115507992
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 3444,
+   "router": "tree4x3-p0.99",
+   "segments": 6,
+   "attended_frac": 0.34593331743266414,
+   "attention_mass": 0.9762869968212077,
+   "idealized_selected_node_plus_key_ratio": 0.5226799497746253
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 3444,
+   "router": "tree4x6-p0.9",
+   "segments": 6,
+   "attended_frac": 0.07234890907582545,
+   "attention_mass": 0.8618283579735795,
+   "idealized_selected_node_plus_key_ratio": 0.1203964754092694
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 3444,
+   "router": "tree4x6-p0.95",
+   "segments": 6,
+   "attended_frac": 0.12766681876002434,
+   "attention_mass": 0.9089224848430604,
+   "idealized_selected_node_plus_key_ratio": 0.21098189656960345
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 3444,
+   "router": "tree4x6-p0.99",
+   "segments": 6,
+   "attended_frac": 0.33398405093744815,
+   "attention_mass": 0.9739223941051889,
+   "idealized_selected_node_plus_key_ratio": 0.5043474071539185
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 3444,
+   "router": "tree4x6-p0.999",
+   "segments": 6,
+   "attended_frac": 0.6346030536198219,
+   "attention_mass": 0.9965659418985957,
+   "idealized_selected_node_plus_key_ratio": 0.892943343495935
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 4096,
+   "router": "flat64-p0.9",
+   "segments": 6,
+   "attended_frac": 0.3164603823707217,
+   "attention_mass": 0.9543930463980705,
+   "idealized_selected_node_plus_key_ratio": 0.3320853823707217
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 4096,
+   "router": "flat64-p0.95",
+   "segments": 6,
+   "attended_frac": 0.4399908156622024,
+   "attention_mass": 0.9744843648569215,
+   "idealized_selected_node_plus_key_ratio": 0.4556158156622024
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 4096,
+   "router": "flat64-p0.99",
+   "segments": 6,
+   "attended_frac": 0.6774266560872396,
+   "attention_mass": 0.99357490141743,
+   "idealized_selected_node_plus_key_ratio": 0.6930516560872396
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 4096,
+   "router": "oracle-p0.5",
+   "segments": 6,
+   "attended_frac": 0.002811613537016369,
+   "attention_mass": 0.6524349958635867,
+   "idealized_selected_node_plus_key_ratio": 0.002811613537016369
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 4096,
+   "router": "oracle-p0.8",
+   "segments": 6,
+   "attended_frac": 0.018944967360723586,
+   "attention_mass": 0.8346706660952241,
+   "idealized_selected_node_plus_key_ratio": 0.018944967360723586
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 4096,
+   "router": "oracle-p0.9",
+   "segments": 6,
+   "attended_frac": 0.04519962129138765,
+   "attention_mass": 0.9112134402883905,
+   "idealized_selected_node_plus_key_ratio": 0.04519962129138765
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 4096,
+   "router": "oracle-p0.95",
+   "segments": 6,
+   "attended_frac": 0.0848817371186756,
+   "attention_mass": 0.9533640379751367,
+   "idealized_selected_node_plus_key_ratio": 0.0848817371186756
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 4096,
+   "router": "tree16x2-p0.9",
+   "segments": 6,
+   "attended_frac": 0.1630310785202753,
+   "attention_mass": 0.920448928982729,
+   "idealized_selected_node_plus_key_ratio": 0.19454556419735863
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 4096,
+   "router": "tree16x2-p0.95",
+   "segments": 6,
+   "attended_frac": 0.2645754132952009,
+   "attention_mass": 0.9537628902388471,
+   "idealized_selected_node_plus_key_ratio": 0.3043993995303199
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 4096,
+   "router": "tree16x2-p0.99",
+   "segments": 6,
+   "attended_frac": 0.5202883765811012,
+   "attention_mass": 0.9885589492152489,
+   "idealized_selected_node_plus_key_ratio": 0.5737014043898809
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 4096,
+   "router": "tree4x3-p0.9",
+   "segments": 6,
+   "attended_frac": 0.07848176502046131,
+   "attention_mass": 0.8884984924280572,
+   "idealized_selected_node_plus_key_ratio": 0.14839644659133183
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 4096,
+   "router": "tree4x3-p0.95",
+   "segments": 6,
+   "attended_frac": 0.1367983136858259,
+   "attention_mass": 0.9287075625089485,
+   "idealized_selected_node_plus_key_ratio": 0.23895808628627233
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 4096,
+   "router": "tree4x3-p0.99",
+   "segments": 6,
+   "attended_frac": 0.3385503859747024,
+   "attention_mass": 0.9791707468130404,
+   "idealized_selected_node_plus_key_ratio": 0.5182397024972099
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 4096,
+   "router": "tree4x6-p0.9",
+   "segments": 6,
+   "attended_frac": 0.06493523007347471,
+   "attention_mass": 0.868782993598697,
+   "idealized_selected_node_plus_key_ratio": 0.11212012881324404
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 4096,
+   "router": "tree4x6-p0.95",
+   "segments": 6,
+   "attended_frac": 0.11917477562313988,
+   "attention_mass": 0.9161362476935166,
+   "idealized_selected_node_plus_key_ratio": 0.20158422560918898
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 4096,
+   "router": "tree4x6-p0.99",
+   "segments": 6,
+   "attended_frac": 0.3251949491954985,
+   "attention_mass": 0.9768007666848245,
+   "idealized_selected_node_plus_key_ratio": 0.4969580514090402
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 4096,
+   "router": "tree4x6-p0.999",
+   "segments": 6,
+   "attended_frac": 0.6296070643833706,
+   "attention_mass": 0.996766983376195,
+   "idealized_selected_node_plus_key_ratio": 0.890243893577939
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 4871,
+   "router": "flat64-p0.9",
+   "segments": 6,
+   "attended_frac": 0.2421813136053025,
+   "attention_mass": 0.9400699419368591,
+   "idealized_selected_node_plus_key_ratio": 0.2579891559374725
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 4871,
+   "router": "flat64-p0.95",
+   "segments": 6,
+   "attended_frac": 0.3426212502810609,
+   "attention_mass": 0.9641428281375695,
+   "idealized_selected_node_plus_key_ratio": 0.35842909261323086
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 4871,
+   "router": "flat64-p0.99",
+   "segments": 6,
+   "attended_frac": 0.5641377907147256,
+   "attention_mass": 0.9899835436649266,
+   "idealized_selected_node_plus_key_ratio": 0.5799456330468956
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 4871,
+   "router": "oracle-p0.5",
+   "segments": 6,
+   "attended_frac": 0.003117942927530281,
+   "attention_mass": 0.6451770028853345,
+   "idealized_selected_node_plus_key_ratio": 0.003117942927530281
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 4871,
+   "router": "oracle-p0.8",
+   "segments": 6,
+   "attended_frac": 0.020415789878874973,
+   "attention_mass": 0.833420286819871,
+   "idealized_selected_node_plus_key_ratio": 0.020415789878874973
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 4871,
+   "router": "oracle-p0.9",
+   "segments": 6,
+   "attended_frac": 0.04691257661964396,
+   "attention_mass": 0.9109269462171055,
+   "idealized_selected_node_plus_key_ratio": 0.04691257661964396
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 4871,
+   "router": "oracle-p0.95",
+   "segments": 6,
+   "attended_frac": 0.08646540568085169,
+   "attention_mass": 0.953491517719591,
+   "idealized_selected_node_plus_key_ratio": 0.08646540568085169
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 4871,
+   "router": "tree16x2-p0.9",
+   "segments": 6,
+   "attended_frac": 0.13613085156563137,
+   "attention_mass": 0.9076103735382536,
+   "idealized_selected_node_plus_key_ratio": 0.15839622070856674
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 4871,
+   "router": "tree16x2-p0.95",
+   "segments": 6,
+   "attended_frac": 0.22027506085579376,
+   "attention_mass": 0.9420590586738572,
+   "idealized_selected_node_plus_key_ratio": 0.24945582639235123
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 4871,
+   "router": "tree16x2-p0.99",
+   "segments": 6,
+   "attended_frac": 0.443800575686033,
+   "attention_mass": 0.9829984557415758,
+   "idealized_selected_node_plus_key_ratio": 0.4869824508021233
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 4871,
+   "router": "tree4x3-p0.9",
+   "segments": 6,
+   "attended_frac": 0.07054429886304758,
+   "attention_mass": 0.8799807357025289,
+   "idealized_selected_node_plus_key_ratio": 0.13010828176476913
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 4871,
+   "router": "tree4x3-p0.95",
+   "segments": 6,
+   "attended_frac": 0.12341773408706533,
+   "attention_mass": 0.920701751108503,
+   "idealized_selected_node_plus_key_ratio": 0.2104139477080095
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 4871,
+   "router": "tree4x3-p0.99",
+   "segments": 6,
+   "attended_frac": 0.30707651760663207,
+   "attention_mass": 0.9749159621119144,
+   "idealized_selected_node_plus_key_ratio": 0.46410615608900097
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 4871,
+   "router": "tree4x6-p0.9",
+   "segments": 6,
+   "attended_frac": 0.055748886754455426,
+   "attention_mass": 0.8579160351794035,
+   "idealized_selected_node_plus_key_ratio": 0.09104921865071218
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 4871,
+   "router": "tree4x6-p0.95",
+   "segments": 6,
+   "attended_frac": 0.10291441817950749,
+   "attention_mass": 0.903905578079589,
+   "idealized_selected_node_plus_key_ratio": 0.16637903750085542
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 4871,
+   "router": "tree4x6-p0.99",
+   "segments": 6,
+   "attended_frac": 0.28473721722829964,
+   "attention_mass": 0.9694761321214693,
+   "idealized_selected_node_plus_key_ratio": 0.42556949963828683
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 4871,
+   "router": "tree4x6-p0.999",
+   "segments": 6,
+   "attended_frac": 0.5751430050053279,
+   "attention_mass": 0.9954090069624639,
+   "idealized_selected_node_plus_key_ratio": 0.8079745377159281
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 5793,
+   "router": "flat64-p0.9",
+   "segments": 6,
+   "attended_frac": 0.23539069628369214,
+   "attention_mass": 0.9399746971737061,
+   "idealized_selected_node_plus_key_ratio": 0.251099310127987
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 5793,
+   "router": "flat64-p0.95",
+   "segments": 6,
+   "attended_frac": 0.3426540935077639,
+   "attention_mass": 0.9648441503134867,
+   "idealized_selected_node_plus_key_ratio": 0.3583627073520587
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 5793,
+   "router": "flat64-p0.99",
+   "segments": 6,
+   "attended_frac": 0.5744856143087306,
+   "attention_mass": 0.9904908783778194,
+   "idealized_selected_node_plus_key_ratio": 0.5901942281530255
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 5793,
+   "router": "oracle-p0.5",
+   "segments": 6,
+   "attended_frac": 0.002713789425661513,
+   "attention_mass": 0.6344730236257117,
+   "idealized_selected_node_plus_key_ratio": 0.002713789425661513
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 5793,
+   "router": "oracle-p0.8",
+   "segments": 6,
+   "attended_frac": 0.01882114240914733,
+   "attention_mass": 0.8297525248490274,
+   "idealized_selected_node_plus_key_ratio": 0.01882114240914733
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 5793,
+   "router": "oracle-p0.9",
+   "segments": 6,
+   "attended_frac": 0.04410090842395995,
+   "attention_mass": 0.9093936416098759,
+   "idealized_selected_node_plus_key_ratio": 0.04410090842395995
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 5793,
+   "router": "oracle-p0.95",
+   "segments": 6,
+   "attended_frac": 0.08184613716883266,
+   "attention_mass": 0.9528446959863816,
+   "idealized_selected_node_plus_key_ratio": 0.08184613716883266
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 5793,
+   "router": "tree16x2-p0.9",
+   "segments": 6,
+   "attended_frac": 0.11065791379990629,
+   "attention_mass": 0.8988205636463438,
+   "idealized_selected_node_plus_key_ratio": 0.13684343224170387
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 5793,
+   "router": "tree16x2-p0.95",
+   "segments": 6,
+   "attended_frac": 0.1866752926356111,
+   "attention_mass": 0.9365186419454403,
+   "idealized_selected_node_plus_key_ratio": 0.22085158452730305
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 5793,
+   "router": "tree16x2-p0.99",
+   "segments": 6,
+   "attended_frac": 0.40551166792023213,
+   "attention_mass": 0.9812410661778856,
+   "idealized_selected_node_plus_key_ratio": 0.45424659430922376
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 5793,
+   "router": "tree4x3-p0.9",
+   "segments": 6,
+   "attended_frac": 0.056608884491134624,
+   "attention_mass": 0.8679229225048662,
+   "idealized_selected_node_plus_key_ratio": 0.11007544254971106
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 5793,
+   "router": "tree4x3-p0.95",
+   "segments": 6,
+   "attended_frac": 0.10095016666255661,
+   "attention_mass": 0.9109237416220518,
+   "idealized_selected_node_plus_key_ratio": 0.17928953149531865
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 5793,
+   "router": "tree4x3-p0.99",
+   "segments": 6,
+   "attended_frac": 0.26735558823045874,
+   "attention_mass": 0.9700162804081283,
+   "idealized_selected_node_plus_key_ratio": 0.41281734729106556
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 5793,
+   "router": "tree4x6-p0.9",
+   "segments": 6,
+   "attended_frac": 0.04385578243035519,
+   "attention_mass": 0.844231329040624,
+   "idealized_selected_node_plus_key_ratio": 0.07462779637575728
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 5793,
+   "router": "tree4x6-p0.95",
+   "segments": 6,
+   "attended_frac": 0.08293356668146284,
+   "attention_mass": 0.8936063927359923,
+   "idealized_selected_node_plus_key_ratio": 0.13988576884663756
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 5793,
+   "router": "tree4x6-p0.99",
+   "segments": 6,
+   "attended_frac": 0.251159548058823,
+   "attention_mass": 0.9660156072322501,
+   "idealized_selected_node_plus_key_ratio": 0.38563090306034375
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 5793,
+   "router": "tree4x6-p0.999",
+   "segments": 6,
+   "attended_frac": 0.540187690603602,
+   "attention_mass": 0.9942135831723655,
+   "idealized_selected_node_plus_key_ratio": 0.7680365080392592
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 6889,
+   "router": "flat64-p0.9",
+   "segments": 6,
+   "attended_frac": 0.26811549122479594,
+   "attention_mass": 0.946449089861874,
+   "idealized_selected_node_plus_key_ratio": 0.2837926577221105
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 6889,
+   "router": "flat64-p0.95",
+   "segments": 6,
+   "attended_frac": 0.3781659015580394,
+   "attention_mass": 0.9688821245716619,
+   "idealized_selected_node_plus_key_ratio": 0.39384306805535396
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 6889,
+   "router": "flat64-p0.99",
+   "segments": 6,
+   "attended_frac": 0.6064100960641188,
+   "attention_mass": 0.9914138189383915,
+   "idealized_selected_node_plus_key_ratio": 0.6220872625614333
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 6889,
+   "router": "oracle-p0.5",
+   "segments": 6,
+   "attended_frac": 0.0023406340508332815,
+   "attention_mass": 0.6489942307761383,
+   "idealized_selected_node_plus_key_ratio": 0.0023406340508332815
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 6889,
+   "router": "oracle-p0.8",
+   "segments": 6,
+   "attended_frac": 0.01703122731891421,
+   "attention_mass": 0.833820194759894,
+   "idealized_selected_node_plus_key_ratio": 0.01703122731891421
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 6889,
+   "router": "oracle-p0.9",
+   "segments": 6,
+   "attended_frac": 0.04118247948765803,
+   "attention_mass": 0.9108549814360838,
+   "idealized_selected_node_plus_key_ratio": 0.04118247948765803
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 6889,
+   "router": "oracle-p0.95",
+   "segments": 6,
+   "attended_frac": 0.07768838909856293,
+   "attention_mass": 0.953226984722451,
+   "idealized_selected_node_plus_key_ratio": 0.07768838909856293
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 6889,
+   "router": "tree16x2-p0.9",
+   "segments": 6,
+   "attended_frac": 0.13985497713746553,
+   "attention_mass": 0.9143873730652212,
+   "idealized_selected_node_plus_key_ratio": 0.16791536844451818
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 6889,
+   "router": "tree16x2-p0.95",
+   "segments": 6,
+   "attended_frac": 0.23068435532145795,
+   "attention_mass": 0.9487780420819208,
+   "idealized_selected_node_plus_key_ratio": 0.26656615705507053
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 6889,
+   "router": "tree16x2-p0.99",
+   "segments": 6,
+   "attended_frac": 0.46374477038964806,
+   "attention_mass": 0.9863093192467377,
+   "idealized_selected_node_plus_key_ratio": 0.5133615896460195
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 6889,
+   "router": "tree4x3-p0.9",
+   "segments": 6,
+   "attended_frac": 0.05829379264044128,
+   "attention_mass": 0.875047839343703,
+   "idealized_selected_node_plus_key_ratio": 0.12103777632042802
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 6889,
+   "router": "tree4x3-p0.95",
+   "segments": 6,
+   "attended_frac": 0.10801186674408478,
+   "attention_mass": 0.9183083420918723,
+   "idealized_selected_node_plus_key_ratio": 0.1993781926328377
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 6889,
+   "router": "tree4x3-p0.99",
+   "segments": 6,
+   "attended_frac": 0.2843641130788213,
+   "attention_mass": 0.9747833218314641,
+   "idealized_selected_node_plus_key_ratio": 0.4466912940056266
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 6889,
+   "router": "tree4x6-p0.9",
+   "segments": 6,
+   "attended_frac": 0.04416455624563659,
+   "attention_mass": 0.8500653250666801,
+   "idealized_selected_node_plus_key_ratio": 0.08118959270818213
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 6889,
+   "router": "tree4x6-p0.95",
+   "segments": 6,
+   "attended_frac": 0.0881592743607822,
+   "attention_mass": 0.9006455319246188,
+   "idealized_selected_node_plus_key_ratio": 0.15527870950238132
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 6889,
+   "router": "tree4x6-p0.99",
+   "segments": 6,
+   "attended_frac": 0.26764707280066913,
+   "attention_mass": 0.9706109451529171,
+   "idealized_selected_node_plus_key_ratio": 0.41760263947355686
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 6889,
+   "router": "tree4x6-p0.999",
+   "segments": 6,
+   "attended_frac": 0.5559159508083971,
+   "attention_mass": 0.9956307875968161,
+   "idealized_selected_node_plus_key_ratio": 0.7972825035080079
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 8192,
+   "router": "flat64-p0.9",
+   "segments": 6,
+   "attended_frac": 0.2331584748767671,
+   "attention_mass": 0.9463310253673366,
+   "idealized_selected_node_plus_key_ratio": 0.2487834748767671
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 8192,
+   "router": "flat64-p0.95",
+   "segments": 6,
+   "attended_frac": 0.3374682835170201,
+   "attention_mass": 0.9694275206753186,
+   "idealized_selected_node_plus_key_ratio": 0.3530932835170201
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 8192,
+   "router": "flat64-p0.99",
+   "segments": 6,
+   "attended_frac": 0.5640722002301898,
+   "attention_mass": 0.9918307485280647,
+   "idealized_selected_node_plus_key_ratio": 0.5796972002301897
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 8192,
+   "router": "oracle-p0.5",
+   "segments": 6,
+   "attended_frac": 0.0023021243867420013,
+   "attention_mass": 0.6278679807271277,
+   "idealized_selected_node_plus_key_ratio": 0.0023021243867420013
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 8192,
+   "router": "oracle-p0.8",
+   "segments": 6,
+   "attended_frac": 0.01586060296921503,
+   "attention_mass": 0.8279337603598833,
+   "idealized_selected_node_plus_key_ratio": 0.01586060296921503
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 8192,
+   "router": "oracle-p0.9",
+   "segments": 6,
+   "attended_frac": 0.03817907969156901,
+   "attention_mass": 0.9089618544981238,
+   "idealized_selected_node_plus_key_ratio": 0.03817907969156901
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 8192,
+   "router": "oracle-p0.95",
+   "segments": 6,
+   "attended_frac": 0.0723295665922619,
+   "attention_mass": 0.9526308014146274,
+   "idealized_selected_node_plus_key_ratio": 0.0723295665922619
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 8192,
+   "router": "tree16x2-p0.9",
+   "segments": 6,
+   "attended_frac": 0.11743836175827753,
+   "attention_mass": 0.9108192793514934,
+   "idealized_selected_node_plus_key_ratio": 0.141837892078218
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 8192,
+   "router": "tree16x2-p0.95",
+   "segments": 6,
+   "attended_frac": 0.20026942661830358,
+   "attention_mass": 0.9472280875336201,
+   "idealized_selected_node_plus_key_ratio": 0.23221842447916666
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 8192,
+   "router": "tree16x2-p0.99",
+   "segments": 6,
+   "attended_frac": 0.425375257219587,
+   "attention_mass": 0.9858767277161989,
+   "idealized_selected_node_plus_key_ratio": 0.47142192295619423
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 8192,
+   "router": "tree4x3-p0.9",
+   "segments": 6,
+   "attended_frac": 0.05168842134021577,
+   "attention_mass": 0.8738931132746595,
+   "idealized_selected_node_plus_key_ratio": 0.10773831322079613
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 8192,
+   "router": "tree4x3-p0.95",
+   "segments": 6,
+   "attended_frac": 0.09917104811895461,
+   "attention_mass": 0.9195731197860801,
+   "idealized_selected_node_plus_key_ratio": 0.18152781895228795
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 8192,
+   "router": "tree4x3-p0.99",
+   "segments": 6,
+   "attended_frac": 0.2718696594238281,
+   "attention_mass": 0.9761226606289191,
+   "idealized_selected_node_plus_key_ratio": 0.42277545020693824
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 8192,
+   "router": "tree4x6-p0.9",
+   "segments": 6,
+   "attended_frac": 0.03767376854306176,
+   "attention_mass": 0.8475511776826655,
+   "idealized_selected_node_plus_key_ratio": 0.06846891130719866
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 8192,
+   "router": "tree4x6-p0.95",
+   "segments": 6,
+   "attended_frac": 0.07824125744047619,
+   "attention_mass": 0.9003494686136643,
+   "idealized_selected_node_plus_key_ratio": 0.13570440383184523
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 8192,
+   "router": "tree4x6-p0.99",
+   "segments": 6,
+   "attended_frac": 0.2515286036900112,
+   "attention_mass": 0.9713074561607624,
+   "idealized_selected_node_plus_key_ratio": 0.3871167500813802
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 8192,
+   "router": "tree4x6-p0.999",
+   "segments": 6,
+   "attended_frac": 0.541212899344308,
+   "attention_mass": 0.9958413994117152,
+   "idealized_selected_node_plus_key_ratio": 0.7699083600725447
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 9742,
+   "router": "flat64-p0.9",
+   "segments": 6,
+   "attended_frac": 0.15694043219833612,
+   "attention_mass": 0.9391570749382178,
+   "idealized_selected_node_plus_key_ratio": 0.17264562620367382
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 9742,
+   "router": "flat64-p0.95",
+   "segments": 6,
+   "attended_frac": 0.24087819920618628,
+   "attention_mass": 0.9639287854633516,
+   "idealized_selected_node_plus_key_ratio": 0.25658339321152396
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 9742,
+   "router": "flat64-p0.99",
+   "segments": 6,
+   "attended_frac": 0.4506702996842342,
+   "attention_mass": 0.99012522942697,
+   "idealized_selected_node_plus_key_ratio": 0.46637549368957193
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 9742,
+   "router": "oracle-p0.5",
+   "segments": 6,
+   "attended_frac": 0.0017799250422813346,
+   "attention_mass": 0.6357566558622888,
+   "idealized_selected_node_plus_key_ratio": 0.0017799250422813346
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 9742,
+   "router": "oracle-p0.8",
+   "segments": 6,
+   "attended_frac": 0.012697384178471225,
+   "attention_mass": 0.8305942224604743,
+   "idealized_selected_node_plus_key_ratio": 0.012697384178471225
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 9742,
+   "router": "oracle-p0.9",
+   "segments": 6,
+   "attended_frac": 0.03141378670899688,
+   "attention_mass": 0.9096200345305815,
+   "idealized_selected_node_plus_key_ratio": 0.03141378670899688
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 9742,
+   "router": "oracle-p0.95",
+   "segments": 6,
+   "attended_frac": 0.06088542735920072,
+   "attention_mass": 0.9530464261548505,
+   "idealized_selected_node_plus_key_ratio": 0.06088542735920072
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 9742,
+   "router": "tree16x2-p0.9",
+   "segments": 6,
+   "attended_frac": 0.0791454496241116,
+   "attention_mass": 0.9031046273829859,
+   "idealized_selected_node_plus_key_ratio": 0.09451871682259436
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 9742,
+   "router": "tree16x2-p0.95",
+   "segments": 6,
+   "attended_frac": 0.1404436087974504,
+   "attention_mass": 0.939598381219964,
+   "idealized_selected_node_plus_key_ratio": 0.16161971422217009
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 9742,
+   "router": "tree16x2-p0.99",
+   "segments": 6,
+   "attended_frac": 0.3319664456061628,
+   "attention_mass": 0.9824621307752317,
+   "idealized_selected_node_plus_key_ratio": 0.3667926781803873
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 9742,
+   "router": "tree4x3-p0.9",
+   "segments": 6,
+   "attended_frac": 0.03804357788075197,
+   "attention_mass": 0.8746144578880852,
+   "idealized_selected_node_plus_key_ratio": 0.08157441148292616
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 9742,
+   "router": "tree4x3-p0.95",
+   "segments": 6,
+   "attended_frac": 0.07297486460196889,
+   "attention_mass": 0.9181764665769324,
+   "idealized_selected_node_plus_key_ratio": 0.13725983041030002
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 9742,
+   "router": "tree4x3-p0.99",
+   "segments": 6,
+   "attended_frac": 0.21488403794077682,
+   "attention_mass": 0.9751873349194371,
+   "idealized_selected_node_plus_key_ratio": 0.33988827676677325
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 9742,
+   "router": "tree4x6-p0.9",
+   "segments": 6,
+   "attended_frac": 0.026588666158313047,
+   "attention_mass": 0.8447221998857068,
+   "idealized_selected_node_plus_key_ratio": 0.044826539602702095
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 9742,
+   "router": "tree4x6-p0.95",
+   "segments": 6,
+   "attended_frac": 0.053003349512664846,
+   "attention_mass": 0.8929400324621903,
+   "idealized_selected_node_plus_key_ratio": 0.08948325885219618
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 9742,
+   "router": "tree4x6-p0.99",
+   "segments": 6,
+   "attended_frac": 0.18618817882316138,
+   "attention_mass": 0.9661550291015634,
+   "idealized_selected_node_plus_key_ratio": 0.2863315504296566
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 9742,
+   "router": "tree4x6-p0.999",
+   "segments": 6,
+   "attended_frac": 0.45461156773323164,
+   "attention_mass": 0.9948700207640373,
+   "idealized_selected_node_plus_key_ratio": 0.6499002386573599
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 11585,
+   "router": "flat64-p0.9",
+   "segments": 6,
+   "attended_frac": 0.15167267813469798,
+   "attention_mass": 0.9272988403515358,
+   "idealized_selected_node_plus_key_ratio": 0.1673826479232176
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 11585,
+   "router": "flat64-p0.95",
+   "segments": 6,
+   "attended_frac": 0.23352392127545882,
+   "attention_mass": 0.9547201004489103,
+   "idealized_selected_node_plus_key_ratio": 0.24923389106397847
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 11585,
+   "router": "flat64-p0.99",
+   "segments": 6,
+   "attended_frac": 0.4348296814949545,
+   "attention_mass": 0.9853970100216213,
+   "idealized_selected_node_plus_key_ratio": 0.4505396512834741
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 11585,
+   "router": "oracle-p0.5",
+   "segments": 6,
+   "attended_frac": 0.0018690784470888054,
+   "attention_mass": 0.6400994750937181,
+   "idealized_selected_node_plus_key_ratio": 0.0018690784470888054
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 11585,
+   "router": "oracle-p0.8",
+   "segments": 6,
+   "attended_frac": 0.013755343527138952,
+   "attention_mass": 0.8332479526954037,
+   "idealized_selected_node_plus_key_ratio": 0.013755343527138952
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 11585,
+   "router": "oracle-p0.9",
+   "segments": 6,
+   "attended_frac": 0.034028441436997764,
+   "attention_mass": 0.9109039766314838,
+   "idealized_selected_node_plus_key_ratio": 0.034028441436997764
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 11585,
+   "router": "oracle-p0.95",
+   "segments": 6,
+   "attended_frac": 0.06549911883182276,
+   "attention_mass": 0.9534498035153818,
+   "idealized_selected_node_plus_key_ratio": 0.06549911883182276
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 11585,
+   "router": "tree16x2-p0.9",
+   "segments": 6,
+   "attended_frac": 0.07949389347884168,
+   "attention_mass": 0.8966741781526556,
+   "idealized_selected_node_plus_key_ratio": 0.09941995113755472
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 11585,
+   "router": "tree16x2-p0.95",
+   "segments": 6,
+   "attended_frac": 0.14259818731117824,
+   "attention_mass": 0.9352754955623476,
+   "idealized_selected_node_plus_key_ratio": 0.16948251921614568
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 11585,
+   "router": "tree16x2-p0.99",
+   "segments": 6,
+   "attended_frac": 0.3348073632776373,
+   "attention_mass": 0.9808890792275113,
+   "idealized_selected_node_plus_key_ratio": 0.37579899217995355
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 11585,
+   "router": "tree4x3-p0.9",
+   "segments": 6,
+   "attended_frac": 0.03576030298826479,
+   "attention_mass": 0.8605769614223391,
+   "idealized_selected_node_plus_key_ratio": 0.07701939726041473
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 11585,
+   "router": "tree4x3-p0.95",
+   "segments": 6,
+   "attended_frac": 0.07118336005096904,
+   "attention_mass": 0.9060889503840978,
+   "idealized_selected_node_plus_key_ratio": 0.1322201520336231
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 11585,
+   "router": "tree4x3-p0.99",
+   "segments": 6,
+   "attended_frac": 0.21257527180056313,
+   "attention_mass": 0.9686652431624853,
+   "idealized_selected_node_plus_key_ratio": 0.331407865260908
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 11585,
+   "router": "tree4x6-p0.9",
+   "segments": 6,
+   "attended_frac": 0.02496663506792445,
+   "attention_mass": 0.8340414762330641,
+   "idealized_selected_node_plus_key_ratio": 0.043608158898000286
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 11585,
+   "router": "tree4x6-p0.95",
+   "segments": 6,
+   "attended_frac": 0.0531195729802495,
+   "attention_mass": 0.8844367962751892,
+   "idealized_selected_node_plus_key_ratio": 0.0907667126518281
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 11585,
+   "router": "tree4x6-p0.99",
+   "segments": 6,
+   "attended_frac": 0.19019244404710525,
+   "attention_mass": 0.962230111239478,
+   "idealized_selected_node_plus_key_ratio": 0.29166473991409253
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 11585,
+   "router": "tree4x6-p0.999",
+   "segments": 6,
+   "attended_frac": 0.4567019840413507,
+   "attention_mass": 0.9935194005347079,
+   "idealized_selected_node_plus_key_ratio": 0.6496098647162792
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 13777,
+   "router": "flat64-p0.9",
+   "segments": 6,
+   "attended_frac": 0.1858764024409212,
+   "attention_mass": 0.9384966986697345,
+   "idealized_selected_node_plus_key_ratio": 0.20155470686133203
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 13777,
+   "router": "flat64-p0.95",
+   "segments": 6,
+   "attended_frac": 0.27575340694635986,
+   "attention_mass": 0.9644985877953115,
+   "idealized_selected_node_plus_key_ratio": 0.2914317113667707
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 13777,
+   "router": "flat64-p0.99",
+   "segments": 6,
+   "attended_frac": 0.4819185951309463,
+   "attention_mass": 0.9903946935110504,
+   "idealized_selected_node_plus_key_ratio": 0.49759689955135716
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 13777,
+   "router": "oracle-p0.5",
+   "segments": 6,
+   "attended_frac": 0.0017398735642910716,
+   "attention_mass": 0.63831256797892,
+   "idealized_selected_node_plus_key_ratio": 0.0017398735642910716
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 13777,
+   "router": "oracle-p0.8",
+   "segments": 6,
+   "attended_frac": 0.013752702485508975,
+   "attention_mass": 0.8314329575569857,
+   "idealized_selected_node_plus_key_ratio": 0.013752702485508975
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 13777,
+   "router": "oracle-p0.9",
+   "segments": 6,
+   "attended_frac": 0.03420901640760826,
+   "attention_mass": 0.9099549023168427,
+   "idealized_selected_node_plus_key_ratio": 0.03420901640760826
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 13777,
+   "router": "oracle-p0.95",
+   "segments": 6,
+   "attended_frac": 0.06580749338096276,
+   "attention_mass": 0.953031279567984,
+   "idealized_selected_node_plus_key_ratio": 0.06580749338096276
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 13777,
+   "router": "tree16x2-p0.9",
+   "segments": 6,
+   "attended_frac": 0.08419406200638055,
+   "attention_mass": 0.8940680536536438,
+   "idealized_selected_node_plus_key_ratio": 0.10524293530107115
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 13777,
+   "router": "tree16x2-p0.95",
+   "segments": 6,
+   "attended_frac": 0.15038780991092815,
+   "attention_mass": 0.9346315442903904,
+   "idealized_selected_node_plus_key_ratio": 0.1781948952187393
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 13777,
+   "router": "tree16x2-p0.99",
+   "segments": 6,
+   "attended_frac": 0.3419042466827044,
+   "attention_mass": 0.9792834274388346,
+   "idealized_selected_node_plus_key_ratio": 0.3833075776311105
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 13777,
+   "router": "tree4x3-p0.9",
+   "segments": 6,
+   "attended_frac": 0.037541676819889604,
+   "attention_mass": 0.8602480937153727,
+   "idealized_selected_node_plus_key_ratio": 0.08343705282613881
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 13777,
+   "router": "tree4x3-p0.95",
+   "segments": 6,
+   "attended_frac": 0.07645174345959622,
+   "attention_mass": 0.9079054750732861,
+   "idealized_selected_node_plus_key_ratio": 0.14366942769522703
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 13777,
+   "router": "tree4x3-p0.99",
+   "segments": 6,
+   "attended_frac": 0.2240665083627993,
+   "attention_mass": 0.9698350149504091,
+   "idealized_selected_node_plus_key_ratio": 0.3499523770639126
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 13777,
+   "router": "tree4x6-p0.9",
+   "segments": 6,
+   "attended_frac": 0.02406303034387886,
+   "attention_mass": 0.8257957966790335,
+   "idealized_selected_node_plus_key_ratio": 0.04407897522440783
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 13777,
+   "router": "tree4x6-p0.95",
+   "segments": 6,
+   "attended_frac": 0.05506165706647034,
+   "attention_mass": 0.8825629838008483,
+   "idealized_selected_node_plus_key_ratio": 0.09579733259711666
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 13777,
+   "router": "tree4x6-p0.99",
+   "segments": 6,
+   "attended_frac": 0.19921306581535134,
+   "attention_mass": 0.9626708558481325,
+   "idealized_selected_node_plus_key_ratio": 0.30587232170940526
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 13777,
+   "router": "tree4x6-p0.999",
+   "segments": 6,
+   "attended_frac": 0.4646361354932479,
+   "attention_mass": 0.9924696175910954,
+   "idealized_selected_node_plus_key_ratio": 0.6614491522274875
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 16384,
+   "router": "flat64-p0.9",
+   "segments": 6,
+   "attended_frac": 0.1858065468924386,
+   "attention_mass": 0.9460026894452139,
+   "idealized_selected_node_plus_key_ratio": 0.2014315468924386
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 16384,
+   "router": "flat64-p0.95",
+   "segments": 6,
+   "attended_frac": 0.28012257530575707,
+   "attention_mass": 0.969579805708712,
+   "idealized_selected_node_plus_key_ratio": 0.29574757530575707
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 16384,
+   "router": "flat64-p0.99",
+   "segments": 6,
+   "attended_frac": 0.49219467526390437,
+   "attention_mass": 0.9916046131402254,
+   "idealized_selected_node_plus_key_ratio": 0.5078196752639044
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 16384,
+   "router": "oracle-p0.5",
+   "segments": 6,
+   "attended_frac": 0.0014830770946684339,
+   "attention_mass": 0.6368126939937827,
+   "idealized_selected_node_plus_key_ratio": 0.0014830770946684339
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 16384,
+   "router": "oracle-p0.8",
+   "segments": 6,
+   "attended_frac": 0.011759644462948754,
+   "attention_mass": 0.8308299545952607,
+   "idealized_selected_node_plus_key_ratio": 0.011759644462948754
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 16384,
+   "router": "oracle-p0.9",
+   "segments": 6,
+   "attended_frac": 0.02999823434012277,
+   "attention_mass": 0.9099102446011135,
+   "idealized_selected_node_plus_key_ratio": 0.02999823434012277
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 16384,
+   "router": "oracle-p0.95",
+   "segments": 6,
+   "attended_frac": 0.05871482122512091,
+   "attention_mass": 0.9528739095576817,
+   "idealized_selected_node_plus_key_ratio": 0.05871482122512091
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 16384,
+   "router": "tree16x2-p0.9",
+   "segments": 6,
+   "attended_frac": 0.08283197312127977,
+   "attention_mass": 0.9057500857992896,
+   "idealized_selected_node_plus_key_ratio": 0.10222625732421875
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 16384,
+   "router": "tree16x2-p0.95",
+   "segments": 6,
+   "attended_frac": 0.15040315900530132,
+   "attention_mass": 0.9435569054247546,
+   "idealized_selected_node_plus_key_ratio": 0.176505860828218
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 16384,
+   "router": "tree16x2-p0.99",
+   "segments": 6,
+   "attended_frac": 0.3478965759277344,
+   "attention_mass": 0.9845095239579678,
+   "idealized_selected_node_plus_key_ratio": 0.3874844142368862
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 16384,
+   "router": "tree4x3-p0.9",
+   "segments": 6,
+   "attended_frac": 0.03550756545293899,
+   "attention_mass": 0.8700116980540944,
+   "idealized_selected_node_plus_key_ratio": 0.08168656485421318
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 16384,
+   "router": "tree4x3-p0.95",
+   "segments": 6,
+   "attended_frac": 0.07376879737490699,
+   "attention_mass": 0.9174048531054896,
+   "idealized_selected_node_plus_key_ratio": 0.14213571094331287
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 16384,
+   "router": "tree4x3-p0.99",
+   "segments": 6,
+   "attended_frac": 0.222145262218657,
+   "attention_mass": 0.9753583614670095,
+   "idealized_selected_node_plus_key_ratio": 0.35191590445382254
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 16384,
+   "router": "tree4x6-p0.9",
+   "segments": 6,
+   "attended_frac": 0.02177120390392485,
+   "attention_mass": 0.834582052542135,
+   "idealized_selected_node_plus_key_ratio": 0.04058574494861421
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 16384,
+   "router": "tree4x6-p0.95",
+   "segments": 6,
+   "attended_frac": 0.05136299133300781,
+   "attention_mass": 0.8904791390180304,
+   "idealized_selected_node_plus_key_ratio": 0.09065727960495722
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 16384,
+   "router": "tree4x6-p0.99",
+   "segments": 6,
+   "attended_frac": 0.19338907514299666,
+   "attention_mass": 0.9672831123739126,
+   "idealized_selected_node_plus_key_ratio": 0.30006980895996094
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 16384,
+   "router": "tree4x6-p0.999",
+   "segments": 6,
+   "attended_frac": 0.46090716407412574,
+   "attention_mass": 0.9948489966004023,
+   "idealized_selected_node_plus_key_ratio": 0.6594492594401041
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 19484,
+   "router": "flat64-p0.9",
+   "segments": 6,
+   "attended_frac": 0.14746470852763194,
+   "attention_mass": 0.9383311431433651,
+   "idealized_selected_node_plus_key_ratio": 0.1631185783695535
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 19484,
+   "router": "flat64-p0.95",
+   "segments": 6,
+   "attended_frac": 0.22621331238818665,
+   "attention_mass": 0.9639279849250757,
+   "idealized_selected_node_plus_key_ratio": 0.24186718223010822
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 19484,
+   "router": "flat64-p0.99",
+   "segments": 6,
+   "attended_frac": 0.41875369656176986,
+   "attention_mass": 0.9898938435972446,
+   "idealized_selected_node_plus_key_ratio": 0.43440756640369144
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 19484,
+   "router": "oracle-p0.5",
+   "segments": 6,
+   "attended_frac": 0.001400741053709515,
+   "attention_mass": 0.6358017886855772,
+   "idealized_selected_node_plus_key_ratio": 0.001400741053709515
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 19484,
+   "router": "oracle-p0.8",
+   "segments": 6,
+   "attended_frac": 0.01113738164892317,
+   "attention_mass": 0.8325902786593706,
+   "idealized_selected_node_plus_key_ratio": 0.01113738164892317
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 19484,
+   "router": "oracle-p0.9",
+   "segments": 6,
+   "attended_frac": 0.027920707680783256,
+   "attention_mass": 0.9108286891576081,
+   "idealized_selected_node_plus_key_ratio": 0.027920707680783256
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 19484,
+   "router": "oracle-p0.95",
+   "segments": 6,
+   "attended_frac": 0.054125301834961045,
+   "attention_mass": 0.9532417500657695,
+   "idealized_selected_node_plus_key_ratio": 0.054125301834961045
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 19484,
+   "router": "tree16x2-p0.9",
+   "segments": 6,
+   "attended_frac": 0.06824296003558475,
+   "attention_mass": 0.8973339135603359,
+   "idealized_selected_node_plus_key_ratio": 0.08290215689796757
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 19484,
+   "router": "tree16x2-p0.95",
+   "segments": 6,
+   "attended_frac": 0.12415536618568594,
+   "attention_mass": 0.9359873278243911,
+   "idealized_selected_node_plus_key_ratio": 0.14408243088345993
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 19484,
+   "router": "tree16x2-p0.99",
+   "segments": 6,
+   "attended_frac": 0.29639956411121215,
+   "attention_mass": 0.9812388839200139,
+   "idealized_selected_node_plus_key_ratio": 0.32872252171500915
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 19484,
+   "router": "tree4x3-p0.9",
+   "segments": 6,
+   "attended_frac": 0.030519699924724558,
+   "attention_mass": 0.8687529169643918,
+   "idealized_selected_node_plus_key_ratio": 0.07150632142612742
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 19484,
+   "router": "tree4x3-p0.95",
+   "segments": 6,
+   "attended_frac": 0.06360751740133541,
+   "attention_mass": 0.9145976148013557,
+   "idealized_selected_node_plus_key_ratio": 0.12354224482725754
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 19484,
+   "router": "tree4x3-p0.99",
+   "segments": 6,
+   "attended_frac": 0.19565527209138633,
+   "attention_mass": 0.9738923252693245,
+   "idealized_selected_node_plus_key_ratio": 0.3104936987369368
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 19484,
+   "router": "tree4x6-p0.9",
+   "segments": 6,
+   "attended_frac": 0.01761388770761846,
+   "attention_mass": 0.8294113287646767,
+   "idealized_selected_node_plus_key_ratio": 0.031110557899766352
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 19484,
+   "router": "tree4x6-p0.95",
+   "segments": 6,
+   "attended_frac": 0.040802022538639765,
+   "attention_mass": 0.8808817806698027,
+   "idealized_selected_node_plus_key_ratio": 0.06957181289165225
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 19484,
+   "router": "tree4x6-p0.99",
+   "segments": 6,
+   "attended_frac": 0.15928102790079282,
+   "attention_mass": 0.9609551289052303,
+   "idealized_selected_node_plus_key_ratio": 0.24324619452713336
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 19484,
+   "router": "tree4x6-p0.999",
+   "segments": 6,
+   "attended_frac": 0.40669099065411424,
+   "attention_mass": 0.9937475203270358,
+   "idealized_selected_node_plus_key_ratio": 0.5785905262009854
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 23170,
+   "router": "flat64-p0.9",
+   "segments": 6,
+   "attended_frac": 0.1337240466428263,
+   "attention_mass": 0.9304221891216002,
+   "idealized_selected_node_plus_key_ratio": 0.1493908571736852
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 23170,
+   "router": "flat64-p0.95",
+   "segments": 6,
+   "attended_frac": 0.20414772026635428,
+   "attention_mass": 0.9571807082365489,
+   "idealized_selected_node_plus_key_ratio": 0.21981453079721314
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 23170,
+   "router": "flat64-p0.99",
+   "segments": 6,
+   "attended_frac": 0.3778140863596193,
+   "attention_mass": 0.9870050889218137,
+   "idealized_selected_node_plus_key_ratio": 0.39348089689047827
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 23170,
+   "router": "oracle-p0.5",
+   "segments": 6,
+   "attended_frac": 0.0012312751762336355,
+   "attention_mass": 0.6423265302021589,
+   "idealized_selected_node_plus_key_ratio": 0.0012312751762336355
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 23170,
+   "router": "oracle-p0.8",
+   "segments": 6,
+   "attended_frac": 0.00994046976796761,
+   "attention_mass": 0.8349237949365661,
+   "idealized_selected_node_plus_key_ratio": 0.00994046976796761
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 23170,
+   "router": "oracle-p0.9",
+   "segments": 6,
+   "attended_frac": 0.02522315006062848,
+   "attention_mass": 0.9114560530565324,
+   "idealized_selected_node_plus_key_ratio": 0.02522315006062848
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 23170,
+   "router": "oracle-p0.95",
+   "segments": 6,
+   "attended_frac": 0.04962887534167745,
+   "attention_mass": 0.9534839261323214,
+   "idealized_selected_node_plus_key_ratio": 0.04962887534167745
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 23170,
+   "router": "tree16x2-p0.9",
+   "segments": 6,
+   "attended_frac": 0.0675633773146721,
+   "attention_mass": 0.9012260450205455,
+   "idealized_selected_node_plus_key_ratio": 0.08575935566824917
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 23170,
+   "router": "tree16x2-p0.95",
+   "segments": 6,
+   "attended_frac": 0.12304447458741805,
+   "attention_mass": 0.9397637555597439,
+   "idealized_selected_node_plus_key_ratio": 0.1472015685050455
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 23170,
+   "router": "tree16x2-p0.99",
+   "segments": 6,
+   "attended_frac": 0.28881346722979223,
+   "attention_mass": 0.9821462594194427,
+   "idealized_selected_node_plus_key_ratio": 0.3253060807026738
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 23170,
+   "router": "tree4x3-p0.9",
+   "segments": 6,
+   "attended_frac": 0.02770156400928952,
+   "attention_mass": 0.8645241227239326,
+   "idealized_selected_node_plus_key_ratio": 0.06599161284604477
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 23170,
+   "router": "tree4x3-p0.95",
+   "segments": 6,
+   "attended_frac": 0.058674175863698955,
+   "attention_mass": 0.9098642249480777,
+   "idealized_selected_node_plus_key_ratio": 0.11405723354296401
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 23170,
+   "router": "tree4x3-p0.99",
+   "segments": 6,
+   "attended_frac": 0.18112334813079312,
+   "attention_mass": 0.970749836326355,
+   "idealized_selected_node_plus_key_ratio": 0.2861228857101753
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 23170,
+   "router": "tree4x6-p0.9",
+   "segments": 6,
+   "attended_frac": 0.016246409817703516,
+   "attention_mass": 0.8307518168003298,
+   "idealized_selected_node_plus_key_ratio": 0.030554522602092196
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 23170,
+   "router": "tree4x6-p0.95",
+   "segments": 6,
+   "attended_frac": 0.03984399084407177,
+   "attention_mass": 0.8843544557956713,
+   "idealized_selected_node_plus_key_ratio": 0.0701770653503093
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 23170,
+   "router": "tree4x6-p0.99",
+   "segments": 6,
+   "attended_frac": 0.15763909226832726,
+   "attention_mass": 0.9632377428712234,
+   "idealized_selected_node_plus_key_ratio": 0.24320956195922477
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 23170,
+   "router": "tree4x6-p0.999",
+   "segments": 6,
+   "attended_frac": 0.39185452504264545,
+   "attention_mass": 0.9937707715712133,
+   "idealized_selected_node_plus_key_ratio": 0.5594165857430585
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 27554,
+   "router": "flat64-p0.9",
+   "segments": 6,
+   "attended_frac": 0.13999112565110242,
+   "attention_mass": 0.9392254280724696,
+   "idealized_selected_node_plus_key_ratio": 0.1556331377001697
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 27554,
+   "router": "flat64-p0.95",
+   "segments": 6,
+   "attended_frac": 0.21583308166302015,
+   "attention_mass": 0.9652209421619773,
+   "idealized_selected_node_plus_key_ratio": 0.23147509371208744
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 27554,
+   "router": "flat64-p0.99",
+   "segments": 6,
+   "attended_frac": 0.3995866774161214,
+   "attention_mass": 0.9904022042063021,
+   "idealized_selected_node_plus_key_ratio": 0.4152286894651887
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 27554,
+   "router": "oracle-p0.5",
+   "segments": 6,
+   "attended_frac": 0.001134595659778029,
+   "attention_mass": 0.6349833781520525,
+   "idealized_selected_node_plus_key_ratio": 0.001134595659778029
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 27554,
+   "router": "oracle-p0.8",
+   "segments": 6,
+   "attended_frac": 0.009041823069505076,
+   "attention_mass": 0.8312831475355086,
+   "idealized_selected_node_plus_key_ratio": 0.009041823069505076
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 27554,
+   "router": "oracle-p0.9",
+   "segments": 6,
+   "attended_frac": 0.023006136543134346,
+   "attention_mass": 0.9096655520787906,
+   "idealized_selected_node_plus_key_ratio": 0.023006136543134346
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 27554,
+   "router": "oracle-p0.95",
+   "segments": 6,
+   "attended_frac": 0.045555702093205724,
+   "attention_mass": 0.9528787097494517,
+   "idealized_selected_node_plus_key_ratio": 0.045555702093205724
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 27554,
+   "router": "tree16x2-p0.9",
+   "segments": 6,
+   "attended_frac": 0.05827088561163015,
+   "attention_mass": 0.8933193341695836,
+   "idealized_selected_node_plus_key_ratio": 0.07459066579651386
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 27554,
+   "router": "tree16x2-p0.95",
+   "segments": 6,
+   "attended_frac": 0.10785779525572296,
+   "attention_mass": 0.9346605581674903,
+   "idealized_selected_node_plus_key_ratio": 0.12987296643906165
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 27554,
+   "router": "tree16x2-p0.99",
+   "segments": 6,
+   "attended_frac": 0.26414487072138865,
+   "attention_mass": 0.980727891038571,
+   "idealized_selected_node_plus_key_ratio": 0.2984298067733662
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 27554,
+   "router": "tree4x3-p0.9",
+   "segments": 6,
+   "attended_frac": 0.024813963792310857,
+   "attention_mass": 0.859622614341788,
+   "idealized_selected_node_plus_key_ratio": 0.062338615061506925
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 27554,
+   "router": "tree4x3-p0.95",
+   "segments": 6,
+   "attended_frac": 0.053238991530051814,
+   "attention_mass": 0.9083334667486183,
+   "idealized_selected_node_plus_key_ratio": 0.10733058375415203
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 27554,
+   "router": "tree4x3-p0.99",
+   "segments": 6,
+   "attended_frac": 0.16945124206320403,
+   "attention_mass": 0.9710850609699264,
+   "idealized_selected_node_plus_key_ratio": 0.27271184159589656
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 27554,
+   "router": "tree4x6-p0.9",
+   "segments": 6,
+   "attended_frac": 0.014102610631245313,
+   "attention_mass": 0.819760962558489,
+   "idealized_selected_node_plus_key_ratio": 0.02669757566959425
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 27554,
+   "router": "tree4x6-p0.95",
+   "segments": 6,
+   "attended_frac": 0.03463839512541607,
+   "attention_mass": 0.8783917636943183,
+   "idealized_selected_node_plus_key_ratio": 0.06163252051383085
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 27554,
+   "router": "tree4x6-p0.99",
+   "segments": 6,
+   "attended_frac": 0.14353163009778203,
+   "attention_mass": 0.9624579965048248,
+   "idealized_selected_node_plus_key_ratio": 0.22378852338006408
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 27554,
+   "router": "tree4x6-p0.999",
+   "segments": 6,
+   "attended_frac": 0.3734245222368544,
+   "attention_mass": 0.9940385198264959,
+   "idealized_selected_node_plus_key_ratio": 0.5361251537025131
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 32768,
+   "router": "flat64-p0.9",
+   "segments": 6,
+   "attended_frac": 0.14889081319173178,
+   "attention_mass": 0.9390656274765552,
+   "idealized_selected_node_plus_key_ratio": 0.16451581319173178
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 32768,
+   "router": "flat64-p0.95",
+   "segments": 6,
+   "attended_frac": 0.22524225144159227,
+   "attention_mass": 0.9652460905435007,
+   "idealized_selected_node_plus_key_ratio": 0.24086725144159227
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 32768,
+   "router": "flat64-p0.99",
+   "segments": 6,
+   "attended_frac": 0.4040215810139974,
+   "attention_mass": 0.9899049210805624,
+   "idealized_selected_node_plus_key_ratio": 0.4196465810139974
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 32768,
+   "router": "oracle-p0.5",
+   "segments": 6,
+   "attended_frac": 0.0010287194024948846,
+   "attention_mass": 0.6333145117608919,
+   "idealized_selected_node_plus_key_ratio": 0.0010287194024948846
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 32768,
+   "router": "oracle-p0.8",
+   "segments": 6,
+   "attended_frac": 0.0089177063533238,
+   "attention_mass": 0.8308141794765279,
+   "idealized_selected_node_plus_key_ratio": 0.0089177063533238
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 32768,
+   "router": "oracle-p0.9",
+   "segments": 6,
+   "attended_frac": 0.02300738153003511,
+   "attention_mass": 0.9097661900644501,
+   "idealized_selected_node_plus_key_ratio": 0.02300738153003511
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 32768,
+   "router": "oracle-p0.95",
+   "segments": 6,
+   "attended_frac": 0.045549756004696795,
+   "attention_mass": 0.9527310329001575,
+   "idealized_selected_node_plus_key_ratio": 0.045549756004696795
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 32768,
+   "router": "tree16x2-p0.9",
+   "segments": 6,
+   "attended_frac": 0.06761092231387184,
+   "attention_mass": 0.8980915480448554,
+   "idealized_selected_node_plus_key_ratio": 0.08404699961344402
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 32768,
+   "router": "tree16x2-p0.95",
+   "segments": 6,
+   "attended_frac": 0.12378306615920294,
+   "attention_mass": 0.9390136907098904,
+   "idealized_selected_node_plus_key_ratio": 0.14569468725295293
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 32768,
+   "router": "tree16x2-p0.99",
+   "segments": 6,
+   "attended_frac": 0.28795196896507624,
+   "attention_mass": 0.9824706578760275,
+   "idealized_selected_node_plus_key_ratio": 0.3214371999104818
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 32768,
+   "router": "tree4x3-p0.9",
+   "segments": 6,
+   "attended_frac": 0.025632449558803012,
+   "attention_mass": 0.8587679579255304,
+   "idealized_selected_node_plus_key_ratio": 0.06602123805454799
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 32768,
+   "router": "tree4x3-p0.95",
+   "segments": 6,
+   "attended_frac": 0.05657232375372024,
+   "attention_mass": 0.910850579551022,
+   "idealized_selected_node_plus_key_ratio": 0.11517547425769624
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 32768,
+   "router": "tree4x3-p0.99",
+   "segments": 6,
+   "attended_frac": 0.17785131363641649,
+   "attention_mass": 0.9730720787885643,
+   "idealized_selected_node_plus_key_ratio": 0.2875496092296782
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 32768,
+   "router": "tree4x6-p0.9",
+   "segments": 6,
+   "attended_frac": 0.013709068298339844,
+   "attention_mass": 0.8142929371318869,
+   "idealized_selected_node_plus_key_ratio": 0.027370770772298176
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 32768,
+   "router": "tree4x6-p0.95",
+   "segments": 6,
+   "attended_frac": 0.0360016595749628,
+   "attention_mass": 0.8769716882601469,
+   "idealized_selected_node_plus_key_ratio": 0.06528191339401972
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 32768,
+   "router": "tree4x6-p0.99",
+   "segments": 6,
+   "attended_frac": 0.14953563326881048,
+   "attention_mass": 0.9624485809888158,
+   "idealized_selected_node_plus_key_ratio": 0.23373204185849145
+  },
+  {
+   "model": "qwen3-0.6b",
+   "n": 32768,
+   "router": "tree4x6-p0.999",
+   "segments": 6,
+   "attended_frac": 0.37552315848214285,
+   "attention_mass": 0.9938559393575859,
+   "idealized_selected_node_plus_key_ratio": 0.5402233941214425
+  }
+ ],
+ "oracle_support_exponent": [
+  {
+   "model": "qwen3-0.6b",
+   "router": "oracle-p0.5",
+   "range": [
+    1024,
+    32768
+   ],
+   "exponent": 0.47516706284801447,
+   "interpretation": "descriptive finite-range fit; no asymptotic or generalization claim"
+  },
+  {
+   "model": "qwen3-0.6b",
+   "router": "oracle-p0.8",
+   "range": [
+    1024,
+    32768
+   ],
+   "exponent": 0.6084364994064849,
+   "interpretation": "descriptive finite-range fit; no asymptotic or generalization claim"
+  },
+  {
+   "model": "qwen3-0.6b",
+   "router": "oracle-p0.9",
+   "range": [
+    1024,
+    32768
+   ],
+   "exponent": 0.6610754403115594,
+   "interpretation": "descriptive finite-range fit; no asymptotic or generalization claim"
+  },
+  {
+   "model": "qwen3-0.6b",
+   "router": "oracle-p0.95",
+   "range": [
+    1024,
+    32768
+   ],
+   "exponent": 0.6988236765979186,
+   "interpretation": "descriptive finite-range fit; no asymptotic or generalization claim"
+  }
+ ]
+}
