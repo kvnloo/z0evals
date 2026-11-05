@@ -25,6 +25,8 @@ COMPONENTS_OUT = ROOT / "studies" / "slm-router-v0" / "data" / "phase1b-componen
 SITE_OUT = ROOT / "web" / "data" / "study.json"
 OPTCHAT_SOURCE = ROOT / "studies" / "optchat-long-horizon-v0"
 OPTCHAT_SITE_OUT = ROOT / "web" / "data" / "optchat-long-horizon-v0.json"
+MEMORY_SOURCE = ROOT / "studies" / "unified-memory-v0"
+MEMORY_SITE_OUT = ROOT / "web" / "data" / "unified-memory-v0.json"
 RUN = "p1b-20260921T1430Z"
 
 def _arm_label(arm: str) -> str:
@@ -293,6 +295,15 @@ def load_pilot() -> dict | None:
     }
 
 
+
+def manifest_view(study: Path) -> dict:
+    """The public, non-measurement parts of a study manifest: scope, pins and limits."""
+    import yaml
+
+    m = yaml.safe_load((study / "manifest.yaml").read_text(encoding="utf-8")) or {}
+    return {k: m.get(k) for k in ("id", "title", "status", "scoring", "created", "updated",
+                                  "sources", "questions", "limitations", "claims")}
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--raw", help="path to observations.jsonl")
@@ -373,11 +384,29 @@ def main() -> int:
     optchat_doc = {
         "summary": json.loads((OPTCHAT_SOURCE / "summary.json").read_text(encoding="utf-8")),
         "turns": json.loads((OPTCHAT_SOURCE / "turns.json").read_text(encoding="utf-8")),
+        "manifest": manifest_view(OPTCHAT_SOURCE),
     }
     OPTCHAT_SITE_OUT.write_text(json.dumps(optchat_doc, indent=2) + "\n", encoding="utf-8")
 
+    # Unified memory has no measured results yet: the frozen cohort and question
+    # contract are the evidence, and the receipts list stays empty until
+    # results/harness-receipts.jsonl is imported.
+    receipts_path = MEMORY_SOURCE / "results" / "harness-receipts.jsonl"
+    receipt_schema = json.loads((MEMORY_SOURCE / "receipt.schema.json").read_text(encoding="utf-8"))
+    memory_doc = {
+        "manifest": manifest_view(MEMORY_SOURCE),
+        "cohort": json.loads((MEMORY_SOURCE / "cohort.json").read_text(encoding="utf-8")),
+        "contract": json.loads((MEMORY_SOURCE / "question-contract.json").read_text(encoding="utf-8")),
+        "receipt_required": receipt_schema["required"],
+        "receipt_harnesses": receipt_schema["properties"]["harness"]["enum"],
+        "receipts": [json.loads(line) for line in receipts_path.read_text(encoding="utf-8").splitlines() if line.strip()]
+        if receipts_path.is_file() else [],
+    }
+    MEMORY_SITE_OUT.write_text(json.dumps(memory_doc, indent=2) + "\n", encoding="utf-8")
+
     print(f"wrote {SITE_OUT.relative_to(ROOT)}   (matrix from {origin})")
     print(f"wrote {OPTCHAT_SITE_OUT.relative_to(ROOT)}   (from frozen OptChat study)")
+    print(f"wrote {MEMORY_SITE_OUT.relative_to(ROOT)}   (from frozen unified-memory cohort)")
     if matrix:
         print(f"  arms={len(matrix['arms'])} states={len(matrix['states'])} families={len(matrix['families'])}")
     return 0

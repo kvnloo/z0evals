@@ -23,6 +23,8 @@ export type PostRecord = {
   featured: boolean;
   toc: PostToc[];
   lede: string;
+  /** prerendered html of the optional `tldr:` front-matter field; "" when absent */
+  tldr: string;
 };
 export type Post = PostRecord & { html: string };
 

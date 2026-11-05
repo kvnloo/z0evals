@@ -1,0 +1,44 @@
+{
+  "source": "Quackles process/fidelity-zoom/REPORT.md (2026-10-15), sections 1, 3, 5 and 7. Transcribed; the raw object, material and texture audits behind these medians stay in the artifact store.",
+  "fixtures": {"night": "Night it12 (frozen)", "day": "Day r115 (frozen)"},
+  "scales": {
+    "review": {"width": 2048, "label": "2048-wide review plate"},
+    "201mp": {"width": 11584, "height": 17376, "pixels": 201283584, "label": "legacy 201 MP"},
+    "1gp": {"width": 25820, "height": 38730, "pixels": 1000008600, "label": "1 GP"}
+  },
+  "thresholds": {"minimum": 1.0, "preferred": 1.5, "unit": "image texels per final pixel"},
+  "pyramids": [
+    {"family": "1 GP level zero, each of 5 themes", "tiles": 3876, "expected": 3876},
+    {"family": "Blue legacy 201 MP", "tiles": 782, "expected": 782}
+  ],
+  "policy": "Production admits only legacy Blue. Day is a candidate; White, Dark and Night are disabled. The five-theme 1 GP family is labelled 'not scene-matched'.",
+  "density": [
+    {"theme": "night", "source": "head print, jaw receiver", "d201": 0.0840, "d1gp": 0.0377},
+    {"theme": "night", "source": "head emission mask", "d201": 0.1680, "d1gp": 0.0754},
+    {"theme": "night", "source": "head core/sheath atlas", "d201": 0.6715, "d1gp": 0.3013},
+    {"theme": "night", "source": "carved portrait stain, 324x602", "d201": 0.0821, "d1gp": 0.0369},
+    {"theme": "night", "source": "relief weather map, 487x973", "d201": 0.1326, "d1gp": 0.0595},
+    {"theme": "night", "source": "banner dark-rock scan", "d201": 2.2319, "d1gp": 1.0013},
+    {"theme": "night", "source": "hero face material", "d201": 0.3653, "d1gp": 0.1639},
+    {"theme": "night", "source": "legacy arch stone", "d201": 0.9576, "d1gp": 0.4296},
+    {"theme": "day", "source": "head print, top shell", "d201": 0.0878, "d1gp": 0.0394},
+    {"theme": "day", "source": "poster, banner receiver", "d201": 0.0882, "d1gp": 0.0396},
+    {"theme": "day", "source": "plinth top 4K map", "d201": 0.9416, "d1gp": 0.4224},
+    {"theme": "day", "source": "pier 4K map", "d201": 1.9154, "d1gp": 0.8593}
+  ],
+  "coverage": {
+    "night": {"below1_201": 80.71, "below1_1gp": 99.41},
+    "day": {"below1_201": 75.74, "below1_1gp_cells": 22843, "cells": 22844},
+    "note": "share of evaluated cells with at least one reachable image below 1 texel per pixel; a conservative warning, not the share of the scene proven blurry"
+  },
+  "coupons": [
+    {"id": "head-ink", "what": "128x96 source patch traced into four colour layers, an editable SVG and a 4096x3072 atlas", "blur1_gradient_energy_ratio": 1.887, "outcome": "held", "note": "sharper contours, but tracing also makes misshapen source glyphs sharply misshapen"},
+    {"id": "banner-ink", "what": "object-space dot lattice, 0.625 mm period, over the carved shader", "blur1_gradient_energy_ratio": 1.097, "outcome": "held", "note": "crisp dots, too uniform to count as a finished comic treatment"},
+    {"id": "stone-face", "what": "image-driven colour and micro-bump replaced with metric noise and a 25 um bump", "blur1_gradient_energy_ratio": 0.248, "laplacian_variance_ratio": 1.265, "outcome": "held", "note": "one sharpness score falls to a quarter while another rises by a quarter on the same crop"}
+  ],
+  "render_cost": [
+    {"theme": "night", "nine_crops_s": 46.33, "median_crop_s": 4.35, "est_201mp_min": 13.93, "est_1gp_min_median": 69.22, "est_1gp_min_p90": 127.19},
+    {"theme": "day", "nine_crops_s": 120.65, "median_crop_s": 12.46, "est_201mp_min": 39.86, "est_1gp_min_median": 198.01, "est_1gp_min_p90": 326.79}
+  ],
+  "render_cost_note": "32 samples, denoised, compositor off, shared RTX 3080 Ti. Full-frame numbers are pixel-linear extrapolations, not completed renders."
+}

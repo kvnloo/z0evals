@@ -65,6 +65,45 @@
       "published": "2026-10-05",
       "status": "unscored",
       "kind": "study"
+    },
+    {
+      "slug": "quackles-lineage-v0",
+      "title": "quackles, in 665 renders",
+      "subtitle": "an agent loop rendered five robot scenes for a month. the archive shows how often the gate said no, and why a gigapixel export is not a gigapixel of detail.",
+      "dek": "665 renders across five scenes: how often a two-reviewer gate promoted, and why 1 GP is not 1 GP of detail.",
+      "lede": "",
+      "author": "zer0 research",
+      "date": "november 2, 2026",
+      "area": "research",
+      "published": "2026-11-02",
+      "status": "source-reported",
+      "kind": "study"
+    },
+    {
+      "slug": "fframes-delivery-v0",
+      "title": "a bigger upload scores higher in a simulator",
+      "subtitle": "fframestudio's delivery recipes, five playback simulators, four short clips, and one gradient where we lose.",
+      "dek": "fframestudio export recipes against naive x264 after five simulated platform re-encodes, scored frame by frame.",
+      "lede": "fframes renders a film. the question here is what happens after: does the export recipe change what a viewer sees once a platform re-encodes the upload? fframestudio built simulators for that and scored them. this post freezes that report and lets you look at every frame it scored.",
+      "author": "zer0 research",
+      "date": "november 2, 2026",
+      "area": "research",
+      "published": "2026-11-02",
+      "status": "source-reported",
+      "kind": "study"
+    },
+    {
+      "slug": "ephemeral-ui-v0",
+      "title": "an agent's session, as cards",
+      "subtitle": "the omp /stats dashboard rebuilt as ephemeral-ui cards, running live in the post on four sanitized sessions.",
+      "dek": "ephemeral-ui trace cards, live: scrub a sanitized agent session, open its spans, and ask it a question.",
+      "lede": "",
+      "author": "zer0 research",
+      "date": "november 3, 2026",
+      "area": "generative-ui",
+      "published": "2026-11-03",
+      "status": "source-reported",
+      "kind": "study"
     }
   ]
 }

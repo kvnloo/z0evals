@@ -1,0 +1,25 @@
+{
+ "source": "review-5-scenes/CURRENT.json as of 2026-10-16 18:11 CDT; scene/capture paths dropped",
+ "picks": {
+  "day": {
+   "round": "r116-lhf repair-final",
+   "notes": "AGENT PICK, pending owner. Both swapped reviewers clearly prefer the corrected far-block softness with no candidate regression. The near block beneath foliage remains detailed; Day stone/print/sun recipe and robot/orb locks pass. Scan rear RGB error and foliage visibility improve modestly. Both fresh side-swapped LOOK/CLEAR reviews clearly prefer this candidate; scan and preservation guards support the pick. No final-density certification. Evidence: [artifact store] Backup: CURRENT.before-other-scenes-lhf1-20261016T183951Z.json"
+  },
+  "white": {
+   "round": "white-lhf2",
+   "notes": "AGENT PICK 2026-10-16 (pending owner; parent adjudication). white-r112 v1 + arch pier lightened (L* 72.38 vs reference 72.42) + receiver-normalized background blur with inward feather (removes the blur-boundary fringe). Both side-swapped reviewers prefer it over white-r112 v1; one called it clear, the other noted slightly softer LOOK foliage (closer to the reference) and a flatter pier. Lane gate was strict 'both clear'; parent promoted on both-prefer + target-matching measurements. Previous: CURRENT.before-white-lhf2.json."
+  },
+  "blue": {
+   "round": "blue-r112",
+   "notes": "Both blind judges prefer shared plants plus f18 DOF adaptation; f11 rejected for excess stone/portrait softness. Frozen Blue robot and Phase A stone shaders preserved."
+  },
+  "dark": {
+   "round": "dark-r111",
+   "notes": "Both blind judges prefer shared DOF and desaturated dark plants; fine stone slightly softer. Phase A pores retained; orb and all robot materials untouched by shared layer."
+  },
+  "night": {
+   "round": "night-v2 it30-greenery",
+   "notes": "AGENT PICK, pending owner. it26 plus r8 F: irregular face-side foliage lobes, sparser crown with clustered bead runs, support-filtered smooth wires with reattached bead anchors. Both fresh foreground side-swapped Opus 5.5 reviewers prefer candidate in LOOK/CLEAR and call clean win. Boundary improvement/tie; still smoother than target. Scoped 979-object and 905-material guards, 28 original templates, 55 encoded image bytes/colorspaces, save/reopen and one-glow checks pass. Native 201MP/1GP crown and edge borders inspected; not whole-scene certification. Watch: faint leaf-local crown glow speckle; target spacing variation remains greater. Evidence: [artifact store] Backup: CURRENT.before-it30-greenery-20261016T231100Z.json"
+  }
+ }
+}

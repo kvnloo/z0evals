@@ -25936,7 +25936,7 @@
       }
     ]
   },
-  "matrixOrigin": "raw observations (/home/kvn/tmp/openjev/results/phase1b/p1b-20260921T1430Z/observations.jsonl)",
+  "matrixOrigin": "committed transcription (studies/slm-router-v0/data/phase1b-matrix.json)",
   "components": {
     "corpus": {
       "title": "where the 1,102 receipts actually sit",
