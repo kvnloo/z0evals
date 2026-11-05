@@ -1,0 +1,29 @@
+{
+  "observed_date": "2026-11-05",
+  "scope": "Synthetic systemd boundary and real child-process lifecycle checks; not live Oracle qualification or model evaluation",
+  "baseline_commit": "39af35a3d4fc331924db6b2ae592d5180a3e3c90",
+  "baseline_transport_sha256": "169bb8c590ba815b74eec22803edd1251098a3c1ba6442febbd3dbcf3f4313be",
+  "patched_transport_sha256": "e9f90fced2a1dd48985074cda643812b0d9749eaae40e857703bb0ab1132dc5a",
+  "fleet_node": "omarchy-phone",
+  "fleet_job": "20261105-101231-1b9c",
+  "command": "fleet-build --node s25 --light --wait 1800 --src-include studies/tiny-slm-gym-v0/scripts --input BASELINE:oracle_sandbox_exec.before.py --fetch lifecycle-cli-qualification --out LOGS -- python3 studies/tiny-slm-gym-v0/scripts/qualify_oracle_lifecycle.py oracle_sandbox_exec.before.py lifecycle-cli-qualification",
+  "command_exit_code": 0,
+  "before_exit_code": 1,
+  "before_failure": "AssertionError: 0 != 1 : timeout must stop the worker, not just systemd-run",
+  "after_exit_code": 0,
+  "tests_passed": 17,
+  "real_child_process_tests": 4,
+  "practice_contract_tests_passed": 12,
+  "practice_contract_fleet_job": "20261105-101042-fa43",
+  "practice_contract_exit_code": 0,
+  "ci": null,
+  "ci_reason": "Engineering contract checks, not a quality estimate",
+  "weights_edited": false,
+  "limitations": [
+    "Systemd commands were simulated; worker process isolation was not requalified on Oracle",
+    "No session.forward adapter integrated",
+    "No model-authored edit or held-out quality measurement",
+    "Oracle is a fleet candidate, not an enrolled fleet-build worker",
+    "No sealed data accessed"
+  ]
+}

@@ -76,6 +76,12 @@ z0intelligence decisions. Plan source: council round 1 (`council/`, 2026-11-03),
 - Original-before and original-after hashes match; base weight file unchanged. All three generation hashes match, so no edit-effect or quality improvement established. CI not applicable to engineering checks. No sealed access, private transfer, paid inference, groot heavy work or resource skips.
 - Next: session.forward integration plus explicit editor-process completion guard before snapshotting, then editor preflight. Restoration is now exercised across RPC processes, but session integration remains unfinished. No Kevin action required on Oracle; Modal approval remains separate.
 
+### 2026-11-05 Z02 scoped resumption: lifecycle guard, not an editing result
+- On local branch `ayo/Z02`, the existing Oracle transport now names each transient worker unit, sets the control-group kill policy, and stops/checks that unit before emitting a completion receipt. Timeout or client failure alone is not proof that the worker stopped. Cleanup/state errors fail closed.
+- Ran `qualify_oracle_lifecycle.py` through `fleet-build --node s25 --light --wait 1800`: pinned old transport fails the CLI timeout regression, patched transport passes 17 checks, including four real child-process scenarios. Systemd was simulated, not live-qualified. Re-ran `test_oracle_practice_request.py` on S25: 12/12 checks, rc=0. Receipt: `data/oracle-lifecycle-contract-tests.json`.
+- MBP's initial request-test submission returned 75; reattached the same job with `--wait 1800`. It eventually exited 5 because unittest discovery found zero test cases in the existing top-level assertion script. The direct S25 script invocation above passed. No groot test fallback or phone UI input.
+- Blocker: current `fleet-build` registry lists Oracle only under candidates. This request requires admitted fleet execution, so no direct SSH model evaluation or unqualified generated code was attempted. Live Oracle lifecycle qualification, session.forward integration, and the bounded subscription-owned editor/held-out comparison remain outstanding. No credentials, sealed data, paid call, service restart, or public write.
+
 00. [ ] RETARGET (owner, 2026-11-04 00:35: "apply the blog to our workflows, not a perfect reconstruction"). Apply the
    blog's weight editing to a tiny model that is ALREADY a z0 decision model and has a measured, named failure:
    FunctionGemma-270M on the slm-router bounded-choice set (51/84, picked the dangerous near-miss; Hammer3B 75/84) or

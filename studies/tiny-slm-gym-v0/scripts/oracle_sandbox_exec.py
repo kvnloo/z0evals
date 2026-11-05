@@ -9,6 +9,34 @@ import re
 import subprocess
 import sys
 import time
+import uuid
+
+
+def run_confined(cmd, stream, unit, timeout=620):
+    """Reap the client and confirm its worker stopped before returning a receipt."""
+    try:
+        try:
+            rc = subprocess.run(cmd, stdout=stream, stderr=stream, timeout=timeout).returncode
+        except subprocess.TimeoutExpired:
+            rc = 124
+    finally:
+        # Killing systemd-run alone does not stop its transient service.
+        stop = subprocess.run(['sudo', '-n', 'systemctl', 'stop', unit],
+                              capture_output=True, text=True, timeout=30)
+        state = subprocess.run(['sudo', '-n', 'systemctl', 'show', unit,
+                                '--property=LoadState', '--property=ActiveState'],
+                               capture_output=True, text=True, timeout=30)
+        if state.returncode != 0:
+            raise RuntimeError('worker state unavailable; completion not confirmed')
+        fields = dict(line.split('=', 1) for line in state.stdout.splitlines() if '=' in line)
+        absent = fields.get('LoadState') == 'not-found'
+        if stop.returncode != 0 and not (stop.returncode == 5 and absent):
+            raise RuntimeError('worker stop failed; completion not confirmed')
+        if (fields.get('LoadState') not in ('loaded', 'not-found')
+                or fields.get('ActiveState') not in ('inactive', 'failed')):
+            raise RuntimeError('worker not stopped; completion not confirmed')
+    return rc, fields
+
 
 sys.path.insert(0, '/home/ubuntu/wsp/slm')
 from sandbox import PRELUDE  # type: ignore[import-not-found]
@@ -35,7 +63,10 @@ def main():
     if not config.exists():
         config.write_text(expected)
     assert config.read_text() == expected, 'config changed'
+    unit = 'wsp-editor-' + uuid.uuid4().hex + '.service'
     cmd = ['sudo', '-n', 'systemd-run', '--quiet', '--wait', '--pipe', '--collect',
+           '--unit=' + unit,
+           '-p', 'KillMode=control-group', '-p', 'SendSIGKILL=yes', '-p', 'TimeoutStopSec=10',
            '-p', 'MemoryMax=4G', '-p', 'TasksMax=64', '-p', 'RuntimeMaxSec=600',
            '-p', 'LimitFSIZE=67108864',
            '/usr/bin/bwrap', '--unshare-all', '--die-with-parent', '--new-session', '--clearenv',
@@ -51,15 +82,12 @@ def main():
     # Spool output to a worker-local file: do not buffer untrusted output in memory.
     log = work / ('transport-' + str(time.time_ns()) + '.log')
     with log.open('w+') as stream:
-        try:
-            p = subprocess.run(cmd, stdout=stream, stderr=stream, timeout=620)
-            rc = p.returncode
-        except subprocess.TimeoutExpired:
-            rc = 124
+        rc, worker_state = run_confined(cmd, stream, unit)
         stream.seek(0)
         out = stream.read(10000)
     print(json.dumps({'returncode': rc, 'wall_s': round(time.time()-t0, 2),
-                      'out': out, 'work': str(work), 'log': str(log)}))
+                      'out': out, 'work': str(work), 'log': str(log),
+                      'unit': unit, 'worker_stopped': True, 'worker_state': worker_state}))
     raise SystemExit(rc)
 
 
