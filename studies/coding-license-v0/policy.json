@@ -1,0 +1,26 @@
+{
+  "id": "coding-license-v0",
+  "source_commit": "1ec7c67e36cd6dfa57416b7afdd63ada2805158a",
+  "source_study": "harness-speed-v1",
+  "repetitions": 1,
+  "tiers": {
+    "S": {"seconds": 180, "tasks": ["t01-paginate", "t02-slugify", "t03-csvsum", "t04-cliflag", "t05-lru", "t06-duration"]},
+    "M": {"seconds": 300, "tasks": ["t07-rename", "t08-merge", "h05-calc", "h06-wordstats"]},
+    "L": {"seconds": 600, "tasks": ["h01-reserve", "h02-config", "h03-bus", "h04-money"]}
+  },
+  "models": [
+    {"id": "opencode/beam-free", "adapter": "opencode", "funding": "free-unverified"},
+    {"id": "opencode/big-pickle", "adapter": "opencode", "funding": "free-catalog-zero"},
+    {"id": "opencode/crouton-alpha-free", "adapter": "opencode", "funding": "free-unverified"},
+    {"id": "opencode/deepseek-v4.1-flash-free", "adapter": "opencode", "funding": "free-unverified"},
+    {"id": "opencode/flint-40b-free", "adapter": "opencode", "funding": "free-unverified"},
+    {"id": "opencode/glm-5.3-flash-free", "adapter": "opencode", "funding": "free-unverified"},
+    {"id": "opencode/mimo-v2.6-flash-free", "adapter": "opencode", "funding": "free-unverified"},
+    {"id": "opencode/nemotron-3.5-lightning-free", "adapter": "opencode", "funding": "free-catalog-zero"},
+    {"id": "opencode/nemotron-3.5-super-vl-free", "adapter": "opencode", "funding": "free-unverified"},
+    {"id": "opencode/pulse-alpha-free", "adapter": "opencode", "funding": "free-unverified"},
+    {"id": "openai/gpt-6.1-terra", "adapter": "fx", "funding": "subscription"},
+    {"id": "anthropic/claude-opus-5-5", "adapter": "claude", "funding": "subscription"},
+    {"id": "google/gemini-pro", "adapter": "unavailable", "funding": "unverified"}
+  ]
+}

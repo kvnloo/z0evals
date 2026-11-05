@@ -1,0 +1,25 @@
+{
+  "source_path": "/home/kvn/.cache/opencode/models.json",
+  "qualification": "Local cached catalog, not a live billing guarantee. Only anonymous routes may use these entries.",
+  "models": {
+    "big-pickle": {
+      "id": "big-pickle",
+      "cost": {
+        "input": 0,
+        "output": 0,
+        "cache_read": 0,
+        "cache_write": 0
+      },
+      "name": "Big Pickle"
+    },
+    "nemotron-3.5-lightning-free": {
+      "id": "nemotron-3.5-lightning-free",
+      "cost": {
+        "input": 0,
+        "output": 0,
+        "cache_read": 0
+      },
+      "name": "Nemotron 3.5 Lightning Free"
+    }
+  }
+}
