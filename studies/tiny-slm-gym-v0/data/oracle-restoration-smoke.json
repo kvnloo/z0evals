@@ -1,0 +1,51 @@
+{
+  "n": 3,
+  "checks": {
+    "original_after_edit_identical": true,
+    "base_weights_unchanged": true,
+    "original_uses_base": true,
+    "edited_uses_controller_cache": true,
+    "three_fresh_processes_completed": true
+  },
+  "passed": 5,
+  "results": [
+    {
+      "arm": "unedited",
+      "meta": {
+        "generations": 1,
+        "wall_s": 1.2,
+        "checkpoint": "/opt/wsp-isolation/model-79eaaa84125b897f5a0ad6638362b864fec813ad",
+        "engine": "hf"
+      },
+      "generation_sha256": "a22634d41fd0e7c819e353cbf4ca6072300e69201554ef8d615a2f322deca219"
+    },
+    {
+      "arm": "staged_edit",
+      "meta": {
+        "generations": 1,
+        "wall_s": 1.2,
+        "checkpoint": "/home/ubuntu/wsp/restoration-1805/1/controller-state/ckpt/functiongemma-270m/b98e931aeedb4ba7",
+        "engine": "hf"
+      },
+      "generation_sha256": "a22634d41fd0e7c819e353cbf4ca6072300e69201554ef8d615a2f322deca219"
+    },
+    {
+      "arm": "unedited",
+      "meta": {
+        "generations": 1,
+        "wall_s": 1.2,
+        "checkpoint": "/opt/wsp-isolation/model-79eaaa84125b897f5a0ad6638362b864fec813ad",
+        "engine": "hf"
+      },
+      "generation_sha256": "a22634d41fd0e7c819e353cbf4ca6072300e69201554ef8d615a2f322deca219"
+    }
+  ],
+  "base_sha256": "af4f8a7c4c5eb82291759fd828720c7bcfcb92a5274556d13dde3caccf5f427b",
+  "ci": null,
+  "scope": "restoration/isolation engineering smoke; no accuracy or edit-effect claim",
+  "limitations": [
+    "session.forward not integrated",
+    "trusted fixture edit only",
+    "8-token truncation cannot establish quality"
+  ]
+}
