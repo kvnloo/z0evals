@@ -1,0 +1,74 @@
+{
+  "schema_version": "z0eval.study.v1",
+  "id": "speed-measurements-v0",
+  "title": "Recorded TTFT, decode rate, and parallel completions",
+  "status": "draft",
+  "created": "2026-11-06",
+  "sources": [
+    {
+      "repo": "kvnloo/z0evals",
+      "commit": "46159ca0050ed560b1358ff9f49941e6e0f916bb",
+      "role": "Publication tooling only. Original experiment Git revision is unknown; source files are identified by SHA-256."
+    }
+  ],
+  "questions": [
+    "What speed metrics can be supported without simulated or character-estimated token counts?"
+  ],
+  "artifacts": [
+    {
+      "path": "data/methods.json",
+      "kind": "dataset",
+      "sha256": "e0e3298688ab6668ba334d7f95de349e958ffa881d003684e73ccab615384e5d"
+    },
+    {
+      "path": "data/parallel-run.json",
+      "kind": "dataset",
+      "sha256": "7696201837ebd0e1a91e9a97cc18be1530b15719b99b03fade370cc09ffda526"
+    },
+    {
+      "path": "data/parallel.jsonl",
+      "kind": "dataset",
+      "sha256": "6de98e8859a3d3911592f206c7b86086e532dafa3396f68e3ea680651f4e3ee3"
+    },
+    {
+      "path": "data/provenance.json",
+      "kind": "dataset",
+      "sha256": "94b55ef85f24a65705f21ac90d9c6f78e375ae7e9140c541396c9e29ce6102fc"
+    },
+    {
+      "path": "data/runs.jsonl",
+      "kind": "dataset",
+      "sha256": "fe46c85972a47455528a64712839aa3a47f0ea0c3d96a28fa726555d15f7c232"
+    },
+    {
+      "path": "data/warm.jsonl",
+      "kind": "dataset",
+      "sha256": "7024c0fab9ea96661ac6fb0d4a265e8e612ab720324dc2ed94a24cb8d7546cb1"
+    },
+    {
+      "path": "data/wire.jsonl",
+      "kind": "dataset",
+      "sha256": "46b8e7d5f56d273f2bc6b6563d950b3beab5ae9563c891dabdf8279d68f72497"
+    },
+    {
+      "path": "summary.json",
+      "kind": "analysis",
+      "sha256": "16113937d01fdd01837ebd2155e764e6b0fe7088f09262d0525dda65e9b389d8"
+    },
+    {
+      "path": "analyze.py",
+      "kind": "analysis",
+      "sha256": "fa2508c64be5fa14a2e0c24261f1cd8af0040427a06c1e32691e31c3f576752e"
+    },
+    {
+      "path": "README.md",
+      "kind": "analysis",
+      "sha256": "da9afecbb73d36db5e023cc4a8b65d02ea0630271cd879219b17a54adffb53cc"
+    }
+  ],
+  "limitations": [
+    "Source-reported measurements, not rerun inference.",
+    "Original experiment Git revision and parallel token-count method are unknown.",
+    "Aggregate token throughput is withheld."
+  ]
+}

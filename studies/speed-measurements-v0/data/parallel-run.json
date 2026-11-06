@@ -1,0 +1,129 @@
+{
+  "failed": 0,
+  "lanes": {
+    "cerebras-oss120": {
+      "429": 0,
+      "fail": 0,
+      "final_c": 2,
+      "local": false,
+      "model": "gpt-oss-120b",
+      "ok": 0
+    },
+    "cerebras-qwen": {
+      "429": 0,
+      "fail": 0,
+      "final_c": 2,
+      "local": false,
+      "model": "qwen-3.8-27b",
+      "ok": 0
+    },
+    "cohere-a": {
+      "429": 0,
+      "fail": 0,
+      "final_c": 2,
+      "local": false,
+      "model": "command-a-plus-05-2026",
+      "ok": 0
+    },
+    "farm": {
+      "429": 0,
+      "fail": 0,
+      "final_c": 2,
+      "local": true,
+      "model": "qwen3-1.7b-q4km",
+      "ok": 119
+    },
+    "groq-oss120": {
+      "429": 0,
+      "fail": 0,
+      "final_c": 2,
+      "local": false,
+      "model": "openai/gpt-oss-120b",
+      "ok": 0
+    },
+    "groq-oss20": {
+      "429": 0,
+      "fail": 0,
+      "final_c": 2,
+      "local": false,
+      "model": "openai/gpt-oss-20b",
+      "ok": 0
+    },
+    "groq-qwen": {
+      "429": 0,
+      "fail": 0,
+      "final_c": 2,
+      "local": false,
+      "model": "qwen/qwen3.8-27b",
+      "ok": 0
+    },
+    "kilo-beam": {
+      "429": 2,
+      "fail": 2,
+      "final_c": 1,
+      "local": false,
+      "model": "reflection/beam-free",
+      "ok": 0
+    },
+    "kilo-lightning": {
+      "429": 2,
+      "fail": 2,
+      "final_c": 1,
+      "local": false,
+      "model": "nvidia/nemotron-3.5-lightning:free",
+      "ok": 0
+    },
+    "kilo-northmini": {
+      "429": 2,
+      "fail": 2,
+      "final_c": 1,
+      "local": false,
+      "model": "cohere/north-mini-code:free",
+      "ok": 0
+    },
+    "kilo-supervl": {
+      "429": 2,
+      "fail": 2,
+      "final_c": 1,
+      "local": false,
+      "model": "nvidia/nemotron-3.5-super-vl:free",
+      "ok": 0
+    },
+    "local-swarm": {
+      "429": 0,
+      "fail": 0,
+      "final_c": 8,
+      "local": true,
+      "model": "qwen3-1.7b",
+      "ok": 252
+    },
+    "local-ttft": {
+      "429": 0,
+      "fail": 0,
+      "final_c": 2,
+      "local": true,
+      "model": "qwen3.5-4b",
+      "ok": 30
+    },
+    "nim-bolt": {
+      "429": 0,
+      "fail": 0,
+      "final_c": 2,
+      "local": false,
+      "model": "nvidia/nemotron-3.5-bolt-e4b",
+      "ok": 0
+    },
+    "nim-lightning": {
+      "429": 0,
+      "fail": 0,
+      "final_c": 2,
+      "local": false,
+      "model": "nvidia/nemotron-3.5-lightning-30b-a3b",
+      "ok": 0
+    }
+  },
+  "not_run": 4599,
+  "ok": 401,
+  "units": 5000,
+  "wall_s": 184.48
+}

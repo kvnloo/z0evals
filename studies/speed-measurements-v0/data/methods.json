@@ -1,0 +1,38 @@
+[
+  {
+    "file": "hermes_latency.py",
+    "first_line": 63,
+    "last_line": 79,
+    "text": "    def prompt(self):\n        sid = self.req(\"session/new\", {\"cwd\": os.getcwd(), \"mcpServers\": []})[\"result\"][\"sessionId\"]\n        t0 = time.perf_counter(); first = None; text = \"\"\n        i = self.send(\"session/prompt\", {\"sessionId\": sid, \"prompt\": [{\"type\": \"text\", \"text\": PROMPT}]})\n        while True:\n            d = self.read()\n            if d.get(\"method\") == \"session/update\":\n                u = d[\"params\"].get(\"update\", {})\n                if u.get(\"sessionUpdate\") == \"agent_message_chunk\":\n                    t = (u.get(\"content\") or {}).get(\"text\", \"\")\n                    if t.strip() and first is None:\n                        first = time.perf_counter() - t0\n                    text += t\n            elif d.get(\"id\") == i:\n                break\n        return {\"mode\": \"warm\", \"ttft_s\": first, \"total_s\": time.perf_counter() - t0, \"text\": text[:200],\n                \"correct\": EXPECT in text}"
+  },
+  {
+    "file": "probe_all.py",
+    "first_line": 67,
+    "last_line": 70,
+    "text": "    ct = usage.get(\"completion_tokens\") or (chars // 4 or None)\n    dec = round(ct / (last - first), 1) if ct and first and last and last > first else None\n    return dict(status=st, err=err, ttft_s=round(first - t0, 3) if first else None, total_s=round(tot, 3),\n                completion_tokens=ct, decode_tok_s=dec, prompt_tokens=usage.get(\"prompt_tokens\"))"
+  },
+  {
+    "file": "fx-ab/wire_proxy.py",
+    "first_line": 170,
+    "last_line": 175,
+    "text": "                        if d.get(\"usage\"):\n                            usage = d[\"usage\"]\n                        for c in d.get(\"choices\") or []:\n                            dl = c.get(\"delta\") or {}\n                            if dl.get(\"content\") or dl.get(\"reasoning\") or dl.get(\"reasoning_content\") or dl.get(\"tool_calls\"):\n                                now = time.perf_counter(); first = first or now; last = now"
+  },
+  {
+    "file": "fx-ab/wire_proxy.py",
+    "first_line": 204,
+    "last_line": 207,
+    "text": "            log({\"at\": time.time(), \"lane\": lane, \"path\": rest, \"status\": status, \"err\": err, \"tpm_wait_s\": waited,\n                 \"ttft_s\": round(first - t0, 3) if first else None, \"total_s\": round(total, 3),\n                 \"decode_tok_s\": round(usage[\"completion_tokens\"] / (last - first), 1) if usage.get(\"completion_tokens\") and first and last and last > first else None,\n                 \"usage\": usage, \"rl\": rl, **info})"
+  },
+  {
+    "file": "fx-ab/summarize.py",
+    "first_line": 8,
+    "last_line": 16,
+    "text": "runs = [r for r in runs if r.get(\"rep\", 0) >= 0]  # drop warm-up block\nwire = [dict({\"total_s\": 0.0, \"ttft_s\": None, \"usage\": {}, \"decode_tok_s\": None}, **json.loads(l)) for l in open(os.path.join(HERE, \"raw\", \"wire.jsonl\"))]\nLANE = {\"local\": \"local\", \"fxraw\": \"local\", \"nim\": \"nim\", \"kilo\": \"kilo-free\", \"cohere\": \"cohere\", \"groq\": \"groq\"}\nfor r in runs:\n    lane = LANE[r[\"model\"].split(\"-\")[0]]\n    ws = [w for w in wire if w[\"lane\"] == lane and r[\"at\"] <= w[\"at\"] - w[\"total_s\"] <= r[\"at\"] + r[\"total_s\"]]\n    r[\"pre_s\"] = round(min(w[\"at\"] - w[\"total_s\"] for w in ws if w[\"path\"].endswith(\"/chat/completions\")) - r[\"at\"], 3) if any(w[\"path\"].endswith(\"/chat/completions\") for w in ws) else None\n    # Hermes probes Ollama-style /api/show when base_url is loopback (proxy artifact; the real profiles use remote URLs)\n    probe = [w for w in ws if not w[\"path\"].endswith(\"/chat/completions\")]"
+  },
+  {
+    "file": "fx-ab/summarize.py",
+    "first_line": 68,
+    "last_line": 71,
+    "text": "        s, l, d, t = by(rows, \"short\"), by(rows, \"long\"), by(rows, \"decode\"), by(rows, \"tool\")\n        sok = [r for r in s if r[\"ok\"]]\n        lok = [r for r in l if r[\"ok\"]]\n        dec = [x for r in d if r[\"completion_tokens_sum\"] > 250 for x in r[\"wire_decode_tok_s\"] if x]"
+  }
+]
