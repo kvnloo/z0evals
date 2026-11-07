@@ -7,7 +7,6 @@ This intentionally checks the shipped HTML rather than only source components.
 from __future__ import annotations
 
 import argparse
-import re
 from html.parser import HTMLParser
 from pathlib import Path
 

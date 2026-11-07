@@ -1,5 +1,5 @@
 import sys, json; sys.path.insert(0,'/tmp')
-import cdp, asyncio
+import cdp
 
 OUTLINE = r"""
 (() => {

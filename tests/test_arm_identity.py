@@ -50,13 +50,6 @@ EXPECTED_SHORT = {
     "unfiltered+hammer2.1_3b": "hammer2.1 3b",
 }
 
-EXPECTED_BACKEND = {
-    "compiler+jev": "nanojev_06b",
-    "compiler+jev+qwen3.5_4b": "nanojev_06b",
-    "compiler+hammer3b+jev+nemotron+qwen3.5_9b": "nanojev_06b",
-    "compiler+hammer2.1_3b": "hammer2.1_3b",
-}
-
 
 def test_required_arms_render_the_expected_long_label():
     for arm in REQUIRED:

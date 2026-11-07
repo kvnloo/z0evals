@@ -1,6 +1,5 @@
 """Frozen-data and publication contracts. No model calls; no recall certification."""
 from __future__ import annotations
-import copy
 import importlib.util
 import json
 from pathlib import Path
