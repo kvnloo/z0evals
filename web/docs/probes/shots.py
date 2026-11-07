@@ -1,4 +1,4 @@
-import sys, json, asyncio; sys.path.insert(0,'/tmp')
+import sys, json; sys.path.insert(0,'/tmp')
 import cdp
 
 REF="http://127.0.0.1:8917/index.html"
