@@ -85,6 +85,17 @@ def preflight(model, out):
     if adapter == "opencode":
         if model["funding"] != "free-catalog-zero":
             return result | {"reason": "free label has no matching zero-price catalog evidence"}
+        if os.environ.get("A14_OWNER_OPENCODE") == "1":
+            # run-003: owner's opencode CLI config (Zen free tier); model ids stay zero-price only.
+            for _ in range(4):  # the background service can answer its first call with an empty list
+                probe = process([executable, "models"], out, 45)
+                if probe["exit"] == 0 and probe["stdout"].strip():
+                    break
+                time.sleep(3)
+            save(out / "preflight.json", probe)
+            listed = model["id"] in probe["stdout"].splitlines()
+            return result | {"ready": probe["exit"] == 0 and listed,
+                             "reason": "" if probe["exit"] == 0 and listed else "model absent from opencode inventory"}
         # Anonymous free route only. Never load the owner's API keys or provider config.
         home = out / "anonymous-home"
         home.mkdir(exist_ok=True)
@@ -98,7 +109,7 @@ def preflight(model, out):
         return result | {"ready": probe["exit"] == 0 and listed,
                          "reason": "" if probe["exit"] == 0 and listed else
                          "anonymous model inventory unavailable or model absent"}
-    argv = ([executable, "--provider", "codex", "status", "--json"] if adapter == "fx"
+    argv = ([executable, "status", "--json"] if adapter == "fx"
             else [executable, "auth", "status"])
     probe = process(argv, out, 30)
     try:
@@ -117,11 +128,12 @@ def preflight(model, out):
 def command(model, prompt):
     adapter, name = model["adapter"], model["id"].split("/", 1)[1]
     if adapter == "fx":
-        return ["fx", "--provider", "codex", "--no-additional-dirs", "--context-limit",
+        # fx moved model/provider flags under `ask` (2026-11); the subscription is the default route.
+        return ["fx", "--no-additional-dirs", "--context-limit",
                 "skill_catalog_bytes=0", "ask", "--auto", "--no-save", "--json",
                 "--model", name, "--effort", "low", "--no-fast", "--no-ultrafast", prompt]
     if adapter == "opencode":
-        return ["opencode", "run", "--standalone", "--auto", "--format", "json",
+        return ["opencode", "run"] + ([] if os.environ.get("A14_OWNER_OPENCODE") == "1" else ["--standalone"]) + ["--auto", "--format", "json",
                 "--model", model["id"], prompt]
     if adapter == "claude":
         return ["claude", "--print", "--safe-mode", "--model", name, "--output-format", "json",
@@ -168,7 +180,7 @@ def probe_task(model, task, tier, seconds, out):
                " network services, or reference/hidden solutions. Do not delegate."
                " Do not modify, remove, skip, or replace tests. Finish within the time limit.")
     env = None
-    if model["adapter"] == "opencode":
+    if model["adapter"] == "opencode" and os.environ.get("A14_OWNER_OPENCODE") != "1":
         home = out.parents[1] / "anonymous-home"
         env = minimal_env(home)
         env.update({"XDG_CONFIG_HOME": str(home / "config"),

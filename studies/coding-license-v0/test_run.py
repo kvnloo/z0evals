@@ -83,7 +83,9 @@ class LicenseTests(unittest.TestCase):
                 self.assertEqual(R.preflight(model, self.out)["ready"], expected)
         argv = R.command(model, "task")
         self.assertEqual(argv[0], "fx")
-        self.assertIn("codex", argv)
+        # Route is pinned by the preflight's "Codex subscription" auth check; fx takes request flags after `ask`.
+        self.assertEqual(argv[argv.index("ask") - 1], "skill_catalog_bytes=0")
+        self.assertLess(argv.index("ask"), argv.index("--model"))
         self.assertIn("--no-fast", argv)
         self.assertIn("--no-ultrafast", argv)
 
