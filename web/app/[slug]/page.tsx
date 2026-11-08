@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import StoryShell from "@/components/StoryShell";
 import type { TocItem } from "@/components/Toc";
+import { Tldr } from "@/components/essay/Essay";
 import { markdownOnlySlugs, readPost } from "@/lib/posts";
 
 export const dynamicParams = false;
@@ -25,7 +26,16 @@ export default async function MarkdownPost({ params }: { params: Promise<{ slug:
       slug={slug}
       meta={{ title: p.title, subtitle: p.subtitle, author: p.author, date: p.date, status: p.status, lede: p.lede }}
       toc={toc}
-      story={<div dangerouslySetInnerHTML={{ __html: p.html }} />}
+      story={
+        <>
+          {p.tldr ? (
+            <Tldr>
+              <div dangerouslySetInnerHTML={{ __html: p.tldr }} />
+            </Tldr>
+          ) : null}
+          <div dangerouslySetInnerHTML={{ __html: p.html }} />
+        </>
+      }
       explore={
         <div className="explore-block">
           <h2 id="receipts">receipts</h2>

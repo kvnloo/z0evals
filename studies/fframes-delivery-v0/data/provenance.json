@@ -1,0 +1,76 @@
+{
+  "repo": "kvnloo/fframestudio",
+  "commit": "1a68268b24634332ed9b0fdc348168de91053b4f",
+  "files": [
+    {
+      "source": "delivery/REPORT.md",
+      "source_sha256": "937a1376b0db7273703192c74a9503ccb915ba133cc41422065250571992e796",
+      "path": "data/REPORT.md",
+      "sha256": "937a1376b0db7273703192c74a9503ccb915ba133cc41422065250571992e796",
+      "transform": "verbatim"
+    },
+    {
+      "source": "delivery/RESEARCH.md",
+      "source_sha256": "e77afce30a927929f4932e7c8149d5b614fa7dc1ee4c3caf2959910e45e21ced",
+      "path": "data/RESEARCH.md",
+      "sha256": "e77afce30a927929f4932e7c8149d5b614fa7dc1ee4c3caf2959910e45e21ced",
+      "transform": "verbatim"
+    },
+    {
+      "source": "delivery/platforms.json",
+      "source_sha256": "43574fab795ccfb2053992050077d869a5e1f2725383c718c6edf3ca51665852",
+      "path": "data/platforms.json",
+      "sha256": "43574fab795ccfb2053992050077d869a5e1f2725383c718c6edf3ca51665852",
+      "transform": "verbatim"
+    },
+    {
+      "source": "delivery/evidence/summary.json",
+      "source_sha256": "4dfa1fd66a467947ebfcbe6290d2839adfc9045295dc6f5888efaaeded73394d",
+      "path": "data/summary.json",
+      "sha256": "4dfa1fd66a467947ebfcbe6290d2839adfc9045295dc6f5888efaaeded73394d",
+      "transform": "verbatim"
+    },
+    {
+      "source": "delivery/evidence/frames.csv",
+      "source_sha256": "dc9265ce416962393ef88533daf3018074b768745d509eb815484db43751bffd",
+      "path": "data/frames.csv",
+      "sha256": "dc9265ce416962393ef88533daf3018074b768745d509eb815484db43751bffd",
+      "transform": "verbatim"
+    },
+    {
+      "source": "delivery/evidence/gates.json",
+      "source_sha256": "956f7f92886526df84d453ae80d3350011a85d4c04d09c32643ea81615dec572",
+      "path": "data/gates.json",
+      "sha256": "956f7f92886526df84d453ae80d3350011a85d4c04d09c32643ea81615dec572",
+      "transform": "verbatim"
+    },
+    {
+      "source": "delivery/evidence/results.json",
+      "source_sha256": "31f8df1d50b826d95f9256443d8a349598a8158681fd8afb9ed4de2ba39bf035",
+      "path": "data/results.clean.json",
+      "sha256": "b69b4fb16002bf8fa0d227345d8e46a1492a05d48db67bc2c80348f44c471d99",
+      "transform": "json re-serialized; keys whose value was a scrubbed <local>/ file path removed",
+      "removed_keys": [
+        "$[].gop_revalidation.measured_on",
+        "$[].gop_revalidation.old_upload",
+        "$[].playback",
+        "$[].reels_upload_guard.previous_upload",
+        "$[].reference",
+        "$[].source_matrix_correction.previous_reference",
+        "$[].upload"
+      ]
+    },
+    {
+      "source": "delivery/evidence/gradient10.json",
+      "source_sha256": "fc245e4e37844ccc5aa37ca3d3bcba344efbca220b9c40edc307af8fd90f29ee",
+      "path": "data/gradient10.clean.json",
+      "sha256": "717f3e7d511de3b3f9dcd43860c6d58b83ca92041ec719c9ddb31c7167eb99c1",
+      "transform": "json re-serialized; keys whose value was a scrubbed <local>/ file path removed",
+      "removed_keys": [
+        "$[].playback",
+        "$[].reference",
+        "$[].upload"
+      ]
+    }
+  ]
+}

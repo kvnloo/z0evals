@@ -10,7 +10,7 @@ const nextConfig = {
   // rather than trusting the caller to have removed it.
   basePath: base,
   assetPrefix: base,
-  // for URLs that bypass next/link (location.replace, fetch)
+  // for URLs that bypass next/link (location.replace, fetch, plain <img>/<video> via lib/asset.ts)
   env: { NEXT_PUBLIC_BASE_PATH: base },
 };
 export default nextConfig;

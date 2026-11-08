@@ -1,0 +1,333 @@
+{
+  "manifest": {
+    "id": "unified-memory-v0",
+    "title": "Cross-harness unified memory and State Packet v0",
+    "status": "draft",
+    "scoring": "unscored",
+    "created": "2026-09-29",
+    "updated": "2026-10-04",
+    "sources": [
+      {
+        "repo": "kvnloo/z0intelligence",
+        "commit": "c4a4554d8a3874b456c46feef6ea937993af744a",
+        "branch": "master",
+        "role": "context resolution and provenance"
+      },
+      {
+        "repo": "kvnloo/deepseek-harness",
+        "commit": "8acd443c91b679e3f4fabf6f66639e8ebe38ce97",
+        "branch": "master",
+        "role": "DSH consumer"
+      },
+      {
+        "repo": "kvnloo/hermes-agent",
+        "commit": "5000e29936df69d5209f7cf2eea8e5776cb4cbb1",
+        "branch": "main",
+        "role": "Hermes consumer"
+      },
+      {
+        "repo": "kvnloo/oh-my-openagent",
+        "commit": "ba4309396d49a357a876f991fcaa4ae147a1057f",
+        "branch": "dev",
+        "role": "OMO consumer"
+      },
+      {
+        "repo": "kvnloo/oh-my-pi",
+        "commit": "984fa8bcc5d49463d2d5fe5be0e2cb86542ae507",
+        "branch": "main",
+        "role": "OMP consumer"
+      },
+      {
+        "repo": "kvnloo/agentsview",
+        "commit": "c7d2b85f73f7752949811dc8e57b02e116dd7a62",
+        "branch": "feat/omo-source",
+        "role": "OMO source identity candidate"
+      }
+    ],
+    "questions": [
+      "Can exact state be recovered with provenance?",
+      "Does newer evidence supersede stale state without erasing history?",
+      "Can one harness recover evidence produced by another?",
+      "Are contradictions explicit?",
+      "Does missing evidence cause abstention?",
+      "Can minimal context preserve answer support with fewer reads?"
+    ],
+    "limitations": [
+      "Harness runs are not frozen yet; these are starting revisions.",
+      "Final results must pin the exact tested revisions.",
+      "Raw conversation history is not a public study artifact.",
+      "Retrieval, injection, answer support, and verification are separate gates.",
+      "scoring is unscored: no harness receipts have been frozen, so this study is not a pass and not a fail."
+    ],
+    "claims": []
+  },
+  "cohort": {
+    "schema": "z0eval.unified_memory_cohort.v0",
+    "source": "promoted from validated public OMP fixture; no private transcript text",
+    "evidence": [
+      {
+        "source_id": "z0int:context_resolve",
+        "source_version": "SCHEMA",
+        "trust_class": "code",
+        "locator": "kvnloo/z0intelligence:src/z0int/context_resolve.py:SCHEMA",
+        "observed_at": "2026-09-29T04:37:50Z",
+        "claim": "z0int.context_resolve.v1",
+        "required_need": "schema"
+      },
+      {
+        "source_id": "donor:pr-77:spill-bytes",
+        "source_version": "20480",
+        "trust_class": "code",
+        "locator": "kvnloo/oh-my-pi#77:packages/coding-agent/src/rlm/store.ts:RLM_DEFAULT_SPILL_BYTES",
+        "observed_at": "2026-09-18T04:13:48Z",
+        "claim": "RLM_DEFAULT_SPILL_BYTES = 20480",
+        "required_need": "spill-bytes"
+      },
+      {
+        "source_id": "z0evals:56:harness-row",
+        "source_version": "issue-56",
+        "trust_class": "authoritative_task",
+        "locator": "kvnloo/z0evals#56:harness-matrix",
+        "observed_at": "2026-09-29T00:00:00Z",
+        "claim": "harness question_id evidence_refs injected answer_supported abstained raw_source_reads context_bytes",
+        "required_need": "harness-fields"
+      },
+      {
+        "source_id": "eval-fixture:cap:v1",
+        "source_version": "1",
+        "trust_class": "derived_memory",
+        "locator": "eval-fixture:cap@v1",
+        "observed_at": "2026-01-01T00:00:00Z",
+        "claim": "eval-fixture-cap=8192",
+        "required_need": "cap"
+      },
+      {
+        "source_id": "eval-fixture:cap:v2",
+        "source_version": "2",
+        "trust_class": "derived_memory",
+        "locator": "eval-fixture:cap@v2",
+        "observed_at": "2026-09-18T04:13:48Z",
+        "claim": "eval-fixture-cap=20480",
+        "required_need": "cap"
+      },
+      {
+        "source_id": "eval-fixture:jsonl:retained",
+        "source_version": "a",
+        "trust_class": "unknown",
+        "locator": "eval-fixture:jsonl@retained",
+        "observed_at": "2026-06-01T00:00:00Z",
+        "claim": "eval-fixture-jsonl: retained",
+        "required_need": "jsonl"
+      },
+      {
+        "source_id": "eval-fixture:jsonl:deleted",
+        "source_version": "b",
+        "trust_class": "unknown",
+        "locator": "eval-fixture:jsonl@deleted",
+        "observed_at": "2026-06-02T00:00:00Z",
+        "claim": "eval-fixture-jsonl: deleted",
+        "required_need": "jsonl"
+      },
+      {
+        "source_id": "eval-fixture:old-uncontradicted",
+        "source_version": "1",
+        "trust_class": "code",
+        "locator": "eval-fixture:old@2020",
+        "observed_at": "2020-01-01T00:00:00Z",
+        "claim": "eval-fixture-old=still-current",
+        "required_need": "old"
+      }
+    ],
+    "questions": [
+      {
+        "id": "exact-identifier",
+        "kind": "exact",
+        "prompt": "What schema id does z0int context resolve publish?",
+        "needs": [
+          {
+            "id": "schema",
+            "required": true
+          }
+        ],
+        "expected_action": "answer",
+        "expected_support": [
+          "z0int.context_resolve.v1"
+        ],
+        "forbidden": [],
+        "evidence_ids": [
+          "z0int:context_resolve"
+        ]
+      },
+      {
+        "id": "supersession",
+        "kind": "temporal",
+        "prompt": "Which eval-fixture-cap is current, and which value remains inspectable as superseded?",
+        "needs": [
+          {
+            "id": "cap",
+            "required": true
+          }
+        ],
+        "expected_action": "answer",
+        "expected_support": [
+          "eval-fixture-cap=20480"
+        ],
+        "forbidden": [],
+        "evidence_ids": [
+          "eval-fixture:cap:v1",
+          "eval-fixture:cap:v2"
+        ]
+      },
+      {
+        "id": "cross-harness",
+        "kind": "cross-harness",
+        "prompt": "Which fields does z0evals#56 require on every harness receipt row?",
+        "needs": [
+          {
+            "id": "harness-fields",
+            "required": true
+          }
+        ],
+        "expected_action": "answer",
+        "expected_support": [
+          "evidence_refs",
+          "answer_supported",
+          "raw_source_reads",
+          "context_bytes"
+        ],
+        "forbidden": [],
+        "evidence_ids": [
+          "z0evals:56:harness-row"
+        ]
+      },
+      {
+        "id": "contradiction",
+        "kind": "contradiction",
+        "prompt": "Two eval-fixture-jsonl sources disagree. Report both with provenance. Do not pick a winner.",
+        "needs": [
+          {
+            "id": "jsonl",
+            "required": true
+          }
+        ],
+        "expected_action": "observe",
+        "expected_support": [
+          "eval-fixture-jsonl: retained",
+          "eval-fixture-jsonl: deleted"
+        ],
+        "forbidden": [
+          "JSONL-DELETED-WINNER"
+        ],
+        "evidence_ids": [
+          "eval-fixture:jsonl:retained",
+          "eval-fixture:jsonl:deleted"
+        ]
+      },
+      {
+        "id": "missing-evidence",
+        "kind": "abstention",
+        "prompt": "What did the absent standup source decide?",
+        "needs": [
+          {
+            "id": "standup-2024-01-01",
+            "required": true
+          }
+        ],
+        "expected_action": "abstain",
+        "expected_support": [],
+        "forbidden": [
+          "STANDUP-DECISION-ALPHA"
+        ],
+        "evidence_ids": [
+          "agentsview:standup-2024-01-01"
+        ]
+      },
+      {
+        "id": "minimal-context",
+        "kind": "efficiency",
+        "prompt": "Which schema id and donor spill default are sufficient without replaying the tool transcript?",
+        "needs": [
+          {
+            "id": "schema",
+            "required": true
+          },
+          {
+            "id": "spill-bytes",
+            "required": true
+          }
+        ],
+        "expected_action": "answer",
+        "expected_support": [
+          "z0int.context_resolve.v1",
+          "RLM_DEFAULT_SPILL_BYTES = 20480"
+        ],
+        "forbidden": [],
+        "evidence_ids": [
+          "z0int:context_resolve",
+          "donor:pr-77:spill-bytes"
+        ]
+      }
+    ]
+  },
+  "contract": {
+    "schema": "z0eval.unified_memory_questions.v0",
+    "questions": [
+      {
+        "id": "exact-identifier",
+        "kind": "exact",
+        "expected": "supported"
+      },
+      {
+        "id": "supersession",
+        "kind": "temporal",
+        "expected": "newest-supported"
+      },
+      {
+        "id": "cross-harness",
+        "kind": "cross-harness",
+        "expected": "supported"
+      },
+      {
+        "id": "contradiction",
+        "kind": "contradiction",
+        "expected": "explicit-conflict"
+      },
+      {
+        "id": "missing-evidence",
+        "kind": "abstention",
+        "expected": "abstain"
+      },
+      {
+        "id": "minimal-context",
+        "kind": "efficiency",
+        "expected": "supported"
+      }
+    ]
+  },
+  "receipt_required": [
+    "schema",
+    "harness",
+    "question_id",
+    "session_id",
+    "trace_id",
+    "harness_revision",
+    "retrieval_capability",
+    "retrieval_ok",
+    "injected",
+    "answer_supported",
+    "verified",
+    "abstained",
+    "duplicate_injection",
+    "evidence_refs",
+    "latency_ms",
+    "context_bytes",
+    "raw_source_reads"
+  ],
+  "receipt_harnesses": [
+    "dsh",
+    "hermes",
+    "omo",
+    "omp"
+  ],
+  "receipts": []
+}

@@ -2,10 +2,28 @@
 """Prerender posts/*.md and the research-log focus note for the Next site.
 
 Writes web/data/posts/<slug>.json ({slug, title, subtitle, study, status, author, date,
-dek, area, tags, published, updated, kind, series, log, featured, toc, lede, html}),
+dek, area, tags, published, updated, kind, series, log, featured, toc, lede, tldr, html}),
 web/data/posts/_index.json (the same records without html, for list pages) and
 web/data/research-focus.html. The site renders these files; it does not parse markdown
 itself. Nothing is invented: every field comes from the post.
+
+Two optional conventions from the interactive-essay kit (web/components/essay):
+
+* ``tldr:`` in the front matter (markdown) becomes ``tldr`` (html) and renders in the
+  boxed tl;dr above the body. Absent means ``""`` and no box.
+* a fenced block with the info string ``setup`` folds its markdown behind a "setup"
+  pill attached to the next block (a table, an image paragraph, a fenced code block
+  or a ``<figure>...</figure>``)::
+
+      ```setup
+      eight synthetic documents, ten fixed queries.
+      ```
+      | arm | recall@5 |
+      |---|---:|
+
+  The pair becomes ``<figure class="es-fig es-wide has-setup">`` with a
+  ``<details class="es-setup">`` inside, the same markup SetupFigure renders, so it
+  still works as a plain disclosure without JS. Posts without either stay byte-identical.
 """
 from __future__ import annotations
 
@@ -61,11 +79,68 @@ HEADING_ID = re.compile(r"^(#{1,6})\s+(.*?)\s*\{#([A-Za-z0-9_-]+)\}\s*$", re.M)
 LEDE = re.compile(r'<div class="lede">\s*(.*?)\s*</div>', re.S)
 
 
-def render(md: str) -> str:
-    md = HEADING_ID.sub(lambda m: f"{m.group(1)} {m.group(2)} {{: #{m.group(3)} }}", md)
-    html = markdown.markdown(md, extensions=["attr_list", "tables", "fenced_code", "md_in_html", "sane_lists"])
+EXTENSIONS = ["attr_list", "tables", "fenced_code", "md_in_html", "sane_lists"]
+# ```setup ... ``` then (after optional blank lines) the block it describes
+SETUP = re.compile(r"^```setup[ \t]*\n(.*?)\n```[ \t]*\n(?:[ \t]*\n)*", re.S | re.M)
+SLOT = "<!-- es-setup-slot:{} -->"
+
+
+def _markdown(md: str) -> str:
+    html = markdown.markdown(md, extensions=EXTENSIONS)
     html = re.sub(r"<table>(.*?)</table>", label_table, html, flags=re.S)
     return keep_unit_case(html)
+
+
+def _next_block(md: str, start: int) -> int:
+    """End offset of the markdown block that begins at ``start``."""
+    rest = md[start:]
+    fence = re.match(r"(`{3,}|~{3,})[^\n]*\n", rest)
+    if fence:
+        close = re.search(rf"^{fence.group(1)}[ \t]*$", rest[fence.end():], re.M)
+        if not close:
+            raise ValueError("setup block: the code fence after it never closes")
+        return start + fence.end() + close.end()
+    if rest.startswith("<figure"):
+        close = rest.find("</figure>")
+        if close < 0:
+            raise ValueError("setup block: the <figure> after it never closes")
+        return start + close + len("</figure>")
+    blank = re.search(r"\n[ \t]*\n", rest)
+    return start + (blank.start() if blank else len(rest))
+
+
+def _fold_setups(md: str) -> tuple[str, list[str]]:
+    """Swap each ```setup block and its figure for a slot; return the slot html."""
+    out: list[str] = []
+    figures: list[str] = []
+    pos = 0
+    while (m := SETUP.search(md, pos)) is not None:
+        end = _next_block(md, m.end())
+        target = md[m.end():end]
+        if not target.strip():
+            raise ValueError("setup block must be followed by the figure or table it describes")
+        figures.append(
+            '<figure class="es-fig es-wide has-setup">'
+            '<details class="es-setup"><summary>setup</summary>'
+            f'<div class="es-setup-body">{_markdown(m.group(1))}</div></details>'
+            f"{_markdown(target)}</figure>"
+        )
+        out.append(md[pos:m.start()] + "\n\n" + SLOT.format(len(figures) - 1) + "\n\n")
+        pos = end
+    out.append(md[pos:])
+    return "".join(out), figures
+
+
+def render(md: str) -> str:
+    md = HEADING_ID.sub(lambda m: f"{m.group(1)} {m.group(2)} {{: #{m.group(3)} }}", md)
+    md, figures = _fold_setups(md)
+    html = _markdown(md)
+    for i, fig in enumerate(figures):
+        slot = SLOT.format(i)
+        if slot not in html:
+            raise ValueError(f"setup slot {i} was lost while rendering")
+        html = html.replace(slot, fig, 1)
+    return html
 
 
 def label_table(m: re.Match) -> str:
@@ -204,6 +279,7 @@ def build_post(path: Path) -> dict:
         "featured": bool(meta.get("featured", False)),
         "toc": [{"id": str(t["id"]), "label": str(t.get("label", t["id"]))} for t in (meta.get("toc") or [])],
         "lede": lede,
+        "tldr": _markdown(str(meta["tldr"]).strip()) if meta.get("tldr") else "",
         "html": html,
     }
 
