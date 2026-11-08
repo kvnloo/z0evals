@@ -1,0 +1,55 @@
+{
+ "raw_inputs": [
+  {
+   "file": "scaling-qwen3-0.6b.jsonl",
+   "sha256": "806e64623d3c8fb4f315844d87852641047ff5bab384fc1d50a116e28b521bf1",
+   "rows": 82824
+  },
+  {
+   "file": "niah-qwen3-0.6b.jsonl",
+   "sha256": "3b6552e36bdae61d73d905caba7e6be74425fcf0d06b97112bad199017182107",
+   "rows": 720
+  }
+ ],
+ "model_revisions": {
+  "Qwen/Qwen3-0.6B": "c1899de289a04d12100db370d81485cdf75e47ca",
+  "Qwen/Qwen3.5-4B": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a"
+ },
+ "base_revisions": {
+  "kvnloo/z0intelligence": "52aed5bb9a41b4986fb77c3017c03d3b2a4573e0",
+  "kvnloo/z0evals": "f8e7f4321a3fe5d97485bfd7d69695a4da7e09f4"
+ },
+ "software": {
+  "torch": "2.11.0+cu128",
+  "transformers": "5.20.1",
+  "accelerate": "1.15.0"
+ },
+ "books": [
+  {
+   "id": 1342,
+   "url": "https://www.gutenberg.org/cache/epub/1342/pg1342.txt",
+   "sha256": "3f6bb9d6f78e0293b56acd4714dd68cb7d6d1d293402031ce9d5a216bcaf9d75"
+  },
+  {
+   "id": 2701,
+   "url": "https://www.gutenberg.org/cache/epub/2701/pg2701.txt",
+   "sha256": "b5e88b71a1cda068e9ab1d94344c9d932338ba6da1a66def97a1aecd9cfcc87d"
+  },
+  {
+   "id": 98,
+   "url": "https://www.gutenberg.org/cache/epub/98/pg98.txt",
+   "sha256": "d54c2b80d40a40b982cd88852c6180bb944d95acdb028af3d0e01a1750681784"
+  }
+ ],
+ "seed": 20261103,
+ "decode": "greedy, thinking disabled, 16 new tokens max",
+ "niah": "four seven-digit needles per task; one queried; substring exact answer",
+ "scaling": "three books, two segments/book for 0.6B; one/book for 4B; all full-attention heads and layers",
+ "caveats": [
+  "heads/layers/overlapping positions are NOT independent trials",
+  "shared dense prefill produces first output token before sparse decode",
+  "centroid routing only; no ZHA reference-query distillation",
+  "scored/scored_frac fields are idealized operation counts, NOT measured work",
+  "4B is a hybrid model: only eight full-attention layers are probed"
+ ]
+}

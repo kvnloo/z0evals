@@ -1,0 +1,100 @@
+{
+  "schema_version": "z0eval.study.v1",
+  "id": "zha-sparsity-probe-v0",
+  "title": "Hierarchical attention: training-free local feasibility",
+  "status": "draft",
+  "created": "2026-11-03",
+  "sources": [
+    {
+      "repo": "kvnloo/z0intelligence",
+      "commit": "52aed5bb9a41b4986fb77c3017c03d3b2a4573e0",
+      "role": "base revision and model pins; new harness is local only"
+    },
+    {
+      "repo": "kvnloo/z0evals",
+      "commit": "f8e7f4321a3fe5d97485bfd7d69695a4da7e09f4",
+      "role": "evaluation substrate base; new study is local only"
+    }
+  ],
+  "questions": [
+    "Does dense attention support grow sublinearly over the tested range?",
+    "Can untrained centroid-tree decode masking preserve paired needle retrieval outcomes?"
+  ],
+  "limitations": [
+    "Not trained ZHA; dense prefill and first token; single model/seed.",
+    "No speed or KV memory reduction measured.",
+    "4B attempt stopped before results."
+  ],
+  "artifacts": [
+    {
+      "path": "README.md",
+      "kind": "analysis",
+      "sha256": "ed8efab4b1ee5d32f3af6ac97eb5cdb3428f1bb02b75ea4b8638adbde3a09649"
+    },
+    {
+      "path": "REPORT.md",
+      "kind": "analysis",
+      "sha256": "f322a03ed60063f856ebf6898b633ff8e521e53fbcf96a6d5b72c1631d3f2e45"
+    },
+    {
+      "path": "comparison.html",
+      "kind": "analysis",
+      "sha256": "7a78afea64847bdfdfdc588f7eaf3a661f57eefa9d9ed73f51af06a88dc54c02"
+    },
+    {
+      "path": "data/niah-trials.json",
+      "kind": "result",
+      "sha256": "ee201fd6dbf404f0d1cbb866d282c3989f6d56e0b142c91c0877ecc3b680338b"
+    },
+    {
+      "path": "data/provenance.json",
+      "kind": "result",
+      "sha256": "fc99260f01d24d943c5de3226f009eef706a907cf7af2c4df1c96ce63314b113"
+    },
+    {
+      "path": "data/run-status.json",
+      "kind": "result",
+      "sha256": "3c1528828383e2231726c9b87be472a955013b246c6f2107a44e571586d22128"
+    },
+    {
+      "path": "data/scaling-segments.json",
+      "kind": "result",
+      "sha256": "47340f554a0545f38615d9ffaab013bdbcfa37d940489b08a8fff37d2693c5e2"
+    },
+    {
+      "path": "data/summary.json",
+      "kind": "result",
+      "sha256": "1f6a2960e8c85356c6b3c85d604bd7e695847fa40bcab4fe7798529df5d1a5f9"
+    },
+    {
+      "path": "data/unit-tests.txt",
+      "kind": "result",
+      "sha256": "035f2972d193fe2d2ef531c410079e217d4814553557f95e4af2bcc96386316e"
+    },
+    {
+      "path": "scripts/check_study.py",
+      "kind": "analysis",
+      "sha256": "c032173c323394d0cc188f44e3887bc6d4cf965a022e549a32cbf989c1ec4b67"
+    },
+    {
+      "path": "scripts/figures.py",
+      "kind": "analysis",
+      "sha256": "462b4d4fedb1b5ef10fd1bbbe8c91ee400359236d2b5c3ba4463caeb50e886d0"
+    },
+    {
+      "path": "scripts/import_results.py",
+      "kind": "analysis",
+      "sha256": "3e9d77bd9a4f3b60ab04b65f1aa8b79085abd72432ad7b100a09569996944b22"
+    },
+    {
+      "path": "scripts/test_zha_probe.py",
+      "kind": "analysis",
+      "sha256": "067aeee4375356caab02439832d49e17ba5d2bfc27fcdcd50f3ff8294587b31b"
+    },
+    {
+      "path": "scripts/zha_probe.py",
+      "kind": "analysis",
+      "sha256": "0158b1372adcb6ef2d6ce34f1719dcc1b05f28befc8136db415ad868ea5affbe"
+    }
+  ]
+}
