@@ -1,0 +1,65 @@
+schema_version: z0eval.study.v1
+id: free-taskfit-v0
+title: Free-lane task fit for router task classes (O14 p_accept priors)
+status: draft
+created: "2026-11-03"
+updated: "2026-11-03"
+
+run_id: free-taskfit-pilot-20261103
+evidence_status: pilot-withdrawn; no certified run yet (the pilot sent requests the known limits rule out)
+external_inference_spend_usd: 0.0
+spend_note: Groq free plan, NVIDIA NIM free and OpenRouter :free only (max_price 0, no fallbacks). The OpenRouter key reported a 0 USD credit limit.
+
+sources:
+  - repo: kvnloo/z0intelligence
+    commit: f12b926e79e17308859b1ae0b6cc68de5a5c5a5b
+    branch: feat/vllm-sr-turbo-router
+    role: origin of the frozen task set (deploy/vllm-sr/profiles/tasks.py) and the eval_free.py call semantics (PR 289)
+  - repo: kvnloo/z0intelligence
+    commit: 56b80a7ae50cdc80da18a8408130116e4ad47e5e
+    branch: feat/model-routing-o14
+    role: consumer; policy ingest (z0eval_result) and the model-routing catalog that turns findings into p_accept (PR 222)
+  - repo: kvnloo/z0intelligence
+    commit: ab33e23a11af286e15b512d96361d0b2fc2efce4
+    branch: feat/vllm-sr-turbo-router
+    role: known per-model limits frozen into frozen/limits.json by scripts/freeze_limits.py (captured 2026-11-03T23:05:38Z). deploy/vllm-sr/limits.json sha256 c46fe55046c2dfad5f8ed2bb6e23a20f52dc6f669d4c0434bac39b3257561a00 (observed 2026-11-02T15:20:42Z); deploy/vllm-sr/profiles/catalog.json sha256 599c05a7ade462754cd9b98171fd82f8c026afd9e6e3905d9bb95d8dd0f78f9a (context windows, observed 2026-11-03T00:47:23Z).
+  - repo: kvnloo/kerdoios
+    commit: c513e9eeb6eefad47079d263650b7d1c831b08f1
+    branch: feat/routing-objective-o14
+    role: O14 plan_routing, the only optimizer that reads p_accept (PR 69)
+
+questions:
+  - For each free lane and router task family, what share of calls does the frozen grader accept?
+  - Which O14 inputs does a certified battery fill, and which stay unknown?
+
+artifacts:
+  - path: frozen/tasks.py
+    kind: fixture
+    sha256: 119209b5c61d07c8ebf109aeb995b778e58fc0cd49ec6f04fa90df4b90ed987b
+  - path: frozen/limits.json
+    kind: fixture
+    sha256: d62c219f03ef01fa590271466116bcbf2ba9b41d60b0ae5928bc9bba98f177f7
+  - path: scripts/plan_taskfit.py
+    kind: other
+    sha256: de2b12e1d2fabd988190a390f19bd1494c06c745a4f539349d5525a3dbd96642
+  - path: scripts/run_taskfit.py
+    kind: other
+    sha256: e627ac02e6c6642bfe15b712ecb301726da883184941ba14e4ef093310adb2ca
+  - path: scripts/certify.py
+    kind: other
+    sha256: d556f048c259e57a8f660b5c67a24cacdb3d38cde38609432a5b1f71a960450b
+  - path: scripts/freeze_limits.py
+    kind: other
+    sha256: b8ecc7a8accdce3e9b529290c613a24143330fe13d286847ece4b15323aedde4
+  - path: data/runs/pilot-20261103/rows.jsonl
+    kind: dataset
+    sha256: 788066d30209c2b29c12047bc94ce5b42957896dec2dd323bac61d3268fd332c
+
+limitations:
+  - The pilot ran before PREREGISTRATION.md was committed; it is labelled pilot and is not the counted run.
+  - The pilot receipt (data/runs/pilot-20261103/result.json) is withdrawn. The pilot sent 12 Groq requests that the known limits rule out (needle-8k/32k/hard-needle-multi at ~10k-28k estimated tokens against 8K TPM per model); 8 came back 413 and were counted as wrong answers. certify.py now fails that run, naming frozen/limits.json. rows.jsonl stays as the evidence of the mistake; no p_accept from this pilot exists.
+  - n per family is tasks x 2 repeats (classify 2, reason 14, the rest 6); one task is worth up to 50 points on classify.
+  - Client TTFT measured from groot includes network RTT; decode tok/s on short answers understates sustained throughput.
+  - NVIDIA NIM is outside the z0int model-routing catalog's provider scope, so its findings are certified here but dropped at catalog import.
+
+claims: []

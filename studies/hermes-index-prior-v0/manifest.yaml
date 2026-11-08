@@ -1,0 +1,67 @@
+schema_version: z0eval.study.v1
+id: hermes-index-prior-v0
+title: Hermes Index as a provenance-labelled routing prior, plus a Hermes-in-Harbor replication path
+status: draft
+created: "2026-11-03"
+updated: "2026-11-03"
+
+evidence_status: source-reported
+z0evals_measured: false
+external_inference_spend_usd: 0.0
+
+sources:
+  - repo: kvnloo/z0intelligence
+    commit: 56b80a7ae50cdc80da18a8408130116e4ad47e5e
+    branch: feat/model-routing-o14
+    role: model-routing catalog generator (--benchmark row consumer) and catalog the identity map targets (PR 222)
+  - repo: NousResearch/hermes-agent
+    commit: 5af672c7530263544a9f5e2479f3853d83b3b798
+    role: commit that removed the in-repo Atropos benchmark environments (TerminalBench 2, TBLite, YC-Bench); no Hermes Bench source before or after
+
+questions:
+  - What does the published Hermes Index say about each model, and which of its numbers are provisional?
+  - Which of its four suites can we run ourselves, with which harness command and license?
+  - Can the Hermes-agent-in-Harbor path run and grade one public-suite task on a free lane, end to end?
+
+artifacts:
+  - path: data/snapshots/hermes-index-20261103T2032Z.json
+    kind: dataset
+    sha256: aaf66717955c5d712fa252bf55547727f79ae9dee053930c5ac1357d24250869
+  - path: data/identity-map.json
+    kind: fixture
+    sha256: b2c48acbc0526065a08b91e3fd0a5c1e63b7322108d06fa4d9ff3aba5469e6a6
+  - path: data/benchmark-rows-20261103T2032Z.json
+    kind: result
+    sha256: c9898d330b3adea13c1aa411074ccf162e3442823f028743d114f9fc5119e0ca
+  - path: scripts/snapshot_hermes_index.py
+    kind: other
+    sha256: 134ff0189b331cc554bc0375825facb3c9e1bd74d219917ecc77687a535666ac
+  - path: scripts/to_benchmark_rows.py
+    kind: other
+    sha256: cf38bcb45d1b2c5124e8cd935d5a3047909257294d3b4f0b9daf35ae5c59fe23
+  - path: scripts/harbor_pilot.sh
+    kind: other
+    sha256: 64217b219a0d8823b027869a00ba10f07c9f469f8fdf9f56c7cfd7228199ac38
+
+  - path: scripts/hermes_harbor_agent.py
+    kind: other
+    sha256: b99e46ab98c4b8929797825d0101c04404f8d781266b7dd2abd74e6ecf8846e6
+
+  - path: data/pilots/harbor-tb4-music-harmony-20261103.json
+    kind: receipt
+    sha256: a0e9e11616fa3f4291a519bf79dfb744218cb5c1ea496f8ebe116d80ce7f3405
+
+limitations:
+  - The Index is Nous Research's measurement in their harness configuration; z0evals did not reproduce it.
+  - The page carries no publication date; captured_at (2026-11-03T20:32:51Z) is the only time bound.
+  - Hermes Bench (the fourth suite, 150 tasks) is not public, so the Index itself cannot be recomputed.
+  - Identity mapping is by model family name; the served alias may not be the evaluated checkpoint.
+  - Rows the page marks provisional keep "[provisional]" in the benchmark name downstream.
+
+claims:
+  - id: harbor-hermes-path
+    text: The Hermes-in-Harbor path installs, runs, exports a trajectory and is graded on a free OpenRouter lane once the version probe is fixed; the one-task pilot scored 0 at a 40-turn cap and is not a model score.
+    evidence: [data/pilots/harbor-tb4-music-harmony-20261103.json]
+  - id: prior-not-acceptance
+    text: Hermes Index rows enter the O14 catalog only as external_benchmark entries and never set task-class p_accept.
+    evidence: [data/benchmark-rows-20261103T2032Z.json]
