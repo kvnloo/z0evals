@@ -10,6 +10,7 @@ Run either as pytest or directly:
 
     .venv/bin/python -m pytest tests/test_arm_identity.py -q
     python3 tests/test_arm_identity.py
+    python -m unittest discover -s tests -p test_arm_identity.py -v
 """
 
 from __future__ import annotations
@@ -155,6 +156,16 @@ def test_rendered_site_labels_come_from_the_resolver():
     walk(study)
     assert "compiler+jev" in seen, "the jev arm vanished from the built data"
     assert "compiler+jev+qwen3.5_4b" in seen
+
+
+def load_tests(loader, standard_tests, pattern):
+    """Let `python -m unittest discover` collect the plain test functions."""
+    import unittest
+
+    for name, fn in sorted(globals().items()):
+        if name.startswith("test_") and callable(fn):
+            standard_tests.addTest(unittest.FunctionTestCase(fn, description=name))
+    return standard_tests
 
 
 def _main() -> int:
