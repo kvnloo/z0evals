@@ -1,0 +1,159 @@
+{
+ "ondevice": {
+  "screens_v2": 12,
+  "z0live_snapshot_ms": {
+   "first_after_launch_p50": 75.5,
+   "first_after_launch_p95": 217.6,
+   "warm_p50": 9.3,
+   "warm_p95": 104
+  },
+  "z0live_probe_ms_warm_p50": 11.5,
+  "z0live_over_adb_broadcast_wall_ms_p50": 167.6,
+  "u2_dump_on_phone_ms": {
+   "first_p50": 111.6,
+   "warm_p50": 98.0,
+   "warm_p95": 164.8
+  },
+  "tier0_decide_ms": {
+   "p50": 16.5,
+   "p95": 24
+  },
+  "act_ms": {
+   "p50": 19.5,
+   "p95": 99.2
+  },
+  "confirm_ms": {
+   "p50": 165.9,
+   "p95": 439.1
+  },
+  "do_total_ms": {
+   "p50": 267.2,
+   "p95": 476.5,
+   "n": 16
+  },
+  "landed": 16,
+  "statuses": {
+   "blocked_app": 6,
+   "done": 17,
+   "choose": 2,
+   "confirm_required": 1
+  }
+ },
+ "phone_slm": [
+  {
+   "model": "SmolLM2-360M Q8_0",
+   "device": "S22+ CPU (Snapdragon 8 Gen 1), llama.cpp, 4 threads",
+   "cases": 29,
+   "top1": 0.25,
+   "acted_right@0.95": 0,
+   "acted_wrong@0.95": 0,
+   "warm_prefix_cached_ms_p50": 19.8,
+   "full_prompt_ms_p50": 124.0,
+   "full_prompt_ms_p95": 397.9
+  },
+  {
+   "model": "Qwen3-0.6B Q8_0",
+   "device": "S22+ CPU (Snapdragon 8 Gen 1), llama.cpp, 4 threads",
+   "cases": 28,
+   "top1": 0.222,
+   "acted_right@0.95": 0,
+   "acted_wrong@0.95": 0,
+   "warm_prefix_cached_ms_p50": 31.0,
+   "full_prompt_ms_p50": 181.6,
+   "full_prompt_ms_p95": 551.2
+  },
+  {
+   "model": "Qwen3-1.7B Q4_K_M",
+   "device": "S22+ CPU (Snapdragon 8 Gen 1), llama.cpp, 4 threads",
+   "cases": 29,
+   "top1": 0.786,
+   "acted_right@0.95": 16,
+   "acted_wrong@0.95": 6,
+   "warm_prefix_cached_ms_p50": 101.8,
+   "full_prompt_ms_p50": 764.6,
+   "full_prompt_ms_p95": 2452.7
+  }
+ ],
+ "tiers_fixture": [
+  {
+   "tier": "groot:qwen3-0.6b-q8",
+   "cases": 29,
+   "top1_accuracy": 0.25,
+   "acted_right": 2,
+   "acted_wrong": 2,
+   "abstained": 25,
+   "p50_ms": 30.9,
+   "p95_ms": 85.6
+  },
+  {
+   "tier": "groot:qwen3-1.7b-q4km",
+   "cases": 29,
+   "top1_accuracy": 0.714,
+   "acted_right": 19,
+   "acted_wrong": 4,
+   "abstained": 6,
+   "p50_ms": 17.4,
+   "p95_ms": 47.9
+  },
+  {
+   "tier": "groot:qwen3-4b-q4km",
+   "cases": 29,
+   "top1_accuracy": 0.929,
+   "acted_right": 26,
+   "acted_wrong": 3,
+   "abstained": 0,
+   "p50_ms": 25.6,
+   "p95_ms": 44.5
+  },
+  {
+   "tier": "jev",
+   "cases": 29,
+   "top1_accuracy": 1.0,
+   "acted_right": 28,
+   "acted_wrong": 1,
+   "abstained": 0,
+   "p50_ms": 154.6,
+   "p95_ms": 203.8
+  },
+  {
+   "tier": "laya:cuda",
+   "cases": 29,
+   "top1_accuracy": 0.75,
+   "acted_right": 2,
+   "acted_wrong": 0,
+   "abstained": 27,
+   "p50_ms": 23.1,
+   "p95_ms": 37.6,
+   "load_ms": 31685,
+   "floor": 0.85
+  },
+  {
+   "tier": "laya:cpu",
+   "cases": 29,
+   "top1_accuracy": 0.75,
+   "acted_right": 2,
+   "acted_wrong": 0,
+   "abstained": 27,
+   "p50_ms": 914.4,
+   "p95_ms": 1156.0,
+   "load_ms": 24697,
+   "floor": 0.85
+  }
+ ],
+ "heldout_s22": {
+  "groot:qwen3-4b-q4km": {
+   "cases": 14,
+   "top1": 12,
+   "acted_right": 12,
+   "acted_wrong": 2,
+   "ms_p50": 95.8
+  },
+  "jev": {
+   "cases": 14,
+   "top1": 12,
+   "acted_right": 12,
+   "acted_wrong": 1,
+   "ms_p50": 172.5
+  }
+ }
+}
