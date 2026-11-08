@@ -1,6 +1,6 @@
 ---
 title: "a 25 ms commit window for t3 code: 22% fewer sqlite commits on real agent turns"
-subtitle: "t3 code commits once per streamed event. grouping plain provider updates for up to 25 ms cut commits per stored event by 22% on 156 real codex turns, with no measurable lag cost. simulated turns overstate the saving at 43%."
+subtitle: "t3 code commits once per streamed event. grouping plain provider updates for up to 25 ms cut commits per stored event by 21–23% on 312 real codex and claude code turns, with no measurable lag cost. simulated turns overstate the saving at 43%."
 study: t3code-storage-write-amplification
 status: draft
 author: "zer0 research"
@@ -37,7 +37,7 @@ toc:
 ---
 
 <div class="stat-strip" markdown="0">
-<div class="stat"><span>commits per event</span><b>−22%</b><small>0.704 → 0.547, real codex turns</small></div>
+<div class="stat"><span>commits per event</span><b>−22%</b><small>codex 0.704 → 0.547, claude 0.674 → 0.531</small></div>
 <div class="stat"><span>sqlite bytes per event</span><b>−12%</b><small>115 → 101 KiB, 4 threads at once</small></div>
 <div class="stat"><span>event lag p50</span><b>+15 ms</b><small>[−20, +41], within noise</small></div>
 <div class="stat"><span>after pr 29806</span><b>unchanged</b><small>same saving with pruning on main</small></div>
@@ -61,7 +61,7 @@ numbers from busy installs are the most useful thing to post there.
 - **the problem:** the t3 code server commits to sqlite once per streamed event, and each commit rewrites about 29 pages. it is tracked upstream in [issue 24003](https://github.com/pingdotgg/t3code/issues/24003). [pr 24145](https://github.com/pingdotgg/t3code/pull/24145) batched queued snapshots and was closed under the one-problem rule; its reviewer, @simasrazinskas, found live events rarely queue up and suggested grouping commits across threads instead.
 - **what we built:** that suggestion, with a time window as the trigger. plain `node`, `message`, `turn-item` and `plan` updates wait up to 25 ms, then commit together. any other write commits the queue first, so order is unchanged.
 - **what it costs:** a hard crash can lose up to one window of events that no client had seen yet. in a 4-turn pilot, a 150 ms window saved no more and added 150 ms of lag, so the window has to stay short.
-- **how sure we are:** measured on 156 real codex turns (6,674 stored events) at 30 turns per arm one thread at a time and 24 per arm four threads at once. commit counts are tight; byte savings are clear only with four threads; lag changes are within noise. claude code turns are still to run (its weekly limit was spent), so this is one provider for now. the simulated a/b and the replay estimate below are kept as upper bounds and are no longer the headline.
+- **how sure we are:** measured on 312 real agent turns (13,354 stored events) on two providers, codex and claude code, at 30 turns per arm one thread at a time and 24 per arm four threads at once. commit counts are tight and agree across providers (−21% to −23% per event); byte savings are clear only with four threads; lag changes are within noise. the simulated a/b and the replay estimate below are kept as upper bounds and are no longer the headline.
 
 ## one commit per event {#problem}
 
@@ -95,26 +95,38 @@ the failure modes are the part we asked upstream about:
 
 ## measured on real turns {#real-turns}
 
-real codex agent turns (codex-cli 0.162.1, gpt-5.6-luna, low effort) ran through t3 code's real codex adapter on a main that includes [29806](https://github.com/pingdotgg/t3code/pull/29806). the server was a fresh bench home on the public synthetic seed after `t3 doctor --fix` (993 events, 70.8 MiB). each turn did real work in a fresh scratch repo: read files, run a command, edit a file, explain, and one long answer with no tools. the same prompts ran in the same order in both arms, alternating off and 25 ms (abba). the turns ran 136 commands and made 37 edits, and none were excluded.
+two providers, real agent turns, through t3 code's real adapters on a main that includes [29806](https://github.com/pingdotgg/t3code/pull/29806):
 
-two shapes: one thread at a time (s1), and four threads started together (s4), like subagent fan-out. per-event numbers are the fair comparison because real turns vary in length.
+- **codex:** codex-cli 0.162.1, gpt-5.6-luna, low effort.
+- **claude code:** 2.1.312, claude-haiku-5-5, low effort.
 
-| codex, p50 | off | 25 ms | change [95% ci] |
+the server was a fresh bench home on the public synthetic seed after `t3 doctor --fix` (993 events, 70.8 MiB). each turn did real work in a fresh scratch repo: read files, run a command, edit a file, explain, and one long answer with no tools. the same prompts ran in the same order in both arms, alternating off and 25 ms (abba). that came to 312 turns and 13,354 stored events: 78 turns per arm per provider, and none were excluded.
+
+two shapes: one thread at a time (s1, 30 turns per arm), and four threads started together (s4, like subagent fan-out). the s4 rows below use the first batch in each server boot (24 turns per arm), because codex second batches carry an unrelated burst (see below). per-event numbers are the fair comparison because real turns vary in length.
+
+| p50 | off | 25 ms | change [95% ci] |
 |---|---|---|---|
-| s1 commits per event (30 turns per arm) | 0.704 | 0.547 | −0.156 [−0.18, −0.11], −22% |
-| s1 commits per turn | 29 | 22 | −7 [−11, −3] |
-| s1 sqlite KiB per event | 111 | 94.5 | −16.9 [−30.6, +15.7] |
-| s1 event lag p50 | 60.5 ms | 75.5 ms | +15 [−20, +41] |
-| s4 commits per event (24 turns per arm) | 0.703 | 0.542 | −0.16 [−0.19, −0.14], −23% |
-| s4 sqlite KiB per event | 115 | 101 | −13.4 [−18.4, −7.7], −12% |
-| s4 sqlite MiB per turn | 4.65 | 4.19 | −0.46 [−1.1, −0.09], −10% |
+| codex s1 commits per event | 0.704 | 0.547 | −0.156 [−0.18, −0.11], −22% |
+| claude s1 commits per event | 0.674 | 0.531 | −0.144 [−0.149, −0.099], −21% |
+| codex s4 commits per event | 0.703 | 0.542 | −0.16 [−0.19, −0.14], −23% |
+| claude s4 commits per event | 0.69 | 0.537 | −0.153 [−0.162, −0.13], −22% |
+| codex s1 commits per turn | 29 | 22 | −7 [−11, −3] |
+| claude s1 commits per turn | 28 | 22.5 | −5.5 [−8, −2] |
+| codex s1 sqlite KiB per event | 111 | 94.5 | −16.9 [−30.6, +15.7] |
+| claude s1 sqlite KiB per event | 95.5 | 98.2 | +2.7 [−21.6, +25.3] |
+| codex s4 sqlite KiB per event | 115 | 101 | −13.4 [−18.4, −7.7], −12% |
+| claude s4 sqlite KiB per event | 114 | 100 | −13.4 [−18.2, −5.4], −12% |
+| codex s1 event lag p50 | 60.5 ms | 75.5 ms | +15 [−20, +41] |
+| claude s1 event lag p50 | 42 ms | 28.5 ms | −13.5 [−36.5, +20.5] |
 
-- **the saving is real but about half the simulated one.** codex events mostly arrive more than 25 ms apart, so fewer of them share a window than in `devReplay` turns.
-- **four threads at once did not add coalescing for codex.** commits per event with the window on are the same in s4 (0.542) as in s1 (0.547).
-- **no measurable cost.** event lag, first event, first assistant text, frame gap, turn wall, cpu and rss all moved by less than their noise. real provider jitter is larger than 25 ms.
-- **an unexplained burst.** the second four-thread batch in each server boot wrote about 200 extra commits that stored no event, in 11 of 12 runs, in both arms. the s4 rows above use first batches; the second batches are in the [data](https://github.com/kvnloo/z0evals/blob/main/studies/t3code-storage-write-amplification/data/real-turns-codex-s4-position.txt). it does not favour either arm.
+- **the commit saving holds on both providers: 21–23% fewer commits per event.** that is about half the simulated 43%. real events mostly arrive more than 25 ms apart, so fewer share a window than in `devReplay` turns.
+- **four threads at once add no cross-thread coalescing,** for either provider. with the window on, commits per event are the same in s4 as in s1.
+- **bytes drop about 12% per event only with four threads.** with one thread the byte change cannot be told apart from zero on either provider: fewer commits, but each is larger (claude s1 +29% KiB per commit).
+- **no measurable lag cost.** on both providers, every ci for event lag p50 and p95, first event, first assistant text and turn wall includes zero. real provider jitter is larger than 25 ms.
+- **two cells moved beyond noise, and neither is a delay.** claude s4's median gap between websocket frames grew by 298 ms [+66, +432], while frames per turn fell and delivery lag did not move. that fits merged frames, but the tap records only one median gap per turn, so it is an interpretation. claude s1 peak rss rose 45 MiB [+3, +119]. it appears in no other cell, and the five turns in one boot are not independent samples, so treat it as unconfirmed.
+- **a codex-only burst.** the second four-thread codex batch in each boot wrote about 200 extra commits that stored no event, in 11 of 12 runs, in both arms. none of the 12 claude second batches show it, so it is codex-specific; it does not favour either arm. per-batch splits are in the [s4 data](https://github.com/kvnloo/z0evals/blob/main/studies/t3code-storage-write-amplification/data/real-turns-s4-position.txt).
 
-[data](https://github.com/kvnloo/z0evals/blob/main/studies/t3code-storage-write-amplification/data/real-turns-codex-ab.json), [harness](https://github.com/kvnloo/t3code/tree/exp/poh/04c-real-turns).
+[data](https://github.com/kvnloo/z0evals/blob/main/studies/t3code-storage-write-amplification/data/real-turns-ab.json), [harness](https://github.com/kvnloo/t3code/tree/exp/poh/04c-real-turns).
 
 ## simulated turns (upper bound) {#group-commit}
 
