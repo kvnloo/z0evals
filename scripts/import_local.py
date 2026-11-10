@@ -32,8 +32,13 @@ def main() -> None:
     spec_path = Path(sys.argv[1]).resolve()
     spec = yaml.safe_load(spec_path.read_text())
     study_id = spec["study"]
-    study_dir = ROOT / "studies" / study_id
-    manifest_path = study_dir / "manifest.yaml"
+    studies_dir = (ROOT / "studies").resolve()
+    study_dir = (studies_dir / study_id).resolve()
+    if study_dir == studies_dir or not study_dir.is_relative_to(studies_dir):
+        raise SystemExit(f"study escapes studies directory: {study_id}")
+    manifest_path = (study_dir / "manifest.yaml").resolve()
+    if not manifest_path.is_relative_to(study_dir):
+        raise SystemExit(f"manifest escapes study directory: {study_id}")
     if not manifest_path.exists():
         raise SystemExit(f"study does not exist: {study_id}")
 
@@ -57,7 +62,11 @@ def main() -> None:
             subprocess.check_call(
                 ["git", "-C", str(local_root), "cat-file", "-e", f"{actual}:{rel}"]
             )
-            out = study_dir / item["to"]
+            # Resolve before creating directories or writing: relative traversal, absolute
+            # destinations and existing symlinks must not escape the selected study.
+            out = (study_dir / item["to"]).resolve()
+            if not out.is_relative_to(study_dir):
+                raise SystemExit(f"artifact destination escapes study: {item['to']}")
             out.parent.mkdir(parents=True, exist_ok=True)
             data = subprocess.check_output(
                 ["git", "-C", str(local_root), "show", f"{actual}:{rel}"]
