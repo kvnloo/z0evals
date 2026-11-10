@@ -205,6 +205,72 @@ class ImportLocalTest(unittest.TestCase):
         self.assertEqual(str(caught.exception), "study does not exist: nope")
         self.assertFalse((self.output_root / "studies" / "nope").exists())
 
+    def test_destination_traversal_is_rejected_before_write(self) -> None:
+        outside = self.output_root / "outside.json"
+        outside.write_bytes(b"preserve")
+        self.spec["sources"][0]["files"][0]["to"] = "../../outside.json"
+        with self.assertRaisesRegex(SystemExit, "artifact destination escapes study"):
+            self._run_import()
+        self.assertEqual(outside.read_bytes(), b"preserve")
+        self.assertEqual(self._manifest(), {"id": "demo", "status": "draft"})
+
+    def test_absolute_destination_is_rejected_before_write(self) -> None:
+        outside = self.base / "outside.json"
+        outside.write_bytes(b"preserve")
+        self.spec["sources"][0]["files"][0]["to"] = str(outside)
+        with self.assertRaisesRegex(SystemExit, "artifact destination escapes study"):
+            self._run_import()
+        self.assertEqual(outside.read_bytes(), b"preserve")
+        self.assertEqual(self._manifest(), {"id": "demo", "status": "draft"})
+
+    def test_destination_symlink_is_rejected_before_write(self) -> None:
+        outside = self.base / "outside"
+        outside.mkdir()
+        target = outside / "r.json"
+        target.write_bytes(b"preserve")
+        (self.study_dir / "data").symlink_to(outside, target_is_directory=True)
+        with self.assertRaisesRegex(SystemExit, "artifact destination escapes study"):
+            self._run_import()
+        self.assertEqual(target.read_bytes(), b"preserve")
+        self.assertEqual(self._manifest(), {"id": "demo", "status": "draft"})
+
+    def test_study_traversal_is_rejected_before_write(self) -> None:
+        outside = self.output_root / "outside"
+        outside.mkdir()
+        manifest = outside / "manifest.yaml"
+        original = "id: outside\nstatus: draft\n"
+        manifest.write_text(original, encoding="utf-8")
+        self.spec["study"] = "../outside"
+        with self.assertRaisesRegex(SystemExit, "study escapes studies directory"):
+            self._run_import()
+        self.assertEqual(manifest.read_text(encoding="utf-8"), original)
+        self.assertFalse((outside / "data").exists())
+
+    def test_study_symlink_is_rejected_before_write(self) -> None:
+        outside = self.base / "outside"
+        outside.mkdir()
+        manifest = outside / "manifest.yaml"
+        original = "id: outside\nstatus: draft\n"
+        manifest.write_text(original, encoding="utf-8")
+        (self.output_root / "studies" / "linked").symlink_to(outside, target_is_directory=True)
+        self.spec["study"] = "linked"
+        with self.assertRaisesRegex(SystemExit, "study escapes studies directory"):
+            self._run_import()
+        self.assertEqual(manifest.read_text(encoding="utf-8"), original)
+        self.assertFalse((outside / "data").exists())
+
+    def test_manifest_symlink_is_rejected_before_write(self) -> None:
+        outside = self.base / "outside-manifest.yaml"
+        original = "id: outside\nstatus: draft\n"
+        outside.write_text(original, encoding="utf-8")
+        manifest = self.study_dir / "manifest.yaml"
+        manifest.unlink()
+        manifest.symlink_to(outside)
+        with self.assertRaisesRegex(SystemExit, "manifest escapes study directory"):
+            self._run_import()
+        self.assertEqual(outside.read_text(encoding="utf-8"), original)
+        self.assertFalse((self.study_dir / "data").exists())
+
     def test_usage(self) -> None:
         with self.assertRaises(SystemExit) as caught:
             self._run_import(["import_local.py"])
