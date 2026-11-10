@@ -169,6 +169,35 @@ class ValidateManifestsTest(unittest.TestCase):
         self.assertIn("missing artifact data/x.json", stdout)
         self.assertIn("hash mismatch data/x.json", stdout)
 
+    def test_invalid_manifest_shapes_report_schema_errors(self):
+        manifest, _, _ = self._make_manifest()
+        for value in (None, [], "not an object", 42):
+            with self.subTest(value=value):
+                self._write_manifest(manifest, value)
+                code, stdout = self._run_error()
+                self.assertEqual(code, "1 validation error(s)")
+                self.assertIn("schema error at []", stdout)
+
+    def test_invalid_artifact_shapes_do_not_reach_file_access(self):
+        manifest, _, data = self._make_manifest()
+        for artifacts in (None, [None], [{}], [{"path": 42, "kind": "result"}]):
+            with self.subTest(artifacts=artifacts):
+                data["artifacts"] = artifacts
+                self._write_manifest(manifest, data)
+                code, stdout = self._run_error()
+                self.assertIn("validation error(s)", code)
+                self.assertIn("schema error", stdout)
+
+    def test_malformed_yaml_does_not_hide_later_manifest_errors(self):
+        first, _, _ = self._make_manifest("first")
+        first.write_text("artifacts: [\n", encoding="utf-8")
+        _, artifact, _ = self._make_manifest("second")
+        artifact.unlink()
+        code, stdout = self._run_error()
+        self.assertEqual(code, "2 validation error(s)")
+        self.assertIn("YAML error", stdout)
+        self.assertIn("missing artifact data/x.json", stdout)
+
     def test_repo_manifests_still_validate(self):
         with patch.object(validate, "ROOT", ROOT):
             stdout = self._run_ok()
