@@ -50,6 +50,24 @@ class RelativeLinkAuditTests(unittest.TestCase):
         self.page.touch()
         self.assert_escape_flagged(r"..\outside.html")
 
+    def test_directory_index_symlink_outside_root_is_flagged(self) -> None:
+        outside = self.root.parent / "outside.html"
+        outside.write_text("outside")
+        article = self.root / "article"
+        article.mkdir()
+        (article / "index.html").symlink_to(outside)
+        for href in ("../article/", "../article"):
+            with self.subTest(href=href):
+                self.assert_escape_flagged(href)
+
+    def test_directory_index_symlink_inside_root_is_allowed(self) -> None:
+        target = self.root / "target.html"
+        target.write_text("inside")
+        article = self.root / "article"
+        article.mkdir()
+        (article / "index.html").symlink_to(target)
+        self.assertEqual(self.errors_for("../article/"), [])
+
     def test_in_root_path_is_not_flagged(self) -> None:
         target = self.root / "article" / "index.html"
         target.parent.mkdir()

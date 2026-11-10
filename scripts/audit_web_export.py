@@ -121,7 +121,7 @@ def check_relative_links(
 
         target = (path.parent / clean).resolve()
         if clean.endswith("/") or target.suffix == "":
-            target = target / "index.html"
+            target = (target / "index.html").resolve()
         try:
             target.relative_to(root.resolve())
         except ValueError:
