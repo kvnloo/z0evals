@@ -3,7 +3,6 @@
 This is the acceptance test for visual/interaction parity: identical probes,
 identical viewport, values printed side by side with the delta called out.
 """
-import asyncio
 import json
 import sys
 

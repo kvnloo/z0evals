@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import StoryShell, { type StoryMeta, type StoryBanner } from "@/components/StoryShell";
 import type { TocItem } from "@/components/Toc";
+import { studyMeta } from "@/lib/catalog";
 import MetricRow from "@/components/MetricRow";
 import Callout from "@/components/Callout";
 // Read the frozen artifacts, not a second transcription of the measurements.
@@ -23,14 +24,7 @@ if (!last || turns.length !== summary.turns || last.raw_bytes !== summary.final_
   throw new Error("OptChat publication: summary and frozen trajectory disagree");
 }
 const ratio = last.view_bytes / last.raw_bytes;
-const meta: StoryMeta = {
-  title: "does optchat stay small after fifty tool calls?",
-  subtitle: "the log kept growing. the view was smaller. that is the result — not a memory victory lap.",
-  author: "zer0 research",
-  date: "october 5, 2026",
-  status: "unscored",
-  lede: "the new optmem / optchat work belongs here too. this follow-up measures the size of a derived view against an accumulated transcript, while keeping answer quality and actual model requests as separate questions.",
-};
+const meta: StoryMeta = studyMeta("optchat-long-horizon-v0");
 const banner: StoryBanner = {
   tag: "unscored · source-reported",
   text: "context bytes only. no held-out answer check. the measured implementation was uncommitted relative to its source pin, so this is not an exact-code reproduction or a production promotion.",
@@ -144,5 +138,5 @@ const explore = (
   </>
 );
 export default function Page() {
-  return <StoryShell meta={meta} toc={toc} banner={banner} story={story} explore={explore} />;
+  return <StoryShell slug="optchat-long-horizon-v0" meta={meta} toc={toc} banner={banner} story={story} explore={explore} />;
 }

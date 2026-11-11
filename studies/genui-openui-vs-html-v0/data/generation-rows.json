@@ -1,0 +1,372 @@
+[
+ {
+  "id": "activity-heatmap",
+  "model": "default",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "panels": [
+   "Heatmap"
+  ],
+  "totalMs": 12730,
+  "firstTextMs": 9968,
+  "exit": 0,
+  "tokens": {
+   "input": 37334,
+   "output": 841
+  },
+  "program": "root = Board(\"Activity heatmap (synthetic fixture)\", \"Synthetic fixture: activity counts by day (rows: Mon, Tue, Wed) and UTC hour (columns: 0, 6, 12, 18). The highest cell is Tue at 12 UTC with 9. Zeros are real values: Mon and Wed at 0 UTC.\", [heat])\nheat = Heatmap(\"Activity by day (rows) and UTC hour (columns)\", \"count\", days, hours, counts)\ndays = [\"Mon\", \"Tue\", \"Wed\"]\nhours = [\"0 UTC\", \"6 UTC\", \"12 UTC\", \"18 UTC\"]\ncounts = [[0, 2, 7, 1], [1, 4, 9, 2], [0, 3, 5, 1]]"
+ },
+ {
+  "id": "activity-heatmap",
+  "model": "gpt-6.1-sol",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "panels": [
+   "Heatmap"
+  ],
+  "totalMs": 26980,
+  "firstTextMs": 23954,
+  "exit": 0,
+  "tokens": {
+   "input": 22530,
+   "output": 322
+  },
+  "program": "root = Board(\"Activity heatmap\", \"Days are rows; UTC hours are columns. Count legend: each cell shows its supplied activity count, including zeros.\", [activity])\nactivity = Heatmap(\"Activity by day and UTC hour\", \"Activity count\", [\"Mon\", \"Tue\", \"Wed\"], [\"0 UTC\", \"6 UTC\", \"12 UTC\", \"18 UTC\"], [[0,2,7,1],[1,4,9,2],[0,3,5,1]])"
+ },
+ {
+  "id": "ci-durations",
+  "model": "default",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "panels": [
+   "BarChart"
+  ],
+  "totalMs": 10994,
+  "firstTextMs": 10156,
+  "exit": 0,
+  "tokens": {
+   "input": 37331,
+   "output": 413
+  },
+  "program": "root = Board(\"Slowest CI jobs\", \"Android assemble is the slowest CI job at 1310 seconds. Server integration (655 s) and desktop package (540 s) come next. Lint is the fastest at 74 seconds.\", [durations])\ndurations = BarChart(\"CI job duration, slowest first\", \"seconds\", [{label: \"android assemble\", value: 1310}, {label: \"server integration\", value: 655}, {label: \"desktop package\", value: 540}, {label: \"web unit\", value: 412}, {label: \"mobile typecheck\", value: 288}, {label: \"lint\", value: 74}])"
+ },
+ {
+  "id": "ci-durations",
+  "model": "gpt-6.1-sol",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "panels": [
+   "BarChart"
+  ],
+  "totalMs": 24431,
+  "firstTextMs": 21689,
+  "exit": 0,
+  "tokens": {
+   "input": 22527,
+   "output": 246
+  },
+  "program": "root = Board(\"CI job durations\", \"Android assemble is the slowest job at 1310 seconds. Jobs are ordered from slowest to fastest, with durations shown exactly as supplied.\", [durations])\ndurations = BarChart(\"Jobs by duration \u2014 slowest first\", \"seconds\", [{label: \"android assemble\", value: 1310}, {label: \"server integration\", value: 655}, {label: \"desktop package\", value: 540}, {label: \"web unit\", value: 412}, {label: \"mobile typecheck\", value: 288}, {label: \"lint\", value: 74}])"
+ },
+ {
+  "id": "deep-paths-dashboard",
+  "model": "default",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "panels": [
+   "Treemap",
+   "BarChart"
+  ],
+  "totalMs": 15942,
+  "firstTextMs": 9711,
+  "exit": 0,
+  "tokens": {
+   "input": 37489,
+   "output": 1270
+  },
+  "program": "root = Board(\"OpenUI change: files by size and commits\", \"Seven files in the OpenUI change. Tile area is lines of code and darker tiles have more commits. apps/web/src/components/ChatMarkdown.tsx is the largest file at 1700 LOC and has the most commits at 14. It is followed by packages/client-runtime/src/openUiCharts.ts with 9 commits and apps/mobile/src/native/OpenUiCharts.tsx with 7 commits.\", [fileMap, topCommits])\nfileMap = Treemap(\"Files: area = LOC, color = commits\", \"LOC\", \"commits\", fileRows)\ntopCommits = BarChart(\"Three most-committed files\", \"commits\", topBars)\nfileRows = [{path: \"packages/client-runtime/src/openUiCharts.ts\", size: 410, color: 9}, {path: \"packages/client-runtime/src/zip/boundedZip.ts\", size: 220, color: 2}, {path: \"apps/mobile/src/native/OpenUiCharts.tsx\", size: 330, color: 7}, {path: \"apps/mobile/src/native/OpenUiReport.tsx\", size: 80, color: 3}, {path: \"apps/web/src/components/chat/OpenUiCharts.tsx\", size: 300, color: 6}, {path: \"apps/web/src/components/ChatMarkdown.tsx\", size: 1700, color: 14}, {path: \"docs/user/openui-reports.md\", size: 43, color: 4}]\ntopBars = [{label: \"apps/web/src/components/ChatMarkdown.tsx\", value: 14}, {label: \"packages/client-runtime/src/openUiCharts.ts\", value: 9}, {label: \"apps/mobile/src/native/OpenUiCharts.tsx\", value: 7}]"
+ },
+ {
+  "id": "deep-paths-dashboard",
+  "model": "gpt-6.1-sol",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "panels": [
+   "Treemap",
+   "BarChart"
+  ],
+  "totalMs": 22219,
+  "firstTextMs": 18423,
+  "exit": 0,
+  "tokens": {
+   "input": 22617,
+   "output": 430
+  },
+  "program": "root = Board(\"OpenUI change\", \"File area represents LOC and darker color represents more commits. ChatMarkdown.tsx has the most commits (14), followed by client-runtime openUiCharts.ts (9) and mobile OpenUiCharts.tsx (7).\", [files, top])\nfiles = Treemap(\"Files by LOC and commits\", \"LOC\", \"commits\", [{path: \"packages/client-runtime/src/openUiCharts.ts\", size: 410, color: 9}, {path: \"packages/client-runtime/src/zip/boundedZip.ts\", size: 220, color: 2}, {path: \"apps/mobile/src/native/OpenUiCharts.tsx\", size: 330, color: 7}, {path: \"apps/mobile/src/native/OpenUiReport.tsx\", size: 80, color: 3}, {path: \"apps/web/src/components/chat/OpenUiCharts.tsx\", size: 300, color: 6}, {path: \"apps/web/src/components/ChatMarkdown.tsx\", size: 1700, color: 14}, {path: \"docs/user/openui-reports.md\", size: 43, color: 4}])\ntop = BarChart(\"Three most-committed files\", \"commits\", [{label: \"apps/web/src/components/ChatMarkdown.tsx\", value: 14}, {label: \"packages/client-runtime/src/openUiCharts.ts\", value: 9}, {label: \"apps/mobile/src/native/OpenUiCharts.tsx\", value: 7}])"
+ },
+ {
+  "id": "disk-usage",
+  "model": "default",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "panels": [
+   "Treemap",
+   "BarChart"
+  ],
+  "totalMs": 17963,
+  "firstTextMs": 14004,
+  "exit": 0,
+  "tokens": {
+   "input": 37492,
+   "output": 1155
+  },
+  "program": "root = Board(\"Disk usage by path\", \"The largest single entry is home/user/models/qwen3-32b.gguf at 19800 MB. Next are var/lib/docker/overlay2 at 15600 MB and home/user/.cache/huggingface/hub at 11200 MB. Tile area and shading both show size in MB. Tap a folder to drill in.\", [map, top])\nmap = Treemap(\"Where the space goes\", \"MB\", \"MB\", [{path: \"home/user/models/qwen3-32b.gguf\", size: 19800, color: 19800}, {path: \"home/user/models/llama-8b.gguf\", size: 4900, color: 4900}, {path: \"home/user/.cache/pnpm/store\", size: 6100, color: 6100}, {path: \"home/user/.cache/huggingface/hub\", size: 11200, color: 11200}, {path: \"home/user/projects/t3code/node_modules\", size: 2400, color: 2400}, {path: \"home/user/projects/t3code/.git\", size: 900, color: 900}, {path: \"home/user/projects/quackles/tiles\", size: 7300, color: 7300}, {path: \"var/lib/docker/overlay2\", size: 15600, color: 15600}, {path: \"var/log/journal\", size: 1200, color: 1200}, {path: \"opt/cuda\", size: 5400, color: 5400}])\ntop = BarChart(\"Five largest entries\", \"MB\", [{label: \"home/user/models/qwen3-32b.gguf\", value: 19800}, {label: \"var/lib/docker/overlay2\", value: 15600}, {label: \"home/user/.cache/huggingface/hub\", value: 11200}, {label: \"home/user/projects/quackles/tiles\", value: 7300}, {label: \"home/user/.cache/pnpm/store\", value: 6100}])"
+ },
+ {
+  "id": "disk-usage",
+  "model": "gpt-6.1-sol",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "panels": [
+   "Treemap",
+   "BarChart"
+  ],
+  "totalMs": 27376,
+  "firstTextMs": 19574,
+  "exit": 0,
+  "tokens": {
+   "input": 22647,
+   "output": 654
+  },
+  "program": "root = Board(\"Disk space by path\", \"The treemap shows all ten supplied entries, sized and colored by MB. The bars show the five largest supplied entries in descending order. These values describe only the supplied paths, not total disk usage.\", [space, largest])\nspace = Treemap(\"Space used by path\", \"MB\", \"MB\", entries)\nlargest = BarChart(\"Five largest supplied entries\", \"MB\", topFive)\nentries = [{path: \"home/user/models/qwen3-32b.gguf\", size: 19800, color: 19800}, {path: \"home/user/models/llama-8b.gguf\", size: 4900, color: 4900}, {path: \"home/user/.cache/pnpm/store\", size: 6100, color: 6100}, {path: \"home/user/.cache/huggingface/hub\", size: 11200, color: 11200}, {path: \"home/user/projects/t3code/node_modules\", size: 2400, color: 2400}, {path: \"home/user/projects/t3code/.git\", size: 900, color: 900}, {path: \"home/user/projects/quackles/tiles\", size: 7300, color: 7300}, {path: \"var/lib/docker/overlay2\", size: 15600, color: 15600}, {path: \"var/log/journal\", size: 1200, color: 1200}, {path: \"opt/cuda\", size: 5400, color: 5400}]\ntopFive = [{label: \"home/user/models/qwen3-32b.gguf\", value: 19800}, {label: \"var/lib/docker/overlay2\", value: 15600}, {label: \"home/user/.cache/huggingface/hub\", value: 11200}, {label: \"home/user/projects/quackles/tiles\", value: 7300}, {label: \"home/user/.cache/pnpm/store\", value: 6100}]"
+ },
+ {
+  "id": "model-stacked-area",
+  "model": "default",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "panels": [
+   "StackedArea"
+  ],
+  "totalMs": 10817,
+  "firstTextMs": 8992,
+  "exit": 0,
+  "tokens": {
+   "input": 37238,
+   "output": 302
+  },
+  "program": "root = Board(\"Turns by model\", \"Synthetic fixture covering three days. Mon: Codex 8, Claude 4. Tue: Codex 4, Claude 10. Wed: Codex 10, Claude 6.\", [turns])\nturns = StackedArea(\"Turns by model per day\", \"turns\", [\"Mon\", \"Tue\", \"Wed\"], [codex, claude])\ncodex = {name: \"Codex\", values: [8, 4, 10]}\nclaude = {name: \"Claude\", values: [4, 10, 6]}"
+ },
+ {
+  "id": "model-stacked-area",
+  "model": "gpt-6.1-sol",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "panels": [
+   "StackedArea"
+  ],
+  "totalMs": 24483,
+  "firstTextMs": 22724,
+  "exit": 0,
+  "tokens": {
+   "input": 22515,
+   "output": 178
+  },
+  "program": "root = Board(\"Turns by model\", \"Synthetic fixture showing Codex and Claude turns on Mon, Tue, and Wed.\", [turns])\nturns = StackedArea(\"Turns by model\", \"turns\", [\"Mon\", \"Tue\", \"Wed\"], [{name: \"Codex\", values: [8, 4, 10]}, {name: \"Claude\", values: [4, 10, 6]}])"
+ },
+ {
+  "id": "repo-treemap",
+  "model": "default",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "panels": [
+   "Treemap",
+   "BarChart"
+  ],
+  "totalMs": 10585,
+  "firstTextMs": 7881,
+  "exit": 0,
+  "tokens": {
+   "input": 37287,
+   "output": 614
+  },
+  "program": "root = Board(\"Repo churn (synthetic fixture)\", \"Four files totaling 300 LOC and 29 commits. src/auth/login.ts has the most churn with 12 commits on 80 LOC. src/ui/chat.ts is the largest file at 120 LOC but has the fewest commits, 4.\", [map, top])\nmap = Treemap(\"Size and churn\", \"LOC\", \"commits\", [{path: \"src/auth/login.ts\", size: 80, color: 12}, {path: \"src/auth/tokens.ts\", size: 40, color: 6}, {path: \"src/ui/chat.ts\", size: 120, color: 4}, {path: \"tests/auth.test.ts\", size: 60, color: 7}])\ntop = BarChart(\"Top 3 churn files\", \"commits\", [{label: \"src/auth/login.ts\", value: 12}, {label: \"tests/auth.test.ts\", value: 7}, {label: \"src/auth/tokens.ts\", value: 6}])"
+ },
+ {
+  "id": "repo-treemap",
+  "model": "gpt-6.1-sol",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "panels": [
+   "Treemap",
+   "BarChart"
+  ],
+  "totalMs": 21832,
+  "firstTextMs": 19030,
+  "exit": 0,
+  "tokens": {
+   "input": 22547,
+   "output": 299
+  },
+  "program": "root = Board(\"Repository size and churn\", \"Rectangle area represents LOC and darker color represents more commits. The bars show the three files with the most commits, in descending order.\", [repo, churn])\nrepo = Treemap(\"Repository treemap\", \"LOC\", \"commits\", [{path: \"src/auth/login.ts\", size: 80, color: 12}, {path: \"src/auth/tokens.ts\", size: 40, color: 6}, {path: \"src/ui/chat.ts\", size: 120, color: 4}, {path: \"tests/auth.test.ts\", size: 60, color: 7}])\nchurn = BarChart(\"Top 3 churn files\", \"commits\", [{label: \"src/auth/login.ts\", value: 12}, {label: \"tests/auth.test.ts\", value: 7}, {label: \"src/auth/tokens.ts\", value: 6}])"
+ },
+ {
+  "id": "review-load-dense",
+  "model": "default",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "panels": [
+   "Heatmap"
+  ],
+  "totalMs": 18298,
+  "firstTextMs": 13230,
+  "exit": 0,
+  "tokens": {
+   "input": 37661,
+   "output": 1231
+  },
+  "program": "root = Board(\"PR Review Requests by Weekday and Hour (UTC)\", \"Weekday review requests cluster in the middle of the UTC day. The highest cell is 6, at hour 14 on Mon and Thu. Sat and Sun each have single requests at hours 00, 07, 14 and 21, and zero at every other hour.\", [reviewHeat])\nreviewHeat = Heatmap(\"PR review requests by weekday and hour (UTC)\", \"review requests\", days, hours, counts)\ndays = [\"Mon\", \"Tue\", \"Wed\", \"Thu\", \"Fri\", \"Sat\", \"Sun\"]\nhours = [\"00\", \"01\", \"02\", \"03\", \"04\", \"05\", \"06\", \"07\", \"08\", \"09\", \"10\", \"11\", \"12\", \"13\", \"14\", \"15\", \"16\", \"17\", \"18\", \"19\", \"20\", \"21\", \"22\", \"23\"]\ncounts = [[0,0,0,0,0,0,0,0,0,1,2,3,4,5,6,5,4,3,2,1,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,1,2,3,4,5,4,3,2,1,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,1,2,3,4,3,2,1,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,1,2,3,4,5,6,5,4,3,2,1,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,1,2,3,4,5,4,3,2,1,0,0,0,0,0],[1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0],[1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0]]"
+ },
+ {
+  "id": "review-load-dense",
+  "model": "gpt-6.1-sol",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "panels": [
+   "Heatmap"
+  ],
+  "totalMs": 32904,
+  "firstTextMs": 29111,
+  "exit": 0,
+  "tokens": {
+   "input": 22848,
+   "output": 582
+  },
+  "program": "root = Board(\"PR review requests by weekday and hour\", \"PR review request counts by weekday and hour in UTC. All supplied counts, including zeros, are preserved.\", [Heatmap(\"PR review requests \u00b7 UTC\", \"requests\", [\"Mon\",\"Tue\",\"Wed\",\"Thu\",\"Fri\",\"Sat\",\"Sun\"], [\"00\",\"01\",\"02\",\"03\",\"04\",\"05\",\"06\",\"07\",\"08\",\"09\",\"10\",\"11\",\"12\",\"13\",\"14\",\"15\",\"16\",\"17\",\"18\",\"19\",\"20\",\"21\",\"22\",\"23\"], [[0,0,0,0,0,0,0,0,0,1,2,3,4,5,6,5,4,3,2,1,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,1,2,3,4,5,4,3,2,1,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,1,2,3,4,3,2,1,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,1,2,3,4,5,6,5,4,3,2,1,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,1,2,3,4,5,4,3,2,1,0,0,0,0,0],[1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0],[1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0]])])"
+ },
+ {
+  "id": "sparse-zeros",
+  "model": "default",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "panels": [
+   "Heatmap"
+  ],
+  "totalMs": 10405,
+  "firstTextMs": 7662,
+  "exit": 0,
+  "tokens": {
+   "input": 37341,
+   "output": 564
+  },
+  "program": "root = Board(\"Failed CI runs\", \"Failed CI runs per workflow and weekday, Monday to Friday. Mobile is the only workflow with failures: 3 on Tuesday and 1 on Friday, 4 in total. Web and server had 0 failures every day. All zero cells are shown.\", [failures])\nfailures = Heatmap(\"Failed CI runs per day and workflow\", \"failed runs\", workflows, days, counts)\nworkflows = [\"web\", \"mobile\", \"server\"]\ndays = [\"Mon\", \"Tue\", \"Wed\", \"Thu\", \"Fri\"]\ncounts = [[0, 0, 0, 0, 0], [0, 3, 0, 0, 1], [0, 0, 0, 0, 0]]"
+ },
+ {
+  "id": "sparse-zeros",
+  "model": "gpt-6.1-sol",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "panels": [
+   "Heatmap"
+  ],
+  "totalMs": 20243,
+  "firstTextMs": 18442,
+  "exit": 0,
+  "tokens": {
+   "input": 22539,
+   "output": 175
+  },
+  "program": "root = Board(\"Failed CI runs\", \"Failed CI runs by workflow and day, Monday through Friday. All zero-count cells are retained.\", [failures])\nfailures = Heatmap(\"Failed CI runs by day and workflow\", \"failed runs\", [\"web\", \"mobile\", \"server\"], [\"Mon\", \"Tue\", \"Wed\", \"Thu\", \"Fri\"], [[0,0,0,0,0],[0,3,0,0,1],[0,0,0,0,0]])"
+ },
+ {
+  "id": "token-week",
+  "model": "default",
+  "ready": true,
+  "faithful": false,
+  "problems": [
+   "StackedArea: categories [\"Monday\",\"Tuesday\",\"Wednesday\",\"Thursday\",\"Friday\",\"Saturday\",\"Sunday\"]"
+  ],
+  "panels": [
+   "StackedArea"
+  ],
+  "totalMs": 11890,
+  "firstTextMs": 9989,
+  "exit": 0,
+  "tokens": {
+   "input": 37339,
+   "output": 772
+  },
+  "program": "root = Board(\"Turns per provider this week\", \"Daily turns for Claude, Codex and Cursor, stacked from Monday to Sunday.\", [turns])\nturns = StackedArea(\"Turns per provider, Monday to Sunday\", \"turns\", days, [claude, codex, cursor])\ndays = [\"Monday\", \"Tuesday\", \"Wednesday\", \"Thursday\", \"Friday\", \"Saturday\", \"Sunday\"]\nclaude = {name: \"Claude\", values: [120, 98, 143, 160, 151, 40, 22]}\ncodex = {name: \"Codex\", values: [80, 102, 95, 77, 130, 12, 30]}\ncursor = {name: \"Cursor\", values: [10, 14, 0, 22, 18, 0, 0]}"
+ },
+ {
+  "id": "token-week",
+  "model": "gpt-6.1-sol",
+  "ready": true,
+  "faithful": false,
+  "problems": [
+   "StackedArea: categories [\"Monday\",\"Tuesday\",\"Wednesday\",\"Thursday\",\"Friday\",\"Saturday\",\"Sunday\"]"
+  ],
+  "panels": [
+   "StackedArea"
+  ],
+  "totalMs": 35696,
+  "firstTextMs": 30411,
+  "exit": 0,
+  "tokens": {
+   "input": 22538,
+   "output": 302
+  },
+  "program": "root = Board(\"This week's turns per provider\", \"Daily turns for Claude, Codex, and Cursor, ordered Monday through Sunday. Values are shown exactly as supplied, including zeros.\", [StackedArea(\"Turns by provider, Monday\u2013Sunday\", \"turns\", [\"Monday\", \"Tuesday\", \"Wednesday\", \"Thursday\", \"Friday\", \"Saturday\", \"Sunday\"], [{name: \"Claude\", values: [120, 98, 143, 160, 151, 40, 22]}, {name: \"Codex\", values: [80, 102, 95, 77, 130, 12, 30]}, {name: \"Cursor\", values: [10, 14, 0, 22, 18, 0, 0]}])])"
+ },
+ {
+  "id": "unsupported-pie",
+  "model": "default",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "panels": [
+   "BarChart"
+  ],
+  "totalMs": 22840,
+  "firstTextMs": 20904,
+  "exit": 0,
+  "tokens": {
+   "input": 37278,
+   "output": 460
+  },
+  "program": "root = Board(\"This week's turns by provider\", \"Claude had the most turns this week with 734. Codex had 526 and Cursor had 64. There is no pie component, so this board shows the counts as bars instead of percentages.\", [turns])\nturns = BarChart(\"Turns per provider this week\", \"turns\", [{label: \"Claude\", value: 734}, {label: \"Codex\", value: 526}, {label: \"Cursor\", value: 64}])"
+ },
+ {
+  "id": "unsupported-pie",
+  "model": "gpt-6.1-sol",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "panels": [
+   "BarChart"
+  ],
+  "totalMs": 22867,
+  "firstTextMs": 20501,
+  "exit": 0,
+  "tokens": {
+   "input": 22492,
+   "output": 180
+  },
+  "program": "root = Board(\"This week's turns by provider\", \"Provider shares shown as raw turn counts. Pie charts are not supported by the supplied components, so a bar chart preserves the exact values.\", [providers])\nproviders = BarChart(\"Turns per provider\", \"turns\", [{label: \"Claude\", value: 734}, {label: \"Codex\", value: 526}, {label: \"Cursor\", value: 64}])"
+ }
+]

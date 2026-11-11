@@ -27,24 +27,8 @@ export default function ResearchLog() {
     .filter(([, n]) => n > 0);
   const posts = doc.entries.filter((e) => e.post).length;
   return (
-    <div className="shell log-shell">
-      <header className="blog-page-header">
-        <div>
-          <nav className="site-nav" aria-label="research pages">
-            <a className="brand" href="../">z0evals</a>
-            <div className="links">
-              <a href="../log/" aria-current="page">log</a>
-              <a href="../">phase 1b</a>
-              <a href="../z0intelligence-function-routing/">routing</a>
-              <a href="../researching-the-frontier/">research</a>
-              <a href="../unified-memory-v0/">memory</a>
-              <a href="../optchat-long-horizon-v0/">optchat</a>
-              <a href="https://github.com/kvnloo/z0evals">github</a>
-            </div>
-          </nav>
-        </div>
-      </header>
-      <main className="log-main">
+    <div className="log-shell">
+      <div className="log-main site-container">
         <header className="log-hero">
           <div className="log-kicker">the research log · updated {doc.updated}</div>
           <h1 className="article-title">everything we&apos;re testing, <em>and why.</em></h1>
@@ -77,7 +61,7 @@ export default function ResearchLog() {
             mean nothing has been measured. a finding is only as strong as its linked source.
           </p>
         </footer>
-      </main>
+      </div>
     </div>
   );
 }

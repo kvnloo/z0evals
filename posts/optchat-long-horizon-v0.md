@@ -5,6 +5,11 @@ study: optchat-long-horizon-v0
 status: evidence-pending
 author: "zer0 research"
 date: "october 5, 2026"
+dek: "the sol-pi task was twelve files. this is the same idea, run until the transcript is no longer a toy."
+area: memory
+published: 2026-10-05
+kind: study
+series: memory
 mock_data: false
 toc:
   - id: what-we-used

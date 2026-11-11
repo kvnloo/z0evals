@@ -1,0 +1,13 @@
+{
+ "note": "Recorded output of scripts/rescore-style re-judging after the token-week case gained categoryPrefix: 3 (weekday labels compared by their first three letters). The rows in generation-rows.json keep their original verdicts.",
+ "tally": {
+  "default": {
+   "pass": 10,
+   "total": 10
+  },
+  "gpt-6.1-sol": {
+   "pass": 10,
+   "total": 10
+  }
+ }
+}

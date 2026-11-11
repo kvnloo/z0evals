@@ -1,5 +1,5 @@
 """Minimal CDP driver: launch headless chromium, evaluate JS, return JSON."""
-import asyncio, json, subprocess, time, urllib.request, os, signal, sys
+import asyncio, json, subprocess, time, urllib.request, os
 import websockets
 
 CHROME = "/usr/sbin/chromium"
