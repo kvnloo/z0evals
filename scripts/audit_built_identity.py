@@ -91,6 +91,7 @@ def surface_problems(path: Path, raw: str) -> tuple[list[str], dict]:
     names = re.findall(r'class="modelName"[^>]*>([^<]*)<', raw)
     stats["model-board name cells"] = len(names)
     for n in names:
+        n = html.unescape(n)
         if BARE_JEVE.search(n):
             problems.append(f"{rel}: model-board identity renders bare 'jev': {n!r}")
 

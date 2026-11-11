@@ -87,6 +87,23 @@ class AuditBuiltIdentityTests(unittest.TestCase):
         ])
         self.assertEqual(stats["model-board name cells"], 1)
 
+    def test_model_board_decodes_character_references(self):
+        for encoded, visible in (("J&#101;v", "Jev"), ("&#106;ev", "jev"),
+                                 ("j&#x65;v", "jev")):
+            with self.subTest(encoded=encoded):
+                problems, stats = M.surface_problems(
+                    p, f'<td class="modelName">{encoded}</td>'
+                )
+                self.assertEqual(problems, [
+                    PREFIX + f"model-board identity renders bare 'jev': {visible!r}"
+                ])
+                self.assertEqual(stats["model-board name cells"], 1)
+        for encoded in ("nano&#106;ev", "openj&#101;v", "j&#101;v-like", "j&#101;v_x"):
+            with self.subTest(allowed=encoded):
+                self.assertEqual(M.surface_problems(
+                    p, f'<td class="modelName">{encoded}</td>'
+                )[0], [])
+
     def test_lane_without_title(self):
         raw = (
             '<text class="corpusLabel" data-arm-id="compiler" '
