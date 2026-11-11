@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 from html.parser import HTMLParser
 from pathlib import Path
+from urllib.parse import unquote
 
 
 class PageAudit(HTMLParser):
@@ -107,27 +108,29 @@ def check_relative_links(
     for href in audit.hrefs:
         if (
             href.startswith("#")
+            or href.startswith("//")
             or href.startswith("http://")
             or href.startswith("https://")
             or href.startswith("mailto:")
             or href.startswith("tel:")
         ):
             continue
-        clean = href.split("#", 1)[0].split("?", 1)[0]
-        if not clean or clean.startswith("//"):
+        clean = unquote(href.split("#", 1)[0].split("?", 1)[0]).replace("\\", "/")
+        if not clean:
             continue
         if clean.startswith("/"):
-            # next/link hrefs are root-absolute under the basePath; anything else escapes
+            # Decode before checking basePath; encoded traversal must not bypass containment.
             if not base or not (clean == base or clean.startswith(base + "/")):
-                errors.append(f"{name}: root-absolute href escapes the project Pages site: {href}")
+                errors.append(f"{name}: internal href escapes export root: {href}")
                 continue
             target = root / clean[len(base):].lstrip("/")
         else:
             target = path.parent / clean
+        target = target.resolve()
         if clean.endswith("/") or target.suffix == "":
-            target = target / "index.html"
+            target = (target / "index.html").resolve()
         try:
-            target.relative_to(root)
+            target.relative_to(root.resolve())
         except ValueError:
             errors.append(f"{name}: internal href escapes export root: {href}")
             continue
