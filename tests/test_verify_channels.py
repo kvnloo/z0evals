@@ -88,6 +88,26 @@ class VerifyChannelsTest(unittest.TestCase):
             [CHANNEL_URL, CSS_URL],
         )
 
+    def test_css_query_and_fragment_are_checked(self):
+        for suffix in ("?v=1", "#theme", "?v=1#theme"):
+            for css, expected in ((GOOD_CSS, True), ("nope", False),
+                                  ("__HTTP_404__", False)):
+                with self.subTest(suffix=suffix, css=css):
+                    self.fetch_mock.reset_mock()
+                    self.fake_responses({
+                        CHANNEL_URL: GOOD_PAGE.replace("a.css", "a.css" + suffix),
+                        CSS_URL + suffix: css,
+                    })
+                    ok, problems, info = verify_channels.check(CHANNEL_URL)
+                    self.assertIs(ok, expected)
+                    self.assertEqual(info["css_files"], 1)
+                    self.assertIs(info["css_selector_present"], expected)
+                    self.assertEqual(problems, [] if expected else [
+                        "CSS selector modelRow[data-model^=compiler-first] missing from shipped CSS"
+                    ])
+                    self.assertEqual([call.args[0] for call in self.fetch_mock.call_args_list],
+                                     [CHANNEL_URL, CSS_URL + suffix])
+
     def test_check_bare_jev_and_missing_css(self):
         bad_page = GOOD_PAGE.replace(">nanojev 0.6b</div>", ">jev</div>")
         self.fake_responses({CHANNEL_URL: bad_page, CSS_URL: "nope"})

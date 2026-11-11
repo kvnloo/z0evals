@@ -113,7 +113,7 @@ def check(url: str) -> tuple[bool, list[str], dict]:
             problems.append(f"bare model-identity 'jev' rendered: {label[:80]!r}")
 
     # the shipped CSS must carry the selector that matches the DOM attribute
-    css_hrefs = re.findall(r'href="([^"]+\.css)"', raw)
+    css_hrefs = re.findall(r'href="([^"]+\.css(?:[?#][^"]*)?)"', raw)
     info["css_files"] = len(css_hrefs)
     css_ok = False
     for href in css_hrefs:
