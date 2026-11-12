@@ -1,0 +1,61 @@
+schema_version: z0eval.study.v1
+id: android-u2-driver-models-v0
+title: LLM vs SLM driving uiautomator2 on a Galaxy S22+
+status: draft
+created: "2026-10-28"
+updated: "2026-10-28"
+
+evidence_status: fixtures-only-run-pending
+external_inference_spend_usd: 0.0
+
+hardware:
+  phone: Samsung Galaxy S22+ (SM-S906U1), Android 16, One UI 8.0, USB to groot
+  host: groot (RTX 3080 Ti 12 GB, Intel Core i9-10900K) running the phone queue, the SLM router and ollama
+  driver: uiautomator2 3.7.x jar server already on the phone; no APK/ATX installs
+
+sources:
+  - repo: kvnloo/.files
+    commit: 3b67730cfa8840ce865dd0263eab76249475f827
+    branch: feat/phone-queue-evals-20261028
+    role: Runner (services/phone-queue/evals) that submits goal jobs to the phone-queue API, task fixtures, oracle check, summarizer
+    pr: https://github.com/kvnloo/.files/pull/122
+
+related:
+  - id: android-phone-use-v0
+    where: kvnloo/z0evals worktree z0evals-cua, untracked draft by OMP (2026-10-28), not on main
+    relation: Prior work. Source-reported hermes-phone-goal timings (local/hermes-phone-goal@ccc6931) for S22+ Settings lookups, one chooser. This study reuses its tasks' shape (Android version, battery), adds independent oracles and a model matrix; it does not rewrite or supersede it.
+  - id: gui-scripting-speed-z0live-control
+    where: kvnloo/z0evals PR #103 (open)
+    relation: Per-model chooser rows (top-1, acted-wrong, p50) on synthetic and held-out S22+ goals; this study extends that row format to whole-task, phone-queue-driven runs.
+
+questions:
+  - On read-only S22+ navigation goals with independent tree-text oracles, how does oracle-verified task success compare across openai-codex Luna, Terra and Sol and local SLMs (Qwen3 0.6B to 14B, Nemotron-Orchestrator-8B, Qwen2.5-VL-3B, Qwen3-4B-Instruct)?
+  - How much of the gap appears on multi-step goals versus single-step goals?
+  - What are each model's wrong-act (false done or setting side effect) and abstain rates?
+  - What are per-decision choose latency (p50/p95) and warm whole-task time, with cold model loads reported separately?
+  - Which is the smallest local model whose success is within the Luna confidence interval, and at what latency and token cost?
+
+artifacts:
+  - path: data/tasks.json
+    kind: fixture
+    sha256: c8b4a03362f0356f3bf656f93ba08b98dc0f9b974ab8eacd0b364e2c8deb17fd
+    provenance: identical to services/phone-queue/evals/tasks.json at the source commit
+  - path: data/models.json
+    kind: fixture
+    sha256: 893f0d18708014553d06e27bd34fc1a804889f56efb472441e9236d942647be3
+    provenance: identical to services/phone-queue/evals/models.json at the source commit
+  - path: data/oracle-check-20261028.json
+    kind: analysis
+    sha256: a00b28c04f25fdd43f0a42fc9cfbb13f71f650b0bf64eac7d6b53197a554c9d6
+    provenance: check_oracles.py over 37 redacted S22+ hierarchy dumps (raw dumps not published)
+
+limitations:
+  - Draft; no model has been run yet. Results (data/rows.jsonl, data/summary.json) are added in part 2 once the phone-queue API is live.
+  - One device (S22+), one locale (en-US), one launcher (Nova). Oracles were written from the 2026-10-28 screens and can drift with One UI or app updates.
+  - Tasks are read-only navigation only. No calculator app is installed, so no arithmetic task; Clock World clock is excluded because the redactor fails closed on it.
+  - Oracle success is decided by the phone-queue service's tree_text check on the final hierarchy, not the driver's own done; the check was validated only against probed screens (pass on evidence, fail on home).
+  - fx exposes only gateway, codex and grok providers; local SLM routing through the queue is an open contract question, and unreachable models are recorded as unavailable, not 0.
+  - Codex-subscription models have no per-token price; cost is reported as tokens, and Luna/Terra were on a free promo per the owner.
+  - Phone screen contents, alarm labels, account names and other PII are not published; only oracle strings and screen names are.
+
+claims: []
