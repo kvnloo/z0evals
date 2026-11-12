@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-23",
+ "updated": "2026-11-02",
  "entries": [
   {
    "id": "fsm-work-item-v0",
@@ -307,7 +307,7 @@
   {
    "id": "engineering-throughput-v0",
    "title": "Useful work versus faster activity",
-   "area": "speed-ux",
+   "area": "hermes",
    "question": "Does a faster collector retain the required facts when failures and preparation remain in the accounting?",
    "status": "draft-pr",
    "date": "2026-10-20",
@@ -505,7 +505,7 @@
   {
    "id": "cua-bend-action-laws-v0",
    "title": "Bend agrees but the GPU does not win",
-   "area": "speed-ux",
+   "area": "device-use",
    "question": "Does CUDA Bend improve the existing per-action guard after the best CPU algorithm is considered?",
    "status": "draft-pr",
    "date": "2026-10-23",
@@ -532,7 +532,7 @@
   {
    "id": "cua-hobbylm-semantic-v0",
    "title": "A slower decision model finishes more tasks",
-   "area": "speed-ux",
+   "area": "device-use",
    "question": "Does HobbyLM’s semantic action loop complete more supported tasks than the small generic model?",
    "status": "draft-pr",
    "date": "2026-10-23",
@@ -567,7 +567,7 @@
   {
    "id": "claude-code-savings-v0",
    "title": "less prefix, less reported cost",
-   "area": "cost-routing",
+   "area": "hermes",
    "question": "which context levers reduce claude code reported cost while preserving checked task quality?",
    "status": "in-progress",
    "date": "2026-09-30",
@@ -598,7 +598,7 @@
   {
    "id": "claude-code-savings-v1",
    "title": "savings depend on the task",
-   "area": "cost-routing",
+   "area": "hermes",
    "question": "do the earlier context savings survive pre-registered larger samples and fresh coding tasks?",
    "status": "in-progress",
    "date": "2026-10-01",
@@ -758,7 +758,7 @@
   {
    "id": "offload-and-loop-v0",
    "title": "a format pass failed faithfulness",
-   "area": "cost-routing",
+   "area": "small-models",
    "question": "can local summaries replace frontier work, and are there enough verified outcomes to learn a gate?",
    "status": "in-progress",
    "date": "2026-09-30",
@@ -1134,7 +1134,7 @@
   {
    "id": "unii-native-core",
    "title": "native Unii conversation surface with terminal fallback",
-   "area": "speed-ux",
+   "area": "hermes",
    "question": "Can the existing conversation transport gain a native surface without changing session ownership?",
    "status": "draft-pr",
    "date": "2026-10-23",
@@ -1178,7 +1178,7 @@
   {
    "id": "unii-integrated-native-pty",
    "title": "native memory explorer passes real PTY and isolated renderer checks",
-   "area": "speed-ux",
+   "area": "hermes",
    "question": "Do native input, memory navigation and fallback work together at the integrated revision?",
    "status": "draft-pr",
    "date": "2026-10-23",
@@ -1196,7 +1196,7 @@
   {
    "id": "unii-usage-ledger",
    "title": "account for every model attempt before claiming savings",
-   "area": "cost-routing",
+   "area": "hermes",
    "question": "Can compactor and agent usage be measured without storing prompts or response bodies?",
    "status": "draft-pr",
    "date": "2026-10-23",
@@ -1214,7 +1214,7 @@
   {
    "id": "unii-compactor-terra",
    "title": "Terra qualified for compaction, not a proven quota minimum",
-   "area": "cost-routing",
+   "area": "hermes",
    "question": "Can a cheaper-family compactor preserve recall while reducing uncached input?",
    "status": "frozen-internal",
    "date": "2026-10-23",
@@ -1376,7 +1376,7 @@
   {
    "id": "provider-capacity-projection",
    "title": "a green suite had silently omitted the capacity tests",
-   "area": "cost-routing",
+   "area": "small-models",
    "question": "Does the provider-capacity export preserve quota dimensions and actually run its tests?",
    "status": "draft-pr",
    "date": "2026-10-21",
@@ -1424,7 +1424,7 @@
   {
    "id": "quota-receipt-validation",
    "title": "negative usage and false booleans can manufacture quota",
-   "area": "cost-routing",
+   "area": "small-models",
    "question": "Can receipt validation keep reconstructed daily capacity and verified outcomes honest?",
    "status": "frozen",
    "date": "2026-10-10",
@@ -1450,7 +1450,7 @@
   {
    "id": "usage-schema-boundary",
    "title": "an empty import is not zero usage",
-   "area": "cost-routing",
+   "area": "small-models",
    "question": "Can native usage events be fed directly into the quota receipt loader?",
    "status": "frozen",
    "date": "2026-10-10",
@@ -1468,7 +1468,7 @@
   {
    "id": "local-cognition-shadow",
    "title": "local models need correlated shadow coverage before routing credit",
-   "area": "cost-routing",
+   "area": "small-models",
    "question": "Do local specialists produce bounded, observable decisions on real native tool events?",
    "status": "in-progress",
    "date": "2026-10-10",
@@ -1494,7 +1494,7 @@
   {
    "id": "local-cognition-recovery",
    "title": "preserve serialized serving and typed outage recovery",
-   "area": "cost-routing",
+   "area": "small-models",
    "question": "Can model swapping wait for an upstream response and keep transport failures distinct from parse errors?",
    "status": "frozen",
    "date": "2026-10-23",
@@ -1628,7 +1628,7 @@
   {
    "id": "per-tool-call-placement",
    "title": "move expensive calls, not interactive sessions",
-   "area": "speed-ux",
+   "area": "fleet",
    "question": "Can bounded heavy tool calls use the fleet without making each turn slower?",
    "status": "proposal",
    "date": "2026-10-21",
@@ -1834,7 +1834,7 @@
   {
    "id": "harness-speed-v1",
    "title": "same model, different harness overhead",
-   "area": "speed-ux",
+   "area": "hermes",
    "question": "How much latency and task overhead comes from the harness rather than the model?",
    "status": "draft-pr",
    "date": "2026-10-21",
@@ -1873,7 +1873,7 @@
   {
    "id": "gui-scripting-speed-z0live-control",
    "title": "fast phone control still needs confirmation",
-   "area": "speed-ux",
+   "area": "device-use",
    "question": "Can in-process accessibility reduce phone-control latency without pretending a tap proves intent?",
    "status": "draft-pr",
    "date": "2026-10-20",
@@ -1900,7 +1900,7 @@
   {
    "id": "z0live-v0",
    "title": "voice certification without invented actor results",
-   "area": "speed-ux",
+   "area": "device-use",
    "question": "What evidence can certify voice-control contracts without confusing replay with hardware performance?",
    "status": "draft-pr",
    "date": "2026-10-04",
@@ -1927,7 +1927,7 @@
   {
    "id": "voice-omp-parity-v0",
    "title": "voice parity did not pass",
-   "area": "speed-ux",
+   "area": "hermes",
    "question": "Does z0live meet the preregistered OMP voice-parity gates on output audio?",
    "status": "draft-pr",
    "date": "2026-10-20",
@@ -1966,7 +1966,7 @@
   {
    "id": "next-action-v0",
    "title": "the next-action predictor nobody committed",
-   "area": "speed-ux",
+   "area": "hermes",
    "question": "Does a pull-first action panel have a better starting point than the unused push predictor?",
    "status": "proposal",
    "date": "2026-10-21",
@@ -1997,7 +1997,7 @@
   {
    "id": "agentweb-emma-z0-v0",
    "title": "agent-web boundaries passed; model evidence was blocked",
-   "area": "speed-ux",
+   "area": "device-use",
    "question": "Can deterministic integration evidence establish a safe boundary without being mistaken for live quality evidence?",
    "status": "draft-pr",
    "date": "2026-09-30",
@@ -2036,7 +2036,7 @@
   {
    "id": "noop-hermes-agent-api",
    "title": "a scoped agent API on a phone",
-   "area": "speed-ux",
+   "area": "device-use",
    "question": "Can Hermes read bounded app summaries and perform allow-listed actions while consent and audit gates hold?",
    "status": "draft-pr",
    "date": "2026-10-21",
@@ -2067,7 +2067,7 @@
   {
    "id": "breath-phase-camera",
    "title": "camera breath-phase tests remain synthetic",
-   "area": "speed-ux",
+   "area": "research",
    "question": "Can a dependency-free camera-motion estimator track breathing phase on-device?",
    "status": "draft-pr",
    "date": "2026-10-20",
@@ -2106,7 +2106,7 @@
   {
    "id": "turbo-mode-rfc",
    "title": "bounded turbo orchestration",
-   "area": "speed-ux",
+   "area": "hermes",
    "question": "Can parallel lanes improve verified throughput without hiding quotas or worker failures?",
    "status": "proposal",
    "date": "2026-10-19",
@@ -2125,7 +2125,7 @@
   {
    "id": "turbo-fanout-now-testing",
    "title": "fan-out needs a review surface",
-   "area": "speed-ux",
+   "area": "hermes",
    "question": "Can fan-out feed a preview card that makes the current acceptance task obvious?",
    "status": "proposal",
    "date": "2026-10-22",
@@ -2148,7 +2148,7 @@
   {
    "id": "bounded-recommendation-ux",
    "title": "recommendations with an interruption budget",
-   "area": "speed-ux",
+   "area": "hermes",
    "question": "Can bounded recommendations reduce needless prompts without pretending delivery proves benefit?",
    "status": "proposal",
    "date": "2026-10-21",
@@ -2171,7 +2171,7 @@
   {
    "id": "turbo-app-fanout",
    "title": "app fan-out passed offline tests, not live qualification",
-   "area": "speed-ux",
+   "area": "hermes",
    "question": "Can an opt-in app fan-out prototype preserve stop, admission and rollback boundaries?",
    "status": "draft-pr",
    "date": "2026-10-22",
@@ -2196,9 +2196,32 @@
    "post": "turbo-app-fanout-offline"
   },
   {
+   "id": "genui-openui-vs-html-v0",
+   "title": "a chart is not a web page",
+   "area": "generative-ui",
+   "question": "Does answering an inline chart as an openui-v2 program instead of an HTML page save output tokens and time, without losing validity?",
+   "status": "frozen",
+   "date": "2026-11-02",
+   "finding": "Source-reported, same model and harness: 10/10 valid in both formats; openui used 3,748 output tokens versus 26,951 for HTML (7.2× fewer) and finished in 20.7 s versus 52.7 s on average (2.5× sooner), for about 922 extra input tokens. A 10-case openui sweep passed 10/10 on two models after a weekday-label oracle fix (9/10 before), and 9/9 inside a real T3 Code thread.",
+   "caveat": "One model, one harness, two repetitions. The HTML arm is an unbounded interactive page checked only for the expected numbers; openui is a bounded four-chart catalog checked by a strict oracle. T3 Code does not yet instruct agents to use openui.",
+   "links": [
+    {
+     "label": "studies/genui-openui-vs-html-v0/README.md",
+     "url": "https://github.com/kvnloo/z0evals/blob/main/studies/genui-openui-vs-html-v0/README.md"
+    },
+    {
+     "label": "kvnloo/t3code experiment/openui-chart-catalog",
+     "url": "https://github.com/kvnloo/t3code/tree/d5627b91afe5bf2b1d7411185282f284e7b783a6"
+    }
+   ],
+   "interesting": true,
+   "why": "The cheapest measured lever on agent UI answers so far: shorter output, same validity, and a client that already renders it.",
+   "post": "genui-openui-vs-html-v0"
+  },
+  {
    "id": "android-u2-driver-models-v0",
    "title": "which model should drive the phone",
-   "area": "speed-ux",
+   "area": "device-use",
    "question": "on read-only S22+ navigation goals with independent tree-text oracles, how do Luna/Terra/Sol compare with local SLMs (Qwen3 0.6B-14B, Nemotron-Orchestrator-8B, Qwen2.5-VL-3B) driving uiautomator2 through the shared phone queue?",
    "status": "proposal",
    "date": "2026-10-28",

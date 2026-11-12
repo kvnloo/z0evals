@@ -1,0 +1,33 @@
+schema_version: z0eval.study.v1
+id: android-phone-use-v0
+title: Android phone-harness computer-use evidence
+status: draft
+created: '2026-10-28'
+updated: '2026-10-28'
+evidence_status: source-reported-local-only
+sources:
+- repo: local/hermes-phone-goal
+  commit: ccc6931a90f52504ad051cb142500737ec7c0ebd
+  branch: main
+  role: Source-reported Android phone-goal benchmark summary; local-only
+questions:
+- What latency and completion evidence exists for Android phone-goal and persistent
+  UIAutomator2?
+- How do equivalent Cua Android and phone-harness paths compare on the same fixture?
+artifacts:
+- path: data/phone-goal-summary.json
+  kind: result
+  sha256: c26645a1468a1ca4b0156b83e688a62fd22e8d870cc1857675e141f3006582d0
+limitations:
+- Source repository has no configured public remote; the source commit is locally
+  available on groot only.
+- The summary is a source-reported result, not an independently reproduced or verified
+  measurement.
+- The two phone-goal tasks have three runs each; the baseline is estimated from separate
+  phone_exec and model-turn timings, not a paired end-to-end comparison.
+- No Cua Android timing is present and no cross-tool speedup is established.
+- Exact tested runtime revisions, independent outcome verification, and raw fast-tree
+  hierarchy timings have not been established.
+- Private session traces, device identifiers, screenshots, and raw phone screen contents
+  are not included.
+claims: []

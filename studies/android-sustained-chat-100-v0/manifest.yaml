@@ -1,0 +1,47 @@
+schema_version: z0eval.study.v1
+id: android-sustained-chat-100-v0
+title: "100 requested Android chats: dispatch, capture, and verification"
+status: draft
+created: '2026-10-29'
+updated: '2026-10-29'
+hardware:
+  chatgpt: Samsung Galaxy S25 Ultra
+  deepseek: Samsung Galaxy S22+
+protocol:
+  active_task_manifest_sha256: 6899e52f9ea80d5e463a64711033105e45b0a116e1366e481f5097c02f81a511
+  original_task_manifest_sha256: 51c0c3425a9a8175c309c6687a047b04ef930c1eb78937d0c42ef6027d7f923c
+  connector_amendment_sha256: 08d1b9f4ec557c1d4347dcdaec3709cf451325e7b6e5952d402136da6e22e06e
+  baseline: canonical launch_queue.py/burst.py/cgdrv.py uiautomator2 workflow
+  comparative_speedup_eligible: false
+sources:
+  - repo: kvnloo/z0evals
+    commit: 3dfb446d71648d58d8cdc886955ddf1fbc9150f5
+    role: Publication pipeline base
+  - repo: kvnloo/.files
+    commit: 5d87e09e0af10b3be38217fff18fdef2c1b1153d
+    role: Declared source base of the unpaired fx setup canary, not an immutable native runner release
+questions:
+  - How many requested tasks have dispatch receipts, complete identity-verified results, and independent grades?
+  - What dispatch and result-observation timings were recorded for each control path and result channel?
+  - Which admission faults, protocol changes, and external locks prevent completion or comparison?
+artifacts:
+  - path: data/progress.json
+    kind: receipt
+    sha256: f11ff4d5eb2545cac19e187f9b35b4e3ad4bb7eb674e4790b3547330a6b4f9aa
+  - path: data/workflow-receipt.json
+    kind: receipt
+    sha256: 8e6d850baeaf1feb119a8f75517d3fa6f45d773c7d7c1ef8830478d7145eb86f
+  - path: README.md
+    kind: analysis
+limitations:
+  - Incomplete operational run, not a completed comparative benchmark or independently graded quality result.
+  - The unpaired fx canary and initial wrong result channel violated the intended reusable-workflow baseline; no speedups are reported.
+  - Initial outer pacing omission, pre-transport claim loss, and manual audited recovery remain in the record.
+  - App, device, provider, account state, task, time, and mid-run protocol revision are confounded.
+  - Historical dispatches retain their actual original payload revision; amendments do not retroactively change prior sends.
+  - The largest 8090-character prepared brief is quarantined; delivery of that message is not proven.
+  - S25 admission ended at 05:00 UTC; unsent tasks remain queued. At the snapshot cutoff, DeepSeek was waiting for another workflow's UI-lock release.
+  - Existing phone telemetry is sampled, not continuous; it cannot rule out intervening throttling.
+  - Mutable runtime files and declared repository bases do not certify a fully frozen reproducible live runner release.
+  - Public artifacts omit prompts, answers, task tags, serials, local paths, screenshots, and raw traces.
+claims: []

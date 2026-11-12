@@ -1,0 +1,352 @@
+[
+ {
+  "id": "repo-treemap",
+  "format": "html",
+  "rep": 1,
+  "model": "gpt-6.1-sol",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "artifactChars": 10333,
+  "totalMs": 58277,
+  "firstTextMs": 19873,
+  "exit": 0,
+  "tokens": {
+   "input": 21704,
+   "output": 3086
+  }
+ },
+ {
+  "id": "repo-treemap",
+  "format": "openui",
+  "rep": 1,
+  "model": "gpt-6.1-sol",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "artifactChars": 642,
+  "totalMs": 18462,
+  "firstTextMs": 17474,
+  "exit": 0,
+  "tokens": {
+   "input": 22621,
+   "output": 290
+  },
+  "program": "root = Board(\"Repository size and churn\", \"Rectangle area represents LOC; darker color represents more commits. The bars show the three files with the most commits, in descending order.\", [repoMap, topChurn])\nrepoMap = Treemap(\"Repository treemap\", \"LOC\", \"commits\", [{path: \"src/auth/login.ts\", size: 80, color: 12}, {path: \"src/auth/tokens.ts\", size: 40, color: 6}, {path: \"src/ui/chat.ts\", size: 120, color: 4}, {path: \"tests/auth.test.ts\", size: 60, color: 7}])\ntopChurn = BarChart(\"Top 3 churn files\", \"commits\", [{label: \"src/auth/login.ts\", value: 12}, {label: \"tests/auth.test.ts\", value: 7}, {label: \"src/auth/tokens.ts\", value: 6}])"
+ },
+ {
+  "id": "model-stacked-area",
+  "format": "openui",
+  "rep": 1,
+  "model": "gpt-6.1-sol",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "artifactChars": 286,
+  "totalMs": 18979,
+  "firstTextMs": 17685,
+  "exit": 0,
+  "tokens": {
+   "input": 22589,
+   "output": 195
+  },
+  "program": "root = Board(\"Turns by model\", \"Synthetic fixture for Mon, Tue, and Wed, with Codex and Claude shown as separate stacked series.\", [turns])\nturns = StackedArea(\"Turns by model\", \"turns\", [\"Mon\", \"Tue\", \"Wed\"], [{name: \"Codex\", values: [8, 4, 10]}, {name: \"Claude\", values: [4, 10, 6]}])"
+ },
+ {
+  "id": "model-stacked-area",
+  "format": "html",
+  "rep": 1,
+  "model": "gpt-6.1-sol",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "artifactChars": 6376,
+  "totalMs": 43651,
+  "firstTextMs": 17900,
+  "exit": 0,
+  "tokens": {
+   "input": 21672,
+   "output": 2041
+  }
+ },
+ {
+  "id": "activity-heatmap",
+  "format": "html",
+  "rep": 1,
+  "model": "gpt-6.1-sol",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "artifactChars": 6558,
+  "totalMs": 43412,
+  "firstTextMs": 18420,
+  "exit": 0,
+  "tokens": {
+   "input": 21687,
+   "output": 2085
+  }
+ },
+ {
+  "id": "activity-heatmap",
+  "format": "openui",
+  "rep": 1,
+  "model": "gpt-6.1-sol",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "artifactChars": 332,
+  "totalMs": 21969,
+  "firstTextMs": 20863,
+  "exit": 0,
+  "tokens": {
+   "input": 22604,
+   "output": 267
+  },
+  "program": "root = Board(\"Activity heatmap\", \"Rows: days. Columns: UTC hours. Count legend: each cell shows its raw count; darker shading indicates a higher count, and 0 means zero activity.\", [activity])\nactivity = Heatmap(\"Activity by day and UTC hour\", \"count\", [\"Mon\", \"Tue\", \"Wed\"], [\"0\", \"6\", \"12\", \"18\"], [[0,2,7,1],[1,4,9,2],[0,3,5,1]])"
+ },
+ {
+  "id": "disk-usage",
+  "format": "openui",
+  "rep": 1,
+  "model": "gpt-6.1-sol",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "artifactChars": 1247,
+  "totalMs": 20014,
+  "firstTextMs": 15946,
+  "exit": 0,
+  "tokens": {
+   "input": 22721,
+   "output": 569
+  },
+  "program": "root = Board(\"Disk space usage\", \"Space used by the supplied paths in MB. Treemap area and color both represent MB; the bars show the five largest supplied entries in descending order.\", [space, largest])\nspace = Treemap(\"Space by path\", \"MB\", \"MB\", entries)\nlargest = BarChart(\"Five largest entries\", \"MB\", topFive)\nentries = [{path: \"home/user/models/qwen3-32b.gguf\", size: 19800, color: 19800}, {path: \"home/user/models/llama-8b.gguf\", size: 4900, color: 4900}, {path: \"home/user/.cache/pnpm/store\", size: 6100, color: 6100}, {path: \"home/user/.cache/huggingface/hub\", size: 11200, color: 11200}, {path: \"home/user/projects/t3code/node_modules\", size: 2400, color: 2400}, {path: \"home/user/projects/t3code/.git\", size: 900, color: 900}, {path: \"home/user/projects/quackles/tiles\", size: 7300, color: 7300}, {path: \"var/lib/docker/overlay2\", size: 15600, color: 15600}, {path: \"var/log/journal\", size: 1200, color: 1200}, {path: \"opt/cuda\", size: 5400, color: 5400}]\ntopFive = [{label: \"home/user/models/qwen3-32b.gguf\", value: 19800}, {label: \"var/lib/docker/overlay2\", value: 15600}, {label: \"home/user/.cache/huggingface/hub\", value: 11200}, {label: \"home/user/projects/quackles/tiles\", value: 7300}, {label: \"home/user/.cache/pnpm/store\", value: 6100}]"
+ },
+ {
+  "id": "disk-usage",
+  "format": "html",
+  "rep": 1,
+  "model": "gpt-6.1-sol",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "artifactChars": 11850,
+  "totalMs": 63396,
+  "firstTextMs": 19226,
+  "exit": 0,
+  "tokens": {
+   "input": 21804,
+   "output": 3668
+  }
+ },
+ {
+  "id": "review-load-dense",
+  "format": "html",
+  "rep": 1,
+  "model": "gpt-6.1-sol",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "artifactChars": 9243,
+  "totalMs": 55106,
+  "firstTextMs": 18797,
+  "exit": 0,
+  "tokens": {
+   "input": 21955,
+   "output": 3060
+  }
+ },
+ {
+  "id": "review-load-dense",
+  "format": "openui",
+  "rep": 1,
+  "model": "gpt-6.1-sol",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "artifactChars": 754,
+  "totalMs": 19967,
+  "firstTextMs": 16228,
+  "exit": 0,
+  "tokens": {
+   "input": 22872,
+   "output": 543
+  },
+  "program": "root = Board(\"PR review requests by weekday and hour\", \"PR review request counts by weekday and hour in UTC. All supplied counts are preserved, including zeros.\", [requests])\nrequests = Heatmap(\"PR review requests \u00b7 UTC\", \"requests\", [\"Mon\",\"Tue\",\"Wed\",\"Thu\",\"Fri\",\"Sat\",\"Sun\"], [\"00\",\"01\",\"02\",\"03\",\"04\",\"05\",\"06\",\"07\",\"08\",\"09\",\"10\",\"11\",\"12\",\"13\",\"14\",\"15\",\"16\",\"17\",\"18\",\"19\",\"20\",\"21\",\"22\",\"23\"], [[0,0,0,0,0,0,0,0,0,1,2,3,4,5,6,5,4,3,2,1,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,1,2,3,4,5,4,3,2,1,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,1,2,3,4,3,2,1,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,1,2,3,4,5,6,5,4,3,2,1,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,1,2,3,4,5,4,3,2,1,0,0,0,0,0],[1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0],[1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0]])"
+ },
+ {
+  "id": "repo-treemap",
+  "format": "openui",
+  "rep": 2,
+  "model": "gpt-6.1-sol",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "artifactChars": 633,
+  "totalMs": 15937,
+  "firstTextMs": 13931,
+  "exit": 0,
+  "tokens": {
+   "input": 22571,
+   "output": 284
+  },
+  "program": "root = Board(\"Repository size and churn\", \"Rectangle area represents LOC and darker color represents more commits. The bars show the three files with the most commits, in descending order.\", [repo, churn])\nrepo = Treemap(\"Repository treemap\", \"LOC\", \"commits\", [{path: \"src/auth/login.ts\", size: 80, color: 12}, {path: \"src/auth/tokens.ts\", size: 40, color: 6}, {path: \"src/ui/chat.ts\", size: 120, color: 4}, {path: \"tests/auth.test.ts\", size: 60, color: 7}])\nchurn = BarChart(\"Top 3 churn files\", \"commits\", [{label: \"src/auth/login.ts\", value: 12}, {label: \"tests/auth.test.ts\", value: 7}, {label: \"src/auth/tokens.ts\", value: 6}])"
+ },
+ {
+  "id": "repo-treemap",
+  "format": "html",
+  "rep": 2,
+  "model": "gpt-6.1-sol",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "artifactChars": 8607,
+  "totalMs": 50478,
+  "firstTextMs": 22083,
+  "exit": 0,
+  "tokens": {
+   "input": 21654,
+   "output": 2674
+  }
+ },
+ {
+  "id": "model-stacked-area",
+  "format": "html",
+  "rep": 2,
+  "model": "gpt-6.1-sol",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "artifactChars": 6910,
+  "totalMs": 39242,
+  "firstTextMs": 14833,
+  "exit": 0,
+  "tokens": {
+   "input": 21622,
+   "output": 2120
+  }
+ },
+ {
+  "id": "model-stacked-area",
+  "format": "openui",
+  "rep": 2,
+  "model": "gpt-6.1-sol",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "artifactChars": 284,
+  "totalMs": 24364,
+  "firstTextMs": 22741,
+  "exit": 0,
+  "tokens": {
+   "input": 22589,
+   "output": 176
+  },
+  "program": "root = Board(\"Turns by model\", \"Synthetic turns by day, stacked by model with Codex and Claude identified in the legend.\", [turns])\nturns = StackedArea(\"Daily turns by model\", \"turns\", [\"Mon\", \"Tue\", \"Wed\"], [{name: \"Codex\", values: [8, 4, 10]}, {name: \"Claude\", values: [4, 10, 6]}])"
+ },
+ {
+  "id": "activity-heatmap",
+  "format": "openui",
+  "rep": 2,
+  "model": "gpt-6.1-sol",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "artifactChars": 374,
+  "totalMs": 23104,
+  "firstTextMs": 21645,
+  "exit": 0,
+  "tokens": {
+   "input": 22604,
+   "output": 297
+  },
+  "program": "root = Board(\"Activity heatmap\", \"Synthetic activity counts by day and UTC hour. Rows are days; columns are UTC hours. The count legend maps cell color to the raw activity count, including zero.\", [activity])\nactivity = Heatmap(\"Activity by day (rows) and UTC hour (columns)\", \"activity count\", [\"Mon\", \"Tue\", \"Wed\"], [\"0\", \"6\", \"12\", \"18\"], [[0,2,7,1],[1,4,9,2],[0,3,5,1]])"
+ },
+ {
+  "id": "activity-heatmap",
+  "format": "html",
+  "rep": 2,
+  "model": "gpt-6.1-sol",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "artifactChars": 6647,
+  "totalMs": 44638,
+  "firstTextMs": 19302,
+  "exit": 0,
+  "tokens": {
+   "input": 21687,
+   "output": 2039
+  }
+ },
+ {
+  "id": "disk-usage",
+  "format": "html",
+  "rep": 2,
+  "model": "gpt-6.1-sol",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "artifactChars": 9815,
+  "totalMs": 63414,
+  "firstTextMs": 26930,
+  "exit": 0,
+  "tokens": {
+   "input": 21804,
+   "output": 3077
+  }
+ },
+ {
+  "id": "disk-usage",
+  "format": "openui",
+  "rep": 2,
+  "model": "gpt-6.1-sol",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "artifactChars": 1331,
+  "totalMs": 22227,
+  "firstTextMs": 17360,
+  "exit": 0,
+  "tokens": {
+   "input": 22721,
+   "output": 602
+  },
+  "program": "root = Board(\"Disk space by path\", \"Supplied entries sized and colored by MB, followed by the five largest entries in descending size order. This read-only board shows only the supplied paths and sizes, not a complete disk inventory.\", [spaceMap, largestEntries])\nspaceMap = Treemap(\"Where the space goes\", \"MB\", \"MB\", diskEntries)\nlargestEntries = BarChart(\"Five largest entries\", \"MB\", topFive)\ndiskEntries = [{path: \"home/user/models/qwen3-32b.gguf\", size: 19800, color: 19800}, {path: \"home/user/models/llama-8b.gguf\", size: 4900, color: 4900}, {path: \"home/user/.cache/pnpm/store\", size: 6100, color: 6100}, {path: \"home/user/.cache/huggingface/hub\", size: 11200, color: 11200}, {path: \"home/user/projects/t3code/node_modules\", size: 2400, color: 2400}, {path: \"home/user/projects/t3code/.git\", size: 900, color: 900}, {path: \"home/user/projects/quackles/tiles\", size: 7300, color: 7300}, {path: \"var/lib/docker/overlay2\", size: 15600, color: 15600}, {path: \"var/log/journal\", size: 1200, color: 1200}, {path: \"opt/cuda\", size: 5400, color: 5400}]\ntopFive = [{label: \"home/user/models/qwen3-32b.gguf\", value: 19800}, {label: \"var/lib/docker/overlay2\", value: 15600}, {label: \"home/user/.cache/huggingface/hub\", value: 11200}, {label: \"home/user/projects/quackles/tiles\", value: 7300}, {label: \"home/user/.cache/pnpm/store\", value: 6100}]"
+ },
+ {
+  "id": "review-load-dense",
+  "format": "openui",
+  "rep": 2,
+  "model": "gpt-6.1-sol",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "artifactChars": 753,
+  "totalMs": 21835,
+  "firstTextMs": 17306,
+  "exit": 0,
+  "tokens": {
+   "input": 22922,
+   "output": 525
+  },
+  "program": "root = Board(\"PR review requests by weekday and hour\", \"PR review request counts by weekday and hour in UTC. All supplied counts, including zeros, are preserved.\", [reviews])\nreviews = Heatmap(\"PR review requests \u00b7 UTC\", \"requests\", [\"Mon\",\"Tue\",\"Wed\",\"Thu\",\"Fri\",\"Sat\",\"Sun\"], [\"00\",\"01\",\"02\",\"03\",\"04\",\"05\",\"06\",\"07\",\"08\",\"09\",\"10\",\"11\",\"12\",\"13\",\"14\",\"15\",\"16\",\"17\",\"18\",\"19\",\"20\",\"21\",\"22\",\"23\"], [[0,0,0,0,0,0,0,0,0,1,2,3,4,5,6,5,4,3,2,1,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,1,2,3,4,5,4,3,2,1,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,1,2,3,4,3,2,1,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,1,2,3,4,5,6,5,4,3,2,1,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,1,2,3,4,5,4,3,2,1,0,0,0,0,0],[1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0],[1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0]])"
+ },
+ {
+  "id": "review-load-dense",
+  "format": "html",
+  "rep": 2,
+  "model": "gpt-6.1-sol",
+  "ready": true,
+  "faithful": true,
+  "problems": [],
+  "artifactChars": 9451,
+  "totalMs": 65291,
+  "firstTextMs": 18968,
+  "exit": 0,
+  "tokens": {
+   "input": 22005,
+   "output": 3101
+  }
+ }
+]

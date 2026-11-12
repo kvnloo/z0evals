@@ -1,0 +1,19 @@
+{
+ "rows": 1599,
+ "rows_by_experiment": {
+  "00-baseline": 162,
+  "01-byte-accounting": 96,
+  "02-snapshot-fold": 180,
+  "02-snapshot-fold-r1-global-watermark": 172,
+  "02-snapshot-fold-r2": 201,
+  "02-snapshot-fold-r3": 18,
+  "02-snapshot-fold-r3-pass": 5,
+  "02-snapshot-fold-r3-power": 7,
+  "02b-rebuild-divergence": 6,
+  "03-id-index-sim": 10,
+  "03-page-size": 174,
+  "03b-page-writes": 485,
+  "03b-page-writes-conversion": 15,
+  "04-commit-batching": 68
+ }
+}

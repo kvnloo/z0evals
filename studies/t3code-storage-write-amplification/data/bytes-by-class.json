@@ -1,0 +1,218 @@
+{
+ "source": {
+  "repo": "kvnloo/t3code",
+  "branch": "exp/poh/01-byte-accounting",
+  "commit": "e17f68cebb45c95a7d11461b3a3550b3a4d7cbfb"
+ },
+ "definitions": {
+  "base": "seed after the measured build's migrations, VACUUMed",
+  "doctor": "base after `t3 doctor --fix` (shipped compaction)",
+  "D": "doctor + drop superseded snapshot bodies (no provider needed), tombstoned",
+  "A": "D + evict tool output (keep all text)",
+  "B": "provider owns every transcript byte"
+ },
+ "dbs": {
+  "base": {
+   "file_bytes": 686415872,
+   "page_size": 4096,
+   "bytes_by_class": {
+    "message-text": 14324232,
+    "reasoning-text": 2752628,
+    "tool-input": 2429025,
+    "tool-output": 44216304,
+    "duplicate": 89493431,
+    "t3-owned": 15344433,
+    "metadata": 245446933,
+    "fts": 7830747,
+    "index": 120422400,
+    "cell-overhead": 5555480,
+    "slack": 138600259,
+    "free": 0
+   },
+   "threads": {
+    "count": 232,
+    "p50": 1040701,
+    "p90": 3090407,
+    "max": 45698015
+   }
+  },
+  "doctor": {
+   "file_bytes": 649158656,
+   "page_size": 4096,
+   "bytes_by_class": {
+    "message-text": 14324232,
+    "reasoning-text": 2752628,
+    "tool-input": 2429025,
+    "tool-output": 44216304,
+    "duplicate": 63585013,
+    "t3-owned": 15178988,
+    "metadata": 241053147,
+    "fts": 7830783,
+    "index": 116748288,
+    "cell-overhead": 5359911,
+    "slack": 134099281,
+    "free": 786432
+   },
+   "threads": {
+    "count": 232,
+    "p50": 998219,
+    "p90": 2643458,
+    "max": 45410756
+   }
+  },
+  "D": {
+   "file_bytes": 580608000,
+   "page_size": 4096,
+   "bytes_by_class": {
+    "message-text": 14308269,
+    "reasoning-text": 2752628,
+    "tool-input": 2429025,
+    "tool-output": 44216304,
+    "duplicate": 18903220,
+    "t3-owned": 15178988,
+    "metadata": 241053147,
+    "fts": 7830747,
+    "index": 116748288,
+    "cell-overhead": 5081649,
+    "slack": 111397127,
+    "free": 0
+   },
+   "threads": {
+    "count": 232,
+    "p50": 878287,
+    "p90": 2370720,
+    "max": 39267881
+   },
+   "tombstone_counts": {
+    "eventTombstones": 44716,
+    "eventHeavy": 0,
+    "itemTombstones": 0,
+    "itemHeavy": 0,
+    "messageTombstones": 0
+   }
+  },
+  "A": {
+   "file_bytes": 540905472,
+   "page_size": 4096,
+   "bytes_by_class": {
+    "message-text": 14308269,
+    "reasoning-text": 2752628,
+    "tool-input": 2429025,
+    "tool-output": 2963433,
+    "duplicate": 18903220,
+    "t3-owned": 15178988,
+    "metadata": 241053147,
+    "fts": 7830747,
+    "index": 116748288,
+    "cell-overhead": 5011697,
+    "slack": 113062478,
+    "free": 0
+   },
+   "threads": {
+    "count": 232,
+    "p50": 740004,
+    "p90": 2060234,
+    "max": 35529521
+   },
+   "tombstone_counts": {
+    "eventTombstones": 44716,
+    "eventHeavy": 11914,
+    "itemTombstones": 0,
+    "itemHeavy": 11905,
+    "messageTombstones": 0
+   }
+  },
+  "B": {
+   "file_bytes": 433025024,
+   "page_size": 4096,
+   "bytes_by_class": {
+    "message-text": 16206,
+    "reasoning-text": 0,
+    "tool-input": 0,
+    "tool-output": 0,
+    "duplicate": 18903220,
+    "t3-owned": 15178988,
+    "metadata": 202874228,
+    "fts": 71,
+    "index": 116748288,
+    "cell-overhead": 4628852,
+    "slack": 74146787,
+    "free": 0
+   },
+   "threads": {
+    "count": 232,
+    "p50": 456314,
+    "p90": 1747442,
+    "max": 29303668
+   },
+   "tombstone_counts": {
+    "eventTombstones": 72212,
+    "eventHeavy": 0,
+    "itemTombstones": 23014,
+    "itemHeavy": 0,
+    "messageTombstones": 4422
+   }
+  }
+ },
+ "doctor_bytes_by_provider_family": {
+  "none": {
+   "t3-owned": 49617,
+   "metadata": 117463,
+   "message-text": 60366,
+   "duplicate": 4604
+  },
+  "codex": {
+   "t3-owned": 212725,
+   "metadata": 1809962,
+   "duplicate": 914888,
+   "message-text": 205582,
+   "tool-input": 111250,
+   "tool-output": 3335536,
+   "reasoning-text": 38934
+  },
+  "codex-import": {
+   "t3-owned": 19615,
+   "metadata": 188557,
+   "message-text": 911540
+  },
+  "claude": {
+   "t3-owned": 63169,
+   "metadata": 152071,
+   "message-text": 34674,
+   "duplicate": 47697,
+   "reasoning-text": 656,
+   "tool-input": 1818,
+   "tool-output": 5224
+  },
+  "claude-import": {
+   "t3-owned": 101238,
+   "metadata": 8672824,
+   "message-text": 8708992
+  },
+  "acp-other": {
+   "t3-owned": 597412,
+   "metadata": 8464835,
+   "duplicate": 3126965,
+   "message-text": 352850,
+   "tool-input": 258622,
+   "tool-output": 12833120,
+   "reasoning-text": 813298
+  },
+  "acp-hermes": {
+   "t3-owned": 7493564,
+   "metadata": 167332799,
+   "duplicate": 59299716,
+   "message-text": 4009181,
+   "tool-input": 2057335,
+   "tool-output": 28042424,
+   "reasoning-text": 1897442
+  },
+  "opencode": {
+   "t3-owned": 184813,
+   "metadata": 337547,
+   "duplicate": 191143,
+   "message-text": 5744,
+   "reasoning-text": 2298
+  }
+ }
+}

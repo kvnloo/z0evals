@@ -1,0 +1,68 @@
+{
+ "baseline_phone_exec": {
+  "read": {
+   "n": 5,
+   "median_ms": 951,
+   "min_ms": 933,
+   "max_ms": 2649
+  },
+  "act+read": {
+   "n": 5,
+   "median_ms": 1759,
+   "min_ms": 1740,
+   "max_ms": 1815
+  }
+ },
+ "model_turn_s": {
+  "median": 3.91,
+  "p25": 3.61,
+  "p75": 6.78,
+  "n": 18
+ },
+ "goals": {
+  "Open Settings and read the Android version": {
+   "runs": 3,
+   "ok": 3,
+   "total_ms_median": 9194,
+   "total_ms_all": [
+    11431,
+    9194,
+    9023
+   ],
+   "jev_calls_median": 6,
+   "jev_ms_median": 159,
+   "step_ms_median": 1396,
+   "act_ms_median": 527,
+   "observe_ms_median": 706,
+   "startup_ms_median": 459,
+   "phone_actions_median": 6,
+   "baseline_s": {
+    "p25": 35.8,
+    "median": 37.9,
+    "p75": 58.0
+   }
+  },
+  "Open Settings > Battery and report the battery level": {
+   "runs": 3,
+   "ok": 3,
+   "total_ms_median": 4995,
+   "total_ms_all": [
+    4995,
+    4959,
+    5131
+   ],
+   "jev_calls_median": 3,
+   "jev_ms_median": 160,
+   "step_ms_median": 1334,
+   "act_ms_median": 356,
+   "observe_ms_median": 796,
+   "startup_ms_median": 525,
+   "phone_actions_median": 3,
+   "baseline_s": {
+    "p25": 19.7,
+    "median": 20.9,
+    "p75": 32.4
+   }
+  }
+ }
+}

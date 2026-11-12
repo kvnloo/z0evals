@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import StoryShell, { type StoryMeta, type StoryBanner } from "@/components/StoryShell";
 import type { TocItem } from "@/components/Toc";
+import { studyMeta } from "@/lib/catalog";
 import Callout from "@/components/Callout";
 
 export const metadata: Metadata = {
@@ -9,16 +10,7 @@ export const metadata: Metadata = {
     "the research trail behind z0intelligence: classifiers, calibrated decisions, routing, conditional compute, tiny specialists, and using llms to learn a field by testing it.",
 };
 
-const meta: StoryMeta = {
-  title: "how do you learn the frontier fast?",
-  subtitle:
-    "the research trail behind z0intelligence — and what using llms taught me about learning to think like a researcher",
-  author: "zer0 research",
-  date: "september 29, 2026",
-  status: "research synthesis",
-  lede:
-    "i did not start with a literature review. i started with a practical annoyance: why was i paying an autoregressive language model to make decisions that looked much smaller than language generation? the answer pulled me through classifiers, calibration, selective prediction, routing, conditional compute, systems placement, connectomics, and eventually a different way of using llms for research.",
-};
+const meta: StoryMeta = studyMeta("researching-the-frontier");
 
 const banner: StoryBanner = {
   tag: "research companion · not another benchmark post",
@@ -760,7 +752,7 @@ const explore = (
     <h2>our evidence checkpoints</h2>
     <ul>
       <li>
-        <a href="../">phase 1b: how much of the llm do we actually need?</a> — compiler-first
+        <a href="../slm-router-v0/">phase 1b: how much of the llm do we actually need?</a> — compiler-first
         legality, Hammer/Qwen/Nemotron/FunctionGemma/NanoJev comparisons, residency, composition,
         orchestration and the first architecture collapse.
       </li>
@@ -819,6 +811,7 @@ const explore = (
 export default function Page() {
   return (
     <StoryShell
+      slug="researching-the-frontier"
       meta={meta}
       banner={banner}
       toc={toc}

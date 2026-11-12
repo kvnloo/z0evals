@@ -5,6 +5,10 @@ study: local-offload-and-authority-v0
 status: draft
 author: "zer0 research"
 date: "september 30, 2026"
+dek: "a keyless gpu tier below its bar, a learned router that loses to a generic one, and an authority check that belongs on the tool call."
+area: governance
+published: 2026-09-30
+log: [local-offload-and-authority-v0]
 mock_data: false
 toc:
   - id: question

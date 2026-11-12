@@ -5,6 +5,10 @@ study: ""
 status: architecture
 author: "Zer0 Research"
 date: "September 21, 2026"
+dek: "a federated evaluation layer built from the fixtures and contracts the rest of the zer0 ecosystem already owns."
+area: research
+published: 2026-09-21
+kind: architecture
 mock_data: false
 toc:
   - id: principle

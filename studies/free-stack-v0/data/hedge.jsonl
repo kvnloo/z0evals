@@ -1,0 +1,6 @@
+{"i": 1, "a": ["nvidia/nemotron-3.5-lightning-30b-a3b", 3.318, true], "b": ["cohere/north-mini-code:free", 0.531, true], "winner_s": 0.532, "both_done_s": 3.318}
+{"i": 3, "a": ["nvidia/nemotron-3.5-super-vl-120b-a12b", 0.72, true], "b": ["cohere/north-mini-code:free", 0.612, true], "winner_s": 0.613, "both_done_s": 0.72}
+{"i": 0, "a": ["cohere/north-mini-code:free", 0.556, true], "b": ["nvidia/nemotron-3.5-lightning-30b-a3b", 6.051, true], "winner_s": 0.556, "both_done_s": 6.051}
+{"i": 2, "a": ["nvidia/nemotron-3.5-lightning:free", 5.355, true], "b": ["nvidia/nemotron-3.5-lightning-30b-a3b", 7.725, true], "winner_s": 5.355, "both_done_s": 7.726}
+{"i": 5, "a": ["dots-studio/dots-3-note-preview:free", 4.121, true], "b": ["nvidia/nemotron-3.5-lightning-30b-a3b", 2.787, true], "winner_s": 2.788, "both_done_s": 4.121}
+{"i": 4, "a": ["nvidia/nemotron-3.5-super-vl:free", 0.739, true], "b": ["nvidia/nemotron-3.5-lightning-30b-a3b", 12.642, true], "winner_s": 0.739, "both_done_s": 12.643}

@@ -1,0 +1,70 @@
+schema_version: z0eval.study.v1
+id: free-stack-v0
+title: Free LLM lanes in parallel for open-source work
+status: frozen
+created: "2026-11-02"
+updated: "2026-11-02"
+
+run_id: free-stack-20261102T2148
+evidence_status: reproduced-measurement
+external_inference_spend_usd: 0.0
+spend_note: Free tiers plus Cerebras trial credit (not cash). Cerebras served about 97% of the bulk-pattern tokens.
+
+sources:
+  - repo: vllm-project/semantic-router
+    commit: 62c4f39e35aa2dfe929eb18223a7509ebeff6563
+    role: upstream router and Helm chart the deploy pins
+  - repo: kvnloo/semantic-router
+    commit: b88ca01bb4109e8aca769c1c2180fb8c054b614e
+    role: fork for upstream fixes (roadmap phase R5)
+  - repo: kvnloo/z0intelligence
+    commit: f12b926e79e17308859b1ae0b6cc68de5a5c5a5b
+    branch: feat/vllm-sr-turbo-router
+    role: router deploy, profiles and fan-out bench (PR 289)
+  - repo: kvnloo/z0intelligence
+    commit: 5e8b6d63cd090a6d6297b626f0859782c447fcb9
+    branch: feat/turbo-mode-20261019
+    role: turbo runtime and the matched A/B with peak overlap 1 (PR 176)
+  - repo: kvnloo/kerdoios
+    commit: c513e9eeb6eefad47079d263650b7d1c831b08f1
+    role: O14 routing objective for placement (PR 69)
+
+questions:
+  - What TTFT and output speed does each free LLM lane give a contributor today?
+  - What happens when every free lane is used at once, each with the pattern its speed suits?
+  - What stops a coding-agent orchestrator from using these lanes today?
+
+artifacts:
+  - path: data/menu.json
+    kind: dataset
+    sha256: fa7085f9d083e5486ea9bfc7eff7e55a2b622611e0819a1bc97ca78c57f37a5d
+  - path: data/orchestra.jsonl
+    kind: dataset
+    sha256: 3a9798fc10cd499258d39dba286f78e90d5ce4297d6ca1329a2e47fd88640932
+  - path: data/hedge.jsonl
+    kind: dataset
+    sha256: 5bda203a53676d1dc58c57ef6e7036a9b87768b0aaf1b2360718bbf58ca71c56
+  - path: data/orchestra-summary.json
+    kind: result
+    sha256: 8a7aad30baa38d88301d2cddf750f8befa3347d42b21a63da8e2838931140c6f
+  - path: data/speed-probe.jsonl
+    kind: dataset
+    sha256: 750dfef1240e8de0dd93e18668294f22d293ba07c38ebe1b71f42f19519b3f63
+  - path: data/router/fanout-200-c50-20261102T0000.jsonl
+    kind: dataset
+    sha256: e9c5bdf711241e4595bb4c1141c2e150517dbbbccb101ff290b4c770dd06bc20
+  - path: data/router/fanout-60-c20-20261102T0000.jsonl
+    kind: dataset
+    sha256: 55bb512403335a69d5e11bc7634ad547c8933576eb44f81c0ddbf6e5187d1047
+  - path: data/router/fanout-60-c20-20261102T2057.jsonl
+    kind: dataset
+    sha256: 0ca5631d5681aba2d47e3dd80b0069476424d4d35b3cfe77fb090f504d398aec
+  - path: scripts/free_stack.py
+    kind: other
+    sha256: fd4b209636af58e9bae31c07174d73cc068731fda308840ef68d3a2c2a2a90bf
+  - path: scripts/onboard.py
+    kind: other
+    sha256: d0fa944ca1617569f17c16a70f4e23d913557e12f7d5544686a02f2f6d98b6a6
+  - path: scripts/speed_probe.py
+    kind: other
+    sha256: 3add2957be3834d4a4abdaea8b41b675292cc727c6327b280f59a1e92e02320c
