@@ -1,0 +1,21 @@
+{
+  "model": "opencode/big-pickle",
+  "task": "t06-duration",
+  "tier": "S",
+  "rep": 0,
+  "status": "FAIL",
+  "reason": "",
+  "exit": 0,
+  "seconds": 39.5412663439929,
+  "timeout": false,
+  "verified": {
+    "pass": false,
+    "tests_modified": false,
+    "summary": "FAILED (errors=7)"
+  },
+  "artifact": "t06-duration",
+  "submission_sha256": {
+    "duration.py": "8bc057b561359dab66dc6692a202cde36c72003de3d7b2db94f287e87d887808",
+    "test_duration.py": "420f13ae3d60667347f5a3bcc7ca66a46e0ad5733449101fd0e21ffd66871d62"
+  }
+}

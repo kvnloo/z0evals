@@ -1,0 +1,24 @@
+{
+  "model": "opencode/big-pickle",
+  "task": "h06-wordstats",
+  "tier": "M",
+  "rep": 0,
+  "status": "FAIL",
+  "reason": "",
+  "exit": 0,
+  "seconds": 269.8344128460012,
+  "timeout": false,
+  "verified": {
+    "pass": false,
+    "tests_modified": false,
+    "summary": "FAILED (failures=1, errors=4)"
+  },
+  "artifact": "h06-wordstats",
+  "submission_sha256": {
+    "test_ts.py": "e4a057a211989d2437791b6648d0ad4eb8b6df5b4de56f9a5ebe6904060bbb7d",
+    "ts/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "ts/cli.py": "ab654362be1a1ec22333ecae42019fa4ba8eb1f2196435f11bb567d4e22fe916",
+    "ts/stats.py": "583fdd7da86dc6a5739f21fb1cdb8758374889c73c3ce8fb9d66f47cb0367522",
+    "ts/words.py": "fe1f942b84e46a862cedffcb86d19e3631513488d4cf367b3b307c25265ca00a"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "model": "opencode/big-pickle",
+  "task": "h03-bus",
+  "tier": "L",
+  "rep": 0,
+  "status": "FAIL",
+  "reason": "",
+  "exit": 0,
+  "seconds": 363.3136160319991,
+  "timeout": false,
+  "verified": {
+    "pass": false,
+    "tests_modified": false,
+    "summary": "FAILED (errors=2)"
+  },
+  "artifact": "h03-bus",
+  "submission_sha256": {
+    "test_bus.py": "3420a2b602b92a752c3ee23fec7333c9e66825890046d358ec79475203dc5105",
+    "bus/__init__.py": "2c2ed7536f68e87acb8c2d9dbf09cfa32427acfc40f0e8935474b8829b3f0622",
+    "bus/bus.py": "3f8cfba0b52b8d84ecb79b9fc1894a2c93140938c6d0a11927e12e6534af0d00"
+  }
+}

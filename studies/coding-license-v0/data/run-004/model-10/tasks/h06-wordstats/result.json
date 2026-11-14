@@ -1,0 +1,24 @@
+{
+  "model": "openai/gpt-6.1-terra",
+  "task": "h06-wordstats",
+  "tier": "M",
+  "rep": 0,
+  "status": "PASS",
+  "reason": "",
+  "exit": 0,
+  "seconds": 28.62492332099646,
+  "timeout": false,
+  "verified": {
+    "pass": true,
+    "tests_modified": false,
+    "summary": "OK"
+  },
+  "artifact": "h06-wordstats",
+  "submission_sha256": {
+    "test_ts.py": "e4a057a211989d2437791b6648d0ad4eb8b6df5b4de56f9a5ebe6904060bbb7d",
+    "ts/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "ts/cli.py": "32f981b4c70f56c08141dcd2474d0c80dab252b7ea7e81082ae30362ad3296d4",
+    "ts/stats.py": "7d5eeeab263e476b3e29b3a5601695f8a21cb8a80c6a9280dfb84d76e285d0dd",
+    "ts/words.py": "50e3ac8010ccd6ad85cd780eb3aa3cf585aa063a53f4717465637f460fa871f9"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "model": "openai/gpt-6.1-terra",
+  "task": "t06-duration",
+  "tier": "S",
+  "rep": 0,
+  "status": "PASS",
+  "reason": "",
+  "exit": 0,
+  "seconds": 19.588426696005627,
+  "timeout": false,
+  "verified": {
+    "pass": true,
+    "tests_modified": false,
+    "summary": "OK"
+  },
+  "artifact": "t06-duration",
+  "submission_sha256": {
+    "test_duration.py": "420f13ae3d60667347f5a3bcc7ca66a46e0ad5733449101fd0e21ffd66871d62",
+    "duration.py": "ec11c698bc9454f66597fc6c6a9873bf78bb040c22bd0208090e1494439fd405"
+  }
+}

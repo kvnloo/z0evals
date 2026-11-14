@@ -1,4 +1,4 @@
-from shapes.geometry import calc_area
+from shapes.geometry import area
 
 def describe(kind, size):
-    return f"{kind} area {calc_area(kind, size):.2f}"
+    return f"{kind} area {area(kind, size):.2f}"

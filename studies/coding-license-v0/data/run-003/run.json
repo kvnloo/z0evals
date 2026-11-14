@@ -1,0 +1,10 @@
+{
+  "study": "coding-license-v0",
+  "source_commit": "1ec7c67e36cd6dfa57416b7afdd63ada2805158a",
+  "host": "groot",
+  "started_unix": 1794069185.5827878,
+  "python": "3.14.9 (main, Oct 21 2026, 17:48:02) [Clang 23.1.3 ]",
+  "runner_sha256": "f5845a342b2d3730989855f6a9d80612b27c3e0e0a812f860f9837de32f9e259",
+  "policy_sha256": "bca32287923a1e6d01fee1c1770dd3263c21ade3e1255888f617aff2c50d6689",
+  "source_hashes_sha256": "1f1b0887d59f8dbae2bddba8d213a2e25c7a0a0262dd1cf9e0cf553b785dfbe0"
+}

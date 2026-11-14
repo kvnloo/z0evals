@@ -1,0 +1,21 @@
+{
+  "model": "opencode/big-pickle",
+  "task": "t02-slugify",
+  "tier": "S",
+  "rep": 0,
+  "status": "FAIL",
+  "reason": "",
+  "exit": -9,
+  "seconds": 180.10467241999868,
+  "timeout": true,
+  "verified": {
+    "pass": false,
+    "tests_modified": false,
+    "summary": "FAILED (errors=5)"
+  },
+  "artifact": "t02-slugify",
+  "submission_sha256": {
+    "slug.py": "b81e0787851995807ac51d4349e498bc0ce9b95684528c6ae2c259ce1e77635c",
+    "test_slug.py": "c86182d381bf08a8b5dda7a99194fc23941d282552b4a88d9cedf5cfff70a4b7"
+  }
+}

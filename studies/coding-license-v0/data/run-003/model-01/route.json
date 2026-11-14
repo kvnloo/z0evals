@@ -1,0 +1,6 @@
+{
+  "model": "opencode/big-pickle",
+  "ready": false,
+  "executable": "/usr/bin/opencode",
+  "reason": "model absent from opencode inventory"
+}

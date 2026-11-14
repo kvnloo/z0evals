@@ -1,26 +1,50 @@
-from .errors import UnknownSku
+from .errors import InsufficientStock, UnknownSku
 
 
 class Inventory:
     def __init__(self):
         self._on_hand = {}
+        self._reserved = {}
 
     def add(self, sku, qty):
         if qty <= 0:
             raise ValueError("qty must be positive")
         self._on_hand[sku] = self._on_hand.get(sku, 0) + qty
+        self._reserved.setdefault(sku, 0)
 
     def remove(self, sku, qty):
-        if sku not in self._on_hand:
-            raise UnknownSku(sku)
-        if qty > self._on_hand[sku]:
-            raise ValueError("not enough stock")
+        self._require(sku)
+        if self._on_hand[sku] - qty < self._reserved[sku]:
+            raise InsufficientStock(sku)
         self._on_hand[sku] -= qty
 
+    def reserve(self, sku, qty):
+        self._require(sku)
+        if qty > self.available(sku):
+            raise InsufficientStock(sku)
+        self._reserved[sku] += qty
+
+    def release(self, sku, qty):
+        self._require(sku)
+        if qty > self._reserved[sku]:
+            raise InsufficientStock(sku)
+        self._reserved[sku] -= qty
+
+    def available(self, sku):
+        self._require(sku)
+        return self._on_hand[sku] - self._reserved[sku]
+
+    def reserved(self, sku):
+        self._require(sku)
+        return self._reserved[sku]
+
     def on_hand(self, sku):
-        if sku not in self._on_hand:
-            raise UnknownSku(sku)
+        self._require(sku)
         return self._on_hand[sku]
 
     def skus(self):
         return sorted(self._on_hand)
+
+    def _require(self, sku):
+        if sku not in self._on_hand:
+            raise UnknownSku(sku)

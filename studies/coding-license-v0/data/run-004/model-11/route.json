@@ -1,0 +1,6 @@
+{
+  "model": "anthropic/claude-opus-5-5",
+  "ready": false,
+  "executable": "/mnt/zer0models/workspace/zer0/data/operations/intent-analyzer-20261104/dsa-hillclimb/shim/claude",
+  "reason": "subscription route unverified"
+}

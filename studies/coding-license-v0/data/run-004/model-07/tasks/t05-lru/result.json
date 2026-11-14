@@ -1,0 +1,21 @@
+{
+  "model": "opencode/nemotron-3.5-lightning-free",
+  "task": "t05-lru",
+  "tier": "S",
+  "rep": 0,
+  "status": "PASS",
+  "reason": "",
+  "exit": 0,
+  "seconds": 64.49699124701147,
+  "timeout": false,
+  "verified": {
+    "pass": true,
+    "tests_modified": false,
+    "summary": "OK"
+  },
+  "artifact": "t05-lru",
+  "submission_sha256": {
+    "lru.py": "4ca636fd82a5a0a5c3f5f715df18efcc0f788cac71b4f503aa272fed271a948d",
+    "test_lru.py": "9c1dbd7251c963fe2b760bc1e2dbcacd88c8cb9cddcd2c8ccf7059043202d242"
+  }
+}

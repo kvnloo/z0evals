@@ -1,0 +1,21 @@
+{
+  "model": "opencode/big-pickle",
+  "task": "t05-lru",
+  "tier": "S",
+  "rep": 0,
+  "status": "FAIL",
+  "reason": "",
+  "exit": 0,
+  "seconds": 17.79464913898846,
+  "timeout": false,
+  "verified": {
+    "pass": false,
+    "tests_modified": false,
+    "summary": "FAILED (errors=4)"
+  },
+  "artifact": "t05-lru",
+  "submission_sha256": {
+    "lru.py": "de8a0f19e15a66fd1c77f28e5d78f347f325864d75912d5067061f4fdf7c5ee2",
+    "test_lru.py": "9c1dbd7251c963fe2b760bc1e2dbcacd88c8cb9cddcd2c8ccf7059043202d242"
+  }
+}

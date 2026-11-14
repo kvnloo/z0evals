@@ -1,0 +1,23 @@
+{
+  "model": "opencode/big-pickle",
+  "task": "h04-money",
+  "tier": "L",
+  "rep": 0,
+  "status": "FAIL",
+  "reason": "",
+  "exit": 0,
+  "seconds": 428.88130972199724,
+  "timeout": false,
+  "verified": {
+    "pass": false,
+    "tests_modified": false,
+    "summary": "FAILED (errors=2)"
+  },
+  "artifact": "h04-money",
+  "submission_sha256": {
+    "test_money.py": "6c78ab73d6c98dc3a152aeaba0385231b23b38b23debc6073094fbf470305211",
+    "money/__init__.py": "1f28bedb8b9b9562c0982ce317e3f036ef342a68a62a9380e63ec409257bed03",
+    "money/invoice.py": "255516054db0675fc6d486170e3055f35c3298b1c92396b19f2949a10cf84d33",
+    "money/money.py": "9fcb9e8abe4daa9fff716b9dd786d7adf57a423afedb79d80a5f573ce0427941"
+  }
+}

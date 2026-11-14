@@ -1,0 +1,24 @@
+{
+  "model": "opencode/big-pickle",
+  "task": "h05-calc",
+  "tier": "M",
+  "rep": 0,
+  "status": "FAIL",
+  "reason": "",
+  "exit": -9,
+  "seconds": 300.0493459099962,
+  "timeout": true,
+  "verified": {
+    "pass": false,
+    "tests_modified": false,
+    "summary": "FAILED (failures=1, errors=6)"
+  },
+  "artifact": "h05-calc",
+  "submission_sha256": {
+    "test_calc.py": "c61aa9d658e5ab335bfce747116dbdd82ab3b98b1592d2b669b569acf15eb6d2",
+    "calc/__init__.py": "703c1872207560197bb0b56df92cb83e97507596f24f815d753c960249f71e44",
+    "calc/errors.py": "ce9e3053c9eec07f9a231be50e12ddbc2c8a461a75e48a737e8bc3fe8d82e586",
+    "calc/parser.py": "cc3c7abcb7afc303605cf0f28e1cda16022954534ed676bac81d204160f827b8",
+    "calc/tokenizer.py": "ab9f7052b0b0f5d80311ca0522194041f0d032b72bfef4ef4549b6ad1949966a"
+  }
+}

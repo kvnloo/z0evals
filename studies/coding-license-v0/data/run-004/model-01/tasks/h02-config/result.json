@@ -1,0 +1,23 @@
+{
+  "model": "opencode/big-pickle",
+  "task": "h02-config",
+  "tier": "L",
+  "rep": 0,
+  "status": "FAIL",
+  "reason": "",
+  "exit": 0,
+  "seconds": 512.2984240980004,
+  "timeout": false,
+  "verified": {
+    "pass": false,
+    "tests_modified": false,
+    "summary": "FAILED (errors=4)"
+  },
+  "artifact": "h02-config",
+  "submission_sha256": {
+    "test_cfg.py": "ef228c9a781f3f91bae42967c812552e765d99508badfe72c530f151a983b2e5",
+    "cfg/__init__.py": "6ff7ce5000fde990e686abd5f7b9cfb827e4e2af5e4755e5ce10b5b3da21b785",
+    "cfg/errors.py": "ca8993290a72e3b2c640086e4dce053eb5d2dc85060de08c71cda6b126e89432",
+    "cfg/loader.py": "750edb84bacaee063fc8bf816a63cbb53bdaa77bbcd06675959c88029cc59a59"
+  }
+}

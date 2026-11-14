@@ -1,15 +1,17 @@
 import re
 from .errors import CalcError
 
-TOKEN = re.compile(r"\s*(?:(\d+\.?\d*)|(.))")
+TOKEN = re.compile(r"\s*(?:(\d+\.?\d*)|([A-Za-z_][A-Za-z0-9_]*)|(.))")
 
 
 def tokenize(s):
     out = []
-    for num, op in TOKEN.findall(s.strip()):
+    for num, name, op in TOKEN.findall(s.strip()):
         if num:
             out.append(("num", float(num)))
-        elif op in "+-*/()":
+        elif name:
+            out.append(("ident", name))
+        elif op in "+-*/()^":
             out.append(("op", op))
         elif op.strip():
             raise CalcError(f"bad character {op!r}")

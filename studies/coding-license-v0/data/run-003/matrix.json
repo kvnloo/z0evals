@@ -1,0 +1,314 @@
+[
+  {
+    "model": "opencode/beam-free",
+    "tier": "S",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 6,
+    "licensed": false
+  },
+  {
+    "model": "opencode/beam-free",
+    "tier": "M",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 10,
+    "licensed": false
+  },
+  {
+    "model": "opencode/beam-free",
+    "tier": "L",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 14,
+    "licensed": false
+  },
+  {
+    "model": "opencode/big-pickle",
+    "tier": "S",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 6,
+    "licensed": false
+  },
+  {
+    "model": "opencode/big-pickle",
+    "tier": "M",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 10,
+    "licensed": false
+  },
+  {
+    "model": "opencode/big-pickle",
+    "tier": "L",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 14,
+    "licensed": false
+  },
+  {
+    "model": "opencode/crouton-alpha-free",
+    "tier": "S",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 6,
+    "licensed": false
+  },
+  {
+    "model": "opencode/crouton-alpha-free",
+    "tier": "M",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 10,
+    "licensed": false
+  },
+  {
+    "model": "opencode/crouton-alpha-free",
+    "tier": "L",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 14,
+    "licensed": false
+  },
+  {
+    "model": "opencode/deepseek-v4.1-flash-free",
+    "tier": "S",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 6,
+    "licensed": false
+  },
+  {
+    "model": "opencode/deepseek-v4.1-flash-free",
+    "tier": "M",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 10,
+    "licensed": false
+  },
+  {
+    "model": "opencode/deepseek-v4.1-flash-free",
+    "tier": "L",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 14,
+    "licensed": false
+  },
+  {
+    "model": "opencode/flint-40b-free",
+    "tier": "S",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 6,
+    "licensed": false
+  },
+  {
+    "model": "opencode/flint-40b-free",
+    "tier": "M",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 10,
+    "licensed": false
+  },
+  {
+    "model": "opencode/flint-40b-free",
+    "tier": "L",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 14,
+    "licensed": false
+  },
+  {
+    "model": "opencode/glm-5.3-flash-free",
+    "tier": "S",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 6,
+    "licensed": false
+  },
+  {
+    "model": "opencode/glm-5.3-flash-free",
+    "tier": "M",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 10,
+    "licensed": false
+  },
+  {
+    "model": "opencode/glm-5.3-flash-free",
+    "tier": "L",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 14,
+    "licensed": false
+  },
+  {
+    "model": "opencode/mimo-v2.6-flash-free",
+    "tier": "S",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 6,
+    "licensed": false
+  },
+  {
+    "model": "opencode/mimo-v2.6-flash-free",
+    "tier": "M",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 10,
+    "licensed": false
+  },
+  {
+    "model": "opencode/mimo-v2.6-flash-free",
+    "tier": "L",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 14,
+    "licensed": false
+  },
+  {
+    "model": "opencode/nemotron-3.5-lightning-free",
+    "tier": "S",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 6,
+    "licensed": false
+  },
+  {
+    "model": "opencode/nemotron-3.5-lightning-free",
+    "tier": "M",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 10,
+    "licensed": false
+  },
+  {
+    "model": "opencode/nemotron-3.5-lightning-free",
+    "tier": "L",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 14,
+    "licensed": false
+  },
+  {
+    "model": "opencode/nemotron-3.5-super-vl-free",
+    "tier": "S",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 6,
+    "licensed": false
+  },
+  {
+    "model": "opencode/nemotron-3.5-super-vl-free",
+    "tier": "M",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 10,
+    "licensed": false
+  },
+  {
+    "model": "opencode/nemotron-3.5-super-vl-free",
+    "tier": "L",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 14,
+    "licensed": false
+  },
+  {
+    "model": "opencode/pulse-alpha-free",
+    "tier": "S",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 6,
+    "licensed": false
+  },
+  {
+    "model": "opencode/pulse-alpha-free",
+    "tier": "M",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 10,
+    "licensed": false
+  },
+  {
+    "model": "opencode/pulse-alpha-free",
+    "tier": "L",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 14,
+    "licensed": false
+  },
+  {
+    "model": "openai/gpt-6.1-terra",
+    "tier": "S",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 6,
+    "licensed": false
+  },
+  {
+    "model": "openai/gpt-6.1-terra",
+    "tier": "M",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 10,
+    "licensed": false
+  },
+  {
+    "model": "openai/gpt-6.1-terra",
+    "tier": "L",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 14,
+    "licensed": false
+  },
+  {
+    "model": "anthropic/claude-opus-5-5",
+    "tier": "S",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 6,
+    "licensed": false
+  },
+  {
+    "model": "anthropic/claude-opus-5-5",
+    "tier": "M",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 10,
+    "licensed": false
+  },
+  {
+    "model": "anthropic/claude-opus-5-5",
+    "tier": "L",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 14,
+    "licensed": false
+  },
+  {
+    "model": "google/gemini-pro",
+    "tier": "S",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 6,
+    "licensed": false
+  },
+  {
+    "model": "google/gemini-pro",
+    "tier": "M",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 10,
+    "licensed": false
+  },
+  {
+    "model": "google/gemini-pro",
+    "tier": "L",
+    "status": "BLOCKED",
+    "passed": 0,
+    "required": 14,
+    "licensed": false
+  }
+]

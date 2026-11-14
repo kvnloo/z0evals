@@ -1,0 +1,24 @@
+{
+  "model": "opencode/big-pickle",
+  "task": "t07-rename",
+  "tier": "M",
+  "rep": 0,
+  "status": "FAIL",
+  "reason": "",
+  "exit": 0,
+  "seconds": 147.81771559698973,
+  "timeout": false,
+  "verified": {
+    "pass": false,
+    "tests_modified": false,
+    "summary": "FAILED (failures=2, errors=2)"
+  },
+  "artifact": "t07-rename",
+  "submission_sha256": {
+    "test_shapes.py": "4d7bb38f2d380bfe1608897ea36e9c79e528631c2c47be4417baf7ee1c91d806",
+    "shapes/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "shapes/batch.py": "19aa92779aaab10cc11586194e7171919bffcd6df1ecf46d5c4cf60a0dd6003b",
+    "shapes/geometry.py": "e575e0b0d49706e296c7ca754cfef8c7515cdc60f0388d67a112ab03e95f4e03",
+    "shapes/report.py": "9b4926106de66122a09849bfd0832bca70683441777b790825e5a03b82278f39"
+  }
+}

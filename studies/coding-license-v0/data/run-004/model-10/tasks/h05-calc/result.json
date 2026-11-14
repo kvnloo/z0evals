@@ -1,0 +1,24 @@
+{
+  "model": "openai/gpt-6.1-terra",
+  "task": "h05-calc",
+  "tier": "M",
+  "rep": 0,
+  "status": "PASS",
+  "reason": "",
+  "exit": 0,
+  "seconds": 22.74235500000941,
+  "timeout": false,
+  "verified": {
+    "pass": true,
+    "tests_modified": false,
+    "summary": "OK"
+  },
+  "artifact": "h05-calc",
+  "submission_sha256": {
+    "test_calc.py": "c61aa9d658e5ab335bfce747116dbdd82ab3b98b1592d2b669b569acf15eb6d2",
+    "calc/__init__.py": "703c1872207560197bb0b56df92cb83e97507596f24f815d753c960249f71e44",
+    "calc/errors.py": "ce9e3053c9eec07f9a231be50e12ddbc2c8a461a75e48a737e8bc3fe8d82e586",
+    "calc/tokenizer.py": "1422d7ed7e1ddc1bf043f1fbe405360154287c9f3bd854c6151f8104464bd1a8",
+    "calc/parser.py": "982d21efa7b622a7e0f00601cec836274587f74c97118ee71ce45e0e350076fe"
+  }
+}

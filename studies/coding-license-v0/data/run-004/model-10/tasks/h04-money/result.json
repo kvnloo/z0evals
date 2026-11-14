@@ -1,0 +1,25 @@
+{
+  "model": "openai/gpt-6.1-terra",
+  "task": "h04-money",
+  "tier": "L",
+  "rep": 0,
+  "status": "PASS",
+  "reason": "",
+  "exit": 0,
+  "seconds": 43.95396869099932,
+  "timeout": false,
+  "verified": {
+    "pass": true,
+    "tests_modified": false,
+    "summary": "OK"
+  },
+  "artifact": "h04-money",
+  "submission_sha256": {
+    "test_money.py": "6c78ab73d6c98dc3a152aeaba0385231b23b38b23debc6073094fbf470305211",
+    "money/__init__.py": "da62f0e71d74cdf7e7eb2d4b42b9378280fe9c677b1910787acd1581b0204ca1",
+    "money/errors.py": "773250cae1e952305665a4964b87b2f2ff81b349c2b99a30dc0bb46bea9841c8",
+    "money/_rounding.py": "118d7df48404d36dc477b4e5e7a6df4eb35897df08b9ba42d0831d8305290dec",
+    "money/money.py": "ba3b1d50851913e920179ecb0adcd832f6d8f1a1718b5147a5172b59f4362da4",
+    "money/invoice.py": "f1d83266069b8e818ec3575700d84d37246946666fafc0de1f3c0ddc6d540d4e"
+  }
+}

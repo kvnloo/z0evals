@@ -1,6 +1,6 @@
 import math
 
-def calc_area(kind, size):
+def area(kind, size):
     if kind == "square":
         return size * size
     if kind == "circle":

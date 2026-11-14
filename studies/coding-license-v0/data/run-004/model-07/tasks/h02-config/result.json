@@ -1,0 +1,24 @@
+{
+  "model": "opencode/nemotron-3.5-lightning-free",
+  "task": "h02-config",
+  "tier": "L",
+  "rep": 0,
+  "status": "PASS",
+  "reason": "",
+  "exit": 0,
+  "seconds": 171.94486406899523,
+  "timeout": false,
+  "verified": {
+    "pass": true,
+    "tests_modified": false,
+    "summary": "OK"
+  },
+  "artifact": "h02-config",
+  "submission_sha256": {
+    "test_cfg.py": "ef228c9a781f3f91bae42967c812552e765d99508badfe72c530f151a983b2e5",
+    "cfg/__init__.py": "7eec678af19eebd495685ec2cbb2971e81e93b9ea30287dd867b8fe795a53e17",
+    "cfg/errors.py": "ca8993290a72e3b2c640086e4dce053eb5d2dc85060de08c71cda6b126e89432",
+    "cfg/loader.py": "6dc59378b7fa6943f806f93107e90a055952e457bcb25f5c1bc4ffacf7109f94",
+    "cfg/interp.py": "691487181aec3a48a47833cc28dafff00e85bfc63ab2f9adab6700b70ed2d766"
+  }
+}

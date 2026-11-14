@@ -1,0 +1,7 @@
+{
+  "exit": 0,
+  "timeout": false,
+  "stdout": "{\"pass\": false, \"tests_modified\": false, \"summary\": \"FAILED (failures=3)\"}\n",
+  "stderr": "",
+  "seconds": 0.11951676900207531
+}

@@ -1,0 +1,21 @@
+{
+  "model": "opencode/big-pickle",
+  "task": "t01-paginate",
+  "tier": "S",
+  "rep": 0,
+  "status": "PASS",
+  "reason": "",
+  "exit": 0,
+  "seconds": 49.96903994100285,
+  "timeout": false,
+  "verified": {
+    "pass": true,
+    "tests_modified": false,
+    "summary": "OK"
+  },
+  "artifact": "t01-paginate",
+  "submission_sha256": {
+    "pager.py": "b1c4f572e9075c451474857b49b3a8440abeeaf45800daae0a0af07868c305ef",
+    "test_pager.py": "4898fd4977795f16ce06768835c923d9eaf281c6e52c50627b524a78b4c633f2"
+  }
+}

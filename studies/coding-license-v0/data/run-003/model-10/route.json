@@ -1,0 +1,6 @@
+{
+  "model": "openai/gpt-6.1-terra",
+  "ready": false,
+  "executable": "/home/kvn/.local/bin/fx",
+  "reason": "subscription route unverified"
+}

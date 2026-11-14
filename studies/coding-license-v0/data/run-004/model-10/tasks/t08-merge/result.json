@@ -1,0 +1,21 @@
+{
+  "model": "openai/gpt-6.1-terra",
+  "task": "t08-merge",
+  "tier": "M",
+  "rep": 0,
+  "status": "PASS",
+  "reason": "",
+  "exit": 0,
+  "seconds": 38.545966587000294,
+  "timeout": false,
+  "verified": {
+    "pass": true,
+    "tests_modified": false,
+    "summary": "OK"
+  },
+  "artifact": "t08-merge",
+  "submission_sha256": {
+    "test_config.py": "f06567169df35bc79652144cd11f5726fd7bcc65769209b2398ecffe4ba71b37",
+    "config.py": "fab21fb32c823779ec68eac7bfe3dfe8fccf2cededbd5cf1c8433dc8b2e0d862"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "model": "opencode/nemotron-3.5-lightning-free",
+  "task": "t08-merge",
+  "tier": "M",
+  "rep": 0,
+  "status": "FAIL",
+  "reason": "",
+  "exit": -9,
+  "seconds": 300.10353653499624,
+  "timeout": true,
+  "verified": {
+    "pass": true,
+    "tests_modified": false,
+    "summary": "OK"
+  },
+  "artifact": "t08-merge",
+  "submission_sha256": {
+    "config.py": "4c6bc249b8c2c1eb4a281b54f6fbd5a048e040d8a4993e9d127d5af261771f97",
+    "test_config.py": "f06567169df35bc79652144cd11f5726fd7bcc65769209b2398ecffe4ba71b37"
+  }
+}

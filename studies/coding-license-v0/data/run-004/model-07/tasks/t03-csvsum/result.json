@@ -1,0 +1,21 @@
+{
+  "model": "opencode/nemotron-3.5-lightning-free",
+  "task": "t03-csvsum",
+  "tier": "S",
+  "rep": 0,
+  "status": "PASS",
+  "reason": "",
+  "exit": 0,
+  "seconds": 43.165615774996695,
+  "timeout": false,
+  "verified": {
+    "pass": true,
+    "tests_modified": false,
+    "summary": "OK"
+  },
+  "artifact": "t03-csvsum",
+  "submission_sha256": {
+    "report.py": "5f627b8f2d83024cc392144ec72f3f5d6912ffce6a9f4071cf698ffaac358fa4",
+    "test_report.py": "eccaeec418fd207af4b965e8f61a4d6e59bedeaa9b867e126a8feb7fa16b94ca"
+  }
+}

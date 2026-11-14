@@ -1,0 +1,21 @@
+{
+  "model": "opencode/nemotron-3.5-lightning-free",
+  "task": "t06-duration",
+  "tier": "S",
+  "rep": 0,
+  "status": "PASS",
+  "reason": "",
+  "exit": 0,
+  "seconds": 168.34279825199337,
+  "timeout": false,
+  "verified": {
+    "pass": true,
+    "tests_modified": false,
+    "summary": "OK"
+  },
+  "artifact": "t06-duration",
+  "submission_sha256": {
+    "duration.py": "801551d89da21180cc0b301398bb17a72272a07b60b3cf3a3161ad0c8848320e",
+    "test_duration.py": "420f13ae3d60667347f5a3bcc7ca66a46e0ad5733449101fd0e21ffd66871d62"
+  }
+}

@@ -4,6 +4,10 @@
 
 z0evals is Zer0's public, reproducible evaluation and research-publication layer.
 
+## t07-rename task
+
+Completed: renamed `calc_area` to `area` everywhere in the shapes package across all three module locations (repo, submission, grading). No alias retained; all `python3 -m unittest` suites pass. Tests were not modified.
+
 ## Hard boundaries
 
 - **Evolution Lab** owns experiment/search/training machinery.

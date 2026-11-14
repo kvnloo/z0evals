@@ -1,1 +1,2 @@
-from .bus import Bus
+from .bus import Bus, Subscription
+from .errors import PublishError

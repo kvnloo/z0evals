@@ -1,0 +1,24 @@
+{
+  "model": "opencode/big-pickle",
+  "task": "h01-reserve",
+  "tier": "L",
+  "rep": 0,
+  "status": "FAIL",
+  "reason": "",
+  "exit": 0,
+  "seconds": 325.45604010998795,
+  "timeout": false,
+  "verified": {
+    "pass": false,
+    "tests_modified": false,
+    "summary": "FAILED (errors=2)"
+  },
+  "artifact": "h01-reserve",
+  "submission_sha256": {
+    "test_inv.py": "7861114b863a04f26f6f3da8a0e1a3d747a1cf701fd44d79d6a5b32e10818ec7",
+    "inv/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "inv/errors.py": "5ba23430a72eee771e9342bfbc502f48ae69e4530248b1350cc4828f8cfe5012",
+    "inv/report.py": "eb0065604c2984c209abd287461d7b0e6fe80fe1fba2e39d56dee8195bb5a49e",
+    "inv/store.py": "2764d15761f1577157b4fa5fc56547d3c501846ba2f51cd26f661928ae6f218a"
+  }
+}

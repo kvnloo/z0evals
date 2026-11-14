@@ -1,0 +1,6 @@
+{
+  "model": "opencode/nemotron-3.5-lightning-free",
+  "ready": false,
+  "executable": "/usr/bin/opencode",
+  "reason": "model absent from opencode inventory"
+}

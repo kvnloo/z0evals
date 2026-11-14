@@ -1,0 +1,21 @@
+{
+  "model": "opencode/big-pickle",
+  "task": "t03-csvsum",
+  "tier": "S",
+  "rep": 0,
+  "status": "FAIL",
+  "reason": "",
+  "exit": 0,
+  "seconds": 28.847608591997414,
+  "timeout": false,
+  "verified": {
+    "pass": false,
+    "tests_modified": false,
+    "summary": "FAILED (failures=1, errors=1)"
+  },
+  "artifact": "t03-csvsum",
+  "submission_sha256": {
+    "report.py": "8318f1229986bde023ad32adb72fe8cdfc1c5cc75c677720483b8bab0dbd22cf",
+    "test_report.py": "eccaeec418fd207af4b965e8f61a4d6e59bedeaa9b867e126a8feb7fa16b94ca"
+  }
+}

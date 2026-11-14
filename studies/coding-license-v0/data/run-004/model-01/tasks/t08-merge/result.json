@@ -1,0 +1,21 @@
+{
+  "model": "opencode/big-pickle",
+  "task": "t08-merge",
+  "tier": "M",
+  "rep": 0,
+  "status": "FAIL",
+  "reason": "",
+  "exit": 0,
+  "seconds": 204.32799007199355,
+  "timeout": false,
+  "verified": {
+    "pass": false,
+    "tests_modified": false,
+    "summary": "FAILED (failures=3)"
+  },
+  "artifact": "t08-merge",
+  "submission_sha256": {
+    "config.py": "c6569c50dfcb87db99412fb89a77fc33862e4fc308ef83b17a9b8fdd82f716bc",
+    "test_config.py": "f06567169df35bc79652144cd11f5726fd7bcc65769209b2398ecffe4ba71b37"
+  }
+}

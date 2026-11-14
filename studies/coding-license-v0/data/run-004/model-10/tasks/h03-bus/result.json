@@ -1,0 +1,24 @@
+{
+  "model": "openai/gpt-6.1-terra",
+  "task": "h03-bus",
+  "tier": "L",
+  "rep": 0,
+  "status": "PASS",
+  "reason": "",
+  "exit": 0,
+  "seconds": 21.11972060399421,
+  "timeout": false,
+  "verified": {
+    "pass": true,
+    "tests_modified": false,
+    "summary": "OK"
+  },
+  "artifact": "h03-bus",
+  "submission_sha256": {
+    "test_bus.py": "3420a2b602b92a752c3ee23fec7333c9e66825890046d358ec79475203dc5105",
+    "bus/__init__.py": "ede4b99dc486a629448e5956cf4f4077e1b699fe4c65a5b91edaca68b6ea9bd6",
+    "bus/bus.py": "f14c7c007805b3d9f1b796c562102552ce06406caa66e845b95c7fcb1f540b07",
+    "bus/match.py": "31bf982305b42f2ebc51b40e8e1f2cac735f0d13e2fbd1c324ad375ca2e21ed4",
+    "bus/errors.py": "d0dd13825d6475919af16af5fc36c6c97a3e99c31fd0028ec0fb9317f2cd0719"
+  }
+}

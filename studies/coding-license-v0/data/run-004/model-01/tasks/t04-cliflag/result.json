@@ -1,0 +1,21 @@
+{
+  "model": "opencode/big-pickle",
+  "task": "t04-cliflag",
+  "tier": "S",
+  "rep": 0,
+  "status": "FAIL",
+  "reason": "",
+  "exit": -9,
+  "seconds": 180.02482167900598,
+  "timeout": true,
+  "verified": {
+    "pass": false,
+    "tests_modified": false,
+    "summary": "FAILED (errors=3)"
+  },
+  "artifact": "t04-cliflag",
+  "submission_sha256": {
+    "test_wc.py": "5216d1427458abb63316d2edc41911b05e87e8f797b1482b69f298c759ab5997",
+    "wc.py": "2218fd872c1b1b6ace3602ff211e22f07f7fa12f58ac86c2b52e62ff73e91b4a"
+  }
+}

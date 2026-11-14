@@ -1,0 +1,24 @@
+{
+  "model": "opencode/nemotron-3.5-lightning-free",
+  "task": "h04-money",
+  "tier": "L",
+  "rep": 0,
+  "status": "PASS",
+  "reason": "",
+  "exit": 0,
+  "seconds": 143.7234760989959,
+  "timeout": false,
+  "verified": {
+    "pass": true,
+    "tests_modified": false,
+    "summary": "OK"
+  },
+  "artifact": "h04-money",
+  "submission_sha256": {
+    "test_money.py": "6c78ab73d6c98dc3a152aeaba0385231b23b38b23debc6073094fbf470305211",
+    "money/__init__.py": "da62f0e71d74cdf7e7eb2d4b42b9378280fe9c677b1910787acd1581b0204ca1",
+    "money/invoice.py": "22936305711a6167b00cc634a4efd8997099958b1feb41aae6cceedc605b2133",
+    "money/money.py": "960cb5fa0c3ceb08385d562ffeac68374c4aec75d3bef0327a20e4e5f1d27729",
+    "money/errors.py": "773250cae1e952305665a4964b87b2f2ff81b349c2b99a30dc0bb46bea9841c8"
+  }
+}
