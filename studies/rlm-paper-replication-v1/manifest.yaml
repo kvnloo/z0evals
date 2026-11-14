@@ -1,0 +1,88 @@
+schema_version: z0eval.study.v1
+id: rlm-paper-replication-v1
+title: RLM paper-v1 protocol adaptation on Hermes, bounded coverage
+status: draft
+created: "2026-11-14"
+updated: "2026-11-14"
+evidence_status: ongoing measurements; separate corrected normal CLI smoke, failed thinking-off CLI smoke, passing library smoke, exploratory pilot, and library primary
+external_inference_spend_usd: null
+sources:
+  - repo: kvnloo/hermes-rlm
+    commit: 10918473fbb90d04af08221725baa671369fb31e
+    role: committed benchmark runner, task scorer, and library ingress
+    plugin_implementation_commit: 184f7367465601f6e190fdff1bcd091903bef8ad
+    measured_plugin_sha256: 936f237ac94ce3d092b6f397a3faf65c26cea5274de05c7716c6e3a20b8d1084
+    snapshot_note: measured top-level plugin Python hash matches current committed production files; tests are not part of this hash
+  - repo: NousResearch/hermes-agent
+    commit: e05c8d578c6f4f919b4a2a4c308733144ac4f8b0
+    role: released Hermes runtime, discovery off for released and no-subcall arms
+  - repo: kvnloo/hermes-agent
+    commit: 9f7857601686119b0ffd9e2de91f47383231722c
+    role: fork runtime, discovery on with eager RLM exposure
+  - repo: PrimeIntellect-ai/nano-rlm
+    commit: 8ca926cdd64fd7725b78cf95a4e1667315d3b1f6
+    role: ACP reference runtime, session-routed child model, recursive-agent deviation
+paper:
+  id: arXiv:2512.24601v1
+  version: 1
+  comparison: source-reported Qwen3-Coder-480B Table 1, not reproduced measurements
+harness_snapshot:
+  revised_runner_sha256: 2d6d10bc612258f3f5ba23e6d6cdcca165fb1d10cbc490427b97ce7b50d0f2bb
+  hermes_client_sha256: 7a56dd8f9d39f6aa38ba7b806966b7980b495d4bbe494566bd2bc26a088aebc7
+  hermes_ingress: library
+  revised_proxy_sha256: 31eb764a9a3395e01804469682d98e0ee131c2715cdbae5d6f15e22cb82b5d41
+  scorer_sha256: 652a23d6ab227f13a82d7c6eb53a09f644b262f025ec7c5e95e7e09886545549
+  note: committed library-ingress snapshot; generated protocol objects retain older CLI smoke hashes separately
+expected_coverage:
+  task_items: 20
+  arms: 5
+  repeats: 3
+  executions_per_root: 300
+  status: ongoing; scheduled is not completed
+datasets:
+  - name: self-long/RULER-llama3-1M
+    revision: 5da49e4000224d3289ffb14fc32cbd20211765ed
+  - name: oolongbench/oolong-synth
+    revision: 49898a421f4b14f2c9cae084d2d270f930ff4c90
+    split: validation
+    filter: trec_coarse
+  - name: zai-org/LongBench-v2
+    revision: 2b48e494f2c7a2f0af81aae178e05c7e1dde0fe9
+  - name: Tevatron/browsecomp-plus
+    revision: 144cff8e35b5eaef7e526346aa60774a9deb941f
+    status: available but context materialization blocked
+  - name: Tevatron/browsecomp-plus-corpus
+    revision: b27b02bc3e45511b8b82a13e6f90ce761df726f6
+    status: available but context materialization blocked
+questions:
+  - What outcomes and resource counts are observed across five RLM and base arms on the frozen available task subset?
+  - How do validity and coverage differ after the explicit thinking-off protocol revision?
+  - Which replication gaps remain relative to the original paper-v1 model, data, and execution protocol?
+artifacts:
+  - path: README.md
+    kind: analysis
+  - path: protocol.md
+    kind: analysis
+  - path: summarize.py
+    kind: analysis
+  - path: test_summarize.py
+    kind: fixture
+  - path: check_public.py
+    kind: other
+  - path: reproduce.sh
+    kind: other
+  - path: data/summary.json
+    kind: result
+    provenance: deterministic aggregate-only partial snapshot; no raw executions or benchmark text published
+limitations:
+  - Ongoing bounded attempt, not full paper replication. Final run closure and counts remain parent-owned.
+  - Library ingress avoids per-home gateway startup; corrected normal CLI, failed thinking-off CLI, and passing library smokes remain separate.
+  - Optional Qwen Groq root is blocked by HTTP 403 and has no claimed primary measurements.
+  - The thinking-off change followed the interrupted pilot and was not preregistered. Pilot and smoke never enter primary scores.
+  - Different models, adapted tool prompts, nominal size labels, heuristic character truncation, and nano child agents differ from paper-v1.
+  - One task per CodeQA size cannot support a task-population confidence interval even with three repeats.
+  - Shared corpora, convenience sampling, incomplete valid repeats, and tiny task counts limit interpretation of descriptive intervals.
+  - BrowseComp 20 by 1000 documents and large Parquet task materialization remain blocked by external compute availability.
+  - Partial provider usage remains known-only; invalid executions are not wrong answers and missing executions are not zero scores.
+  - No exact S-NIAH paper chart numbers were recovered. Source-reported Qwen numbers are not our measurements.
+claims: []
