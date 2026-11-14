@@ -1,0 +1,14 @@
+{
+  "status": "interrupted",
+  "source_commit": "bb894feb24b4f263765904259f3623a2f097432e",
+  "reason": "Native GEPA retried malformed proposal populations internally; stop to prevent misleading valid baseline and needless requests.",
+  "signal": 15,
+  "receipted_requests": 79,
+  "receipted_purposes": {
+    "selection": 52,
+    "generation": 27
+  },
+  "heldout_started": false,
+  "inflight_request_note": "At most one API request may lack a completed receipt after process termination.",
+  "quality_comparison": null
+}
