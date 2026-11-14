@@ -1,0 +1,40 @@
+schema_version: z0eval.study.v1
+id: rsi-self-evolution-v0
+title: RSI-inspired Hermes skill selection at matched task-call budgets
+status: draft
+created: '2026-11-14'
+updated: '2026-11-14'
+evidence_status: measurement-in-progress
+sources:
+  - repo: kvnloo/hermes-agent-self-evolution
+    commit: 0a929e3aa20e15cf04dc7c28492a7d41a5139125
+    role: original checkout and fitness baseline
+  - repo: Gen-Verse/RSI-Anything
+    commit: 8ba44cd73ec6f57b151ec06e2f71a0726adfb687
+    role: source-reported research protocol, not reproduced benchmark results
+  - repo: Gen-Verse/JEPA-Anything
+    commit: c6e6c88f3ef75a4ce7acd660d6fa5779d995512c
+    role: predictive-core source inspection
+  - repo: NousResearch/hermes-agent
+    commit: e05c8d578c6f4f919b4a2a4c308733144ac4f8b0
+    role: source reviewer prompt adapted to the static fixture
+external_resources:
+  - url: https://arxiv.org/abs/2610.13912
+    role: source-reported paper
+  - url: https://huggingface.co/datasets/Gen-Verse/RSI-Anything
+    revision: 672ecc37a8c9488002258bb2a3a9ea1250dfd54b
+    role: inspected released resources; no model weights used
+questions:
+  - Does prediction-guided selection improve heldout keyword fitness over GEPA and random selection with matched task calls?
+  - Does any keyword-fitness change agree with known-answer static-review verdict accuracy?
+  - Does pre-update selected-only predictor correlation provide useful evidence at this sample size?
+artifacts: []
+limitations:
+  - Measurement is in progress. No final quality comparison is frozen.
+  - The native GEPA text adapter replaces a broken wrapper, not the GEPA engine.
+  - The surrogate is sparse embedding regression, not JEPA.
+  - The primary metric is keyword overlap, not independently verified task correctness.
+  - One adapted prompt and eight unique holdout tasks do not establish live-agent improvement.
+  - Selected-only Spearman is biased and has few observations.
+  - Candidate-generation compute and distributions are not matched across all arms.
+  - Failed and interrupted attempts must remain separate from valid quality measurements.
