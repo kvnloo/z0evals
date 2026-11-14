@@ -4,7 +4,16 @@ title: RLM paper-v1 protocol adaptation on Hermes, bounded coverage
 status: draft
 created: "2026-11-14"
 updated: "2026-11-14"
-evidence_status: ongoing measurements; separate corrected normal CLI smoke, failed thinking-off CLI smoke, passing library smoke, exploratory pilot, and library primary
+evidence_status: provisional ongoing collection snapshot; protocol adherence unaudited; smoke success is process-level only
+post_adjudication:
+  current_policy: collection_snapshot
+  required_primary_policy_before_publication: paper_strict_v1
+  audit_version: paper-strict-v1
+  auditor_commit: null
+  auditor_commit_status: pending-parent-update
+  initial_bulk_audit: timed out and ledger locked; no completed output
+  staged_gate_fix_status: parent reports 59 gate checks and 13 auditor tests; not applied to measured controllers
+  measured_source_note: benchmark 1091847 and plugin 184f736 predate FINAL/child-outcome gate fixes
 external_inference_spend_usd: null
 sources:
   - repo: kvnloo/hermes-rlm
@@ -75,8 +84,11 @@ artifacts:
     kind: result
     provenance: deterministic aggregate-only partial snapshot; no raw executions or benchmark text published
 limitations:
-  - Ongoing bounded attempt, not full paper replication. Final run closure and counts remain parent-owned.
-  - Library ingress avoids per-home gateway startup; corrected normal CLI, failed thinking-off CLI, and passing library smokes remain separate.
+  - Ongoing provisional collection snapshot, not full paper replication. Final strict audit, closure, and counts remain parent-owned.
+  - P1 review verified missing host-validated FINAL/citations in collected valid rows and reproduced masking of failed children by a later root 200.
+  - Current scores and process-level smokes are not cited protocol-success outcomes. Every observed row is protocol-unknown until adjudicated.
+  - Staged gate fixes were not measured by this matrix. Strict post-adjudication does not replace a rerun with patched code.
+  - Library ingress avoids per-home gateway startup; normal CLI, failed thinking-off CLI, and process-level library smokes remain separate.
   - Optional Qwen Groq root is blocked by HTTP 403 and has no claimed primary measurements.
   - The thinking-off change followed the interrupted pilot and was not preregistered. Pilot and smoke never enter primary scores.
   - Different models, adapted tool prompts, nominal size labels, heuristic character truncation, and nano child agents differ from paper-v1.

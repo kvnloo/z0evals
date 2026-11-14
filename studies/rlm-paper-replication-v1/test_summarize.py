@@ -22,6 +22,14 @@ def row(task="a", rep=0, score=1., valid=True, **extra):
     return result
 
 
+def audit_row(raw, state="not_applicable_base", collection_valid=None):
+    result = deepcopy(raw)
+    result.update(audit_version=s.AUDIT_VERSION, audit_adherence=state, audit_reasons=[],
+                  audit_source_sha256={"auditor": "a" * 64},
+                  collection_valid=raw["valid"] if collection_valid is None else collection_valid)
+    return result
+
+
 class SummaryTests(unittest.TestCase):
     def aggregate(self, rows, name="matrix-v2-sniah.jsonl", **kwargs):
         with tempfile.TemporaryDirectory() as directory:
@@ -165,13 +173,102 @@ class SummaryTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             s.validate_public(partial)
 
+    def test_require_audit_rejects_collection_and_incomplete_metadata(self):
+        raw = row(collection_valid=True, audit_adherence="adherent")
+        with self.assertRaises(ValueError):
+            self.aggregate([raw], require_audit=True)
+        audited = audit_row(row())
+        for key in ("audit_version", "collection_valid", "audit_source_sha256", "audit_reasons"):
+            broken = deepcopy(audited)
+            del broken[key]
+            with self.subTest(key=key), self.assertRaises(ValueError):
+                self.aggregate([broken], require_audit=True)
+        with self.assertRaises(ValueError):
+            self.aggregate([audited])
+        with self.assertRaises(ValueError):
+            self.aggregate([audited, row("b")], require_audit=True)
+        promoted = audit_row(row(collection_valid=False))
+        promoted["collection_valid"] = False
+        with self.assertRaises(ValueError):
+            self.aggregate([promoted], require_audit=True)
+
+    def test_strict_scores_counts_intervals_and_private_evidence(self):
+        rows = [audit_row(row(task, rep, score)) for task, score in (("a", .25), ("b", .75)) for rep in range(3)]
+        rejected = audit_row(row("c", score=None, valid=False), state="nonadherent", collection_valid=True)
+        rejected.update(audit_reasons=["missing_validated_final"], audit_final={"answer": "PRIVATE-AUDIT-SENTINEL"},
+                        collection_answer="PRIVATE-AUDIT-SENTINEL", collection_score=1.)
+        result = self.aggregate(rows + [rejected], require_audit=True)
+        group = self.selected(result)
+        self.assertEqual(result["audit_policy"], "paper_strict_v1")
+        self.assertEqual((group["valid"], group["invalid"], group["missing"]), (6, 1, 2))
+        self.assertEqual((group["collection_valid"], group["collection_invalid"]), (7, 0))
+        self.assertEqual(group["protocol_not_applicable"], 6)
+        self.assertEqual(group["protocol_nonadherent"], 1)
+        self.assertEqual(group["mean_score"], .5)
+        self.assertEqual(group["score_ci95"], [.25, .75])
+        self.assertNotIn("PRIVATE-AUDIT-SENTINEL", json.dumps(result))
+        self.assertEqual(result, self.aggregate(list(reversed(rows + [rejected])), require_audit=True))
+        self.assertIsNone(self.selected(self.aggregate([rejected], require_audit=True))["mean_score"])
+        for key in s.AUDIT_COUNTS:
+            modified = deepcopy(result)
+            modified["primary"][0][key] = "not-a-count"
+            with self.assertRaises(ValueError):
+                s.validate_public(modified)
+
+    def test_unaudited_adherence_is_unknown_and_provisional(self):
+        result = self.aggregate([row(), row("b", valid=False, score=None)])
+        group = self.selected(result)
+        self.assertEqual(result["audit_policy"], "collection_snapshot")
+        self.assertEqual(group["protocol_unknown"], group["observed"])
+        self.assertEqual(group["protocol_adherent"], 0)
+        self.assertEqual((group["collection_valid"], group["collection_invalid"]), (1, 1))
+        self.assertEqual(result["protocols"][0]["audit_version"], "not_audited")
+        self.assertIsNone(result["protocols"][0]["auditor_sha256"])
+        modified = deepcopy(result)
+        modified["audit_policy"] = "paper_strict_v1"
+        with self.assertRaises(ValueError):
+            s.validate_public(modified)
+
+    def test_audit_hash_is_fingerprinted_and_valid_child_errors_rejected(self):
+        first = audit_row(row(arm="released-rlm"), state="adherent")
+        second = deepcopy(first)
+        second["audit_source_sha256"]["auditor"] = "b" * 64
+        self.assertNotEqual(s.fingerprint(s.public_protocol(first)), s.fingerprint(s.public_protocol(second)))
+        with self.assertRaises(ValueError):
+            self.aggregate([first, second], require_audit=True)
+        first["audit_reasons"] = ["child_error"]
+        with self.assertRaises(ValueError):
+            self.aggregate([first], require_audit=True)
+        nano = audit_row(row(arm="nano-rlm", valid=False, score=None), state="unknown", collection_valid=True)
+        group = next(g for g in self.aggregate([nano], require_audit=True)["primary"]
+                     if g["family"] == "S-NIAH" and g["arm"] == "nano-rlm")
+        self.assertEqual(group["protocol_unknown"], 1)
+        self.assertEqual(group["valid"], 0)
+
+    def test_privacy_checker_ignores_only_standard_caches(self):
+        import check_public
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for name in check_public.ALLOWED:
+                path = root / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text('"""reuse-checked: fixture."""\n')
+            (root / "data/summary.json").write_text(json.dumps(s.aggregate()))
+            for cache in (".ruff_cache", "__pycache__", ".pytest_cache"):
+                (root / cache).mkdir()
+                (root / cache / "cache-entry").write_text("fixture")
+            check_public.main(root)
+            (root / "unexpected.jsonl").write_text("{}\n")
+            with self.assertRaises(ValueError):
+                check_public.main(root)
+
     def test_closed_privacy_schema(self):
         private = "PRIVATE-CONTEXT-SENTINEL"
         raw = row(answer=private, question=private, gold=private, context_path=private,
                   protocol={"disable_thinking": True, "home_template": private})
         result = self.aggregate([raw])
         self.assertNotIn(private, json.dumps(result))
-        for mutation in ("answer", "question", "task_id", "context", "requests"):
+        for mutation in ("answer", "question", "task_id", "context", "requests", "audit_reasons", "audit_final", "collection_answer"):
             modified = deepcopy(result)
             modified["primary"][0][mutation] = private
             with self.assertRaises(ValueError):
@@ -180,6 +277,19 @@ class SummaryTests(unittest.TestCase):
         modified["primary"][0]["family"] = private
         with self.assertRaises(ValueError):
             s.validate_public(modified)
+
+    def test_require_audit_cli(self):
+        with tempfile.TemporaryDirectory() as directory:
+            raw = Path(directory) / "matrix-v2-sniah.jsonl"
+            out = Path(directory) / "summary.json"
+            raw.write_text(json.dumps(row()) + "\n")
+            with self.assertRaises(ValueError):
+                s.main(["--raw", str(raw), "--require-audit", "--out", str(out)])
+            self.assertFalse(out.exists())
+            raw.write_text(json.dumps(audit_row(row())) + "\n")
+            s.main(["--raw", str(raw), "--require-audit", "--out", str(out)])
+            self.assertEqual(json.loads(out.read_text())["audit_policy"], "paper_strict_v1")
+            s.main(["--check", str(out)])
 
     def test_cli_round_trip_and_check(self):
         with tempfile.TemporaryDirectory() as directory:

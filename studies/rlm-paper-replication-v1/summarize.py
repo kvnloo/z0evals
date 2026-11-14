@@ -32,7 +32,13 @@ PLAN = (("CodeQA", 483107, 1), ("CodeQA", 1043432, 1), ("CodeQA", 1061947, 1),
         ("local-aggregation", 2000000, 3))
 PARAMS = ("timeout", "cell_timeout", "max_turns", "max_tokens", "sub_max_tokens", "max_subcalls",
           "max_context_chars", "base_context_chars", "nano_total_tokens", "provider_cap")
-HASHES = ("plugin_sha256", "harness_sha256", "proxy_sha256", "scorer_sha256", "hermes_client_sha256")
+HASHES = ("plugin_sha256", "harness_sha256", "proxy_sha256", "scorer_sha256", "hermes_client_sha256", "auditor_sha256")
+AUDIT_VERSION = "paper-strict-v1"
+ADHERENCE = {"adherent": "protocol_adherent", "nonadherent": "protocol_nonadherent",
+             "unknown": "protocol_unknown", "not_applicable_base": "protocol_not_applicable",
+             "reference_deviation_no_host_final": "protocol_not_applicable"}
+AUDIT_COUNTS = ("protocol_adherent", "protocol_nonadherent", "protocol_unknown", "protocol_not_applicable",
+                "collection_valid", "collection_invalid")
 COUNTERS = ("wall_s", "root_request_latency_s", "sub_request_latency_s", "request_attempts",
             "root_api_attempts", "sub_api_attempts", "subcalls", "cells", "tool_calls")
 TOKEN_METRICS = ("root_prompt_tokens", "root_completion_tokens", "sub_prompt_tokens", "sub_completion_tokens")
@@ -42,12 +48,42 @@ def finite(value):
     return type(value) in (int, float) and math.isfinite(value)
 
 
+def audit_metadata(row):
+    """Parse the auditor contract without copying private evidence or reasons."""
+    version = row.get("audit_version", "not_audited")
+    if version == "not_audited":
+        return version, "protocol_unknown", row["valid"]
+    if version != AUDIT_VERSION or row.get("audit_adherence") not in ADHERENCE:
+        raise ValueError("unknown audit version or adherence")
+    collection_valid = row.get("collection_valid")
+    if type(collection_valid) is not bool:
+        raise ValueError("audit missing collection validity")
+    hashes = row.get("audit_source_sha256")
+    if type(hashes) is not dict or type(hashes.get("auditor")) is not str or not re.fullmatch(r"[a-f0-9]{64}", hashes["auditor"]):
+        raise ValueError("audit missing typed auditor digest")
+    reasons = row.get("audit_reasons")
+    if type(reasons) is not list:
+        raise ValueError("audit missing reasons list")
+    state = row["audit_adherence"]
+    if row["valid"]:
+        if not collection_valid or reasons:
+            raise ValueError("audit cannot promote collection-invalid or failed evidence")
+        expected = ("not_applicable_base" if row["arm"] == "base-truncated" else
+                    "reference_deviation_no_host_final" if row["arm"] == "nano-rlm" else "adherent")
+        if state != expected:
+            raise ValueError("valid audit conflicts with arm adherence")
+    elif row.get("score") is not None:
+        raise ValueError("audited invalid score must remain missing")
+    return version, ADHERENCE[state], collection_valid
+
+
 def public_protocol(row):
     """Copy only typed budgets and immutable digests, never source paths."""
     source = row.get("protocol", {})
     if type(source) is not dict:
         raise ValueError("invalid protocol object")
-    result = {"root_model": row["root_model"], "sub_model": row.get("sub_model", MODELS[1]),
+    audit_version, _, _ = audit_metadata(row)
+    result = {"audit_version": audit_version, "root_model": row["root_model"], "sub_model": row.get("sub_model", MODELS[1]),
               "disable_thinking": source.get("disable_thinking", False),
               "hermes_ingress": source.get("hermes_ingress", "cli")}
     if result["hermes_ingress"] not in ("cli", "library"):
@@ -60,7 +96,7 @@ def public_protocol(row):
             raise ValueError("invalid protocol budget")
         result[key] = value
     for key in HASHES:
-        value = source.get(key)
+        value = row.get("audit_source_sha256", {}).get("auditor") if key == "auditor_sha256" else source.get(key)
         if value is not None and (type(value) is not str or not re.fullmatch(r"[a-f0-9]{64}", value)):
             raise ValueError("invalid source digest")
         result[key] = value
@@ -166,7 +202,12 @@ def group_summary(rows, family, size, arm, root, pid, scheduled_tasks, repeats):
         role, kind = key.split("_", 1)
         measurements[key] = numeric_summary([token_value(r, role, kind) for r in rows], observed)
     usage_flags = [r.get("accounting", {}).get("usage_complete") for r in rows]
-    return {"family": family, "size_tokens": size, "arm": arm, "root_model": root, "protocol_id": pid,
+    audit_counts = dict.fromkeys(AUDIT_COUNTS, 0)
+    for row in rows:
+        _, state, collection_valid = audit_metadata(row)
+        audit_counts[state] += 1
+        audit_counts["collection_valid" if collection_valid else "collection_invalid"] += 1
+    return {**audit_counts, "family": family, "size_tokens": size, "arm": arm, "root_model": root, "protocol_id": pid,
             "metric": METRIC[family], "scheduled": scheduled_tasks * repeats,
             "observed": observed, "missing": scheduled_tasks * repeats - observed,
             "valid": len(valid), "invalid": observed - len(valid), "scheduled_task_clusters": scheduled_tasks,
@@ -185,7 +226,7 @@ def group_summary(rows, family, size, arm, root, pid, scheduled_tasks, repeats):
             "measurements": measurements}
 
 
-def aggregate(paths=(), smoke=(), pilot=(), tasks=None, closed=False):
+def aggregate(paths=(), smoke=(), pilot=(), tasks=None, closed=False, require_audit=False):
     """Return a validated public document; reject duplicated or mixed-protocol primary rows."""
     plan = {(f, s): n for f, s, n in PLAN}
     identities = None
@@ -231,6 +272,8 @@ def aggregate(paths=(), smoke=(), pilot=(), tasks=None, closed=False):
                 if row["valid"] and (not finite(row.get("score")) or not 0 <= row["score"] <= 1):
                     raise ValueError("valid row missing finite score")
                 protocol = public_protocol(row)
+                if kind == "primary" and (protocol["audit_version"] == AUDIT_VERSION) != require_audit:
+                    raise ValueError("primary audit policy mismatch; use --require-audit only with audited rows")
                 if (kind == "primary" or cohort in ("thinking-off-smoke", "library-thinking-off-smoke")) and not protocol["disable_thinking"]:
                     raise ValueError("thinking-off cohort missing explicit flag")
                 if kind == "smoke" and protocol["hermes_ingress"] != ("library" if cohort == "library-thinking-off-smoke" else "cli"):
@@ -260,6 +303,7 @@ def aggregate(paths=(), smoke=(), pilot=(), tasks=None, closed=False):
     complete = all(g["observed"] == g["scheduled"] for g in primary)
     status = ("bounded_complete" if complete else "partial") if closed else "ongoing"
     result = {"schema_version": "rlm-paper-aggregate.v1", "status": status,
+              "audit_policy": "paper_strict_v1" if require_audit else "collection_snapshot",
               "seed": SEED, "bootstrap_draws": DRAWS, "expected_primary_rows_per_root": 300,
               "primary": primary, "smoke": [], "pilot": [],
               "protocols": [dict(protocol_id=pid, **p) for pid, p in sorted(protocols.items())]}
@@ -302,7 +346,7 @@ STATS = {"known_rows": COUNT, "missing_rows": COUNT, "sum_known": NULL_NUMBER, "
 BINARY = {"definition": ("all_scheduled_repeats_correct",), "eligible_tasks": COUNT,
           "successful_tasks": NULL_NUMBER, "rate": NULL_NUMBER, "ci95": CI,
           "status": ("not_applicable", "conditional_independent_tasks", "insufficient_task_clusters")}
-GROUP = {"family": FAMILIES, "size_tokens": COUNT, "arm": ARMS, "root_model": MODELS,
+GROUP = {**{key: COUNT for key in AUDIT_COUNTS}, "family": FAMILIES, "size_tokens": COUNT, "arm": ARMS, "root_model": MODELS,
          "protocol_id": PID, "metric": METRICS,
          **{k: COUNT for k in ("scheduled", "observed", "missing", "valid", "invalid", "scheduled_task_clusters",
                                "observed_task_clusters", "valid_task_clusters", "task_clusters_ge3_observed",
@@ -312,10 +356,11 @@ GROUP = {"family": FAMILIES, "size_tokens": COUNT, "arm": ARMS, "root_model": MO
          "score_ci95": CI, "score_ci_status": ("insufficient_task_clusters", "insufficient_repeats", "descriptive"),
          "binary_task_outcome": BINARY, "measurements": {k: STATS for k in COUNTERS + TOKEN_METRICS}}
 PROTOCOL = {"protocol_id": SHA256, "root_model": MODELS, "sub_model": MODELS, "disable_thinking": "bool",
-            "hermes_ingress": ("cli", "library"),
+            "hermes_ingress": ("cli", "library"), "audit_version": ("not_audited", AUDIT_VERSION),
             **{k: NULL_NUMBER for k in PARAMS}, **{k: SHA256 for k in HASHES},
             "source_shas": {k: SHA1 for k in ("released", "fork", "nano")}}
 SCHEMA = {"schema_version": ("rlm-paper-aggregate.v1",), "status": ("ongoing", "bounded_complete", "partial"), "seed": COUNT,
+          "audit_policy": ("collection_snapshot", "paper_strict_v1"),
           "bootstrap_draws": COUNT, "expected_primary_rows_per_root": COUNT, "primary": [GROUP],
           "smoke": [dict(GROUP, cohort=("normal-smoke", "thinking-off-smoke", "library-thinking-off-smoke"))],
           "pilot": [dict(GROUP, cohort=("pilot",))], "protocols": [PROTOCOL]}
@@ -363,7 +408,21 @@ def validate_public(document):
         raise ValueError("bounded completion requires the full scheduled coverage")
     if document["status"] == "partial" and complete:
         raise ValueError("partial status conflicts with complete coverage")
+    protocols = {p["protocol_id"]: p for p in document["protocols"]}
+    for group in document["primary"]:
+        if group["observed"]:
+            protocol = protocols.get(group["protocol_id"])
+            if protocol is None or ((protocol["audit_version"] == AUDIT_VERSION) != (document["audit_policy"] == "paper_strict_v1")):
+                raise ValueError("primary aggregate audit policy mismatch")
+            if document["audit_policy"] == "paper_strict_v1" and protocol["auditor_sha256"] is None:
+                raise ValueError("strict primary missing auditor digest")
     for group in document["primary"] + document["smoke"] + document["pilot"]:
+        if sum(group[k] for k in AUDIT_COUNTS[:4]) != group["observed"]:
+            raise ValueError("adherence counts disagree")
+        if group["collection_valid"] + group["collection_invalid"] != group["observed"]:
+            raise ValueError("collection counts disagree")
+        if group["valid"] > group["collection_valid"]:
+            raise ValueError("strict validity cannot promote collection validity")
         if group["observed"] != group["valid"] + group["invalid"] or group["scheduled"] != group["observed"] + group["missing"]:
             raise ValueError("aggregate counts disagree")
         if group["usage_complete_rows"] + group["usage_partial_rows"] + group["usage_unknown_rows"] != group["observed"]:
@@ -379,6 +438,7 @@ def main(argv=None):
     parser.add_argument("--smoke", nargs="*", type=Path, default=[])
     parser.add_argument("--pilot", nargs="*", type=Path, default=[])
     parser.add_argument("--tasks", type=Path, help="Private frozen full.jsonl; validates task identities without reading contexts")
+    parser.add_argument("--require-audit", action="store_true", help="Require paper-strict-v1 adjudication for every primary input row")
     parser.add_argument("--closed", action="store_true", help="Parent-only finalization: bounded_complete or partial, never full replication")
     parser.add_argument("--out", type=Path, default=Path("data/summary.json"))
     parser.add_argument("--check", type=Path, help="Validate an existing public aggregate without reading raw inputs")
@@ -387,7 +447,7 @@ def main(argv=None):
         validate_public(json.loads(args.check.read_text()))
         print("ok: closed aggregate schema and count invariants")
         return
-    document = aggregate(args.raw, args.smoke, args.pilot, args.tasks, args.closed)
+    document = aggregate(args.raw, args.smoke, args.pilot, args.tasks, args.closed, args.require_audit)
     text = json.dumps(document, indent=2, sort_keys=True, allow_nan=False) + "\n"
     args.out.parent.mkdir(parents=True, exist_ok=True)
     temporary = args.out.with_suffix(args.out.suffix + ".tmp")

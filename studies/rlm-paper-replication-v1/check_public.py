@@ -13,11 +13,11 @@ ALLOWED = {"README.md", "protocol.md", "manifest.yaml", "summarize.py", "test_su
 MARKERS = (b"/" + b"mnt", b"/home/" + b"kvn", b"/" + b"workspace", b"ze" + b"r0")
 
 
-def main():
-    root = Path(__file__).resolve().parent
+def main(root=None):
+    root = Path(__file__).resolve().parent if root is None else Path(root)
     found = set()
     for path in sorted(root.rglob("*")):
-        if "__pycache__" in path.parts:
+        if any(part in {"__pycache__", ".ruff_cache", ".pytest_cache"} for part in path.relative_to(root).parts):
             continue
         if path.is_symlink():
             raise ValueError("study symlinks are not public artifacts")
