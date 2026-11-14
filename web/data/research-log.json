@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-03",
+ "updated": "2026-11-14",
  "entries": [
   {
    "id": "fsm-work-item-v0",
@@ -4728,6 +4728,162 @@
     }
    ],
    "post": null
+  },
+  {
+   "id": "cua-atspi-checked-state",
+   "title": "Linux checkboxes say whether they are checked",
+   "area": "device-use",
+   "question": "Can the Linux AT-SPI observation report checked, mixed and expanded state so a caller can tell an unchecked box from a mixed one and from a selected list item?",
+   "status": "draft-pr",
+   "date": "2026-10-26",
+   "finding": "Source-reported: exact-head platform-linux unit run 640 passed, 0 failed, 10 ignored, with four new regression tests; removing the checked-state mapping makes the new tests fail.",
+   "caveat": "Unit-level only. Native GTK/Qt and compositor acceptance has not run, and the change is a downstream draft, not an upstream merge.",
+   "links": [
+    {
+     "label": "kvnloo/cua PR #164",
+     "url": "https://github.com/kvnloo/cua/pull/164"
+    },
+    {
+     "label": "trycua/cua issue #5946",
+     "url": "https://github.com/trycua/cua/issues/5946"
+    },
+    {
+     "label": "fleet-runner exact-head run",
+     "url": "https://github.com/kvnloo/fleet-runner/actions/runs/40290720634"
+    }
+   ],
+   "interesting": false,
+   "why": "Observation correctness is a precondition for every decision-saving shortcut on Linux.",
+   "post": null,
+   "techniques": [
+    "measurement"
+   ]
+  },
+  {
+   "id": "cua-kernel-autoresearch-calibration",
+   "title": "The autoresearch referee failed its own known-answer test first",
+   "area": "device-use",
+   "question": "Before letting a proposer hill-climb Cua Driver latency, does the evaluator keep a real 50 ms sleep deletion and reject planted no-ops, gamed tests and unsafe changes?",
+   "status": "frozen-internal",
+   "date": "2026-10-02",
+   "finding": "Source-reported: calibration 1 kept the real 50 ms deletion 0/10 times (needed at least 8/10), so the pilot stopped. After three evaluator fixes, calibration 2 kept it 10/10 and passed 11 of 12 preregistered rows, but one manipulation check failed, so the verdict stayed FAIL and the pilot never ran.",
+   "caveat": "Scripted caller only; no model proposed anything. The 38 known-answer branches (no-ops, weakened tests, a planted listening socket) are the calibration set, not results.",
+   "links": [
+    {
+     "label": "kvnloo/cua issue #93",
+     "url": "https://github.com/kvnloo/cua/issues/93"
+    }
+   ],
+   "interesting": true,
+   "why": "A hill climb is only as good as its referee; calibrating with planted known answers caught a referee that would have discarded real wins.",
+   "post": null,
+   "techniques": [
+    "search-optimization",
+    "measurement"
+   ]
+  },
+  {
+   "id": "cua-ardia-oracle-bench",
+   "title": "Borrowing a browser agent's oracle bench for Cua",
+   "area": "device-use",
+   "question": "Can ardia's eight local web-task servers with self-checking oracles serve as a reproducible Cua browser-lane benchmark, and later an A/B between the Cua Driver path and ardia's own browser path?",
+   "status": "proposal",
+   "date": "2026-11-09",
+   "finding": "Source-reported prep on Linux: ardia CLI suite 583 passed, 64 failed (macOS-only paths), 64 skipped (need the built app); bench checker self-tests 6/6 pass and all 8 task servers start.",
+   "caveat": "No Cua task has run on the bench yet. Two of eight tasks ship without a self-test. The A1 driver-path A/B needs a hidden macOS instance.",
+   "links": [
+    {
+     "label": "kvnloo/cua issue #167 (RFC)",
+     "url": "https://github.com/kvnloo/cua/issues/167"
+    },
+    {
+     "label": "mantrakp04/ardia",
+     "url": "https://github.com/mantrakp04/ardia"
+    }
+   ],
+   "interesting": false,
+   "why": "A public oracle bench removes the hand-built-fixture objection from every Cua speed claim.",
+   "post": null,
+   "techniques": [
+    "measurement"
+   ]
+  },
+  {
+   "id": "cua-s1-ft-ladder",
+   "title": "Reproduce Cua-S1's fine-tune ladder before climbing it",
+   "area": "small-models",
+   "question": "Does upstream's Cua-S1 synthetic-forms autoresearch ladder reproduce on CPU, and can a proposer that writes new ladder configs from prior results beat the fixed six-config grid?",
+   "status": "in-progress",
+   "date": "2026-11-09",
+   "finding": "Stage 0 started: 6,000 synthetic form episodes (seed 2026) and the default six-config ladder were queued on a CPU fleet runner from upstream main 15881f47f. The job was preempted and no results have been fetched yet.",
+   "caveat": "No numbers yet. The 4B SFT stage needs a GPU and was not admitted.",
+   "links": [
+    {
+     "label": "trycua/cua libs/cua-s1",
+     "url": "https://github.com/trycua/cua/tree/main/libs/cua-s1"
+    }
+   ],
+   "interesting": false,
+   "why": "A fixed grid is not a hill climb; reproducing the baseline first keeps any later gain honest.",
+   "post": null,
+   "techniques": [
+    "search-optimization",
+    "local-inference"
+   ]
+  },
+  {
+   "id": "gepa-ifeval-qwen3-1.7b",
+   "title": "Prompt evolution did not beat rerun noise on a 1.7B model",
+   "area": "small-models",
+   "question": "Does a GEPA-optimized system prompt raise strict IFEval and IFBench accuracy for a local qwen3-1.7b over its seed prompt?",
+   "status": "frozen-internal",
+   "date": "2026-11-05",
+   "finding": "Source-reported, 100 test items per benchmark: IFEval seed 0.48, A/A rerun 0.54, GEPA 0.44 (McNemar p 0.44); IFBench seed 0.17, rerun 0.19, GEPA 0.22 (p 0.36). Validation gains (0.70 to 0.77, 0.22 to 0.28) did not transfer. Verdict INCONCLUSIVE on both.",
+   "caveat": "The A/A rerun moved more than either GEPA delta, so 100 items at this size cannot resolve the effect. Larger splits or several decode seeds per arm are needed.",
+   "links": [],
+   "interesting": true,
+   "why": "The A/A control is what kept a validation gain from being reported as a win.",
+   "post": null,
+   "techniques": [
+    "search-optimization",
+    "measurement"
+   ]
+  },
+  {
+   "id": "free-pool-hillclimb",
+   "title": "The free model pool's quality score did not separate models",
+   "area": "small-models",
+   "question": "Does routing single requests across the free model pool by capacity times eval score lose quality against pinning the best model?",
+   "status": "in-progress",
+   "date": "2026-11-09",
+   "finding": "Source-reported: the pool's eval score (16 easy items per model, mostly 1.0) does not separate models, so single requests spread over strong and weak backends. Validation math 0.825 spread vs 0.900 pinned to the best model; instruction-following 0.628 vs 0.710. A third round (teacher-forced reproduction) is preregistered.",
+   "caveat": "Public math and instruction benchmarks only; agent task families are not yet in the eval. Free-tier rate limits gate how fast rounds run.",
+   "links": [],
+   "interesting": false,
+   "why": "A weak eval silently turns a router into a random spread.",
+   "post": null,
+   "techniques": [
+    "model-routing",
+    "measurement"
+   ]
+  },
+  {
+   "id": "hermes-ci-speed-autoresearch",
+   "title": "Agents hill-climbing CI wall time",
+   "area": "hermes",
+   "question": "Can a council-refereed autoresearch loop cut the Hermes PR gate wait without gaming the tests?",
+   "status": "in-progress",
+   "date": "2026-11-02",
+   "finding": "Source-reported over 169 gated PR runs: gate wait p50 456 s. KEEP with open risk: the JS and TS job dropped from 304 s to 170 s on a larger runner, with a 5-minute real-clock wait replaced by an injected clock; three sabotage runs went red. Python per-file round 1: one of four discarded for shortening absence windows (gaming), two null, one lead.",
+   "caveat": "Nothing posted upstream yet; a flake-rate check is still open.",
+   "links": [],
+   "interesting": true,
+   "why": "The referee caught a gamed speedup, the main failure mode of agent-run hill climbs.",
+   "post": null,
+   "techniques": [
+    "scheduling",
+    "search-optimization"
+   ]
   }
  ]
 }
