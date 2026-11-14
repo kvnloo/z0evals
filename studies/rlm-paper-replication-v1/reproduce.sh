@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 # Thin entrypoint only. Task preparation, execution, retries and scoring stay upstream.
+# Reproduce collection at commit 10918473fbb90d04af08221725baa671369fb31e.
+# Audit frozen copies separately at 9baf85a649f656479ad376a1d4958818d342ee4b.
+# Newer repaired runner behavior was not measured by this matrix.
 set -euo pipefail
 : "${HERMES_RLM_SOURCE:?Set the pinned plugin checkout}"
 mode="${1:?Use prepare, smoke, or matrix}"

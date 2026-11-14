@@ -1,36 +1,45 @@
 schema_version: z0eval.study.v1
 id: rlm-paper-replication-v1
 title: RLM paper-v1 protocol adaptation on Hermes, bounded coverage
-status: draft
-created: "2026-11-14"
-updated: "2026-11-14"
-evidence_status: provisional ongoing collection snapshot; protocol adherence unaudited; smoke success is process-level only
+status: frozen
+created: '2026-11-14'
+updated: '2026-11-14'
+evidence_status: completed bounded collection and strict post-adjudication; not full paper replication
 post_adjudication:
-  current_policy: collection_snapshot
+  current_policy: paper_strict_v1
   required_primary_policy_before_publication: paper_strict_v1
   audit_version: paper-strict-v1
-  auditor_commit: null
-  auditor_commit_status: pending-parent-update
-  initial_bulk_audit: timed out and ledger locked; no completed output
-  staged_gate_fix_status: parent reports 59 gate checks and 13 auditor tests; not applied to measured controllers
+  auditor_commit: 9baf85a649f656479ad376a1d4958818d342ee4b
+  auditor_commit_status: pinned
+  initial_bulk_audit: initial failed attempt produced no output; final audit completed 300 canonical rows
+  staged_gate_fix_status: applied and tested only after collection; not measured by matrix
   measured_source_note: benchmark 1091847 and plugin 184f736 predate FINAL/child-outcome gate fixes
 external_inference_spend_usd: null
 sources:
-  - repo: kvnloo/hermes-rlm
-    commit: 10918473fbb90d04af08221725baa671369fb31e
-    role: committed benchmark runner, task scorer, and library ingress
-    plugin_implementation_commit: 184f7367465601f6e190fdff1bcd091903bef8ad
-    measured_plugin_sha256: 936f237ac94ce3d092b6f397a3faf65c26cea5274de05c7716c6e3a20b8d1084
-    snapshot_note: measured top-level plugin Python hash matches current committed production files; tests are not part of this hash
-  - repo: NousResearch/hermes-agent
-    commit: e05c8d578c6f4f919b4a2a4c308733144ac4f8b0
-    role: released Hermes runtime, discovery off for released and no-subcall arms
-  - repo: kvnloo/hermes-agent
-    commit: 9f7857601686119b0ffd9e2de91f47383231722c
-    role: fork runtime, discovery on with eager RLM exposure
-  - repo: PrimeIntellect-ai/nano-rlm
-    commit: 8ca926cdd64fd7725b78cf95a4e1667315d3b1f6
-    role: ACP reference runtime, session-routed child model, recursive-agent deviation
+- repo: kvnloo/hermes-rlm
+  commit: 10918473fbb90d04af08221725baa671369fb31e
+  role: committed benchmark runner, task scorer, and library ingress
+  plugin_implementation_commit: 184f7367465601f6e190fdff1bcd091903bef8ad
+  measured_plugin_sha256: 936f237ac94ce3d092b6f397a3faf65c26cea5274de05c7716c6e3a20b8d1084
+  snapshot_note: measured production Python hash at pinned pre-gate source; excludes tests and later repairs
+- repo: NousResearch/hermes-agent
+  commit: e05c8d578c6f4f919b4a2a4c308733144ac4f8b0
+  role: released Hermes runtime, discovery off for released and no-subcall arms
+- repo: kvnloo/hermes-agent
+  commit: 9f7857601686119b0ffd9e2de91f47383231722c
+  role: fork runtime, discovery on with eager RLM exposure
+- repo: PrimeIntellect-ai/nano-rlm
+  commit: 8ca926cdd64fd7725b78cf95a4e1667315d3b1f6
+  role: ACP reference runtime, session-routed child model, recursive-agent deviation
+- repo: kvnloo/hermes-rlm
+  commit: 9baf85a649f656479ad376a1d4958818d342ee4b
+  role: strict post-adjudication evaluator; not collection runner
+- repo: kvnloo/hermes-rlm
+  commit: 74a7aa2e29fdd017b8330423e6976894fd6d2212
+  role: post-collection plugin repair; separately tested, not measured by matrix
+- repo: kvnloo/hermes-rlm
+  commit: 6ed40c6e83f339221f860fe59d7b9c34dcbae626
+  role: post-collection harness repair; separately tested, not measured by matrix
 paper:
   id: arXiv:2512.24601v1
   version: 1
@@ -47,54 +56,88 @@ expected_coverage:
   arms: 5
   repeats: 3
   executions_per_root: 300
-  status: ongoing; scheduled is not completed
+  status: bounded_complete
+  observed: 300
+  collection_valid: 176
+  strict_valid: 123
+  strict_invalid: 177
 datasets:
-  - name: self-long/RULER-llama3-1M
-    revision: 5da49e4000224d3289ffb14fc32cbd20211765ed
-  - name: oolongbench/oolong-synth
-    revision: 49898a421f4b14f2c9cae084d2d270f930ff4c90
-    split: validation
-    filter: trec_coarse
-  - name: zai-org/LongBench-v2
-    revision: 2b48e494f2c7a2f0af81aae178e05c7e1dde0fe9
-  - name: Tevatron/browsecomp-plus
-    revision: 144cff8e35b5eaef7e526346aa60774a9deb941f
-    status: available but context materialization blocked
-  - name: Tevatron/browsecomp-plus-corpus
-    revision: b27b02bc3e45511b8b82a13e6f90ce761df726f6
-    status: available but context materialization blocked
+- name: self-long/RULER-llama3-1M
+  revision: 5da49e4000224d3289ffb14fc32cbd20211765ed
+- name: oolongbench/oolong-synth
+  revision: 49898a421f4b14f2c9cae084d2d270f930ff4c90
+  split: validation
+  filter: trec_coarse
+- name: zai-org/LongBench-v2
+  revision: 2b48e494f2c7a2f0af81aae178e05c7e1dde0fe9
+- name: Tevatron/browsecomp-plus
+  revision: 144cff8e35b5eaef7e526346aa60774a9deb941f
+  status: available but context materialization blocked
+- name: Tevatron/browsecomp-plus-corpus
+  revision: b27b02bc3e45511b8b82a13e6f90ce761df726f6
+  status: available but context materialization blocked
 questions:
-  - What outcomes and resource counts are observed across five RLM and base arms on the frozen available task subset?
-  - How do validity and coverage differ after the explicit thinking-off protocol revision?
-  - Which replication gaps remain relative to the original paper-v1 model, data, and execution protocol?
+- What outcomes and resource counts are observed across five RLM and base arms on the frozen available task subset?
+- How do validity and coverage differ after the explicit thinking-off protocol revision?
+- Which replication gaps remain relative to the original paper-v1 model, data, and execution protocol?
 artifacts:
-  - path: README.md
-    kind: analysis
-  - path: protocol.md
-    kind: analysis
-  - path: summarize.py
-    kind: analysis
-  - path: test_summarize.py
-    kind: fixture
-  - path: check_public.py
-    kind: other
-  - path: reproduce.sh
-    kind: other
-  - path: data/summary.json
-    kind: result
-    provenance: deterministic aggregate-only partial snapshot; no raw executions or benchmark text published
+- path: README.md
+  kind: analysis
+  sha256: c183be35cfc6f4c35360f25ca924e95a5fc540f662e5b810c34120bfdb242867
+- path: protocol.md
+  kind: analysis
+  sha256: 794312d6503c2dd39e9d49b1af788da051633d1354d2339503c3a60e462571dd
+- path: summarize.py
+  kind: analysis
+  sha256: ea0bed55ec7bd0c4a7c014878fecc988ae98ee94ac380e8b2fcac4cd6b8cdb1b
+- path: test_summarize.py
+  kind: fixture
+  sha256: 17ef8e2ac78dbaf6a2384d1800ab2409460f450996eaa7ef55be2d6263adc014
+- path: check_public.py
+  kind: other
+  sha256: ac813d4989eae24e14130a7d0e3d154271ce351163a99012f2b04cd266204441
+- path: reproduce.sh
+  kind: other
+  sha256: 17a65df4d84c5204bdb1e4aea2755cdd93672330e67f45651e6f9f6261264563
+- path: data/summary.json
+  kind: result
+  provenance: parent-frozen 300-row canonical primary audit; bounded_complete, paper_strict_v1; separate historical
+    smokes and pilot; aggregates only
+  sha256: 21b53b961487eb9318aa6c803153a0cbe4d292dd9b678f001a971d3f1661b14e
 limitations:
-  - Ongoing provisional collection snapshot, not full paper replication. Final strict audit, closure, and counts remain parent-owned.
-  - P1 review verified missing host-validated FINAL/citations in collected valid rows and reproduced masking of failed children by a later root 200.
-  - Current scores and process-level smokes are not cited protocol-success outcomes. Every observed row is protocol-unknown until adjudicated.
-  - Staged gate fixes were not measured by this matrix. Strict post-adjudication does not replace a rerun with patched code.
-  - Library ingress avoids per-home gateway startup; normal CLI, failed thinking-off CLI, and process-level library smokes remain separate.
-  - Optional Qwen Groq root is blocked by HTTP 403 and has no claimed primary measurements.
-  - The thinking-off change followed the interrupted pilot and was not preregistered. Pilot and smoke never enter primary scores.
-  - Different models, adapted tool prompts, nominal size labels, heuristic character truncation, and nano child agents differ from paper-v1.
-  - One task per CodeQA size cannot support a task-population confidence interval even with three repeats.
-  - Shared corpora, convenience sampling, incomplete valid repeats, and tiny task counts limit interpretation of descriptive intervals.
-  - BrowseComp 20 by 1000 documents and large Parquet task materialization remain blocked by external compute availability.
-  - Partial provider usage remains known-only; invalid executions are not wrong answers and missing executions are not zero scores.
-  - No exact S-NIAH paper chart numbers were recovered. Source-reported Qwen numbers are not our measurements.
+- Bounded subset completed, not full paper replication; 123 valid outcomes include base and nano reference deviations,
+  not 123 adherent Hermes outcomes.
+- Strict post-adjudication preserves collection negatives; follow-up repaired plugin and runner were not measured
+  by this matrix.
+- Nano 3072-token agent completion budget is inherited by children; plugin children use a 1536 per-call cap, so
+  child limits are not matched.
+- P1 review verified missing host-validated FINAL/citations in collected valid rows and reproduced masking of failed
+  children by a later root 200.
+- Library ingress avoids per-home gateway startup; normal CLI, failed thinking-off CLI, and process-level library
+  smokes remain separate.
+- Optional Qwen Groq root is blocked by HTTP 403 and has no claimed primary measurements.
+- The thinking-off change followed the interrupted pilot and was not preregistered. Pilot and smoke never enter
+  primary scores.
+- Different models, adapted tool prompts, nominal size labels, heuristic character truncation, and nano child agents
+  differ from paper-v1.
+- One task per CodeQA size cannot support a task-population confidence interval even with three repeats.
+- Shared corpora, convenience sampling, incomplete valid repeats, and tiny task counts limit interpretation of descriptive
+  intervals.
+- BrowseComp 20 by 1000 documents and large Parquet task materialization remain blocked by external compute availability.
+- Partial provider usage remains known-only; invalid executions are not wrong answers and missing executions are
+  not zero scores.
+- No exact S-NIAH paper chart numbers were recovered. Source-reported Qwen numbers are not our measurements.
 claims: []
+protocol_adherence:
+  protocol_adherent: 28
+  protocol_nonadherent: 152
+  protocol_unknown: 24
+  protocol_not_applicable: 96
+publication:
+  status: draft
+  study_pr: 191
+  plugin_pr: 1
+  tracking_comment: 6885497675
+  base: main
+  rollout_deviation: main instead of preview to constrain review to eight study files; preview comparison had 248
+    files; no merge-history rewrite

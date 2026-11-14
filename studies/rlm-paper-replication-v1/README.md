@@ -1,106 +1,140 @@
 # RLM paper-v1 protocol adaptation on Hermes
 
-Status: **ongoing, provisional collection evidence**, not a full paper replication or validated protocol-success result.
+Completed 2026-11-14. **Bounded collection and strict post-adjudication are complete; full paper replication is not.** The frozen subset contains 20 task items, five arms, and three repeats, all 300 unique scheduled executions. `data/summary.json` records `bounded_complete` and `paper_strict_v1`.
 
-P1 review found that collected Hermes `valid=true` could bypass host-validated FINAL and citations, accept iteration-budget exit prose, or mask an unrecovered child failure behind a later root HTTP 200. Current `data/summary.json` is `audit_policy: collection_snapshot`. Its scores must not be cited as completed paper-protocol outcomes. Every observed row's adherence is unknown until strict post-adjudication. The parent runner owns final counts, source-commit updates, and publication. `data/summary.json` is a reproducible partial snapshot, not a completion claim. No raw task rows, prompts, answers, question text, or long contexts belong in this study.
+Collection marked 176 executions valid. Strict adjudication retained 123 and marked 177 invalid. These are validity counts, not numbers of correct answers or a model ranking. The strict total includes base and nano reference-deviation outcomes; it is not 123 paper-RLM protocol successes.
 
-The target is 20 materialized tasks, five arms, and three repeats: 300 scheduled executions for the primary root model. Missing executions remain missing. Invalid executions are not scored as wrong. The [protocol](protocol.md) defines coverage, scoring, intervals, and deviations.
+## Frozen evidence
 
-## Current evidence
+| Cohort | Observed | Collection valid | Current valid | Current invalid | Policy |
+|---|---:|---:|---:|---:|---|
+| Primary | 300/300 | 176 | 123 | 177 | Strict post-adjudication |
+| Normal CLI smoke | 5 | 5 | 5 | 0 | Historical collection only |
+| Thinking-off CLI smoke | 5 | 2 | 2 | 3 | Historical failed gate |
+| Library thinking-off smoke | 5 | 5 | 3 | 2 | Strict post-adjudication |
+| Interrupted pilot | 14 | 9 | 9 | 5 | Exploratory collection only |
 
-- The corrected normal-reasoning S-NIAH smoke collected five valid arms at score 1.0 and no child calls. This is process-level retrieval evidence only, not proof of validated FINAL, citations, semantic delegation, or general accuracy.
-- The legacy pilot was interrupted after empty answers from reasoning-budget exhaustion and tool timeouts. Those rows remain exploratory and never enter the primary table.
-- The revised protocol explicitly disables NIM thinking across arms. Its CLI smoke has two valid rows, base and nano, and three invalid Hermes rows. That failed gate remains preserved.
-- The library-ingress smoke has five collection-valid arms, each scoring 1.0. The P1 review verified missing validated finals in real smoke rows, so this is not a protocol-pass gate. Primary runs now use the same library ingress and thinking-off policy. Both adaptations followed pilot inspection and were not preregistered. This tiny retrieval smoke does not establish superiority or general task quality.
-- The primary summary includes every scheduled family, size, and arm even before observations exist. A zero observed count means no recorded execution, not a score of zero.
-- Independent plugin-worker checks reported 46 Linux tests passing, real HTTP cancellation, and a live two-child PONG/PING probe. These are source-reported implementation evidence, not scored matrix rows.
+Primary adherence counts are 28 adherent, 152 nonadherent, 24 unknown, and 96 not applicable. Only the 28 adherent Hermes executions meet the audited host-FINAL contract. Base and declared nano reference outcomes are not counted as adherent. Invalid does not mean wrong; no score exists for invalid outcomes.
 
-Read the generated `primary`, `smoke`, and `pilot` arrays separately. Counts and results must be regenerated after the parent closes the runs. Each row in those arrays is a family-size-arm-root aggregate, never a task execution.
+The four canonical primary files cover CodeQA 45 executions, semantic OOLONG/Pairs 75, S-NIAH 45, and local aggregation 135. All first three repeats were retained. An operator rebalanced disjoint groups from the same 50 seed executions without changing protocol or choosing best results. Rebalancing invalids remain in evidence. Smokes and pilot never enter primary scores.
 
-| Snapshot cohort | Observed | Collection valid | Collection invalid | Provisional interpretation |
-|---|---:|---:|---:|---|
-| Library primary | 34 of 300 scheduled | 28 | 6 | Provisional; 266 missing, no audited protocol outcomes |
-| Corrected normal CLI smoke | 5 | 5 | 0 | Five scores of 1.0, insufficient task clusters for CIs |
-| Thinking-off CLI smoke | 5 | 2 | 3 | Failed gate; invalid scores null, no meaningful CI |
-| Library thinking-off smoke | 5 | 5 | 0 | Five scores of 1.0, insufficient task clusters for CIs |
-| Interrupted pilot | 14 | 9 | 5 | Exploratory only, see separate aggregate groups |
+P1 review found collection-valid Hermes answers could bypass validated FINAL/citations or accept budget-exit prose. It also reproduced masking an unrecovered child failure with a later root HTTP 200. Strict evaluation uses only host-validated FINAL answers linked to actual transcript tool results, rejects incomplete/budget exits and plugin child errors/cancellation, and never promotes collection-invalid rows. Recovered physical 400/429 attempts remain allowed when logical plugin calls succeeded. Nano has no host-FINAL requirement as an explicit reference deviation, but unknown recovery of non-200 child attempts is conservatively invalid. Base outcomes are preserved.
 
-Snapshot captured at `2026-11-14T21:18:21Z` UTC. This table describes the persisted rows read during aggregation, not a synchronized view of the live controllers. Collection remains `ongoing`. The parent must update it together with `data/summary.json`.
+## Primary results
+
+The following 45 aggregate groups come directly from `data/summary.json`. Scores use the 0 to 1 scale. OOLONG is a graded score, Pairs is F1, CodeQA is parsed-choice accuracy, S-NIAH is substring hit, and local scores follow the existing exact rules. `mean_score` weights task means equally over valid repeats. It conditions on the valid subset, not all scheduled executions.
+
+| Family | Size | Arm | Strict valid / observed | Mean | Descriptive 95% CI |
+|---|---:|---|---:|---:|---|
+| CodeQA | 483107 | `base-truncated` | 3/3 | 1.000 | insufficient_task_clusters |
+| CodeQA | 483107 | `rlm-no-subcalls` | 0/3 | null | insufficient_task_clusters |
+| CodeQA | 483107 | `released-rlm` | 1/3 | 1.000 | insufficient_task_clusters |
+| CodeQA | 483107 | `fork-rlm` | 0/3 | null | insufficient_task_clusters |
+| CodeQA | 483107 | `nano-rlm` | 2/3 | 1.000 | insufficient_task_clusters |
+| CodeQA | 1043432 | `base-truncated` | 3/3 | 0.667 | insufficient_task_clusters |
+| CodeQA | 1043432 | `rlm-no-subcalls` | 0/3 | null | insufficient_task_clusters |
+| CodeQA | 1043432 | `released-rlm` | 0/3 | null | insufficient_task_clusters |
+| CodeQA | 1043432 | `fork-rlm` | 0/3 | null | insufficient_task_clusters |
+| CodeQA | 1043432 | `nano-rlm` | 2/3 | 0.000 | insufficient_task_clusters |
+| CodeQA | 1061947 | `base-truncated` | 3/3 | 0.000 | insufficient_task_clusters |
+| CodeQA | 1061947 | `rlm-no-subcalls` | 0/3 | null | insufficient_task_clusters |
+| CodeQA | 1061947 | `released-rlm` | 0/3 | null | insufficient_task_clusters |
+| CodeQA | 1061947 | `fork-rlm` | 0/3 | null | insufficient_task_clusters |
+| CodeQA | 1061947 | `nano-rlm` | 2/3 | 0.000 | insufficient_task_clusters |
+| OOLONG | 1024 | `base-truncated` | 9/9 | 0.667 | [0.000, 1.000] |
+| OOLONG | 1024 | `rlm-no-subcalls` | 3/9 | 0.667 | insufficient_repeats |
+| OOLONG | 1024 | `released-rlm` | 2/9 | 0.000 | insufficient_task_clusters |
+| OOLONG | 1024 | `fork-rlm` | 1/9 | 1.000 | insufficient_task_clusters |
+| OOLONG | 1024 | `nano-rlm` | 5/9 | 0.833 | insufficient_repeats |
+| OOLONG-Pairs | 1024 | `base-truncated` | 6/6 | 0.178 | [0.000, 0.356] |
+| OOLONG-Pairs | 1024 | `rlm-no-subcalls` | 1/6 | 0.000 | insufficient_task_clusters |
+| OOLONG-Pairs | 1024 | `released-rlm` | 0/6 | null | insufficient_task_clusters |
+| OOLONG-Pairs | 1024 | `fork-rlm` | 0/6 | null | insufficient_task_clusters |
+| OOLONG-Pairs | 1024 | `nano-rlm` | 3/6 | 0.000 | insufficient_repeats |
+| S-NIAH | 4096 | `base-truncated` | 9/9 | 1.000 | [1.000, 1.000] |
+| S-NIAH | 4096 | `rlm-no-subcalls` | 3/9 | 1.000 | insufficient_repeats |
+| S-NIAH | 4096 | `released-rlm` | 2/9 | 1.000 | insufficient_repeats |
+| S-NIAH | 4096 | `fork-rlm` | 6/9 | 1.000 | insufficient_repeats |
+| S-NIAH | 4096 | `nano-rlm` | 7/9 | 1.000 | insufficient_repeats |
+| local-aggregation | 32000 | `base-truncated` | 8/9 | 0.333 | insufficient_repeats |
+| local-aggregation | 32000 | `rlm-no-subcalls` | 1/9 | 1.000 | insufficient_task_clusters |
+| local-aggregation | 32000 | `released-rlm` | 3/9 | 1.000 | insufficient_task_clusters |
+| local-aggregation | 32000 | `fork-rlm` | 1/9 | 1.000 | insufficient_task_clusters |
+| local-aggregation | 32000 | `nano-rlm` | 5/9 | 0.333 | insufficient_repeats |
+| local-aggregation | 300000 | `base-truncated` | 9/9 | 0.000 | [0.000, 0.000] |
+| local-aggregation | 300000 | `rlm-no-subcalls` | 0/9 | null | insufficient_task_clusters |
+| local-aggregation | 300000 | `released-rlm` | 1/9 | 1.000 | insufficient_task_clusters |
+| local-aggregation | 300000 | `fork-rlm` | 0/9 | null | insufficient_task_clusters |
+| local-aggregation | 300000 | `nano-rlm` | 4/9 | 0.667 | insufficient_repeats |
+| local-aggregation | 2000000 | `base-truncated` | 9/9 | 0.000 | [0.000, 0.000] |
+| local-aggregation | 2000000 | `rlm-no-subcalls` | 0/9 | null | insufficient_task_clusters |
+| local-aggregation | 2000000 | `released-rlm` | 2/9 | 1.000 | insufficient_task_clusters |
+| local-aggregation | 2000000 | `fork-rlm` | 1/9 | 1.000 | insufficient_task_clusters |
+| local-aggregation | 2000000 | `nano-rlm` | 6/9 | 0.500 | insufficient_repeats |
+
+CIs require at least two task clusters and three valid repeats in every included cluster. `insufficient_task_clusters` and `insufficient_repeats` mean null intervals, not zero uncertainty. Each CodeQA size has only one task, so its three repeats cannot support a task-population interval. Shared contexts and convenience sampling make every available bootstrap interval descriptive, not evidence of inferential superiority.
+
+Selected base intervals are OOLONG [0.000, 1.000], Pairs F1 [0.000, 0.356], and S-NIAH [1.000, 1.000]. S-NIAH's separate all-three-repeats-correct task outcome is 3/3 eligible tasks, with Wilson 95% interval [0.439, 1.000], conditional on an independent-task assumption not established by this convenience sample. Repeats are never treated as IID trials. The degenerate S-NIAH bootstrap is not proof of certainty or superiority. Local base intervals at nominal 300K and 2M are [0.000, 0.000].
 
 ## Paper-reported comparison, not our measurements
 
-Source: [arXiv:2512.24601v1, Table 1](https://arxiv.org/html/2512.24601v1). Percent scale. OOLONG is a graded score and Pairs is F1, not accuracy. A star indicates the paper encountered an input context limit; it does not specify our head-truncation policy.
+Source: [arXiv:2512.24601v1, Table 1](https://arxiv.org/html/2512.24601v1), not v3. Percent scale. Stars mean the paper encountered its context limit, not our truncation policy.
 
-| Source model and method | CodeQA | BrowseComp+ 1K | OOLONG | OOLONG-Pairs |
+| Paper Qwen3-Coder-480B method | CodeQA | BrowseComp+ 1K | OOLONG grade | Pairs F1 |
 |---|---:|---:|---:|---:|
-| Paper Qwen3-Coder-480B base | 20.00* | 0.00* | 36.00 | 0.06 |
-| Paper Qwen3-Coder-480B CodeAct + BM25 | 24.00* | 12.66 | 38.00 | 0.28 |
-| Paper Qwen3-Coder-480B summary | 50.00 | 38.00 | 44.06 | 0.31 |
-| Paper Qwen3-Coder-480B RLM | 56.00 | 44.66 | 48.00 | 23.11 |
-| Paper Qwen3-Coder-480B RLM without subcalls | 66.00 | 46.00 | 43.50 | 17.34 |
-| This study, Nemotron root and Lightning child | Ongoing | Blocked | Ongoing | Ongoing |
+| Base | 20.00* | 0.00* | 36.00 | 0.06 |
+| CodeAct + BM25 | 24.00* | 12.66 | 38.00 | 0.28 |
+| Summary | 50.00 | 38.00 | 44.06 | 0.31 |
+| RLM | 56.00 | 44.66 | 48.00 | 23.11 |
+| RLM without subcalls | 66.00 | 46.00 | 43.50 | 17.34 |
 
-Our JSON scores use the 0 to 1 scale. Multiply by 100 only for presentation. The paper's table uses CodeQA inputs of 23K to 4.2M tokens, BrowseComp+ inputs of 6M to 11M, OOLONG at 131K, and Pairs at 32K. Our available sizes and task selection differ. These are not matched-model comparisons. No OpenAI-family model was run. Exact S-NIAH chart values were not recovered and are not fabricated here.
+Our Nemotron-root/Lightning-child measurements above use different tasks, sizes, prompts, budgets, and runtimes. They are not matched-model comparisons. No OpenAI-family model ran. Exact S-NIAH paper chart values were not recovered and are not invented.
 
-## Reproduce aggregates
+## Deviations and limits
 
-Run from this study directory. Supply private input locations through shell variables. Do not copy raw inputs into the repository.
+- Thinking-off and library ingress were selected after pilot inspection, not preregistered. The root uses metadata rather than raw context in Hermes arms. Library ingress calls the real selected-source AIAgent and retains Hermes plugin discovery, tool assembly, dispatch, and auxiliary routing without per-home gateway startup.
+- Base context is a head cap of 240000 Unicode characters, not a measured root-token window. CodeQA sizes are characters/4 estimates; local 2M and RULER sizes are nominal, not measured root tokens.
+- Nano children are agents, not the paper's plain LM calls. Nano's `max_tokens=3072` is an agent completion budget inherited by children; the plugin child cap is 1536 per call. Child limits are not matched across these arms.
+- BrowseComp 20 questions over 1000 documents and larger Parquet task materialization remain blocked by unavailable fleet compute. Optional Groq Qwen returned HTTP 403. The full suite and original paper task instances were not reproduced.
+- Retries, failed executions, and reported-known partial usage remain visible. Physical requests, plugin child attempts, host tool calls, and cells remain distinct. The shared provider cap is 2700 attempts; four external probes require separate accounting. No missing usage or cost is invented.
+
+## Reproduce the frozen analysis
+
+Use a separate measured-source checkout at `10918473fbb90d04af08221725baa671369fb31e`, containing plugin implementation `184f7367465601f6e190fdff1bcd091903bef8ad`. `reproduce.sh` delegates collection to that checkout. Audit frozen copies with a separate checkout at `9baf85a649f656479ad376a1d4958818d342ee4b`. Do not use the newer repaired runner and claim identical collection behavior. Immutable task/runtime/dataset pins and measured hashes are in `manifest.yaml` and [protocol.md](protocol.md).
+
+Supply private locations through environment variables. Raw JSONL, task text, contexts, transcripts, citations, and answers remain outside this study.
 
 ```sh
+python3 "$AUDIT_SOURCE/bench/audit_results.py" \
+  --raw "$FROZEN_SEMANTIC" "$FROZEN_CODEQA" "$FROZEN_LOCAL" "$FROZEN_SNIAH" \
+  --ops-dir "$OPS_DIR" --tasks "$FROZEN_TASKS" --out-dir "$AUDITED_OUTPUT"
 PYTHONDONTWRITEBYTECODE=1 python3 summarize.py \
-  --raw "$PRIMARY_SEMANTIC" "$PRIMARY_CODEQA" "$PRIMARY_LOCAL" "$PRIMARY_SNIAH" \
-  --tasks "$FROZEN_TASKS" \
-  --smoke "$NORMAL_SMOKE" "$THINKING_OFF_SMOKE" "$LIBRARY_SMOKE" \
+  --raw "$AUDITED_SEMANTIC" "$AUDITED_CODEQA" "$AUDITED_LOCAL" "$AUDITED_SNIAH" \
+  --tasks "$FROZEN_TASKS" --require-audit --closed \
+  --smoke "$NORMAL_SMOKE" "$THINKING_OFF_SMOKE" "$AUDITED_LIBRARY_SMOKE" \
   --pilot "$PILOT_SEMANTIC" "$PILOT_CODEQA" "$PILOT_LOCAL" "$PILOT_SNIAH" \
   --out data/summary.json
-PYTHONDONTWRITEBYTECODE=1 python3 summarize.py --check data/summary.json
-PYTHONDONTWRITEBYTECODE=1 python3 check_public.py
 ```
 
-Use only existing completed JSONL files in an invocation. Omit unavailable primary paths rather than creating empty evidence. Without `--raw`, the CLI emits the frozen schedule with zero observations. `--tasks` checks identities against the private 20-task manifest without opening context files. Omit `--smoke` to exclude smoke entirely. Optional `--pilot` accepts the four legacy pilot files and writes a separate exploratory table.
+Audited inputs retain canonical basenames. Strict and unaudited primary inputs cannot mix. The auditor writes a new private directory, never collection sources. Library-smoke adjudication uses the same auditor separately. Missing executions stay missing and invalid scores stay null. The initial timed-out/locked audit attempt produced no output; the final adjudication completed all 300 canonical primary rows.
 
-The primary filename contract accepts only `matrix-v2-semantic.jsonl`, `matrix-v2-codeqa.jsonl`, `matrix-v2-local.jsonl`, and `matrix-v2-sniah.jsonl`. Primary rows must carry `disable_thinking: true`. Smoke accepts the corrected normal CLI `smoke.jsonl`, failed thinking-off CLI `matrix-v2-smoke.jsonl`, and passing `matrix-v2-smoke-library.jsonl`. The library cohort is `library-thinking-off-smoke`; earlier broken smokes are excluded. Pilot accepts only the four legacy `matrix-*.jsonl` names. These basenames select cohorts; no input path appears in the output.
+## Follow-up repairs, not measured matrix code
 
-Default collection status remains `ongoing`, even if every execution has arrived. Only after stopping collection, the parent can rerun the same command with `--closed`. It labels all 300 scheduled observations per root `bounded_complete`, including invalid executions, or `partial` when observations are missing. Neither status means full paper replication or all-valid success.
+Plugin repair `74a7aa2e29fdd017b8330423e6976894fd6d2212` and harness repair `6ed40c6e83f339221f860fe59d7b9c34dcbae626` were applied only after collection. They require quoted host FINAL, completed=true, and logical child outcomes; they also fix unique per-call legacy hashed-log collection. The finalized matrix was not rerun with these fixes and no negative was backfilled.
 
-Mixed primary source hashes, `hermes_ingress`, `hermes_client_sha256`, or budgets for the same root fail closed. Summarize different snapshots separately. Duplicate task-arm-repeat rows fail rather than inflate counts. Malformed JSONL fails rather than silently skip evidence. Successful retries and invalid executions retain known usage.
+Parent verification reports 59 checked-out plugin tests passing in 34.46 seconds with HTTP peer EOF, and 59 staged released-source tests passing in 172.1 seconds. Initial bootstrap failures are preserved. Separate final benchmark suites report 11 hardening, 15 matrix, 13 audit, and 11 task tests passing. FINAL gating is a finished-response check, not streaming hold or semantic entailment validation; native IDs avoid stale cross-session final reuse. Any later two-arm engineering probe is external follow-up verification, not a matrix result, and is not claimed completed here.
 
-## Require strict post-adjudication before publication
+## Verify and publication scope
 
-The current snapshot remains unchanged in coverage, scores, and collection status. Its new adherence counts are `protocol_unknown = observed`, with zero claimed adherent outcomes. No completed audited primary result is published here. The initial bulk audit timed out under its nine-second limit and encountered a locked ledger, producing no completed output. A bounded closed-smoke diagnostic is parent-owned and is not a completed primary audit.
-
-The evaluator-side `bench/audit_results.py` preserves private `collection_*` fields and adjudicates frozen copies, without modifying live controllers or collection files. Hermes strict scores come only from the host-validated FINAL and citations linked to real transcript tool results. Incomplete, interrupted, failed, or budget-exhausted conversations and plugin child error/cancel outcomes are invalid. Recovered physical 400/429 attempts do not invalidate an otherwise successful logical plugin call. Base outcomes stay unchanged. Nano remains an explicit reference deviation without the host-FINAL requirement; a non-200 child attempt with unknown recovery is conservatively invalid.
-
-After the parent completes auditing, set the primary variables to the audited files with the same basenames. Add `--require-audit` to the aggregation command above. This requires `audit_version: paper-strict-v1` and a typed auditor digest for every primary row, records `audit_policy: paper_strict_v1`, and rejects unaudited or mixed primary inputs. Without the flag, audited primary input is rejected. Historical smoke and pilot inputs can remain collection evidence in their separate cohorts. Only add `--closed` after collection stops. Audit policy and collection-closure status are independent.
-
-Group fields `collection_valid` and `collection_invalid` preserve the original denominator. Strict `valid`, `invalid`, scores, and eligible task-cluster CIs use adjudicated rows. Four typed adherence counts partition observed rows: `protocol_adherent`, `protocol_nonadherent`, `protocol_unknown`, and `protocol_not_applicable`. Base and the explicitly declared nano reference deviation are not applicable after audit, never counted as adherent. No reason strings, transcript evidence, or raw `collection_*` answers enter the public JSON.
-
-The parent has staged FINAL/child-outcome gate fixes and reports 59 gate checks plus 13 auditor tests. Those changes were not applied to the running controllers and were not measured by this matrix. The measured source remains benchmark commit `1091847` with plugin commit `184f736`. A future auditor commit and any patched-run source pins require parent updates before publication. A post-hoc audit is not a rerun with the staged fix.
-
-## Reuse the upstream runner
-
-`reproduce.sh` delegates to `bench/paper_tasks.py` or `bench/paper_matrix.py` in `HERMES_RLM_SOURCE`. It does not implement a second runner or scorer. Configure the environment variables named by the wrapper. Keep task manifests, output files, fresh homes, and contexts outside this checkout.
-
-```sh
-bash reproduce.sh prepare --reference "$REFERENCE" --legacy "$LEGACY_CORPORA" --out "$TASK_OUTPUT"
-bash reproduce.sh smoke --dry-run
-bash reproduce.sh matrix --dry-run
-```
-
-Remove `--dry-run` only in the parent-controlled credential and compute environment. The matrix wrapper uses all five arms and three repeats. The smoke wrapper selects one smallest S-NIAH task and one repeat. The upstream scheduler rotates arm order. Extra CLI arguments can override budgets, so review the row-recorded protocol before comparing results. Preparation defaults to the bounded sources; large extraction remains an off-host operation.
-
-## Verify without model calls
+Run from this study directory:
 
 ```sh
 timeout 9s env PYTHONDONTWRITEBYTECODE=1 python3 test_summarize.py
-bash -n reproduce.sh
+PYTHONDONTWRITEBYTECODE=1 python3 summarize.py --check data/summary.json
 PYTHONDONTWRITEBYTECODE=1 python3 check_public.py
+bash -n reproduce.sh
 ```
 
-From the repository root, run `python3 scripts/validate.py` for manifest schema and artifact checks. No command above runs inference. All Python code here uses the standard library. The repository validator additionally requires its existing YAML and JSON Schema dependencies.
+From repository root, run `ruff check --no-cache --select F,E9 studies/rlm-paper-replication-v1`, `python3 scripts/validate.py`, and `git diff --check`. These checks make no model calls. Only the eight allowlisted study files are public; artifact hashes exclude the manifest itself.
 
-The manifest pins benchmark commit `10918473fbb90d04af08221725baa671369fb31e` and plugin implementation commit `184f7367465601f6e190fdff1bcd091903bef8ad`. The measured top-level production Python hash is unchanged; plugin tests are outside that hash. Frozen publication still needs parent-controlled closure, final coverage review, aggregate regeneration, and artifact hashes.
-
-The wrapper explicitly selects `--hermes-ingress library`. It calls the selected source's real `AIAgent`; plugin discovery, tool-definition assembly, dispatch, and auxiliary model calls remain Hermes-owned. It avoids starting a gateway for each fresh home. CLI evidence is retained separately, not retroactively rewritten as library evidence.
-
-Provider accounting retains physical HTTP 400 retries and HTTP 429 backoff. Reported-known usage is partial where failed requests omit counts. The shared cap is 2700 attempts per provider; four external probe calls also require parent accounting and headroom. The optional Qwen Groq root is blocked by HTTP 403, not a completed second-root comparison. Cross-family static review is not presented as a passing verification gate.
+Publication remains draft: plugin PR #1 and study PR #191, with tracking issue comment 6885497675. Study PR #191 targets `main`, not `preview`, because the preview comparison included 248 files. This is a documented rollout deviation to keep the review to eight study files, not a merge-history rewrite. No full-replication or ranking claim follows from this bounded evidence.
