@@ -16,7 +16,7 @@ Candidate generation has separate token, request, and latency accounting. The co
 
 The optimizer sees training examples and development outcomes only. Every search for every arm and seed finishes before the runner seals search-file hashes. Only then does holdout execution begin. Holdout outcomes never enter the proposer, regressor, or incumbent-selection rule. Public holdout fixtures support reproduction, not secrecy from an operator.
 
-Provider attempts count against hard request caps, even when they fail. At most three retries use bounded exponential backoff. Persistent quota or authentication failures close the client lane. Incomplete arms remain invalid. GEPA's internal proposal fallback must not hide a provider or schema failure: the adapter latches that failure, prevents another provider call, stops search, and invalidates the arm.
+Provider attempts count against hard request caps, even when they fail. At most three attempts use bounded exponential backoff. Persistent quota or authentication failures close the client lane. Incomplete arms remain invalid. GEPA's internal proposal fallback must not hide a provider or schema failure: the adapter latches that failure, prevents another provider call, stops search, and invalidates the arm.
 
 ## Metrics
 
@@ -36,7 +36,7 @@ The paper's code comparisons hold the coder fixed and use public tests for feedb
 
 This pilot replaces JEPA's encoder, EMA target, OPF factors, and latent prediction with normalized sparse word embeddings and cosine-kernel regression. It updates after each round rather than using reliability-triggered adaptation. It omits predictor-quality and policy-model compatibility gates. It evaluates an adapted reviewer prompt in a single-turn fixture, not the complete Hermes tool workflow.
 
-The released 3B bfloat16 predictor and online-adaptation requirements exceeded safe initial shared-GPU headroom. No other GPU workload was stopped. The experiment uses approved free Qwen or Nemotron APIs. Only aggregate result fields enter this publication repository.
+The released 3B bfloat16 predictor and online-adaptation requirements exceeded safe initial shared-GPU headroom. No other GPU workload was stopped. The completed run uses free Nemotron Lightning for task execution and Nemotron Ultra for mutation. Both run in documented non-thinking mode. Lightning passed task probes but repeatedly failed exact-count mutation probes; Ultra passed one- and four-candidate probes. The earlier Groq attempt is invalid and contributes no quality comparison. Only aggregate result fields enter this publication repository.
 
 ## Publication
 

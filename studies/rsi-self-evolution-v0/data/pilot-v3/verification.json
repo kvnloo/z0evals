@@ -1,0 +1,18 @@
+{
+  "verified": true,
+  "source_commit": "0c46a34b7b821f20c85f7f72aa38dbad5550c128",
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "arms": 9,
+  "selection_calls": 252,
+  "holdout_calls": 288,
+  "generation_calls": 31,
+  "provider_attempts": 571,
+  "pre_holdout_seal": true,
+  "zero_reasoning_tokens": true,
+  "prompt_tokens": 270465,
+  "completion_tokens": 90357
+}

@@ -1,40 +1,72 @@
 schema_version: z0eval.study.v1
 id: rsi-self-evolution-v0
 title: RSI-inspired Hermes skill selection at matched task-call budgets
-status: draft
+status: frozen
 created: '2026-11-14'
 updated: '2026-11-14'
-evidence_status: measurement-in-progress
+evidence_status: measured-pilot-no-quality-gain-established
 sources:
-  - repo: kvnloo/hermes-agent-self-evolution
-    commit: 0a929e3aa20e15cf04dc7c28492a7d41a5139125
-    role: original checkout and fitness baseline
-  - repo: Gen-Verse/RSI-Anything
-    commit: 8ba44cd73ec6f57b151ec06e2f71a0726adfb687
-    role: source-reported research protocol, not reproduced benchmark results
-  - repo: Gen-Verse/JEPA-Anything
-    commit: c6e6c88f3ef75a4ce7acd660d6fa5779d995512c
-    role: predictive-core source inspection
-  - repo: NousResearch/hermes-agent
-    commit: e05c8d578c6f4f919b4a2a4c308733144ac4f8b0
-    role: source reviewer prompt adapted to the static fixture
+- repo: kvnloo/hermes-agent-self-evolution
+  commit: 76f58f42b68d21179d55f3f6545726669d9547a5
+  branch: exp/rsi-anything
+  role: aggregate export and publication tooling
+- repo: kvnloo/hermes-agent-self-evolution
+  commit: 0c46a34b7b821f20c85f7f72aa38dbad5550c128
+  branch: exp/rsi-anything
+  role: executed sealed nine-arm pilot
+- repo: kvnloo/hermes-agent-self-evolution
+  commit: 0a929e3aa20e15cf04dc7c28492a7d41a5139125
+  branch: exp/rsi-anything
+  role: original checkout and unchanged fitness
+- repo: Gen-Verse/RSI-Anything
+  commit: 8ba44cd73ec6f57b151ec06e2f71a0726adfb687
+  branch: main
+  role: source-reported protocol, not reproduced benchmarks
+- repo: Gen-Verse/JEPA-Anything
+  commit: c6e6c88f3ef75a4ce7acd660d6fa5779d995512c
+  branch: main
+  role: predictive-core source inspection
+- repo: NousResearch/hermes-agent
+  commit: e05c8d578c6f4f919b4a2a4c308733144ac4f8b0
+  branch: preview
+  role: source reviewer prompt adapted to the static fixture
 external_resources:
-  - url: https://arxiv.org/abs/2610.13912
-    role: source-reported paper
-  - url: https://huggingface.co/datasets/Gen-Verse/RSI-Anything
-    revision: 672ecc37a8c9488002258bb2a3a9ea1250dfd54b
-    role: inspected released resources; no model weights used
+- url: https://arxiv.org/abs/2610.13912
+  role: source-reported paper
+- url: https://huggingface.co/datasets/Gen-Verse/RSI-Anything
+  revision: 672ecc37a8c9488002258bb2a3a9ea1250dfd54b
+  role: inspected released resources; no model weights used
 questions:
-  - Does prediction-guided selection improve heldout keyword fitness over GEPA and random selection with matched task calls?
-  - Does any keyword-fitness change agree with known-answer static-review verdict accuracy?
-  - Does pre-update selected-only predictor correlation provide useful evidence at this sample size?
-artifacts: []
+- Does prediction-guided selection improve heldout keyword fitness over GEPA and random
+  selection with matched task calls?
+- Does any keyword-fitness change agree with known-answer static-review verdict accuracy?
+- Does pre-update selected-only predictor correlation provide useful evidence at this
+  sample size?
+artifacts:
+- path: data/pilot-v3/summary.json
+  kind: result
+  sha256: 4fb3804ff52b0d9d8f446aad82ee57db33051db9f1e79f7f2e031c44675b96ff
+- path: data/pilot-v3/rounds.csv
+  kind: result
+  sha256: 8fc8f74033b0e8575a910c3f969d252a126898e5b2b07539946dc58211449a01
+- path: data/pilot-v3/verification.json
+  kind: receipt
+  sha256: 7369b46e6f39378d832ee7ac9ad204fedac2cc9dc384a73f6a0e1e20ceb77b1c
+- path: data/groq-invalid/summary.json
+  kind: result
+  sha256: 7e15f8ea33c15f9cb81ffc52a0d0fdbe560570aec6e3332aaa826fca256db1a2
+- path: data/groq-invalid/rounds.csv
+  kind: result
+  sha256: 6321e8283f82ffa51eb41b35c6f9f93e6c818354c39be1ed950c63cb1742422c
+- path: data/nim-interrupted.json
+  kind: receipt
+  sha256: b4a1cd1718b6d68e59a9f15cc34e87e7f9c0f364fe37166b63fe3bcb74c0d278
 limitations:
-  - Measurement is in progress. No final quality comparison is frozen.
-  - The native GEPA text adapter replaces a broken wrapper, not the GEPA engine.
-  - The surrogate is sparse embedding regression, not JEPA.
-  - The primary metric is keyword overlap, not independently verified task correctness.
-  - One adapted prompt and eight unique holdout tasks do not establish live-agent improvement.
-  - Selected-only Spearman is biased and has few observations.
-  - Candidate-generation compute and distributions are not matched across all arms.
-  - Failed and interrupted attempts must remain separate from valid quality measurements.
+- Three seeds share eight unique holdout cases; no significance or generalization claim is made.
+- The native GEPA text adapter replaces a broken wrapper, not the GEPA engine.
+- The surrogate is sparse embedding regression, not JEPA.
+- The primary metric is keyword overlap, not independently verified task correctness.
+- One adapted prompt and eight unique holdout tasks do not establish live-agent improvement.
+- Selected-only Spearman is biased and has few observations.
+- Candidate-generation compute and distributions are not matched across all arms.
+- Failed and interrupted attempts must remain separate from valid quality measurements.
