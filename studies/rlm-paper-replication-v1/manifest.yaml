@@ -40,6 +40,9 @@ sources:
 - repo: kvnloo/hermes-rlm
   commit: 6ed40c6e83f339221f860fe59d7b9c34dcbae626
   role: post-collection harness repair; separately tested, not measured by matrix
+- repo: kvnloo/hermes-rlm
+  commit: 8ee34f587e0d524fcfb84a0149f7c31e074f537b
+  role: post-collection prompt alignment; two real citation-validated engineering probes, not matrix measurements
 paper:
   id: arXiv:2512.24601v1
   version: 1
@@ -83,7 +86,7 @@ questions:
 artifacts:
 - path: README.md
   kind: analysis
-  sha256: c183be35cfc6f4c35360f25ca924e95a5fc540f662e5b810c34120bfdb242867
+  sha256: a927a0a7eb5a6d1756ad4082bfe556e07dea7ac4b4b1a9961b33b6a6229bc9b3
 - path: protocol.md
   kind: analysis
   sha256: 794312d6503c2dd39e9d49b1af788da051633d1354d2339503c3a60e462571dd

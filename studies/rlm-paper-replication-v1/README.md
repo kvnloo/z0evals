@@ -102,7 +102,7 @@ Our Nemotron-root/Lightning-child measurements above use different tasks, sizes,
 
 Use a separate measured-source checkout at `10918473fbb90d04af08221725baa671369fb31e`, containing plugin implementation `184f7367465601f6e190fdff1bcd091903bef8ad`. `reproduce.sh` delegates collection to that checkout. Audit frozen copies with a separate checkout at `9baf85a649f656479ad376a1d4958818d342ee4b`. Do not use the newer repaired runner and claim identical collection behavior. Immutable task/runtime/dataset pins and measured hashes are in `manifest.yaml` and [protocol.md](protocol.md).
 
-Supply private locations through environment variables. Raw JSONL, task text, contexts, transcripts, citations, and answers remain outside this study.
+The implementation repository is private. Reproduction requires access to its pinned source and the private raw artifacts. Supply private locations through environment variables. Raw JSONL, task text, contexts, transcripts, citations, and answers remain outside this study.
 
 ```sh
 python3 "$AUDIT_SOURCE/bench/audit_results.py" \
@@ -122,7 +122,7 @@ Audited inputs retain canonical basenames. Strict and unaudited primary inputs c
 
 Plugin repair `74a7aa2e29fdd017b8330423e6976894fd6d2212` and harness repair `6ed40c6e83f339221f860fe59d7b9c34dcbae626` were applied only after collection. They require quoted host FINAL, completed=true, and logical child outcomes; they also fix unique per-call legacy hashed-log collection. The finalized matrix was not rerun with these fixes and no negative was backfilled.
 
-Parent verification reports 59 checked-out plugin tests passing in 34.46 seconds with HTTP peer EOF, and 59 staged released-source tests passing in 172.1 seconds. Initial bootstrap failures are preserved. Separate final benchmark suites report 11 hardening, 15 matrix, 13 audit, and 11 task tests passing. FINAL gating is a finished-response check, not streaming hold or semantic entailment validation; native IDs avoid stale cross-session final reuse. Any later two-arm engineering probe is external follow-up verification, not a matrix result, and is not claimed completed here.
+Parent verification reports 59 checked-out plugin tests passing in 34.46 seconds with HTTP peer EOF, and 59 staged released-source tests passing in 172.1 seconds. Initial bootstrap failures are preserved. Separate final benchmark suites report 11 hardening, 15 matrix, 13 audit, and 11 task tests passing. FINAL gating is a finished-response check, not streaming hold or semantic entailment validation; native IDs avoid stale cross-session final reuse. A later two-arm engineering probe at runner commit `8ee34f587e0d524fcfb84a0149f7c31e074f537b` passed on released Hermes and the eager fork, each with a citation-validated FINAL and score 1.0. It corrected conflicting prose instructions, with 16 matrix regression checks passing. The preceding probe correctly withheld an uncited released-arm answer. These are follow-up engineering checks, not matrix measurements.
 
 ## Verify and publication scope
 
