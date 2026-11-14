@@ -1,0 +1,26 @@
+schema_version: z0eval.study.v1
+id: coding-license-v0
+title: Tiered Python coding probe
+status: draft
+created: "2026-11-14"
+sources:
+  - repo: kvnloo/z0evals
+    commit: 1ec7c67e36cd6dfa57416b7afdd63ada2805158a
+    role: Original harness-speed-v1 tasks, references, and independent verifier
+questions:
+  - Which models pass every probe required for a Python task tier?
+artifacts:
+  - path: SPEC.md
+    kind: other
+  - path: eval.py
+    kind: other
+  - path: test_eval.py
+    kind: other
+  - path: upstream-files.json
+    kind: fixture
+limitations:
+  - No runtime checks or model probes completed during A14 because permitted fleet workers were unavailable.
+  - Static syntax and fixture provenance checks are not proof of runtime correctness.
+  - These public synthetic Python fixtures do not prove general coding ability or contamination resistance.
+  - Provider billing is an operator attestation, not an automated price check.
+claims: []

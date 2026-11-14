@@ -1,0 +1,1 @@
+Add a `--min-count N` option (default 1) to wc.py that drops words seen fewer than N times before --top is applied. Make `python3 -m unittest` pass. Do not modify the tests.

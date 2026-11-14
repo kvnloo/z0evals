@@ -1,0 +1,2 @@
+class CurrencyMismatch(ValueError):
+    pass
