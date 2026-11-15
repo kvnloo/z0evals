@@ -35,7 +35,10 @@ class PageAudit(HTMLParser):
             self.classes.append(classes)
         if tag == "nav" and {"toc", "toc-sidebar"}.issubset(classes):
             self._toc_depth = 1
-        elif self._toc_depth:
+        elif self._toc_depth and tag not in {
+            "area", "base", "br", "col", "embed", "hr", "img", "input",
+            "link", "meta", "param", "source", "track", "wbr",
+        }:
             self._toc_depth += 1
 
         if tag == "a":
