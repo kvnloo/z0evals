@@ -11,6 +11,12 @@ from html.parser import HTMLParser
 from pathlib import Path
 
 
+VOID_ELEMENTS = {
+    "area", "base", "br", "col", "embed", "hr", "img", "input",
+    "link", "meta", "param", "source", "track", "wbr",
+}
+
+
 class PageAudit(HTMLParser):
     def __init__(self) -> None:
         super().__init__(convert_charrefs=True)
@@ -35,7 +41,7 @@ class PageAudit(HTMLParser):
             self.classes.append(classes)
         if tag == "nav" and {"toc", "toc-sidebar"}.issubset(classes):
             self._toc_depth = 1
-        elif self._toc_depth:
+        elif self._toc_depth and tag not in VOID_ELEMENTS:
             self._toc_depth += 1
 
         if tag == "a":
@@ -48,7 +54,8 @@ class PageAudit(HTMLParser):
                         self.desktop_toc_hrefs.append(href[1:])
 
     def handle_endtag(self, tag: str) -> None:
-        if self._toc_depth:
+        # HTMLParser emits an end callback for <br/> and other self-closing tags.
+        if self._toc_depth and tag not in VOID_ELEMENTS:
             self._toc_depth -= 1
 
 
