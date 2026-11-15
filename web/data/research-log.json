@@ -1,6 +1,29 @@
 {
- "updated": "2026-11-02",
+ "updated": "2026-11-06",
  "entries": [
+  {
+   "id": "speed-measurements-v0",
+   "title": "Three different meanings of fast",
+   "area": "speed-ux",
+   "question": "Which recorded speed metrics survive excluding estimated token counts?",
+   "status": "evidence-local",
+   "date": "2026-11-06",
+   "finding": "Source-reported: warm first-text median 0.4084 s over 12 counted requests; local Qwen3.5-4B wire decode medians 143.5 tok/s for fx and 146.8 for Hermes, three requests each; parallel run completed 401 units in 184.48 s.",
+   "caveat": "Offline reanalysis, not rerun inference. Historical experiment revisions are unknown. Parallel token throughput is withheld because the counting method is unverified. Completion is not quality.",
+   "links": [
+    {
+     "label": "Recorded measurements and method",
+     "url": "https://github.com/kvnloo/z0evals/blob/9d3267b18f98b5ecfff98de56409a01f4f1d2213/studies/speed-measurements-v0/README.md"
+    },
+    {
+     "label": "Recomputed summary",
+     "url": "https://github.com/kvnloo/z0evals/blob/9d3267b18f98b5ecfff98de56409a01f4f1d2213/studies/speed-measurements-v0/summary.json"
+    }
+   ],
+   "interesting": true,
+   "why": "Warm first-text latency, single-request decode rate, and aggregate unit completion rate answer different questions.",
+   "post": "speed-measurements-v0"
+  },
   {
    "id": "fsm-work-item-v0",
    "title": "Work-item laws and incident replay",
