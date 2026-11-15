@@ -1,0 +1,46 @@
+{
+  "classification": "source-reported measurements, analysis reproduced offline",
+  "excluded": {
+    "parallel token fields": "token-count source not independently established",
+    "speed.jsonl": "probe_all.py:67 silently substitutes chars // 4 for missing token usage"
+  },
+  "experiment_commit": null,
+  "source_files": [
+    {
+      "file": "lat-final.jsonl",
+      "sha256": "1401d01d0ffff15ade39cd91655ff639d4f50bef729be01eaff2170034679dbc"
+    },
+    {
+      "file": "fx-ab/raw/runs.jsonl",
+      "sha256": "7a2094e71b052376c99c279bd82f825401e0c28ea53c819bd52f8d194c332747"
+    },
+    {
+      "file": "fx-ab/raw/wire.jsonl",
+      "sha256": "420a0b88905812ad6e05e16cb08e6bb4eb42c6ddcba7adc983be0b4d1881273a"
+    },
+    {
+      "file": "swarm-bench/bench-20261105T041047.jsonl",
+      "sha256": "b11fdf0f93cbfef2132bac9afba061da6e6288a92a465135df7f0027057f8dd6"
+    },
+    {
+      "file": "swarm-bench/bench-20261105T041047.summary.json",
+      "sha256": "d4be751795f219226a71aac615bdfd33e359d543bce13593f03dc4f69859787c"
+    },
+    {
+      "file": "hermes_latency.py",
+      "sha256": "b508854f601070b6698063b59c706c3046d4d3015030eecf9280714606559e97"
+    },
+    {
+      "file": "probe_all.py",
+      "sha256": "830c9d745aa42cbbd7be24b25ba14b791d212d72705bfe1bdb1d963548637da1"
+    },
+    {
+      "file": "fx-ab/wire_proxy.py",
+      "sha256": "83b91fe9abcdf3e44a4ceb2ae05f7413fb7a76a1c7ecab7053d11b7b2ba976e7"
+    },
+    {
+      "file": "fx-ab/summarize.py",
+      "sha256": "a8f1ca54a67fda75114deb33a023a880317fa895ef9d4b23d64eed5aa6879197"
+    }
+  ]
+}

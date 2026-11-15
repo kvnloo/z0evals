@@ -1,0 +1,84 @@
+{
+  "classification": "source-reported measurements; offline analysis reproduced",
+  "parallel": {
+    "aggregate_token_rate": null,
+    "completed": 401,
+    "completed_units_per_s": 2.1737,
+    "failed_units": 0,
+    "independently_verified_quality": false,
+    "lanes": {
+      "farm": 119,
+      "local-swarm": 252,
+      "local-ttft": 30
+    },
+    "max_interval_overlap": 13,
+    "not_run": 4599,
+    "planned_units": 5000,
+    "rate_limit_attempts": 8,
+    "token_rate_exclusion": "original runner and token-count method not independently established",
+    "wall_s": 184.48
+  },
+  "warm": {
+    "correct": 12,
+    "count": 12,
+    "median_ttft_s": 0.4084,
+    "warmup_excluded": 1
+  },
+  "wire_decode": [
+    {
+      "arm": "fx",
+      "count": 3,
+      "median_tok_s": 144.6,
+      "model": "cohere-command-a-plus"
+    },
+    {
+      "arm": "hermes",
+      "count": 3,
+      "median_tok_s": 27.5,
+      "model": "cohere-command-a-plus"
+    },
+    {
+      "arm": "fx",
+      "count": 3,
+      "median_tok_s": 73.8,
+      "model": "kilo-nemotron-lightning"
+    },
+    {
+      "arm": "hermes",
+      "count": 3,
+      "median_tok_s": 90.0,
+      "model": "kilo-nemotron-lightning"
+    },
+    {
+      "arm": "fx",
+      "count": 3,
+      "median_tok_s": 143.5,
+      "model": "local-qwen3.5-4b"
+    },
+    {
+      "arm": "hermes",
+      "count": 3,
+      "median_tok_s": 146.8,
+      "model": "local-qwen3.5-4b"
+    },
+    {
+      "arm": "fx",
+      "count": 3,
+      "median_tok_s": 85.1,
+      "model": "nim-nemotron-lightning"
+    },
+    {
+      "arm": "hermes",
+      "count": 3,
+      "median_tok_s": 100.7,
+      "model": "nim-nemotron-lightning"
+    }
+  ],
+  "wire_status_counts": {
+    "200": 805,
+    "404": 37,
+    "429": 32,
+    "500": 9,
+    "local429": 20
+  }
+}
