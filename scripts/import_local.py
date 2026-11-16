@@ -45,6 +45,7 @@ def main() -> None:
 
     manifest = yaml.safe_load(manifest_path.read_text())
     imported = []
+    destinations = set()
     source_rows = []
 
     for src in spec.get("sources", []):
@@ -71,6 +72,9 @@ def main() -> None:
             out = (study_dir / item["to"]).resolve()
             if not out.is_relative_to(study_dir):
                 raise SystemExit(f"artifact destination escapes study: {item['to']}")
+            if out in destinations:
+                raise SystemExit(f"duplicate artifact destination: {item['to']}")
+            destinations.add(out)
             out.parent.mkdir(parents=True, exist_ok=True)
             data = subprocess.check_output(
                 ["git", "-C", str(local_root), "show", f"{actual}:{rel}"]

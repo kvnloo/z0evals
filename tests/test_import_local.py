@@ -102,6 +102,22 @@ class ImportLocalTest(unittest.TestCase):
         self.assertEqual(manifest.read_bytes(), before)
         self.assertFalse((self.study_dir / "data").exists())
 
+    def test_duplicate_destination_is_rejected_before_overwrite(self):
+        second = self.source_repo / "results" / "second.json"
+        second.write_bytes(b'{"different": true}')
+        self._git("add", "results/second.json")
+        self._git("commit", "-q", "-m", "Second artifact")
+        self.spec["sources"][0]["commit"] = self._git("rev-parse", "HEAD")
+        self.spec["sources"][0]["files"].append({
+            "from": "results/second.json", "to": "data/./r.json", "kind": "result"
+        })
+        manifest = self.study_dir / "manifest.yaml"
+        before = manifest.read_bytes()
+        with self.assertRaisesRegex(SystemExit, "duplicate artifact destination"):
+            self._run_import()
+        self.assertEqual((self.study_dir / "data/r.json").read_bytes(), self.COMMITTED_BYTES)
+        self.assertEqual(manifest.read_bytes(), before)
+
     def _git(self, *args: str) -> str:
         result = subprocess.run(
             ["git", "-C", str(self.source_repo), *args],
