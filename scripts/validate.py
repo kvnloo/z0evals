@@ -56,6 +56,10 @@ def main() -> None:
                 print(f"{path}: artifact is not a file {artifact['path']}")
                 errors += 1
                 continue
+            if not target.resolve().is_relative_to(study_dir.resolve()):
+                print(f"{path}: artifact escapes study directory {artifact['path']}")
+                errors += 1
+                continue
             expected = artifact.get("sha256")
             if expected is not None and digest(target) != expected:
                 print(f"{path}: hash mismatch {artifact['path']}")

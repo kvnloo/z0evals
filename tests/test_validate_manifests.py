@@ -96,6 +96,36 @@ class ValidateManifestsTest(unittest.TestCase):
         self.assertEqual(code, "2 validation error(s)")
         self.assertEqual(output.count("artifact is not a file data/x.json"), 2)
 
+    def test_artifacts_cannot_escape_study_directory(self):
+        outside = self.root / "outside.json"
+        outside.write_bytes(b"synthetic external artifact")
+        for study_id, kind in (("parent", "parent"), ("absolute", "absolute"), ("symlink", "symlink")):
+            manifest, _, data = self._make_manifest(study_id)
+            if kind == "parent":
+                target = "../../outside.json"
+            elif kind == "absolute":
+                target = str(outside)
+            else:
+                (manifest.parent / "outside-link.json").symlink_to(outside)
+                target = "outside-link.json"
+            data["artifacts"][0]["path"] = target
+            data["artifacts"][0]["sha256"] = hashlib.sha256(outside.read_bytes()).hexdigest()
+            self._write_manifest(manifest, data)
+        with patch.object(validate, "digest", wraps=validate.digest) as digest:
+            code, output = self._run_error()
+        self.assertEqual(code, "3 validation error(s)")
+        self.assertEqual(output.count("artifact escapes study directory"), 3)
+        digest.assert_not_called()
+
+    def test_contained_normalization_and_symlinks_remain_valid(self):
+        for study_id, target in (("normalized", "data/../data/x.json"), ("linked", "linked.json")):
+            manifest, artifact, data = self._make_manifest(study_id)
+            if study_id == "linked":
+                (manifest.parent / target).symlink_to(artifact)
+            data["artifacts"][0]["path"] = target
+            self._write_manifest(manifest, data)
+        self.assertEqual(self._run_ok(), "ok: 2 study manifest(s)\n")
+
     def test_digest_matches_hashlib(self):
         large = bytes(range(256)) * 10_240
         self.assertEqual(len(large), 2_621_440)  # 2.5 MiB, three read chunks
