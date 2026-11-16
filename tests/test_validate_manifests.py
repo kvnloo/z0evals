@@ -143,6 +143,18 @@ class ValidateManifestsTest(unittest.TestCase):
         self._write_manifest(manifest_path, data)
         self.assertEqual(self._run_ok(), "ok: 1 study manifest(s)\n")
 
+    def test_empty_hash_is_not_treated_as_omitted(self):
+        manifest, _, data = self._make_manifest()
+        data["artifacts"][0]["sha256"] = ""
+        self._write_manifest(manifest, data)
+        code, stdout = self._run_error()
+        self.assertEqual(code, "1 validation error(s)")
+        self.assertIn("hash mismatch data/x.json", stdout)
+
+        del data["artifacts"][0]["sha256"]
+        self._write_manifest(manifest, data)
+        self.assertEqual(self._run_ok(), "ok: 1 study manifest(s)\n")
+
     def test_frozen_requires_full_sha(self):
         manifest_path, _, data = self._make_manifest()
         data["status"] = "frozen"

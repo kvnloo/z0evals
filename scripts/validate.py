@@ -57,7 +57,7 @@ def main() -> None:
                 errors += 1
                 continue
             expected = artifact.get("sha256")
-            if expected and digest(target) != expected:
+            if expected is not None and digest(target) != expected:
                 print(f"{path}: hash mismatch {artifact['path']}")
                 errors += 1
 
