@@ -32,13 +32,19 @@ def main() -> None:
     spec_path = Path(sys.argv[1]).resolve()
     spec = yaml.safe_load(spec_path.read_text())
     study_id = spec["study"]
-    study_dir = ROOT / "studies" / study_id
-    manifest_path = study_dir / "manifest.yaml"
+    studies_dir = (ROOT / "studies").resolve()
+    study_dir = (studies_dir / study_id).resolve()
+    if study_dir == studies_dir or not study_dir.is_relative_to(studies_dir):
+        raise SystemExit(f"study escapes studies directory: {study_id}")
+    manifest_path = (study_dir / "manifest.yaml").resolve()
+    if not manifest_path.is_relative_to(study_dir):
+        raise SystemExit(f"manifest escapes study directory: {study_id}")
     if not manifest_path.exists():
         raise SystemExit(f"study does not exist: {study_id}")
 
     manifest = yaml.safe_load(manifest_path.read_text())
     imported = []
+    destinations = set()
     source_rows = []
 
     for src in spec.get("sources", []):
@@ -50,14 +56,25 @@ def main() -> None:
         if len(actual) != 40:
             raise SystemExit(f"{src['name']}: commit must resolve to full SHA")
 
+        if git(local_root, "cat-file", "-t", actual) != "commit":
+            raise SystemExit(f"{src['name']}: commit must name a commit object")
+
         # Require every copied file to exist in the pinned commit, not merely
         # as an uncommitted local artifact.
         for item in src.get("files", []):
             rel = item["from"]
-            subprocess.check_call(
-                ["git", "-C", str(local_root), "cat-file", "-e", f"{actual}:{rel}"]
-            )
-            out = study_dir / item["to"]
+            if git(local_root, "cat-file", "-t", f"{actual}:{rel}") != "blob":
+                raise SystemExit(f"artifact source must be a blob: {rel}")
+            # Resolve before creating directories or writing: relative traversal, absolute
+            # destinations and existing symlinks must not escape the selected study.
+            out = (study_dir / item["to"]).resolve()
+            if not out.is_relative_to(study_dir):
+                raise SystemExit(f"artifact destination escapes study: {item['to']}")
+            if out == manifest_path:
+                raise SystemExit(f"artifact destination is study manifest: {item['to']}")
+            if out in destinations:
+                raise SystemExit(f"duplicate artifact destination: {item['to']}")
+            destinations.add(out)
             out.parent.mkdir(parents=True, exist_ok=True)
             data = subprocess.check_output(
                 ["git", "-C", str(local_root), "show", f"{actual}:{rel}"]
