@@ -118,6 +118,20 @@ class ImportLocalTest(unittest.TestCase):
         self.assertEqual((self.study_dir / "data/r.json").read_bytes(), self.COMMITTED_BYTES)
         self.assertEqual(manifest.read_bytes(), before)
 
+    def test_manifest_destination_is_rejected_before_write(self):
+        manifest = self.study_dir / "manifest.yaml"
+        before = manifest.read_bytes()
+        for destination in ("manifest.yaml", "./manifest.yaml", "manifest-alias.yaml"):
+            with self.subTest(destination=destination):
+                manifest.write_bytes(before)
+                alias = self.study_dir / "manifest-alias.yaml"
+                if not alias.exists():
+                    alias.symlink_to("manifest.yaml")
+                self.spec["sources"][0]["files"][0]["to"] = destination
+                with self.assertRaisesRegex(SystemExit, "artifact destination is study manifest"):
+                    self._run_import()
+                self.assertEqual(manifest.read_bytes(), before)
+
     def _git(self, *args: str) -> str:
         result = subprocess.run(
             ["git", "-C", str(self.source_repo), *args],

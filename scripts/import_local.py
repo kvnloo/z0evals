@@ -72,6 +72,8 @@ def main() -> None:
             out = (study_dir / item["to"]).resolve()
             if not out.is_relative_to(study_dir):
                 raise SystemExit(f"artifact destination escapes study: {item['to']}")
+            if out == manifest_path:
+                raise SystemExit(f"artifact destination is study manifest: {item['to']}")
             if out in destinations:
                 raise SystemExit(f"duplicate artifact destination: {item['to']}")
             destinations.add(out)
