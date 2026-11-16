@@ -56,6 +56,9 @@ def main() -> None:
         if len(actual) != 40:
             raise SystemExit(f"{src['name']}: commit must resolve to full SHA")
 
+        if git(local_root, "cat-file", "-t", actual) != "commit":
+            raise SystemExit(f"{src['name']}: commit must name a commit object")
+
         # Require every copied file to exist in the pinned commit, not merely
         # as an uncommitted local artifact.
         for item in src.get("files", []):

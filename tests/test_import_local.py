@@ -93,6 +93,15 @@ class ImportLocalTest(unittest.TestCase):
             ],
         }
 
+    def test_tree_sha_is_not_accepted_as_pinned_commit(self):
+        self.spec["sources"][0]["commit"] = self._git("rev-parse", "HEAD^{tree}")
+        manifest = self.study_dir / "manifest.yaml"
+        before = manifest.read_bytes()
+        with self.assertRaisesRegex(SystemExit, "commit must name a commit object"):
+            self._run_import()
+        self.assertEqual(manifest.read_bytes(), before)
+        self.assertFalse((self.study_dir / "data").exists())
+
     def _git(self, *args: str) -> str:
         result = subprocess.run(
             ["git", "-C", str(self.source_repo), *args],
