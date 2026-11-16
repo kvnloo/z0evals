@@ -52,6 +52,10 @@ def main() -> None:
                 print(f"{path}: missing artifact {artifact['path']}")
                 errors += 1
                 continue
+            if not target.is_file():
+                print(f"{path}: artifact is not a file {artifact['path']}")
+                errors += 1
+                continue
             expected = artifact.get("sha256")
             if expected and digest(target) != expected:
                 print(f"{path}: hash mismatch {artifact['path']}")

@@ -84,6 +84,18 @@ class ValidateManifestsTest(unittest.TestCase):
                 validate.main()
         return raised.exception.code, stdout.getvalue()
 
+    def test_directory_artifacts_are_rejected_and_errors_accumulate(self):
+        for study_id, with_hash in (("a", False), ("b", True)):
+            manifest, artifact, data = self._make_manifest(study_id)
+            artifact.unlink()
+            artifact.mkdir()
+            if not with_hash:
+                data["artifacts"][0].pop("sha256")
+            self._write_manifest(manifest, data)
+        code, output = self._run_error()
+        self.assertEqual(code, "2 validation error(s)")
+        self.assertEqual(output.count("artifact is not a file data/x.json"), 2)
+
     def test_digest_matches_hashlib(self):
         large = bytes(range(256)) * 10_240
         self.assertEqual(len(large), 2_621_440)  # 2.5 MiB, three read chunks
