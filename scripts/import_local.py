@@ -64,9 +64,8 @@ def main() -> None:
         # as an uncommitted local artifact.
         for item in src.get("files", []):
             rel = item["from"]
-            subprocess.check_call(
-                ["git", "-C", str(local_root), "cat-file", "-e", f"{actual}:{rel}"]
-            )
+            if git(local_root, "cat-file", "-t", f"{actual}:{rel}") != "blob":
+                raise SystemExit(f"artifact source must be a blob: {rel}")
             # Resolve before creating directories or writing: relative traversal, absolute
             # destinations and existing symlinks must not escape the selected study.
             out = (study_dir / item["to"]).resolve()

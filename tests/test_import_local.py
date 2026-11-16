@@ -132,6 +132,15 @@ class ImportLocalTest(unittest.TestCase):
                     self._run_import()
                 self.assertEqual(manifest.read_bytes(), before)
 
+    def test_directory_source_is_not_imported_as_tree_listing(self):
+        self.spec["sources"][0]["files"][0]["from"] = "results"
+        manifest = self.study_dir / "manifest.yaml"
+        before = manifest.read_bytes()
+        with self.assertRaisesRegex(SystemExit, "artifact source must be a blob"):
+            self._run_import()
+        self.assertEqual(manifest.read_bytes(), before)
+        self.assertFalse((self.study_dir / "data").exists())
+
     def _git(self, *args: str) -> str:
         result = subprocess.run(
             ["git", "-C", str(self.source_repo), *args],
