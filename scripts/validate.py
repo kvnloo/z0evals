@@ -31,12 +31,19 @@ def main() -> None:
         raise SystemExit("no study manifests found")
 
     for path in manifests:
-        data = yaml.safe_load(path.read_text())
+        try:
+            data = yaml.safe_load(path.read_text())
+        except yaml.YAMLError as error:
+            print(f"{path}: YAML error: {error}")
+            errors += 1
+            continue
         problems = sorted(validator.iter_errors(data), key=lambda e: list(e.path))
         if problems:
             errors += len(problems)
             for e in problems:
                 print(f"{path}: schema error at {list(e.path)}: {e.message}")
+            # Artifact/source checks require the structure guaranteed by the schema.
+            continue
 
         study_dir = path.parent
         for artifact in data.get("artifacts", []):
@@ -45,8 +52,16 @@ def main() -> None:
                 print(f"{path}: missing artifact {artifact['path']}")
                 errors += 1
                 continue
+            if not target.is_file():
+                print(f"{path}: artifact is not a file {artifact['path']}")
+                errors += 1
+                continue
+            if not target.resolve().is_relative_to(study_dir.resolve()):
+                print(f"{path}: artifact escapes study directory {artifact['path']}")
+                errors += 1
+                continue
             expected = artifact.get("sha256")
-            if expected and digest(target) != expected:
+            if expected is not None and digest(target) != expected:
                 print(f"{path}: hash mismatch {artifact['path']}")
                 errors += 1
 
